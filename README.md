@@ -3,8 +3,8 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation, Snowflake, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-15-success.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242488%20USD-gold.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-14-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242188%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
 
@@ -14,9 +14,9 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **15** | Verified 100% free exams & live registration windows |
-| **Total Financial Value** | **$2,488 USD** | Aggregate savings if claimed today |
-| **Last Automated Inspection** | `2026-10-14 11:45 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Active Opportunities** | **14** | Verified 100% free exams & live registration windows |
+| **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
+| **Last Automated Inspection** | `2026-10-14 11:57 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -28,7 +28,7 @@
 | Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | `100% Free Exam Voucher` | $199 | 🟢 Active | [**Claim Offer**](https://www.isc2.org/landing/1mcc) |
-| **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | [**Claim Offer**](https://www.qualys.com/training/) |
+| **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | [**Claim Offer**](https://www.qualys.com/training) |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
 
 ### Cloud & Data
@@ -37,25 +37,18 @@
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | `100% Free Exam Voucher` | $245 | 🟢 Active | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
-### Networking
-
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Cisco** | Cisco Continuing Education (Recertification) | `Free CE Credits` | $300 | 🟢 Active | [**Claim Offer**](https://u.cisco.com/) |
-| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
-
 ### Cloud & AI
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | `100% Free Credential` | $100 | 🟢 Active | [**Claim Offer**](https://learn.microsoft.com/credentials/applied-skills/) |
+| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | `100% Free Credential` | $100 | 🟢 Active | [**Claim Offer**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
 | **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | `Free Skill Badges & Swag` | $100 | 🟢 Active | [**Claim Offer**](https://www.cloudskillsboost.google/) |
 
 ### DevOps & Cloud Native
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | `100% Free Scholarship Voucher` | $395 | 🟢 Active | [**Claim Offer**](https://www.linuxfoundation.org/about/diversity-inclusivity/lift-scholarships) |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | `100% Free Scholarship Voucher` | $395 | 🟢 Active | [**Claim Offer**](https://www.linuxfoundation.org/about/lift-scholarships) |
 
 ### AI & Data
 
@@ -76,6 +69,12 @@
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | `100% Free Credential` | $50 | 🟢 Active | [**Claim Offer**](https://academy.postman.com/) |
 
+### Networking
+
+| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+
 ### DevOps
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
@@ -95,6 +94,7 @@
 
 | Provider | Certification | Concluded Status | Reason / Inspection Note |
 | :--- | :--- | :---: | :--- |
+| **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
 | **Databricks** | Generative AI Fundamentals | 🟡 Closed / Waitlist | Detected closure phrase: 'no longer available' |
 
 ---
@@ -115,19 +115,12 @@
 - **Steps to Claim:** Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.
 - **Official Link:** [https://education.oracle.com/oracle-cloud-infrastructure](https://education.oracle.com/oracle-cloud-infrastructure)
 
-#### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
-- **Provider:** Cisco
-- **Value:** $300 USD
-- **Eligibility:** Anyone holding active Cisco certifications
-- **Steps to Claim:** Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.
-- **Official Link:** [https://u.cisco.com/](https://u.cisco.com/)
-
 #### Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials
 - **Provider:** Microsoft Azure
 - **Value:** $100 USD
 - **Eligibility:** Global (Free for all)
 - **Steps to Claim:** Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.
-- **Official Link:** [https://learn.microsoft.com/credentials/applied-skills/](https://learn.microsoft.com/credentials/applied-skills/)
+- **Official Link:** [https://learn.microsoft.com/en-us/credentials/applied-skills/](https://learn.microsoft.com/en-us/credentials/applied-skills/)
 
 #### Google Cloud Skills Boost & Innovators Free Badges
 - **Provider:** Google Cloud
@@ -141,7 +134,7 @@
 - **Value:** $395 USD
 - **Eligibility:** Global (Application-based scholarship for underrepresented & students)
 - **Steps to Claim:** Submit an application during the annual LiFT scholarship window describing your career goals. Winners receive a 100% free exam voucher + training course.
-- **Official Link:** [https://www.linuxfoundation.org/about/diversity-inclusivity/lift-scholarships](https://www.linuxfoundation.org/about/diversity-inclusivity/lift-scholarships)
+- **Official Link:** [https://www.linuxfoundation.org/about/lift-scholarships](https://www.linuxfoundation.org/about/lift-scholarships)
 
 #### Snowflake Hands-on Essentials Free Digital Badges
 - **Provider:** Snowflake
@@ -183,7 +176,7 @@
 - **Value:** $150 USD
 - **Eligibility:** Global (Free registration)
 - **Steps to Claim:** Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.
-- **Official Link:** [https://www.qualys.com/training/](https://www.qualys.com/training/)
+- **Official Link:** [https://www.qualys.com/training](https://www.qualys.com/training)
 
 #### Fortinet Certified Fundamentals (FCF) in Cybersecurity
 - **Provider:** Fortinet
@@ -233,4 +226,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 11:45 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 11:57 UTC`.*
