@@ -3,8 +3,8 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-25-success.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243836%20USD-gold.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-22-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243502%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
@@ -15,12 +15,12 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **25** | Verified 100% free exams & live registration windows |
-| **Total Financial Value** | **$3,836 USD** | Aggregate savings if claimed today |
+| **Active Opportunities** | **22** | Verified 100% free exams & live registration windows |
+| **Total Financial Value** | **$3,502 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **26 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-14 17:03 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-14 17:06 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -34,10 +34,8 @@
 | **ISC2** | Certified in Cybersecurity (CC) | `100% Free Exam Voucher` | $199 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.isc2.org/landing/1mcc) |
 | **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.qualys.com/training) |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
-| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | `100% Free Certification` | $110 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://beacon.paloaltonetworks.com/) |
-| **Splunk** | Splunk Core Observability & Defense Fundamentals | `100% Free Accreditation & Badge` | $130 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://lantern.splunk.com/) |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | `100% Free Certification` | $150 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://skillsbuild.org/) |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | `100% Free Certification` | $125 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://u.cisco.com/) |
+| **Splunk** | Splunk Core Observability & Defense Fundamentals | `100% Free Accreditation & Badge` | $130 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://lantern.splunk.com/) |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | `100% Free Certification` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://skillsbuild.org/) |
 
 ### Cloud & Data
 
@@ -64,8 +62,8 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.snowflake.com/en/) |
 | **MongoDB** | MongoDB Associate Developer / DBA | `Free Training & Student Voucher` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.mongodb.com/) |
-| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | `100% Free Accreditation & Badge` | $75 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://academy.databricks.com/) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
+| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | `100% Free Accreditation & Badge` | $75 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://academy.databricks.com/) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 93% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
 ### CRM & Cloud
 
@@ -101,11 +99,10 @@
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
-| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | `100% Free Accreditation & Badge` | $150 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://developers.redhat.com/) |
+| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | `100% Free Accreditation & Badge` | $150 | 🟢 Active | 🛡️ 90% Verified | [**Claim Offer**](https://developers.redhat.com/) |
 | **HashiCorp** | HashiCorp Certified: Terraform Associate | `100% Free Exam Voucher` | $70 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://developer.hashicorp.com/) |
-| **GitLab** | GitLab Certified Associate | `100% Free Certification` | $99 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://university.gitlab.com/) |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | `100% Free Exam Voucher` | $395 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://www.cncf.io/) |
-| **GitHub** | GitHub Foundations Certification | `100% Free Exam Voucher` | $99 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://education.github.com/) |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | `100% Free Exam Voucher` | $395 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://www.cncf.io/) |
+| **GitHub** | GitHub Foundations Certification | `100% Free Exam Voucher` | $99 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://github.com/education) |
 
 ---
 
@@ -136,6 +133,9 @@
 | :--- | :--- | :---: | :--- |
 | **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
 | **Databricks** | Generative AI Fundamentals | 🟡 Closed / Waitlist | Detected closure phrase: 'no longer available' |
+| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
+| **GitLab** | GitLab Certified Associate | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
 
 ---
 
@@ -287,20 +287,6 @@
 - **Steps to Claim:** Participate in the official HashiCorp Developer hands-on learning lab tracks and complete the seasonal cloud infrastructure challenge to claim a Pearson VUE 100% exam discount code.
 - **Official Link:** [https://developer.hashicorp.com/](https://developer.hashicorp.com/)
 
-#### Palo Alto Networks Beacon: PCCET Cybersecurity Entry-Level Technician
-- **Provider:** Palo Alto Networks
-- **Value:** $110 USD
-- **Eligibility:** Global (Free Palo Alto Networks Beacon Account)
-- **Steps to Claim:** Register for a free Palo Alto Networks Beacon account. Complete the Foundation Cybersecurity curriculum and take the online digital accreditation assessment at zero cost.
-- **Official Link:** [https://beacon.paloaltonetworks.com/](https://beacon.paloaltonetworks.com/)
-
-#### GitLab University: GitLab Certified Associate & CI/CD Specialist
-- **Provider:** GitLab
-- **Value:** $99 USD
-- **Eligibility:** Open to all developers and GitLab community members
-- **Steps to Claim:** Sign up on GitLab University. Complete the self-paced Git & GitLab CI/CD fundamentals modules and pass the knowledge verification quiz to receive the official GitLab badge.
-- **Official Link:** [https://university.gitlab.com/](https://university.gitlab.com/)
-
 #### Splunk Lantern: Core Cybersecurity Defense & Observability Specialist
 - **Provider:** Splunk
 - **Value:** $130 USD
@@ -336,19 +322,12 @@
 - **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
 - **Official Link:** [https://education.oracle.com/oracle-cloud-infrastructure](https://education.oracle.com/oracle-cloud-infrastructure)
 
-#### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
-- **Provider:** Cisco
-- **Value:** $125 USD
-- **Eligibility:** Global (Free Cisco NetAcad / Skills for All account)
-- **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
-- **Official Link:** [https://u.cisco.com/](https://u.cisco.com/)
-
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Provider:** GitHub
 - **Value:** $99 USD
 - **Eligibility:** Students, educators, and Microsoft Learn challenge qualifiers
 - **Steps to Claim:** Verify status via GitHub Student Developer Pack or complete the GitHub Foundations challenge track on Microsoft Learn to receive a 100% off voucher for the PSI-delivered exam.
-- **Official Link:** [https://education.github.com/](https://education.github.com/)
+- **Official Link:** [https://github.com/education](https://github.com/education)
 
 ---
 
@@ -380,4 +359,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 17:03 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 17:06 UTC`.*
