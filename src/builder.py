@@ -230,7 +230,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 <html lang="en" data-theme="dark" data-color-mode="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0d1117" id="themeColorMeta">
     <title>CertPulse | Free Certification Directory & Tech Radar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -288,25 +289,37 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --card-shadow-hover: 0 4px 14px rgba(36, 41, 47, 0.25);
         }}
 
+        * {{
+            -webkit-tap-highlight-color: transparent;
+        }}
+
         body {{
             background-color: var(--canvas-default);
             color: var(--fg-default);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
             transition: background-color 0.2s ease, color 0.2s ease;
+            min-height: 100dvh;
         }}
 
         .primer-card {{
             background-color: var(--canvas-subtle);
             border: 1px solid var(--border-default);
             box-shadow: var(--card-shadow);
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                        box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
-                        border-color 0.2s ease;
+            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), 
+                        box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1), 
+                        border-color 0.18s ease;
         }}
         .primer-card:hover {{
             transform: translateY(-2px);
             box-shadow: var(--card-shadow-hover);
             border-color: var(--accent-fg);
+        }}
+
+        /* Mobile Touch & Scroll Physics */
+        .touch-scroll {{
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            overscroll-behavior-x: contain;
         }}
 
         /* Subtle scrollbars */
@@ -318,61 +331,76 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             background: var(--border-default);
             border-radius: 3px;
         }}
+
+        .scrollbar-none::-webkit-scrollbar {{
+            display: none;
+        }}
+        .scrollbar-none {{
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }}
+
+        /* Prevent iOS auto-zoom on input focus */
+        @media (max-width: 640px) {{
+            input[type="text"], select {{
+                font-size: 16px !important;
+            }}
+        }}
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-blue-500/20">
+<body class="min-h-[100dvh] flex flex-col antialiased selection:bg-blue-500/20">
 
-    <!-- GitHub Top Navigation Bar -->
+    <!-- GitHub Top Navigation Bar (Mobile Optimized) -->
     <header class="border-b sticky top-0 z-40 backdrop-blur-md" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
             
             <!-- Left: Brand Breadcrumb -->
-            <div class="flex items-center gap-3">
-                <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:opacity-80 transition" aria-label="GitHub Repository">
-                    <svg height="28" viewBox="0 0 16 16" width="28" style="fill: var(--fg-default);">
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:opacity-80 transition flex-shrink-0" aria-label="GitHub Repository">
+                    <svg height="26" viewBox="0 0 16 16" width="26" style="fill: var(--fg-default);" class="sm:w-7 sm:h-7">
                         <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
                     </svg>
                 </a>
-                <div class="flex items-center gap-2 text-sm font-semibold">
-                    <a href="https://github.com/Athish2002" target="_blank" class="hover:underline" style="color: var(--accent-fg);">Athish2002</a>
-                    <span style="color: var(--fg-muted);">/</span>
-                    <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:underline flex items-center gap-1.5" style="color: var(--fg-default);">
+                <div class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold min-w-0">
+                    <span class="font-bold tracking-tight text-sm sm:text-base" style="color: var(--fg-default);">CertPulse</span>
+                    <span class="hidden md:inline" style="color: var(--fg-muted);">/</span>
+                    <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hidden md:inline hover:underline truncate max-w-[180px]" style="color: var(--fg-muted);">
                         free-certification-tracker
                     </a>
-                    <span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);">Public</span>
+                    <span class="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-medium flex-shrink-0" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);">Public</span>
                 </div>
             </div>
 
             <!-- Right: Controls & Dark/Light Toggle -->
-            <div class="flex items-center gap-2.5">
-                <!-- Verified Live Badge -->
+            <div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
+                <!-- Verified Live Badge (Desktop) -->
                 <div class="hidden md:flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-md" style="background-color: var(--canvas-inset); border: 1px solid var(--border-default); color: var(--fg-muted);">
                     <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
                     <span>100% Free Directory</span>
                 </div>
 
                 <!-- Dark / Light Contrast Mode Toggle Button -->
-                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark / Light Contrast Mode (T)" class="px-3 py-1.5 rounded-md border text-xs font-semibold flex items-center gap-2 transition hover:opacity-90 shadow-sm" style="background-color: var(--btn-default-bg); border: 1px solid var(--border-default); color: var(--fg-default);">
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark / Light Contrast Mode (T)" aria-label="Toggle Dark / Light Contrast Mode" class="h-9 px-2.5 sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs" style="background-color: var(--btn-default-bg); border: 1px solid var(--border-default); color: var(--fg-default);">
                     <span id="themeIconSun" class="hidden flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+                        <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.061Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z"></path>
                         </svg>
-                        <span>Light Mode</span>
+                        <span class="hidden sm:inline">Light</span>
                     </span>
                     <span id="themeIconMoon" class="hidden flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
+                        <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
                         </svg>
-                        <span>Dark Mode</span>
+                        <span class="hidden sm:inline">Dark</span>
                     </span>
                 </button>
 
                 <!-- GitHub Star CTA -->
-                <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md border flex items-center gap-1.5 transition hover:opacity-90 shadow-sm" style="background-color: var(--btn-default-bg); border: 1px solid var(--border-default); color: var(--fg-default);">
+                <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" aria-label="Star CertPulse on GitHub" class="h-9 px-2.5 sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs" style="background-color: var(--btn-default-bg); border: 1px solid var(--border-default); color: var(--fg-default);">
                     <svg height="14" viewBox="0 0 16 16" width="14" fill="currentColor">
                         <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.751.751 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path>
                     </svg>
-                    <span>Star</span>
+                    <span class="hidden sm:inline">Star</span>
                 </a>
             </div>
         </div>
@@ -380,25 +408,25 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
     <!-- Top Navigation Tabs: Active Certifications vs Industry Tech Radar -->
     <nav class="border-b" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-            <div class="flex items-center gap-2 -mb-px" id="mainTabNav">
-                <button id="tabBtnVouchers" onclick="switchMainTab('vouchers')" class="flex items-center gap-2 py-3 px-3 border-b-2 font-semibold text-sm transition" style="border-color: var(--accent-fg); color: var(--fg-default);">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div class="flex items-center gap-1 sm:gap-2 -mb-px overflow-x-auto touch-scroll scrollbar-none w-full sm:w-auto" id="mainTabNav">
+                <button id="tabBtnVouchers" onclick="switchMainTab('vouchers')" class="flex items-center gap-2 py-3 px-3 sm:px-3.5 border-b-2 font-semibold text-xs sm:text-sm transition flex-shrink-0 active:scale-[0.98]" style="border-color: var(--accent-fg); color: var(--fg-default);">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="flex-shrink-0">
                         <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h11A1.5 1.5 0 0 1 15 3.5v2a1.5 1.5 0 0 1-1.5 1.5.5.5 0 0 0 0 1 1.5 1.5 0 0 1 1.5 1.5v2a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 11.5v-2a1.5 1.5 0 0 1 1.5-1.5.5.5 0 0 0 0-1A1.5 1.5 0 0 1 1 5.5v-2Zm1.5-.5a.5.5 0 0 0-.5.5v2a2.5 2.5 0 0 0 1.5 2.298v.404A2.5 2.5 0 0 0 2 10.5v2a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-2a2.5 2.5 0 0 0-1.5-2.298v-.404A2.5 2.5 0 0 0 14 5.5v-2a.5.5 0 0 0-.5-.5h-11Z"></path>
                     </svg>
                     <span>Certification Vouchers</span>
-                    <span class="text-xs px-2 py-0.5 rounded-full font-mono font-medium" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);">{len(offers)}</span>
+                    <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-mono font-medium" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);">{len(offers)}</span>
                 </button>
-                <button id="tabBtnNews" onclick="switchMainTab('news')" class="flex items-center gap-2 py-3 px-3 border-b-2 font-medium text-sm transition" style="border-color: transparent; color: var(--fg-muted);">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <button id="tabBtnNews" onclick="switchMainTab('news')" class="flex items-center gap-2 py-3 px-3 sm:px-3.5 border-b-2 font-medium text-xs sm:text-sm transition flex-shrink-0 active:scale-[0.98]" style="border-color: transparent; color: var(--fg-muted);">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="flex-shrink-0">
                         <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v10.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM3 3h10a.75.75 0 0 1 0 1.5H3A.75.75 0 0 1 3 3Zm0 3.5h10a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1 0-1.5ZM3 10h6a.75.75 0 0 1 0 1.5H3A.75.75 0 0 1 3 10Z"></path>
                     </svg>
                     <span>Industry Tech Radar</span>
-                    <span class="text-xs px-2 py-0.5 rounded-full font-mono font-medium" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">{len(news_items)}</span>
+                    <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-mono font-medium" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">{len(news_items)}</span>
                 </button>
             </div>
             
-            <div class="hidden sm:flex items-center gap-2 text-xs" style="color: var(--fg-subtle);">
+            <div class="hidden lg:flex items-center gap-2 text-xs" style="color: var(--fg-subtle);">
                 <span class="font-mono text-[11px]">Hotkeys:</span>
                 <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">1</kbd>
                 <span>Vouchers</span>
@@ -415,153 +443,159 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         
         <!-- SECTION 1: CERTIFICATION VOUCHERS -->
         <div id="vouchersSection">
-            <!-- Hero Bento Grid (Learner Centric) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <!-- Hero Bento Grid (Learner Centric & Mobile Stacked) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <!-- Bento 1: Value Saved -->
-                <div class="p-5 rounded-xl border primer-card">
+                <div class="p-4 sm:p-5 rounded-xl border primer-card">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Total Value Available</span>
-                        <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M8.75.75a.75.75 0 0 0-1.5 0V2h-.984c-.983 0-1.9.362-2.589 1.026C3.003 3.673 2.6 4.595 2.6 5.64c0 .91.308 1.688.886 2.26.567.562 1.34.942 2.264 1.192l.67.182c.76.205 1.25.437 1.53.685.26.23.35.474.35.743 0 .365-.154.67-.44.89-.3.23-.743.358-1.36.358-.603 0-1.05-.122-1.38-.342a1.29 1.29 0 0 1-.53-.872.75.75 0 0 0-1.49.172c.153.998.666 1.734 1.45 2.198.647.383 1.488.582 2.47.604v1.18a.75.75 0 0 0 1.5 0v-1.19c.983-.024 1.834-.34 2.483-.93.673-.613 1.017-1.472 1.017-2.46 0-.895-.316-1.66-.908-2.23-.58-.558-1.38-.93-2.316-1.182l-.645-.175c-.75-.204-1.223-.424-1.48-.656-.239-.214-.34-.442-.34-.707 0-.323.14-.597.412-.792.292-.21.72-.32 1.288-.32.535 0 .944.103 1.222.288.29.193.473.488.547.88a.75.75 0 0 0 1.478-.276c-.16-.862-.573-1.543-1.25-1.986A4.323 4.323 0 0 0 8.75 3.2V.75Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--fg-default);">
-                        ${total_savings:,} <span class="text-sm font-normal" style="color: var(--fg-muted);">USD</span>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--fg-default);">
+                        ${total_savings:,} <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">USD</span>
                     </div>
-                    <p class="text-xs mt-2" style="color: var(--fg-muted);">100% free proctored exams and official accredited credentials.</p>
+                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">100% free proctored exams and official accredited credentials.</p>
                 </div>
 
                 <!-- Bento 2: Active Opportunities -->
-                <div class="p-5 rounded-xl border primer-card">
+                <div class="p-4 sm:p-5 rounded-xl border primer-card">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Opportunities</span>
-                        <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
+                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
-                        {len(active_offers)} <span class="text-sm font-normal" style="color: var(--fg-muted);">Active / {len(offers)} Total</span>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--success-fg);">
+                        {len(active_offers)} <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Active / {len(offers)} Total</span>
                     </div>
-                    <p class="text-xs mt-2" style="color: var(--fg-muted);">{len(historical_offers)} past promotional voucher campaigns archived for recurrence tracking.</p>
+                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">{len(historical_offers)} past promotional voucher campaigns archived for recurrence tracking.</p>
                 </div>
 
                 <!-- Bento 3: Official Guarantee -->
-                <div class="p-5 rounded-xl border primer-card">
+                <div class="p-4 sm:p-5 rounded-xl border primer-card">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Authentic Verification</span>
-                        <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
+                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--attention-fg);">
-                        100% Official <span class="text-sm font-normal" style="color: var(--fg-muted);">Programs</span>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--attention-fg);">
+                        100% Official <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Programs</span>
                     </div>
-                    <p class="text-xs mt-2" style="color: var(--fg-muted);">Direct vendor sponsorships, accredited university grants, and official training vouchers.</p>
+                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">Direct vendor sponsorships, accredited university grants, and official training vouchers.</p>
                 </div>
             </div>
 
-            <!-- Prominent Command-Bar Search Experience (UX Enhanced) -->
+            <!-- Prominent Command-Bar Search Experience (UX Enhanced & Mobile Optimized) -->
             <div class="mb-4">
-                <div class="relative w-full rounded-xl border shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <div class="relative w-full rounded-xl border shadow-xs transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none" style="color: var(--fg-muted);">
                         <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
                         </svg>
                     </div>
-                    <input type="text" id="searchInput" placeholder="Search certifications, providers (AWS, Azure, Google Cloud, Cisco...), exam codes, or topics..." 
-                           class="w-full pl-10 pr-28 py-3 text-sm rounded-xl focus:outline-none transition font-medium"
+                    <input type="text" id="searchInput" placeholder="Search certifications, AWS, Azure, Google Cloud, Cisco, exam codes..." 
+                           class="w-full pl-10 pr-24 sm:pr-28 py-3 sm:py-3.5 text-base sm:text-sm rounded-xl focus:outline-none transition font-medium"
                            style="background-color: transparent; color: var(--fg-default);">
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
-                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden px-2 py-0.5 rounded text-xs hover:opacity-80 font-semibold" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);" title="Clear search">✕ Clear</button>
-                        <span id="searchMatchesBadge" class="hidden text-xs font-mono px-2 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);"></span>
+                    <div class="absolute inset-y-0 right-0 pr-2.5 sm:pr-3 flex items-center gap-1.5 sm:gap-2">
+                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden h-7 px-2 rounded-lg text-xs hover:opacity-80 font-semibold flex items-center justify-center active:scale-[0.95]" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);" title="Clear search" aria-label="Clear search">✕</button>
+                        <span id="searchMatchesBadge" class="hidden text-[11px] sm:text-xs font-mono px-2 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);"></span>
                         <kbd class="hidden sm:inline-flex items-center text-xs font-mono px-2 py-0.5 rounded border pointer-events-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Press / to search">/</kbd>
                     </div>
                 </div>
             </div>
 
             <!-- Category Filters and View Controls Toolbar -->
-            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-2.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-                <!-- Category Pills -->
-                <div class="flex gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="filterPills">
-                    <button onclick="filterCategory('All')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-2 sm:p-2.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <!-- Category Pills (Horizontally Scrollable with Touch Physics) -->
+                <div class="flex gap-1.5 overflow-x-auto touch-scroll scrollbar-none pb-1.5 lg:pb-0 px-0.5" id="filterPills">
+                    <button onclick="filterCategory('All')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
                         <span>All</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">{len(offers)}</span>
                     </button>
-                    <button onclick="filterCategory('Cloud')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Cloud">
+                    <button onclick="filterCategory('Cloud')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Cloud">
                         <span>Cloud</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{cloud_count}</span>
                     </button>
-                    <button onclick="filterCategory('Security')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Security">
+                    <button onclick="filterCategory('Security')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Security">
                         <span>Security</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{sec_count}</span>
                     </button>
-                    <button onclick="filterCategory('DevOps')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="DevOps">
+                    <button onclick="filterCategory('DevOps')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="DevOps">
                         <span>DevOps</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{devops_count}</span>
                     </button>
-                    <button onclick="filterCategory('AI & Data')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="AI & Data">
+                    <button onclick="filterCategory('AI & Data')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="AI & Data">
                         <span>AI & Data</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{ai_count}</span>
                     </button>
-                    <button onclick="filterCategory('Networking')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Networking">
+                    <button onclick="filterCategory('Networking')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Networking">
                         <span>Networking</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{net_count}</span>
                     </button>
-                    <button onclick="filterCategory('History')" class="cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
+                    <button onclick="filterCategory('History')" class="cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
                         <span>📜 Past History</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{len(historical_offers)}</span>
                     </button>
                 </div>
 
                 <!-- Controls (Sort, Status, Layout, Export) -->
-                <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-                    <select id="sortSelect" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                        <option value="val-desc">Sort: Value (High to Low)</option>
-                        <option value="val-asc">Sort: Value (Low to High)</option>
-                        <option value="name-asc">Sort: Provider (A to Z)</option>
-                    </select>
-                    <select id="statusFilter" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                        <option value="active" selected>Status: Active ({len(active_offers)})</option>
-                        <option value="all">Status: All Records ({len(offers)})</option>
-                        <option value="history">Status: Past History ({len(historical_offers)})</option>
-                        <option value="closed">Status: Concluded ({len(closed_offers)})</option>
-                    </select>
-                    <!-- Layout Switcher (Grid vs Catalog Table) -->
-                    <div class="flex items-center rounded-lg border p-0.5" id="layoutControlGroup" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                        <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (V)" class="px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 transition" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
-                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3Zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3Z"></path>
-                            </svg>
-                            <span>Grid</span>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <div class="grid grid-cols-2 sm:flex items-center gap-2">
+                        <select id="sortSelect" onchange="renderCards()" class="w-full sm:w-auto min-h-[38px] text-xs py-2 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                            <option value="val-desc">Sort: Value (High to Low)</option>
+                            <option value="val-asc">Sort: Value (Low to High)</option>
+                            <option value="name-asc">Sort: Provider (A to Z)</option>
+                        </select>
+                        <select id="statusFilter" onchange="renderCards()" class="w-full sm:w-auto min-h-[38px] text-xs py-2 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                            <option value="active" selected>Status: Active ({len(active_offers)})</option>
+                            <option value="all">Status: All Records ({len(offers)})</option>
+                            <option value="history">Status: Past History ({len(historical_offers)})</option>
+                            <option value="closed">Status: Concluded ({len(closed_offers)})</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-start gap-2">
+                        <!-- Layout Switcher (Grid vs Catalog Table) -->
+                        <div class="flex items-center rounded-lg border p-0.5 flex-1 sm:flex-initial justify-center" id="layoutControlGroup" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
+                            <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (V)" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96]" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3Zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3Z"></path>
+                                </svg>
+                                <span>Grid</span>
+                            </button>
+                            <button id="viewBtnList" onclick="setLayoutView('list')" title="Catalog Table View (V)" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.96]" style="color: var(--fg-muted);">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M2 3.75C2 3.336 2.336 3 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z"></path>
+                                </svg>
+                                <span>Table</span>
+                            </button>
+                        </div>
+                        <!-- Export JSON -->
+                        <button onclick="exportFilteredJson()" class="h-9 px-3 rounded-lg border hover:opacity-80 active:scale-[0.96] transition flex items-center justify-center gap-1 text-xs font-medium flex-shrink-0" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Export Filtered JSON" aria-label="Export JSON">
+                            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14H2.75Z"></path><path d="M7.25 1.75v7.69L4.97 7.16a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 1 0-1.06-1.06L8.75 9.44V1.75a.75.75 0 0 0-1.5 0Z"></path></svg>
+                            <span class="text-xs font-mono">JSON</span>
                         </button>
-                        <button id="viewBtnList" onclick="setLayoutView('list')" title="Catalog Table View (V)" class="px-2.5 py-1 rounded-md text-xs font-medium flex items-center gap-1.5 transition" style="color: var(--fg-muted);">
+                        <!-- Share Link -->
+                        <button onclick="copyShareLink()" title="Copy Shareable Link" aria-label="Share link" class="h-9 px-3 rounded-lg border hover:opacity-80 active:scale-[0.96] transition flex items-center justify-center gap-1 text-xs font-medium flex-shrink-0" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M2 3.75C2 3.336 2.336 3 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z"></path>
+                                <path d="M13.5 0a2.5 2.5 0 0 0-2.316 3.447L6.082 5.998a2.502 2.502 0 1 0 0 4.004l5.102 2.551a2.5 2.5 0 1 0 .898-1.796L6.98 8.206a2.518 2.518 0 0 0 0-.412l5.102-2.551A2.5 2.5 0 1 0 13.5 0Z"></path>
                             </svg>
-                            <span>Table</span>
+                            <span class="text-xs">Share</span>
                         </button>
                     </div>
-                    <!-- Export JSON -->
-                    <button onclick="exportFilteredJson()" class="p-1.5 rounded-lg border hover:opacity-80 transition flex items-center gap-1 text-xs" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Export Filtered JSON">
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14H2.75Z"></path><path d="M7.25 1.75v7.69L4.97 7.16a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 1 0-1.06-1.06L8.75 9.44V1.75a.75.75 0 0 0-1.5 0Z"></path></svg>
-                    </button>
-                    <!-- Share Link -->
-                    <button onclick="copyShareLink()" title="Copy Shareable Link" class="p-1.5 rounded-lg border hover:opacity-80 transition flex items-center gap-1 text-xs" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M13.5 0a2.5 2.5 0 0 0-2.316 3.447L6.082 5.998a2.502 2.502 0 1 0 0 4.004l5.102 2.551a2.5 2.5 0 1 0 .898-1.796L6.98 8.206a2.518 2.518 0 0 0 0-.412l5.102-2.551A2.5 2.5 0 1 0 13.5 0Z"></path>
-                        </svg>
-                    </button>
                 </div>
             </div>
 
             <!-- Result Status Sub-bar -->
-            <div class="flex items-center justify-between text-xs mb-4 px-1" style="color: var(--fg-muted);">
+            <div class="flex flex-col xs:flex-row items-start xs:items-center justify-between text-xs mb-4 px-1 gap-1" style="color: var(--fg-muted);">
                 <div id="resultsCount">Showing {len(active_offers)} of {len(offers)} vouchers</div>
                 <div>Audited: <span class="font-mono">{last_updated}</span></div>
             </div>
@@ -587,152 +621,157 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         <!-- SECTION 2: INDUSTRY TECH RADAR & ENGINEERING FEED -->
         <div id="newsSection" class="hidden">
-            <!-- News Hero Bento Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <!-- News Hero Bento Grid (Mobile Responsive Stack) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <!-- News Bento 1 -->
-                <div class="p-5 rounded-xl border primer-card">
+                <div class="p-4 sm:p-5 rounded-xl border primer-card">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Enterprise Feeds Monitored</span>
-                        <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
+                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M1.75 1.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H1.75ZM0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v8.5A1.75 1.75 0 0 1 14.25 12H9.06l.72 2.25H11.5a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1 0-1.5h1.72l.72-2.25H1.75A1.75 1.75 0 0 1 0 10.25V1.75Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--fg-default);">
-                        9 Giants <span class="text-sm font-normal" style="color: var(--fg-muted);">Tracked</span>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--fg-default);">
+                        9 Giants <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Tracked</span>
                     </div>
-                    <p class="text-xs mt-2" style="color: var(--fg-muted);">AWS, Microsoft Azure, Google Cloud, Oracle Cloud, Cisco, GitHub, CNCF, Databricks, Snowflake.</p>
+                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">AWS, Microsoft Azure, Google Cloud, Oracle Cloud, Cisco, GitHub, CNCF, Databricks, Snowflake.</p>
                 </div>
 
                 <!-- News Bento 2 -->
-                <div class="p-5 rounded-xl border primer-card">
+                <div class="p-4 sm:p-5 rounded-xl border primer-card">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Dispatches</span>
-                        <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
-                        {len(news_items)} Briefings <span class="text-sm font-normal" style="color: var(--fg-muted);">Live</span>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--success-fg);">
+                        {len(news_items)} Briefings <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Live</span>
                     </div>
-                    <p class="text-xs mt-2" style="color: var(--fg-muted);">Silicon architecture, foundation SLMs, quantum networking, and SEC revenue filings.</p>
+                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">Silicon architecture, foundation SLMs, quantum networking, and SEC revenue filings.</p>
                 </div>
 
                 <!-- News Bento 3 -->
-                <div class="p-5 rounded-xl border primer-card">
+                <div class="p-4 sm:p-5 rounded-xl border primer-card">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Integrity Standard</span>
-                        <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
+                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--attention-fg);">
-                        0% Clickbait <span class="text-sm font-normal" style="color: var(--fg-muted);">Guaranteed</span>
+                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--attention-fg);">
+                        0% Clickbait <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Guaranteed</span>
                     </div>
-                    <p class="text-xs mt-2" style="color: var(--fg-muted);">Automated whitelist verification. Gossip blogs and rumor mills are strictly barred.</p>
+                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">Automated whitelist verification. Gossip blogs and rumor mills are strictly barred.</p>
                 </div>
             </div>
 
-            <!-- News Command-Bar Search -->
+            <!-- News Command-Bar Search (UX Enhanced & Mobile Optimized) -->
             <div class="mb-4">
-                <div class="relative w-full rounded-xl border shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <div class="relative w-full rounded-xl border shadow-xs transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none" style="color: var(--fg-muted);">
                         <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
                         </svg>
                     </div>
                     <input type="text" id="newsSearchInput" placeholder="Filter radar by keyword, company, silicon architecture, or domain..." 
-                           class="w-full pl-10 pr-28 py-3 text-sm rounded-xl focus:outline-none transition font-medium"
+                           class="w-full pl-10 pr-24 sm:pr-28 py-3 sm:py-3.5 text-base sm:text-sm rounded-xl focus:outline-none transition font-medium"
                            style="background-color: transparent; color: var(--fg-default);">
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
-                        <button id="clearNewsSearchBtn" onclick="clearNewsSearch()" class="hidden px-2 py-0.5 rounded text-xs hover:opacity-80 font-semibold" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);" title="Clear search">✕ Clear</button>
-                        <span id="newsSearchMatchesBadge" class="hidden text-xs font-mono px-2 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);"></span>
+                    <div class="absolute inset-y-0 right-0 pr-2.5 sm:pr-3 flex items-center gap-1.5 sm:gap-2">
+                        <button id="clearNewsSearchBtn" onclick="clearNewsSearch()" class="hidden h-7 px-2 rounded-lg text-xs hover:opacity-80 font-semibold flex items-center justify-center active:scale-[0.95]" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);" title="Clear search" aria-label="Clear search">✕</button>
+                        <span id="newsSearchMatchesBadge" class="hidden text-[11px] sm:text-xs font-mono px-2 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);"></span>
                     </div>
                 </div>
             </div>
 
             <!-- News Filter Toolbar -->
-            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-2.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-                <!-- News Category Pills -->
-                <div class="flex gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="newsCategoryPills">
-                    <button onclick="filterNewsCategory('All')" class="news-cat-pill px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-2 sm:p-2.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <!-- News Category Pills (Horizontally Scrollable) -->
+                <div class="flex gap-1.5 overflow-x-auto touch-scroll scrollbar-none pb-1.5 lg:pb-0 px-0.5" id="newsCategoryPills">
+                    <button onclick="filterNewsCategory('All')" class="news-cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
                         <span>All Topics</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">{len(news_items)}</span>
                     </button>
-                    <button onclick="filterNewsCategory('Infrastructure & Silicon')" class="news-cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Infrastructure & Silicon">
+                    <button onclick="filterNewsCategory('Infrastructure & Silicon')" class="news-cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Infrastructure & Silicon">
                         <span>Silicon & Hardware</span>
                     </button>
-                    <button onclick="filterNewsCategory('Research & AI')" class="news-cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Research & AI">
+                    <button onclick="filterNewsCategory('Research & AI')" class="news-cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Research & AI">
                         <span>Research & AI</span>
                     </button>
-                    <button onclick="filterNewsCategory('Tech Development')" class="news-cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Tech Development">
+                    <button onclick="filterNewsCategory('Tech Development')" class="news-cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Tech Development">
                         <span>Tech & Tooling</span>
                     </button>
-                    <button onclick="filterNewsCategory('Enterprise & Financials')" class="news-cat-pill px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Enterprise & Financials">
+                    <button onclick="filterNewsCategory('Enterprise & Financials')" class="news-cat-pill min-h-[38px] sm:min-h-0 px-3.5 py-2 sm:py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.96] flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Enterprise & Financials">
                         <span>Financials & Cloud</span>
                     </button>
                 </div>
 
                 <!-- News Company & Sort Select -->
-                <div class="flex items-center gap-2">
-                    <select id="newsCompanySelect" onchange="renderNews()" class="text-xs py-1.5 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                        <option value="All">All Companies</option>
-                        <option value="Amazon Web Services">AWS</option>
-                        <option value="Microsoft Azure">Microsoft Azure</option>
-                        <option value="Google Cloud">Google Cloud</option>
-                        <option value="Oracle Cloud">Oracle Cloud</option>
-                        <option value="GitHub">GitHub</option>
-                        <option value="Cisco">Cisco</option>
-                        <option value="Databricks">Databricks</option>
-                        <option value="Snowflake">Snowflake</option>
-                        <option value="Linux Foundation / CNCF">Linux / CNCF</option>
-                    </select>
-                    <select id="newsSortSelect" onchange="renderNews()" class="text-xs py-1.5 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                        <option value="date-desc">Sort: Newest First</option>
-                        <option value="date-asc">Sort: Oldest First</option>
-                        <option value="company-asc">Sort: Company (A to Z)</option>
-                    </select>
-                    <button onclick="exportFilteredNewsJson()" class="px-2.5 py-1.5 rounded-lg border text-xs font-semibold hover:opacity-80 transition flex items-center gap-1" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Export Filtered News JSON">
-                        <span>⬇ JSON</span>
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <div class="grid grid-cols-2 sm:flex items-center gap-2">
+                        <select id="newsCompanySelect" onchange="renderNews()" class="w-full sm:w-auto min-h-[38px] text-xs py-2 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                            <option value="All">All Companies</option>
+                            <option value="Amazon Web Services">AWS</option>
+                            <option value="Microsoft Azure">Microsoft Azure</option>
+                            <option value="Google Cloud">Google Cloud</option>
+                            <option value="Oracle Cloud">Oracle Cloud</option>
+                            <option value="GitHub">GitHub</option>
+                            <option value="Cisco">Cisco</option>
+                            <option value="Databricks">Databricks</option>
+                            <option value="Snowflake">Snowflake</option>
+                            <option value="Linux Foundation / CNCF">Linux / CNCF</option>
+                        </select>
+                        <select id="newsSortSelect" onchange="renderNews()" class="w-full sm:w-auto min-h-[38px] text-xs py-2 px-2.5 rounded-lg border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                            <option value="date-desc">Sort: Newest First</option>
+                            <option value="date-asc">Sort: Oldest First</option>
+                            <option value="company-asc">Sort: Company (A to Z)</option>
+                        </select>
+                    </div>
+                    <button onclick="exportFilteredNewsJson()" class="h-9 px-3 rounded-lg border text-xs font-semibold hover:opacity-80 active:scale-[0.96] transition flex items-center justify-center gap-1.5 flex-shrink-0" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Export Filtered News JSON" aria-label="Export News JSON">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14H2.75Z"></path><path d="M7.25 1.75v7.69L4.97 7.16a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 1 0-1.06-1.06L8.75 9.44V1.75a.75.75 0 0 0-1.5 0Z"></path></svg>
+                        <span>JSON</span>
                     </button>
                 </div>
             </div>
 
             <!-- News Results Status Bar -->
-            <div class="flex items-center justify-between text-xs mb-4 px-1" style="color: var(--fg-muted);">
+            <div class="flex flex-col xs:flex-row items-start xs:items-center justify-between text-xs mb-4 px-1 gap-1" style="color: var(--fg-muted);">
                 <div id="newsResultsCount">Showing {len(news_items)} of {len(news_items)} verified dispatches</div>
                 <div>Primary Domain Whitelist: <span class="font-mono text-[11px] text-[var(--success-fg)]">Strict Verification Enforced</span></div>
             </div>
 
             <!-- News Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="newsGrid"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4" id="newsGrid"></div>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="border-t py-6 mt-12 text-center text-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div>CertPulse — Open-Source Certification Directory & Verified Tech Radar</div>
-            <div class="flex items-center gap-4">
-                <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:underline" style="color: var(--accent-fg);">GitHub Repo</a>
-                <a href="https://github.com/Athish2002/free-certification-tracker/issues/new/choose" target="_blank" class="hover:underline" style="color: var(--accent-fg);">Submit Voucher</a>
-                <a href="https://primer.style" target="_blank" class="hover:underline" style="color: var(--fg-muted);">GitHub Primer</a>
+    <footer class="border-t py-6 sm:py-8 mt-10 sm:mt-12 text-center text-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted); padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem));">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+            <div class="text-balance">CertPulse — Open-Source Certification Directory & Verified Tech Radar</div>
+            <div class="flex items-center gap-4 flex-wrap justify-center">
+                <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:underline py-1" style="color: var(--accent-fg);">GitHub Repo</a>
+                <a href="https://github.com/Athish2002/free-certification-tracker/issues/new/choose" target="_blank" class="hover:underline py-1" style="color: var(--accent-fg);">Submit Voucher</a>
+                <a href="https://primer.style" target="_blank" class="hover:underline py-1" style="color: var(--fg-muted);">GitHub Primer</a>
             </div>
         </div>
     </footer>
 
     <!-- Toast Notification for Micro-Interactions -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none p-3.5 rounded-xl border shadow-xl flex items-center gap-2.5 text-xs font-semibold" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-default);">
-        <svg class="w-4 h-4 text-emerald-400" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
-        </svg>
-        <span id="toastMessage">Action completed</span>
+    <div id="toastNotification" class="fixed bottom-4 sm:bottom-5 left-4 right-4 sm:left-auto sm:right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none p-3.5 rounded-xl border shadow-xl flex items-center justify-between sm:justify-start gap-2.5 text-xs font-semibold max-w-sm sm:max-w-none ml-auto" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-default); margin-bottom: env(safe-area-inset-bottom, 0px);">
+        <div class="flex items-center gap-2 min-w-0">
+            <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+            </svg>
+            <span id="toastMessage" class="truncate">Action completed</span>
+        </div>
     </div>
 
     <!-- Application Script -->
@@ -887,6 +926,11 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             document.documentElement.setAttribute('data-theme', target);
             document.documentElement.setAttribute('data-color-mode', target);
             localStorage.setItem('certpulse_theme', target);
+
+            const metaTheme = document.getElementById('themeColorMeta');
+            if (metaTheme) {{
+                metaTheme.setAttribute('content', target === 'dark' ? '#0d1117' : '#ffffff');
+            }}
 
             const sun = document.getElementById('themeIconSun');
             const moon = document.getElementById('themeIconMoon');
@@ -1166,24 +1210,24 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
 
                     return `
-                        <div class="primer-card p-5 rounded-xl flex flex-col justify-between">
+                        <div class="primer-card p-4 sm:p-5 rounded-xl flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between gap-2 mb-2.5">
-                                    <span class="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-2" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
-                                        <span class="flex items-center justify-center">${{brandIcon}}</span>
-                                        ${{o.platform}}
+                                    <span class="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-2 max-w-[70%]" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
+                                        <span class="flex items-center justify-center flex-shrink-0">${{brandIcon}}</span>
+                                        <span class="truncate">${{o.platform}}</span>
                                     </span>
-                                    <span class="text-xs font-semibold px-2 py-0.5 rounded-md font-mono" style="background-color: ${{badgeBg}}; color: ${{badgeColor}}; border: 1px solid ${{badgeColor}};">
+                                    <span class="text-xs font-semibold px-2 py-0.5 rounded-md font-mono flex-shrink-0" style="background-color: ${{badgeBg}}; color: ${{badgeColor}}; border: 1px solid ${{badgeColor}};">
                                         ${{statusLabel}}
                                     </span>
                                 </div>
 
-                                <h3 class="text-sm font-bold leading-snug hover:underline cursor-pointer" style="color: var(--fg-default);" onclick="window.open('${{o.url}}', '_blank')">
+                                <h3 class="text-sm sm:text-base font-bold leading-snug hover:underline cursor-pointer text-balance" style="color: var(--fg-default);" onclick="window.open('${{o.url}}', '_blank')">
                                     ${{o.title}}
                                 </h3>
 
                                 <div class="flex items-center gap-2 mt-2 flex-wrap">
-                                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
+                                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded border tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                         $${{o.value_usd || 0}} USD Value
                                     </span>
                                     <span class="text-xs font-medium" style="color: var(--fg-muted);">
@@ -1196,37 +1240,38 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                                 ${{recurrenceInfo}}
 
                                 <details class="mt-3.5 text-xs group cursor-pointer">
-                                    <summary class="font-semibold select-none flex items-center gap-1 hover:underline" style="color: var(--accent-fg);">
+                                    <summary class="font-semibold select-none flex items-center justify-between py-1.5 hover:underline" style="color: var(--accent-fg);">
                                         <span>${{isHistory ? 'View Archived Promotion & Details' : 'View How to Claim'}}</span>
-                                        <svg class="w-3.5 h-3.5 transition group-open:rotate-180" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
+                                        <svg class="w-3.5 h-3.5 transition group-open:rotate-180 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
                                     </summary>
-                                    <div class="mt-2.5 p-3 rounded-lg text-xs leading-relaxed space-y-2 border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
+                                    <div class="mt-2 p-3 rounded-lg text-xs leading-relaxed space-y-2 border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
                                         <div>
-                                            <span class="font-bold block text-xs uppercase tracking-wider mb-0.5" style="color: var(--fg-muted);">Eligibility</span>
-                                            <p>${{o.eligibility || 'Open to all learners and developers.'}}</p>
+                                            <span class="font-bold block text-[11px] uppercase tracking-wider mb-0.5" style="color: var(--fg-muted);">Eligibility</span>
+                                            <p class="text-pretty">${{o.eligibility || 'Open to all learners and developers.'}}</p>
                                         </div>
                                         <div>
-                                            <span class="font-bold block text-xs uppercase tracking-wider mb-0.5" style="color: var(--fg-muted);">${{isHistory ? 'Archived Instructions / Context' : 'Claim Instructions'}}</span>
-                                            <p class="whitespace-pre-line">${{o.claim_steps}}</p>
+                                            <span class="font-bold block text-[11px] uppercase tracking-wider mb-0.5" style="color: var(--fg-muted);">${{isHistory ? 'Archived Instructions / Context' : 'Claim Instructions'}}</span>
+                                            <p class="whitespace-pre-line text-pretty">${{o.claim_steps}}</p>
                                         </div>
                                     </div>
                                 </details>
                             </div>
 
                             <div class="mt-4 pt-3 border-t flex items-center justify-between gap-2" style="border-color: var(--border-muted);">
-                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="p-2 rounded-lg border text-xs font-semibold hover:opacity-80 transition flex items-center gap-1.5" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy claim steps to clipboard">
+                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="min-h-[40px] px-3 py-2 rounded-lg border text-xs font-semibold hover:opacity-80 active:scale-[0.96] transition flex items-center gap-1.5 flex-shrink-0" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy claim steps to clipboard" aria-label="Copy claim steps">
                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>
-                                    <span class="hidden sm:inline">Copy Guide</span>
+                                    <span class="text-xs">Copy Guide</span>
                                 </button>
-                                <a href="${{o.url}}" target="_blank" class="flex-1 text-center px-4 py-2 rounded-lg text-xs font-semibold transition hover:opacity-90 border" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
-                                    ${{actionBtnText}} &rarr;
+                                <a href="${{o.url}}" target="_blank" class="flex-1 min-h-[40px] flex items-center justify-center text-center px-4 py-2 rounded-lg text-xs font-bold transition hover:opacity-90 active:scale-[0.98] border shadow-xs" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
+                                    <span>${{actionBtnText}}</span>
+                                    <svg class="w-3.5 h-3.5 ml-1" viewBox="0 0 16 16" fill="currentColor"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path></svg>
                                 </a>
                             </div>
                         </div>
                     `;
                 }}).join('');
             }} else {{
-                // Executive Directory Table Catalog View
+                // Executive Directory Table Catalog View (Mobile Responsive Cards / Desktop Rows)
                 tableBody.innerHTML = filtered.map(o => {{
                     const isLive = (o.status === 'Active');
                     const isHistory = Boolean(o.is_historical_archive || o.status === 'Expired');
@@ -1245,33 +1290,44 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
 
                     return `
-                        <div class="p-3.5 sm:grid sm:grid-cols-12 gap-3 items-center text-xs transition hover:bg-[var(--canvas-default)]">
-                            <!-- Provider & Logo -->
-                            <div class="col-span-3 flex items-center gap-2.5 mb-2 sm:mb-0">
-                                <span class="p-1 rounded-md border flex items-center justify-center flex-shrink-0" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                                    ${{brandIcon}}
-                                </span>
-                                <div class="min-w-0">
-                                    <span class="font-bold block truncate text-xs" style="color: ${{brandColor}};">${{o.platform}}</span>
-                                    <span class="text-xs truncate block" style="color: var(--fg-muted);">${{o.offer_type}}</span>
+                        <div class="p-3.5 sm:p-4 sm:grid sm:grid-cols-12 gap-3 items-center text-xs transition hover:bg-[var(--canvas-default)]">
+                            <!-- Mobile Top Row / Desktop Col 1: Provider & Logo -->
+                            <div class="col-span-3 flex items-center justify-between sm:justify-start gap-2.5 mb-2 sm:mb-0">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <span class="p-1 rounded-md border flex items-center justify-center flex-shrink-0" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
+                                        ${{brandIcon}}
+                                    </span>
+                                    <div class="min-w-0">
+                                        <span class="font-bold block truncate text-xs" style="color: ${{brandColor}};">${{o.platform}}</span>
+                                        <span class="text-[11px] truncate block" style="color: var(--fg-muted);">${{o.offer_type}}</span>
+                                    </div>
+                                </div>
+                                <!-- Mobile Only: Value & Status Badges right aligned -->
+                                <div class="flex sm:hidden items-center gap-1.5 flex-shrink-0">
+                                    <span class="font-mono font-bold text-[11px] px-2 py-0.5 rounded border tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
+                                        $${{o.value_usd || 0}}
+                                    </span>
+                                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded font-mono" style="background-color: ${{badgeBg}}; color: ${{badgeColor}}; border: 1px solid ${{badgeColor}};">
+                                        ${{statusLabel}}
+                                    </span>
                                 </div>
                             </div>
 
                             <!-- Certification Name & Details -->
-                            <div class="col-span-5 min-w-0 pr-2 mb-2 sm:mb-0">
-                                <a href="${{o.url}}" target="_blank" class="font-bold leading-snug hover:underline block truncate text-sm" style="color: var(--fg-default);" title="${{o.title}}">
+                            <div class="col-span-5 min-w-0 pr-0 sm:pr-2 mb-2 sm:mb-0">
+                                <a href="${{o.url}}" target="_blank" class="font-bold leading-snug hover:underline block text-xs sm:text-sm text-balance" style="color: var(--fg-default);" title="${{o.title}}">
                                     ${{o.title}}
                                 </a>
                                 <div class="flex items-center gap-2 mt-1 flex-wrap text-xs" style="color: var(--fg-muted);">
                                     ${{examChip}}
-                                    <span class="px-2 py-0.5 rounded border font-medium" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-subtle);">${{o.category}}</span>
+                                    <span class="px-2 py-0.5 rounded border font-medium text-[11px]" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-subtle);">${{o.category}}</span>
                                     ${{timeChip ? `<span>•</span>${{timeChip}}` : ''}}
                                 </div>
                             </div>
 
-                            <!-- Value & Status -->
-                            <div class="col-span-2 flex sm:flex-col items-center justify-between sm:justify-center gap-1.5 mb-2 sm:mb-0">
-                                <span class="font-mono font-bold text-xs px-2.5 py-0.5 rounded border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
+                            <!-- Desktop Only: Value & Status -->
+                            <div class="hidden sm:flex col-span-2 sm:flex-col items-center justify-center gap-1.5 mb-2 sm:mb-0">
+                                <span class="font-mono font-bold text-xs px-2.5 py-0.5 rounded border tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                     $${{o.value_usd || 0}} USD
                                 </span>
                                 <span class="text-xs font-semibold px-2 py-0.5 rounded font-mono" style="background-color: ${{badgeBg}}; color: ${{badgeColor}}; border: 1px solid ${{badgeColor}};">
@@ -1279,13 +1335,15 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                                 </span>
                             </div>
 
-                            <!-- Action Buttons -->
-                            <div class="col-span-2 flex items-center justify-end gap-2">
-                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="p-1.5 rounded-lg border hover:opacity-80 transition" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy claim steps">
+                            <!-- Action Buttons: Responsive for Mobile & Desktop -->
+                            <div class="col-span-2 flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0" style="border-color: var(--border-muted);">
+                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="min-h-[38px] px-3 py-1.5 rounded-lg border hover:opacity-80 active:scale-[0.96] transition flex items-center gap-1 text-xs font-semibold" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy claim steps" aria-label="Copy claim steps">
                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>
+                                    <span class="sm:hidden">Guide</span>
                                 </button>
-                                <a href="${{o.url}}" target="_blank" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold transition hover:opacity-90 border whitespace-nowrap" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
-                                    ${{actionBtnText}} &rarr;
+                                <a href="${{o.url}}" target="_blank" class="flex-1 sm:flex-initial min-h-[38px] flex items-center justify-center text-center px-3.5 py-1.5 rounded-lg text-xs font-bold transition hover:opacity-90 active:scale-[0.98] border whitespace-nowrap" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
+                                    <span>${{actionBtnText}}</span>
+                                    <svg class="w-3.5 h-3.5 ml-1" viewBox="0 0 16 16" fill="currentColor"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path></svg>
                                 </a>
                             </div>
                         </div>
@@ -1394,42 +1452,42 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 ` : '';
 
                 return `
-                    <div class="primer-card p-5 rounded-xl flex flex-col justify-between">
+                    <div class="primer-card p-4 sm:p-5 rounded-xl flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between gap-2 mb-2.5">
-                                <span class="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-2" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
-                                    <span class="flex items-center justify-center">${{brandIcon}}</span>
-                                    ${{item.company}}
+                                <span class="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-2 max-w-[70%]" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
+                                    <span class="flex items-center justify-center flex-shrink-0">${{brandIcon}}</span>
+                                    <span class="truncate">${{item.company}}</span>
                                 </span>
-                                <span class="text-xs font-mono font-medium" style="color: var(--fg-muted);">
+                                <span class="text-xs font-mono font-medium flex-shrink-0" style="color: var(--fg-muted);">
                                     ${{item.published_date}}
                                 </span>
                             </div>
 
                             <div class="flex items-center gap-1.5 mb-2 flex-wrap">
                                 ${{impactBadge}}
-                                <span class="text-xs px-2 py-0.5 rounded border font-medium" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-subtle);">
+                                <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded border font-medium" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-subtle);">
                                     ${{item.category}}
                                 </span>
                             </div>
 
-                            <h3 class="text-sm font-bold leading-snug hover:underline cursor-pointer" style="color: var(--fg-default);" onclick="window.open('${{item.url}}', '_blank')">
+                            <h3 class="text-sm sm:text-base font-bold leading-snug hover:underline cursor-pointer text-balance" style="color: var(--fg-default);" onclick="window.open('${{item.url}}', '_blank')">
                                 ${{item.title}}
                             </h3>
 
-                            <p class="text-xs mt-2.5 leading-relaxed" style="color: var(--fg-muted);">
+                            <p class="text-xs mt-2.5 leading-relaxed text-pretty" style="color: var(--fg-muted);">
                                 ${{item.summary}}
                             </p>
                         </div>
 
                         <div class="mt-4 pt-3 border-t flex items-center justify-between text-xs" style="border-color: var(--border-muted);">
-                            <div class="flex items-center gap-1.5 text-xs font-medium" style="color: var(--success-fg);" title="Domain verified on official enterprise whitelist">
-                                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                            <div class="flex items-center gap-1.5 text-xs font-medium min-w-0" style="color: var(--success-fg);" title="Domain verified on official enterprise whitelist">
+                                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" class="flex-shrink-0">
                                     <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
                                 </svg>
-                                <span class="font-mono text-xs truncate max-w-[140px]">${{item.source_domain}}</span>
+                                <span class="font-mono text-xs truncate max-w-[120px] sm:max-w-[160px]">${{item.source_domain}}</span>
                             </div>
-                            <a href="${{item.url}}" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition hover:opacity-80 border flex items-center gap-1" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--accent-fg);">
+                            <a href="${{item.url}}" target="_blank" class="min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition hover:opacity-80 active:scale-[0.96] border flex items-center gap-1 flex-shrink-0" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--accent-fg);">
                                 <span>Official Post</span>
                                 <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.5.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L9.53 8.78a.75.75 0 0 1-1.06-1.06l4.22-4.22H11a.75.75 0 0 1-.75-.75Z"></path></svg>
                             </a>

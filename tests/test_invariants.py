@@ -198,3 +198,12 @@ def test_no_dead_code_or_unresolved_todos(readme_text, html_text):
         assert "TODO" not in text, f"Unresolved TODO found in {name}"
         assert "FIXME" not in text, f"Unresolved FIXME found in {name}"
         assert "undefined" not in text, f"'undefined' string leak found in {name}"
+
+def test_mobile_ux_invariants(html_text):
+    """Verifies mobile responsiveness, safe area insets, touch targets, and iOS zoom prevention."""
+    assert 'viewport-fit=cover' in html_text, "Missing viewport-fit=cover in docs/index.html"
+    assert 'name="theme-color"' in html_text, "Missing theme-color meta tag in docs/index.html"
+    assert 'safe-area-inset-bottom' in html_text, "Missing safe-area-inset-bottom handling in docs/index.html"
+    assert 'touch-scroll' in html_text, "Missing touch-scroll CSS class in docs/index.html"
+    assert '16px !important' in html_text, "Missing 16px mobile input rule to prevent iOS Safari auto-zoom"
+
