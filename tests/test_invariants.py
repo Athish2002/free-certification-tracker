@@ -206,4 +206,8 @@ def test_mobile_ux_invariants(html_text):
     assert 'safe-area-inset-bottom' in html_text, "Missing safe-area-inset-bottom handling in docs/index.html"
     assert 'touch-scroll' in html_text, "Missing touch-scroll CSS class in docs/index.html"
     assert '16px !important' in html_text, "Missing 16px mobile input rule to prevent iOS Safari auto-zoom"
+    assert 'min-h-[44px]' in html_text, "Missing min-h-[44px] for SubNav touch targets in docs/index.html"
+    assert 'min-h-[40px]' in html_text, "Missing min-h-[40px] for interactive buttons and pills in docs/index.html"
+    assert 'onStatusFilterChange' in html_text, "Missing onStatusFilterChange function for filter synchronization"
+    assert 'offersData.find' in html_text, "copySteps should lookup offer in offersData by ID to avoid escaping bugs"
 
