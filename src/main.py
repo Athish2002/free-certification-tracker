@@ -29,8 +29,13 @@ def run_pipeline():
     # 2. Deep site inspection: Verify 200 OK, detect soft-404s and 'Closed' notices
     logger.info("Running deep liveness & soft-404 inspection across all tracked URLs...")
     run_inspection()
+
+    # 3. Ingest verified engineering and cloud intelligence feeds
+    logger.info("Ingesting verified engineering and research dispatches...")
+    from src.news_collector import update_news_feed
+    update_news_feed()
             
-    # 3. Re-compile README.md and Web Dashboard with updated statuses
+    # 4. Re-compile README.md and Web Dashboard with updated statuses and news
     logger.info("Compiling README.md and GitHub Pages dashboard with inspection results...")
     build_all()
     

@@ -1,8 +1,8 @@
 """
 Builder module for CertPulse.
-Compiles data/offers.json into:
-1. Production-grade GitHub README.md with executive Bento stats, verified voucher tables, and inspection badges.
-2. docs/index.html - Static interactive web dashboard for GitHub Pages with live search and status filters.
+Compiles data/offers.json and data/news.json into:
+1. Production-grade GitHub README.md with executive Bento stats, verified voucher tables, historical recurrence archive, and verified intelligence radar.
+2. docs/index.html - Static interactive GitHub Primer web dashboard with Dark/Light Contrast modes, dual presentation views, and live verified tech radar.
 """
 
 import json
@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from typing import Dict, Any, List
 
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "offers.json"
+NEWS_FILE = Path(__file__).resolve().parent.parent / "data" / "news.json"
 README_FILE = Path(__file__).resolve().parent.parent / "README.md"
 DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
 DOCS_HTML = DOCS_DIR / "index.html"
@@ -27,8 +28,19 @@ def load_offers() -> Dict[str, Any]:
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def generate_readme(data: Dict[str, Any]) -> str:
+def load_news() -> Dict[str, Any]:
+    if not NEWS_FILE.exists():
+        return {"news": []}
+    with open(NEWS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> str:
+    if news_data is None:
+        news_data = load_news()
+        
     offers: List[Dict[str, Any]] = data.get("offers", [])
+    news_items: List[Dict[str, Any]] = news_data.get("news", [])
+    
     active_offers = [o for o in offers if o.get("status") == "Active"]
     closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
     historical_offers = [o for o in offers if o.get("is_historical_archive")]
@@ -62,6 +74,7 @@ def generate_readme(data: Dict[str, Any]) -> str:
     lines.append(f"| **Active Opportunities** | **{len(active_offers)}** | Verified 100% free exams & live registration windows |")
     lines.append(f"| **Total Financial Value** | **${total_savings:,} USD** | Aggregate savings if claimed today |")
     lines.append(f"| **Historical Archive Tracked** | **{len(historical_offers)} Campaigns** | Past promotional cycles & recurrence roadmaps |")
+    lines.append(f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** | Official primary cloud engineering updates |")
     lines.append(f"| **Last Automated Inspection** | `{last_updated}` | Auto-audited for 404s and 'Closed' notices |")
     lines.append("| **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |")
     lines.append("")
@@ -119,6 +132,30 @@ def generate_readme(data: Dict[str, Any]) -> str:
             lines.append(f"| **{o.get('platform')}** | {o.get('certification_name')} | {status_badge} | {reason} |")
         lines.append("")
 
+    if news_items:
+        lines.append("---")
+        lines.append("")
+        lines.append("## 📰 Verified Cloud & Engineering Intelligence Radar")
+        lines.append("> Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.")
+        lines.append("")
+        lines.append("| Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |")
+        lines.append("| :--- | :--- | :--- | :---: | :--- | :--- |")
+        for item in news_items:
+            date = item.get("published_date", "")
+            company = item.get("company", "")
+            cat = item.get("category", "")
+            badge = f"`{item.get('impact_badge', '')}`" if item.get("impact_badge") else ""
+            title = item.get("title", "")
+            summary = item.get("summary", "")
+            url = item.get("url", "")
+            source_name = item.get("source", item.get("source_domain", ""))
+            domain = item.get("source_domain", "")
+            
+            headline_cell = f"**[{title}]({url})**<br>{summary}"
+            source_cell = f"[{source_name}]({url})<br>`{domain}`"
+            lines.append(f"| `{date}` | **{company}** | {cat} | {badge} | {headline_cell} | {source_cell} |")
+        lines.append("")
+
     lines.append("---")
     lines.append("")
     lines.append("## Detailed Claiming Instructions")
@@ -138,16 +175,19 @@ def generate_readme(data: Dict[str, Any]) -> str:
     lines.append("")
     lines.append("```mermaid")
     lines.append("flowchart LR")
-    lines.append("    A[Public RSS & Community Feeds] -->|Scheduled Cron every 6h| B[GitHub Actions Runner]")
+    lines.append("    A[Public RSS & Community Feeds] -->|Scheduled Cron every 4h| B[GitHub Actions Runner]")
     lines.append("    B -->|Inspect Liveness & Soft 404s| C[Deep Inspector Engine]")
+    lines.append("    B -->|Poll Official Engineering Feeds| N[News Collector]")
     lines.append("    C -->|Classify & Flag Status| D[data/offers.json]")
-    lines.append("    D -->|Jinja2 Compiler| E[README.md]")
-    lines.append("    D -->|Static Deploy| F[GitHub Pages Dashboard]")
+    lines.append("    N -->|Filter Buzzwords & Verify Domains| M[data/news.json]")
+    lines.append("    D & M -->|Jinja2 & Static Builder| E[README.md]")
+    lines.append("    D & M -->|Static Deploy| F[GitHub Pages Dashboard]")
     lines.append("```")
     lines.append("")
     lines.append("1. **Zero External Servers**: Runs directly on GitHub Actions (`ubuntu-latest`).")
     lines.append("2. **Deep Inspection Guardian**: The crawler not only checks HTTP status codes (404/500) but reads page HTML to spot 'Registrations Closed' or 'All vouchers claimed' notices.")
-    lines.append("3. **Zero Git Noise**: Only commits changes to `README.md` and `data/offers.json` when actual updates are detected.")
+    lines.append("3. **Verified Tech Radar Ingestion**: Polls primary enterprise feeds, applies strict domain whitelisting, and enforces zero-clickbait heuristic filters.")
+    lines.append("4. **Zero Git Noise**: Only commits changes to `README.md` and data stores when actual updates are detected.")
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -163,15 +203,22 @@ def generate_readme(data: Dict[str, Any]) -> str:
     
     return "\n".join(lines)
 
-def generate_web_dashboard(data: Dict[str, Any]) -> str:
-    """Generates an authentic GitHub Primer web dashboard with Dark and Light Contrast modes and dual presentation views."""
+def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> str:
+    """Generates an authentic GitHub Primer web dashboard with Dark and Light Contrast modes, dual presentation views, and verified tech radar."""
+    if news_data is None:
+        news_data = load_news()
+        
     offers = data.get("offers", [])
+    news_items = news_data.get("news", [])
+    
     active_offers = [o for o in offers if o.get("status") == "Active"]
     closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
     historical_offers = [o for o in offers if o.get("is_historical_archive")]
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    
     offers_json_str = json.dumps(offers)
+    news_json_str = json.dumps(news_items)
     
     cloud_count = sum(1 for o in offers if "Cloud" in o.get("category", "") or "Cloud" in o.get("platform", ""))
     sec_count = sum(1 for o in offers if "Security" in o.get("category", ""))
@@ -184,7 +231,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CertPulse | GitHub Primer Free Certification Tracker</title>
+    <title>CertPulse | GitHub Primer Free Certification Tracker & Tech Radar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* GitHub Primer Dual Theme System: Dark & Light Contrast */
@@ -314,7 +361,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 </div>
 
                 <!-- Dual Presentation Layout Switcher (Grid vs Issues Table) -->
-                <div class="flex items-center rounded-md border p-0.5" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
+                <div class="flex items-center rounded-md border p-0.5" id="layoutControlGroup" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
                     <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (v)" class="px-2.5 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3Zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3Z"></path>
@@ -331,11 +378,9 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
 
                 <!-- Dark / Light Contrast Mode Toggle Button -->
                 <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark / Light Contrast Mode (t)" class="p-2 rounded-md border text-sm transition flex items-center justify-center hover:opacity-80" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                    <!-- Sun Icon (shown when in dark mode) -->
                     <svg id="themeIconSun" class="w-4 h-4 hidden" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.061Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z"></path>
                     </svg>
-                    <!-- Moon Icon (shown when in light mode) -->
                     <svg id="themeIconMoon" class="w-4 h-4 hidden" viewBox="0 0 16 16" fill="currentColor">
                         <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
                     </svg>
@@ -352,172 +397,333 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
         </div>
     </header>
 
+    <!-- GitHub Primer Top Tabs: Free Vouchers vs Verified Tech Radar -->
+    <nav class="border-b" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div class="flex items-center gap-2 -mb-px" id="mainTabNav">
+                <button id="tabBtnVouchers" onclick="switchMainTab('vouchers')" class="flex items-center gap-2 py-3 px-3 border-b-2 font-semibold text-sm transition" style="border-color: var(--accent-fg); color: var(--fg-default);">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h11A1.5 1.5 0 0 1 15 3.5v2a1.5 1.5 0 0 1-1.5 1.5.5.5 0 0 0 0 1 1.5 1.5 0 0 1 1.5 1.5v2a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 11.5v-2a1.5 1.5 0 0 1 1.5-1.5.5.5 0 0 0 0-1A1.5 1.5 0 0 1 1 5.5v-2Zm1.5-.5a.5.5 0 0 0-.5.5v2a2.5 2.5 0 0 0 1.5 2.298v.404A2.5 2.5 0 0 0 2 10.5v2a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5v-2a2.5 2.5 0 0 0-1.5-2.298v-.404A2.5 2.5 0 0 0 14 5.5v-2a.5.5 0 0 0-.5-.5h-11Z"></path>
+                    </svg>
+                    <span>Free Vouchers</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-mono font-medium" style="background-color: var(--canvas-inset); color: var(--fg-muted); border: 1px solid var(--border-default);">{len(offers)}</span>
+                </button>
+                <button id="tabBtnNews" onclick="switchMainTab('news')" class="flex items-center gap-2 py-3 px-3 border-b-2 font-medium text-sm transition" style="border-color: transparent; color: var(--fg-muted);">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v10.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25Zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25ZM3 3h10a.75.75 0 0 1 0 1.5H3A.75.75 0 0 1 3 3Zm0 3.5h10a.75.75 0 0 1 0 1.5H3a.75.75 0 0 1 0-1.5ZM3 10h6a.75.75 0 0 1 0 1.5H3A.75.75 0 0 1 3 10Z"></path>
+                    </svg>
+                    <span>Verified Tech Radar</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-mono font-medium" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">{len(news_items)}</span>
+                </button>
+            </div>
+            
+            <div class="hidden sm:flex items-center gap-2 text-xs" style="color: var(--fg-subtle);">
+                <span class="font-mono text-[11px]">Hotkeys:</span>
+                <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">1</kbd>
+                <span>Vouchers</span>
+                <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">2</kbd>
+                <span>Radar</span>
+                <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">T</kbd>
+                <span>Theme</span>
+            </div>
+        </div>
+    </nav>
+
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
         
-        <!-- Hero Bento Grid (Primer Style) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <!-- Bento 1: Value Saved -->
-            <div class="p-5 rounded-lg border primer-card">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Total Value Available</span>
-                    <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8.75.75a.75.75 0 0 0-1.5 0V2h-.984c-.983 0-1.9.362-2.589 1.026C3.003 3.673 2.6 4.595 2.6 5.64c0 .91.308 1.688.886 2.26.567.562 1.34.942 2.264 1.192l.67.182c.76.205 1.25.437 1.53.685.26.23.35.474.35.743 0 .365-.154.67-.44.89-.3.23-.743.358-1.36.358-.603 0-1.05-.122-1.38-.342a1.29 1.29 0 0 1-.53-.872.75.75 0 0 0-1.49.172c.153.998.666 1.734 1.45 2.198.647.383 1.488.582 2.47.604v1.18a.75.75 0 0 0 1.5 0v-1.19c.983-.024 1.834-.34 2.483-.93.673-.613 1.017-1.472 1.017-2.46 0-.895-.316-1.66-.908-2.23-.58-.558-1.38-.93-2.316-1.182l-.645-.175c-.75-.204-1.223-.424-1.48-.656-.239-.214-.34-.442-.34-.707 0-.323.14-.597.412-.792.292-.21.72-.32 1.288-.32.535 0 .944.103 1.222.288.29.193.473.488.547.88a.75.75 0 0 0 1.478-.276c-.16-.862-.573-1.543-1.25-1.986A4.323 4.323 0 0 0 8.75 3.2V.75Z"></path>
-                        </svg>
-                    </span>
-                </div>
-                <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--fg-default);">
-                    ${total_savings:,} <span class="text-sm font-normal" style="color: var(--fg-muted);">USD</span>
-                </div>
-                <p class="text-xs mt-2" style="color: var(--fg-muted);">100% free proctored exams and official accredited credentials.</p>
-            </div>
-
-            <!-- Bento 2: Active Opportunities -->
-            <div class="p-5 rounded-lg border primer-card">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Opportunities</span>
-                    <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
-                        </svg>
-                    </span>
-                </div>
-                <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
-                    {len(active_offers)} <span class="text-sm font-normal" style="color: var(--fg-muted);">Active / {len(offers)} Total</span>
-                </div>
-                <p class="text-xs mt-2" style="color: var(--fg-muted);">{len(historical_offers)} past promotional voucher campaigns archived for recurrence tracking.</p>
-            </div>
-
-            <!-- Bento 3: Self-Healing Inspection -->
-            <div class="p-5 rounded-lg border primer-card">
-                <div class="flex items-center justify-between">
-                    <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Self-Healing Invariant Bot</span>
-                    <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7 7 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7 7 0 0 1 14.95 7.16a.75.75 0 1 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z"></path>
-                        </svg>
-                    </span>
-                </div>
-                <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--accent-fg);">
-                    Every 4 Hours <span class="text-sm font-normal" style="color: var(--fg-muted);">Cron</span>
-                </div>
-                <p class="text-xs mt-2" style="color: var(--fg-muted);">Deep HTTP inspection: auto-detects soft 404s, silent reroutes, & closed forms.</p>
-            </div>
-        </div>
-
-        <!-- Filter, Search, and Sort Controls (GitHub Primer Standard) -->
-        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-3 rounded-lg border" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-            
-            <!-- Left: Instant Search with / Hotkey and GitHub Query Syntax -->
-            <div class="relative flex-1 max-w-md">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none" style="color: var(--fg-muted);">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
-                    </svg>
-                </div>
-                <input type="text" id="searchInput" placeholder="Filter vouchers or type 'is:history', 'cat:Cloud'..." 
-                       class="w-full pl-9 pr-14 py-1.5 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                       style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                <div class="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
-                    <button id="clearSearchBtn" onclick="clearSearch()" class="hidden p-1 rounded text-xs hover:opacity-80" style="color: var(--fg-muted);" title="Clear search">✕</button>
-                    <kbd class="text-[10px] font-mono px-1.5 py-0.5 rounded border pointer-events-none" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">/</kbd>
-                </div>
-            </div>
-
-            <!-- Middle: Category SubNav Filters with Primer CounterLabels -->
-            <div class="flex gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="filterPills">
-                <button onclick="filterCategory('All')" class="cat-pill px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
-                    <span>All</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">{len(offers)}</span>
-                </button>
-                <button onclick="filterCategory('Cloud')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Cloud">
-                    <span>Cloud</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{cloud_count}</span>
-                </button>
-                <button onclick="filterCategory('Security')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Security">
-                    <span>Security</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{sec_count}</span>
-                </button>
-                <button onclick="filterCategory('DevOps')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="DevOps">
-                    <span>DevOps</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{devops_count}</span>
-                </button>
-                <button onclick="filterCategory('AI & Data')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="AI & Data">
-                    <span>AI & Data</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{ai_count}</span>
-                </button>
-                <button onclick="filterCategory('Networking')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Networking">
-                    <span>Networking</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{net_count}</span>
-                </button>
-                <button onclick="filterCategory('History')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
-                    <span>📜 Past History</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{len(historical_offers)}</span>
-                </button>
-            </div>
-
-            <!-- Right: Sort, Status, and Share / Export Menu -->
-            <div class="flex items-center gap-2">
-                <select id="sortSelect" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                    <option value="val-desc">Sort: Value (High to Low)</option>
-                    <option value="val-asc">Sort: Value (Low to High)</option>
-                    <option value="name-asc">Sort: Provider (A to Z)</option>
-                </select>
-                <select id="statusFilter" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                    <option value="active" selected>Status: Active ({len(active_offers)})</option>
-                    <option value="all">Status: All Records ({len(offers)})</option>
-                    <option value="history">Status: Past History ({len(historical_offers)})</option>
-                    <option value="closed">Status: Concluded ({len(closed_offers)})</option>
-                </select>
-                <!-- Share Button -->
-                <button onclick="copyShareLink()" title="Copy Shareable Link" class="p-1.5 rounded-md border hover:opacity-80 transition flex items-center gap-1 text-xs" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M13.5 0a2.5 2.5 0 0 0-2.316 3.447L6.082 5.998a2.502 2.502 0 1 0 0 4.004l5.102 2.551a2.5 2.5 0 1 0 .898-1.796L6.98 8.206a2.518 2.518 0 0 0 0-.412l5.102-2.551A2.5 2.5 0 1 0 13.5 0Z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Quick Filter Tokens Bar -->
-        <div class="flex items-center gap-2 mb-4 text-xs overflow-x-auto pb-1">
-            <span class="font-semibold uppercase tracking-wider text-[11px]" style="color: var(--fg-subtle);">Quick Tokens:</span>
-            <button onclick="appendToken('is:active')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--accent-fg);">is:active</button>
-            <button onclick="appendToken('is:history')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">is:history</button>
-            <button onclick="appendToken('val:>100')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--success-fg);">val:&gt;100</button>
-            <button onclick="appendToken('cat:Security')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Security</button>
-            <button onclick="appendToken('cat:Cloud')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Cloud</button>
-            <button onclick="exportFilteredJson()" class="ml-auto px-2 py-0.5 rounded border text-[11px] font-semibold hover:opacity-80 transition flex items-center gap-1" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">
-                <span>⬇ JSON</span>
-            </button>
-        </div>
-
-        <!-- Result Status Sub-bar -->
-        <div class="flex items-center justify-between text-xs mb-4 px-1" style="color: var(--fg-muted);">
-            <div id="resultsCount">Showing {len(active_offers)} of {len(offers)} vouchers</div>
-            <div>Audited: <span class="font-mono">{last_updated}</span></div>
-        </div>
-
-        <!-- Dual Presentation Container: Bento Cards Grid or GitHub Issues Table -->
-        <div id="cardsViewContainer">
-            <!-- Grid View -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="offersGrid"></div>
-        </div>
-
-        <div id="listViewContainer" class="hidden">
-            <!-- Issues Table View -->
-            <div class="rounded-lg border overflow-hidden" style="border-color: var(--border-default);">
-                <div class="p-3 border-b flex items-center justify-between text-xs font-semibold" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">
-                    <div class="flex items-center gap-4">
-                        <span class="flex items-center gap-1 text-[var(--fg-default)]">
-                            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--success-fg)"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path></svg>
-                            <span id="listOpenCount">{len(active_offers)} Active Offers</span>
+        <!-- SECTION 1: FREE VOUCHERS -->
+        <div id="vouchersSection">
+            <!-- Hero Bento Grid (Primer Style) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- Bento 1: Value Saved -->
+                <div class="p-5 rounded-lg border primer-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Total Value Available</span>
+                        <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8.75.75a.75.75 0 0 0-1.5 0V2h-.984c-.983 0-1.9.362-2.589 1.026C3.003 3.673 2.6 4.595 2.6 5.64c0 .91.308 1.688.886 2.26.567.562 1.34.942 2.264 1.192l.67.182c.76.205 1.25.437 1.53.685.26.23.35.474.35.743 0 .365-.154.67-.44.89-.3.23-.743.358-1.36.358-.603 0-1.05-.122-1.38-.342a1.29 1.29 0 0 1-.53-.872.75.75 0 0 0-1.49.172c.153.998.666 1.734 1.45 2.198.647.383 1.488.582 2.47.604v1.18a.75.75 0 0 0 1.5 0v-1.19c.983-.024 1.834-.34 2.483-.93.673-.613 1.017-1.472 1.017-2.46 0-.895-.316-1.66-.908-2.23-.58-.558-1.38-.93-2.316-1.182l-.645-.175c-.75-.204-1.223-.424-1.48-.656-.239-.214-.34-.442-.34-.707 0-.323.14-.597.412-.792.292-.21.72-.32 1.288-.32.535 0 .944.103 1.222.288.29.193.473.488.547.88a.75.75 0 0 0 1.478-.276c-.16-.862-.573-1.543-1.25-1.986A4.323 4.323 0 0 0 8.75 3.2V.75Z"></path>
+                            </svg>
                         </span>
                     </div>
-                    <div>GitHub Issue Format</div>
+                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--fg-default);">
+                        ${total_savings:,} <span class="text-sm font-normal" style="color: var(--fg-muted);">USD</span>
+                    </div>
+                    <p class="text-xs mt-2" style="color: var(--fg-muted);">100% free proctored exams and official accredited credentials.</p>
                 </div>
-                <div id="offersTableBody"></div>
+
+                <!-- Bento 2: Active Opportunities -->
+                <div class="p-5 rounded-lg border primer-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Opportunities</span>
+                        <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
+                        {len(active_offers)} <span class="text-sm font-normal" style="color: var(--fg-muted);">Active / {len(offers)} Total</span>
+                    </div>
+                    <p class="text-xs mt-2" style="color: var(--fg-muted);">{len(historical_offers)} past promotional voucher campaigns archived for recurrence tracking.</p>
+                </div>
+
+                <!-- Bento 3: Self-Healing Inspection -->
+                <div class="p-5 rounded-lg border primer-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Self-Healing Invariant Bot</span>
+                        <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7 7 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7 7 0 0 1 14.95 7.16a.75.75 0 1 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--accent-fg);">
+                        Every 4 Hours <span class="text-sm font-normal" style="color: var(--fg-muted);">Cron</span>
+                    </div>
+                    <p class="text-xs mt-2" style="color: var(--fg-muted);">Deep HTTP inspection: auto-detects soft 404s, silent reroutes, & closed forms.</p>
+                </div>
             </div>
+
+            <!-- Filter, Search, and Sort Controls (GitHub Primer Standard) -->
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-3 rounded-lg border" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                
+                <!-- Left: Instant Search with / Hotkey and GitHub Query Syntax -->
+                <div class="relative flex-1 max-w-md">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none" style="color: var(--fg-muted);">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="Filter vouchers or type 'is:history', 'cat:Cloud'..." 
+                           class="w-full pl-9 pr-14 py-1.5 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                           style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
+                        <button id="clearSearchBtn" onclick="clearSearch()" class="hidden p-1 rounded text-xs hover:opacity-80" style="color: var(--fg-muted);" title="Clear search">✕</button>
+                        <kbd class="text-[10px] font-mono px-1.5 py-0.5 rounded border pointer-events-none" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">/</kbd>
+                    </div>
+                </div>
+
+                <!-- Middle: Category SubNav Filters with Primer CounterLabels -->
+                <div class="flex gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="filterPills">
+                    <button onclick="filterCategory('All')" class="cat-pill px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
+                        <span>All</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">{len(offers)}</span>
+                    </button>
+                    <button onclick="filterCategory('Cloud')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Cloud">
+                        <span>Cloud</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{cloud_count}</span>
+                    </button>
+                    <button onclick="filterCategory('Security')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Security">
+                        <span>Security</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{sec_count}</span>
+                    </button>
+                    <button onclick="filterCategory('DevOps')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="DevOps">
+                        <span>DevOps</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{devops_count}</span>
+                    </button>
+                    <button onclick="filterCategory('AI & Data')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="AI & Data">
+                        <span>AI & Data</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{ai_count}</span>
+                    </button>
+                    <button onclick="filterCategory('Networking')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Networking">
+                        <span>Networking</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{net_count}</span>
+                    </button>
+                    <button onclick="filterCategory('History')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
+                        <span>📜 Past History</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{len(historical_offers)}</span>
+                    </button>
+                </div>
+
+                <!-- Right: Sort, Status, and Share / Export Menu -->
+                <div class="flex items-center gap-2">
+                    <select id="sortSelect" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                        <option value="val-desc">Sort: Value (High to Low)</option>
+                        <option value="val-asc">Sort: Value (Low to High)</option>
+                        <option value="name-asc">Sort: Provider (A to Z)</option>
+                    </select>
+                    <select id="statusFilter" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                        <option value="active" selected>Status: Active ({len(active_offers)})</option>
+                        <option value="all">Status: All Records ({len(offers)})</option>
+                        <option value="history">Status: Past History ({len(historical_offers)})</option>
+                        <option value="closed">Status: Concluded ({len(closed_offers)})</option>
+                    </select>
+                    <!-- Share Button -->
+                    <button onclick="copyShareLink()" title="Copy Shareable Link" class="p-1.5 rounded-md border hover:opacity-80 transition flex items-center gap-1 text-xs" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M13.5 0a2.5 2.5 0 0 0-2.316 3.447L6.082 5.998a2.502 2.502 0 1 0 0 4.004l5.102 2.551a2.5 2.5 0 1 0 .898-1.796L6.98 8.206a2.518 2.518 0 0 0 0-.412l5.102-2.551A2.5 2.5 0 1 0 13.5 0Z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Filter Tokens Bar -->
+            <div class="flex items-center gap-2 mb-4 text-xs overflow-x-auto pb-1">
+                <span class="font-semibold uppercase tracking-wider text-[11px]" style="color: var(--fg-subtle);">Quick Tokens:</span>
+                <button onclick="appendToken('is:active')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--accent-fg);">is:active</button>
+                <button onclick="appendToken('is:history')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">is:history</button>
+                <button onclick="appendToken('val:>100')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--success-fg);">val:&gt;100</button>
+                <button onclick="appendToken('cat:Security')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Security</button>
+                <button onclick="appendToken('cat:Cloud')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Cloud</button>
+                <button onclick="exportFilteredJson()" class="ml-auto px-2 py-0.5 rounded border text-[11px] font-semibold hover:opacity-80 transition flex items-center gap-1" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">
+                    <span>⬇ JSON</span>
+                </button>
+            </div>
+
+            <!-- Result Status Sub-bar -->
+            <div class="flex items-center justify-between text-xs mb-4 px-1" style="color: var(--fg-muted);">
+                <div id="resultsCount">Showing {len(active_offers)} of {len(offers)} vouchers</div>
+                <div>Audited: <span class="font-mono">{last_updated}</span></div>
+            </div>
+
+            <!-- Dual Presentation Container: Bento Cards Grid or GitHub Issues Table -->
+            <div id="cardsViewContainer">
+                <!-- Grid View -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="offersGrid"></div>
+            </div>
+
+            <div id="listViewContainer" class="hidden">
+                <!-- Issues Table View -->
+                <div class="rounded-lg border overflow-hidden" style="border-color: var(--border-default);">
+                    <div class="p-3 border-b flex items-center justify-between text-xs font-semibold" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">
+                        <div class="flex items-center gap-4">
+                            <span class="flex items-center gap-1 text-[var(--fg-default)]">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--success-fg)"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path></svg>
+                                <span id="listOpenCount">{len(active_offers)} Active Offers</span>
+                            </span>
+                        </div>
+                        <div>GitHub Issue Format</div>
+                    </div>
+                    <div id="offersTableBody"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: VERIFIED TECH RADAR & ENGINEERING FEED -->
+        <div id="newsSection" class="hidden">
+            <!-- News Hero Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- News Bento 1 -->
+                <div class="p-5 rounded-lg border primer-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Enterprise Feeds Monitored</span>
+                        <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1.75 1.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H1.75ZM0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v8.5A1.75 1.75 0 0 1 14.25 12H9.06l.72 2.25H11.5a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1 0-1.5h1.72l.72-2.25H1.75A1.75 1.75 0 0 1 0 10.25V1.75Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--fg-default);">
+                        9 Giants <span class="text-sm font-normal" style="color: var(--fg-muted);">Tracked</span>
+                    </div>
+                    <p class="text-xs mt-2" style="color: var(--fg-muted);">AWS, Microsoft Azure, Google Cloud, Oracle Cloud, Cisco, GitHub, CNCF, Databricks, Snowflake.</p>
+                </div>
+
+                <!-- News Bento 2 -->
+                <div class="p-5 rounded-lg border primer-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Dispatches</span>
+                        <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
+                        {len(news_items)} Briefings <span class="text-sm font-normal" style="color: var(--fg-muted);">Live</span>
+                    </div>
+                    <p class="text-xs mt-2" style="color: var(--fg-muted);">Silicon architecture, foundation SLMs, quantum networking, and SEC revenue filings.</p>
+                </div>
+
+                <!-- News Bento 3 -->
+                <div class="p-5 rounded-lg border primer-card">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Integrity Standard</span>
+                        <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--attention-fg);">
+                        0% Clickbait <span class="text-sm font-normal" style="color: var(--fg-muted);">Guaranteed</span>
+                    </div>
+                    <p class="text-xs mt-2" style="color: var(--fg-muted);">Automated whitelist verification. Gossip blogs and rumor mills are strictly barred.</p>
+                </div>
+            </div>
+
+            <!-- News Filter & Search Bar -->
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 mb-4 p-3 rounded-lg border" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <!-- News Search -->
+                <div class="relative flex-1 max-w-md">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none" style="color: var(--fg-muted);">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="newsSearchInput" placeholder="Filter radar by keyword, company, or domain..." 
+                           class="w-full pl-9 pr-14 py-1.5 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                           style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
+                        <button id="clearNewsSearchBtn" onclick="clearNewsSearch()" class="hidden p-1 rounded text-xs hover:opacity-80" style="color: var(--fg-muted);" title="Clear search">✕</button>
+                        <kbd class="text-[10px] font-mono px-1.5 py-0.5 rounded border pointer-events-none" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">/</kbd>
+                    </div>
+                </div>
+
+                <!-- News Category Pills -->
+                <div class="flex gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="newsCategoryPills">
+                    <button onclick="filterNewsCategory('All')" class="news-cat-pill px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
+                        <span>All Topics</span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">{len(news_items)}</span>
+                    </button>
+                    <button onclick="filterNewsCategory('Infrastructure & Silicon')" class="news-cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Infrastructure & Silicon">
+                        <span>Silicon & Hardware</span>
+                    </button>
+                    <button onclick="filterNewsCategory('Research & AI')" class="news-cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Research & AI">
+                        <span>Research & AI</span>
+                    </button>
+                    <button onclick="filterNewsCategory('Tech Development')" class="news-cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Tech Development">
+                        <span>Tech & Tooling</span>
+                    </button>
+                    <button onclick="filterNewsCategory('Enterprise & Financials')" class="news-cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Enterprise & Financials">
+                        <span>Financials & Cloud</span>
+                    </button>
+                </div>
+
+                <!-- News Company & Sort Select -->
+                <div class="flex items-center gap-2">
+                    <select id="newsCompanySelect" onchange="renderNews()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                        <option value="All">All Companies</option>
+                        <option value="Amazon Web Services">AWS</option>
+                        <option value="Microsoft Azure">Microsoft Azure</option>
+                        <option value="Google Cloud">Google Cloud</option>
+                        <option value="Oracle Cloud">Oracle Cloud</option>
+                        <option value="GitHub">GitHub</option>
+                        <option value="Cisco">Cisco</option>
+                        <option value="Databricks">Databricks</option>
+                        <option value="Snowflake">Snowflake</option>
+                        <option value="Linux Foundation / CNCF">Linux / CNCF</option>
+                    </select>
+                    <select id="newsSortSelect" onchange="renderNews()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                        <option value="date-desc">Sort: Newest First</option>
+                        <option value="date-asc">Sort: Oldest First</option>
+                        <option value="company-asc">Sort: Company (A to Z)</option>
+                    </select>
+                    <button onclick="exportFilteredNewsJson()" class="px-2.5 py-1.5 rounded-md border text-xs font-semibold hover:opacity-80 transition flex items-center gap-1" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Export Filtered News JSON">
+                        <span>⬇ JSON</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- News Results Status Bar -->
+            <div class="flex items-center justify-between text-xs mb-4 px-1" style="color: var(--fg-muted);">
+                <div id="newsResultsCount">Showing {len(news_items)} of {len(news_items)} verified dispatches</div>
+                <div>Primary Domain Whitelist: <span class="font-mono text-[11px] text-[var(--success-fg)]">Strict Verification Enforced</span></div>
+            </div>
+
+            <!-- News Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="newsGrid"></div>
         </div>
 
     </main>
@@ -525,7 +731,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
     <!-- Footer -->
     <footer class="border-t py-6 mt-12 text-center text-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div>CertPulse — Open-Source GitHub Primer Autonomous Voucher Engine</div>
+            <div>CertPulse — Open-Source GitHub Primer Autonomous Voucher Engine & Intelligence Radar</div>
             <div class="flex items-center gap-4">
                 <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:underline" style="color: var(--accent-fg);">GitHub Repo</a>
                 <a href="https://github.com/Athish2002/free-certification-tracker/issues/new/choose" target="_blank" class="hover:underline" style="color: var(--accent-fg);">Submit Voucher</a>
@@ -545,9 +751,61 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
     <!-- Application Script -->
     <script>
         const offersData = {offers_json_str};
+        const newsData = {news_json_str};
+
+        let currentMainTab = 'vouchers';
         let currentCategory = 'All';
         let currentSearch = '';
         let currentLayout = 'grid';
+
+        let currentNewsCategory = 'All';
+        let currentNewsSearch = '';
+
+        // Tab Switching Engine (Vouchers vs Tech Radar)
+        function switchMainTab(tab, updateUrl = true) {{
+            currentMainTab = tab;
+            const vouchersSec = document.getElementById('vouchersSection');
+            const newsSec = document.getElementById('newsSection');
+            const tabVouchers = document.getElementById('tabBtnVouchers');
+            const tabNews = document.getElementById('tabBtnNews');
+            const layoutGroup = document.getElementById('layoutControlGroup');
+
+            if (tab === 'news') {{
+                vouchersSec.classList.add('hidden');
+                newsSec.classList.remove('hidden');
+                if (layoutGroup) layoutGroup.classList.add('hidden');
+
+                tabNews.style.borderColor = 'var(--accent-fg)';
+                tabNews.style.color = 'var(--fg-default)';
+                tabNews.classList.add('font-semibold');
+                tabNews.classList.remove('font-medium');
+
+                tabVouchers.style.borderColor = 'transparent';
+                tabVouchers.style.color = 'var(--fg-muted)';
+                tabVouchers.classList.remove('font-semibold');
+                tabVouchers.classList.add('font-medium');
+
+                renderNews();
+            }} else {{
+                newsSec.classList.add('hidden');
+                vouchersSec.classList.remove('hidden');
+                if (layoutGroup) layoutGroup.classList.remove('hidden');
+
+                tabVouchers.style.borderColor = 'var(--accent-fg)';
+                tabVouchers.style.color = 'var(--fg-default)';
+                tabVouchers.classList.add('font-semibold');
+                tabVouchers.classList.remove('font-medium');
+
+                tabNews.style.borderColor = 'transparent';
+                tabNews.style.color = 'var(--fg-muted)';
+                tabNews.classList.remove('font-semibold');
+                tabNews.classList.add('font-medium');
+
+                renderCards();
+            }}
+
+            if (updateUrl) syncUrlParams();
+        }}
 
         // Dual Theme Controller: Dark vs Light Contrast
         function initTheme() {{
@@ -568,6 +826,13 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             if (initialCat) {{
                 currentCategory = initialCat;
                 updateCatPills();
+            }}
+
+            const savedTab = urlParams.get('tab');
+            if (savedTab === 'news') {{
+                switchMainTab('news', false);
+            }} else {{
+                switchMainTab('vouchers', false);
             }}
         }}
 
@@ -594,7 +859,8 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             }}
 
             if (updateUrl) syncUrlParams();
-            renderCards();
+            if (currentMainTab === 'news') renderNews();
+            else renderCards();
         }}
 
         function setLayoutView(view, updateUrl = true) {{
@@ -628,6 +894,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             const params = new URLSearchParams();
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             if (currentTheme === 'light') params.set('theme', 'light');
+            if (currentMainTab !== 'vouchers') params.set('tab', currentMainTab);
             if (currentLayout !== 'grid') params.set('view', currentLayout);
             if (currentCategory !== 'All') params.set('cat', currentCategory);
             if (currentSearch.trim() !== '') params.set('q', currentSearch.trim());
@@ -680,6 +947,31 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             showToast('Filtered vouchers exported as JSON');
         }}
 
+        function exportFilteredNewsJson() {{
+            const cat = currentNewsCategory;
+            const company = document.getElementById('newsCompanySelect').value;
+            const search = currentNewsSearch.toLowerCase().trim();
+
+            const filtered = newsData.filter(item => {{
+                if (cat !== 'All' && item.category !== cat) return false;
+                if (company !== 'All' && item.company !== company) return false;
+                if (search !== '') {{
+                    const haystack = (item.title + ' ' + item.summary + ' ' + item.company + ' ' + item.category + ' ' + (item.impact_badge || '') + ' ' + item.source_domain).toLowerCase();
+                    if (!haystack.includes(search)) return false;
+                }}
+                return true;
+            }});
+
+            const dataBlob = new Blob([JSON.stringify(filtered, null, 2)], {{ type: 'application/json' }});
+            const url = URL.createObjectURL(dataBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `certpulse-news-${{new Date().toISOString().slice(0, 10)}}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Filtered intelligence radar exported as JSON');
+        }}
+
         function appendToken(token) {{
             const input = document.getElementById('searchInput');
             input.value = (input.value.trim() + ' ' + token).trim();
@@ -698,19 +990,28 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             renderCards();
         }}
 
+        function clearNewsSearch() {{
+            const input = document.getElementById('newsSearchInput');
+            input.value = '';
+            currentNewsSearch = '';
+            document.getElementById('clearNewsSearchBtn').classList.add('hidden');
+            renderNews();
+        }}
+
         function getPlatformColor(platform) {{
             const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-            if (platform.includes('Azure')) return isLight ? '#0062a8' : '#0078d4';
-            if (platform.includes('AWS')) return isLight ? '#c05b00' : '#ff9900';
+            if (platform.includes('Azure') || platform.includes('Microsoft')) return isLight ? '#0062a8' : '#0078d4';
+            if (platform.includes('AWS') || platform.includes('Amazon')) return isLight ? '#c05b00' : '#ff9900';
             if (platform.includes('Google')) return isLight ? '#1a73e8' : '#4285f4';
             if (platform.includes('Cisco')) return isLight ? '#0b7da8' : '#1ba0d7';
             if (platform.includes('ISC2')) return isLight ? '#006b40' : '#008752';
             if (platform.includes('Oracle')) return isLight ? '#c70000' : '#f80000';
             if (platform.includes('GitHub')) return isLight ? '#1a7f37' : '#2ea043';
             if (platform.includes('Snowflake')) return isLight ? '#0088be' : '#29b5e8';
+            if (platform.includes('Databricks')) return isLight ? '#c2331b' : '#ff3621';
+            if (platform.includes('Linux') || platform.includes('CNCF')) return isLight ? '#002f6c' : '#58a6ff';
             if (platform.includes('MongoDB')) return isLight ? '#008438' : '#00ed64';
             if (platform.includes('Postman')) return isLight ? '#d44315' : '#ff6c37';
-            if (platform.includes('Linux')) return isLight ? '#002f6c' : '#58a6ff';
             return 'var(--accent-fg)';
         }}
 
@@ -898,85 +1199,87 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
 
                                 <details class="mt-3.5 text-xs group cursor-pointer">
                                     <summary class="font-semibold select-none flex items-center gap-1 hover:underline" style="color: var(--accent-fg);">
-                                        <span>${{isHistory ? 'Archived Promo Steps & Notes' : 'How to Claim'}}</span>
-                                        <svg class="w-3.5 h-3.5 transform group-open:rotate-90 transition-transform" viewBox="0 0 16 16" fill="currentColor">
-                                            <path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path>
-                                        </svg>
+                                        <span>${{isHistory ? 'View Archived Promotion & Details' : 'View How to Claim'}}</span>
+                                        <svg class="w-3.5 h-3.5 transition group-open:rotate-180" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z"></path></svg>
                                     </summary>
-                                    <div class="mt-2 p-2.5 rounded-md border leading-relaxed space-y-1.5" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
-                                        <p>${{o.claim_steps}}</p>
-                                        ${{o.inspection_notes ? `<p class="text-[11px] font-mono pt-1 border-t" style="border-color: var(--border-muted); color: var(--fg-muted);"><strong>Audit:</strong> ${{o.inspection_notes}}</p>` : ''}}
+                                    <div class="mt-2.5 p-3 rounded-md text-xs leading-relaxed space-y-2 border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
+                                        <div>
+                                            <span class="font-bold block text-[11px] uppercase tracking-wider mb-0.5" style="color: var(--fg-muted);">Eligibility</span>
+                                            <p>${{o.eligibility || 'Open to all technology practitioners and learners.'}}</p>
+                                        </div>
+                                        <div>
+                                            <span class="font-bold block text-[11px] uppercase tracking-wider mb-0.5" style="color: var(--fg-muted);">${{isHistory ? 'Archived Instructions / Context' : 'Claim Instructions'}}</span>
+                                            <p class="whitespace-pre-line">${{o.claim_steps}}</p>
+                                        </div>
+                                        ${{o.inspection_notes ? `
+                                            <div class="pt-2 border-t font-mono text-[10px]" style="border-color: var(--border-muted); color: var(--fg-subtle);">
+                                                Automated Inspector Note: ${{o.inspection_notes}}
+                                            </div>
+                                        ` : ''}}
                                     </div>
                                 </details>
                             </div>
 
-                            <div class="mt-4 pt-3.5 border-t flex items-center justify-between" style="border-color: var(--border-muted);">
-                                <span class="text-[11px] font-medium" style="color: var(--fg-muted);">
-                                    ${{o.eligibility || 'Global'}}
-                                </span>
-                                <div class="flex items-center gap-2">
-                                    <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" title="Copy promo steps" class="p-1.5 rounded-md border hover:opacity-80 transition flex items-center justify-center" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                                        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                                            <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
-                                            <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
-                                        </svg>
-                                    </button>
-                                    <a href="${{o.url}}" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md transition shadow-sm flex items-center gap-1 hover:opacity-90 border" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
-                                        <span>${{actionBtnText}}</span>
-                                        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                                            <path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h4a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0V3.56l-5.72 5.72a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L12.94 2.5H10.5a.75.75 0 0 1-.75-.75Z"></path>
-                                        </svg>
-                                    </a>
-                                </div>
+                            <div class="mt-4 pt-3 border-t flex items-center justify-between gap-2" style="border-color: var(--border-muted);">
+                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="p-1.5 rounded-md border text-xs font-semibold hover:opacity-80 transition flex items-center gap-1" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy claim steps to clipboard">
+                                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>
+                                    <span class="text-[11px] hidden sm:inline">Copy</span>
+                                </button>
+                                <a href="${{o.url}}" target="_blank" class="flex-1 text-center px-3 py-1.5 rounded-md text-xs font-semibold transition hover:opacity-90 border" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
+                                    ${{actionBtnText}} &rarr;
+                                </a>
                             </div>
                         </div>
                     `;
                 }}).join('');
             }} else {{
-                // Issues Table Row View
+                // Issues Table List View
                 tableBody.innerHTML = filtered.map(o => {{
                     const isLive = (o.status === 'Active');
                     const isHistory = Boolean(o.is_historical_archive || o.status === 'Expired');
+                    const iconColor = isLive ? 'var(--success-fg)' : (isHistory ? 'var(--fg-muted)' : 'var(--attention-fg)');
+                    const statusBadgeText = isLive ? 'Open / Active' : (isHistory ? 'Concluded / History' : o.status);
                     const brandColor = getPlatformColor(o.platform);
-                    const statusIconColor = isLive ? 'var(--success-fg)' : (isHistory ? 'var(--fg-muted)' : 'var(--attention-fg)');
+
+                    const examChip = o.exam_code ? `<span class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-default);">${{o.exam_code}}</span>` : '';
+                    const timeChip = o.time_period ? `<span class="text-[11px] font-medium" style="color: var(--accent-fg);">📅 ${{o.time_period}}</span>` : '';
+                    const recurChip = o.recurrence_pattern ? `<span class="text-[11px]" style="color: var(--fg-muted);">🔁 ${{o.recurrence_pattern}}</span>` : '';
+
                     const actionBtnText = isLive ? 'Claim' : (isHistory ? 'Archive' : 'View');
                     const actionBtnBg = isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)';
                     const actionBtnColor = isLive ? '#ffffff' : 'var(--fg-default)';
                     const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
 
-                    const examCodeChip = o.exam_code ? `<span class="text-[10px] font-mono px-1.5 py-0.2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">Exam: ${{o.exam_code}}</span>` : '';
-                    const periodChip = o.time_period ? `<span class="text-[10px] font-medium" style="color: var(--accent-fg);">📅 ${{o.time_period}}</span>` : '';
-                    const recurChip = o.recurrence_pattern ? `<span class="text-[10px]" style="color: var(--fg-muted);">🔁 ${{o.recurrence_pattern}}</span>` : '';
-
                     return `
                         <div class="issue-row p-3 flex items-start justify-between gap-3 text-xs">
-                            <div class="flex items-start gap-2.5 flex-1 min-w-0">
-                                <span class="mt-0.5" style="color: ${{statusIconColor}};">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <div class="flex items-start gap-2.5">
+                                <div class="mt-0.5">
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="${{iconColor}}">
                                         <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
                                         <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"></path>
                                     </svg>
-                                </span>
-                                <div class="flex-1 min-w-0">
+                                </div>
+                                <div class="space-y-1">
                                     <div class="flex items-center gap-2 flex-wrap">
-                                        <a href="${{o.url}}" target="_blank" class="font-bold text-sm hover:underline cursor-pointer" style="color: var(--fg-default);">
+                                        <a href="${{o.url}}" target="_blank" class="font-bold hover:underline" style="color: var(--fg-default);">
                                             ${{o.title}}
                                         </a>
-                                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
+                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
                                             ${{o.platform}}
                                         </span>
-                                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
+                                        ${{examChip}}
+                                        <span class="text-[10px] font-mono px-2 py-0.2 rounded font-bold" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
                                             $${{o.value_usd || 0}} USD
                                         </span>
-                                        ${{examCodeChip}}
+                                        <span class="text-[10px] px-1.5 py-0.2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">
+                                            ${{statusBadgeText}}
+                                        </span>
                                     </div>
-                                    <div class="text-[11px] mt-1.5 flex items-center gap-2 flex-wrap" style="color: var(--fg-muted);">
-                                        <span class="font-mono">#${{o.id}}</span>
+                                    <div class="flex items-center gap-3 text-xs" style="color: var(--fg-muted);">
+                                        <span>Category: <strong style="color: var(--fg-default);">${{o.category}}</strong></span>
                                         <span>•</span>
-                                        <span>${{o.category}}</span>
-                                        <span>•</span>
-                                        <span>${{o.eligibility || 'Global'}}</span>
-                                        ${{periodChip ? `<span>•</span>${{periodChip}}` : ''}}
+                                        ${{timeChip ? `${{timeChip}}<span>•</span>` : ''}}
+                                        <span>Type: ${{o.offer_type}}</span>
                                         ${{recurChip ? `<span>•</span>${{recurChip}}` : ''}}
                                     </div>
                                     <details class="mt-1 text-xs group">
@@ -1023,24 +1326,159 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             }});
         }}
 
+        // Tech Radar News Renderer
+        function filterNewsCategory(cat) {{
+            currentNewsCategory = cat;
+            document.querySelectorAll('.news-cat-pill').forEach(btn => {{
+                if (btn.getAttribute('data-cat') === currentNewsCategory) {{
+                    btn.style.backgroundColor = 'var(--accent-emphasis)';
+                    btn.style.color = '#ffffff';
+                    btn.style.borderColor = 'transparent';
+                }} else {{
+                    btn.style.backgroundColor = 'var(--canvas-default)';
+                    btn.style.color = 'var(--fg-muted)';
+                    btn.style.borderColor = 'var(--border-default)';
+                }}
+            }});
+            renderNews();
+        }}
+
+        function renderNews() {{
+            const grid = document.getElementById('newsGrid');
+            const cat = currentNewsCategory;
+            const company = document.getElementById('newsCompanySelect').value;
+            const sortMode = document.getElementById('newsSortSelect').value;
+            const search = currentNewsSearch.toLowerCase().trim();
+
+            let filtered = newsData.filter(item => {{
+                // Category
+                if (cat !== 'All' && item.category !== cat) return false;
+                // Company
+                if (company !== 'All' && item.company !== company) return false;
+                // Search
+                if (search !== '') {{
+                    const haystack = (item.title + ' ' + item.summary + ' ' + item.company + ' ' + item.category + ' ' + (item.impact_badge || '') + ' ' + item.source_domain).toLowerCase();
+                    if (!haystack.includes(search)) return false;
+                }}
+                return true;
+            }});
+
+            // Sort
+            filtered.sort((a, b) => {{
+                if (sortMode === 'date-desc') return b.published_date.localeCompare(a.published_date);
+                if (sortMode === 'date-asc') return a.published_date.localeCompare(b.published_date);
+                if (sortMode === 'company-asc') return a.company.localeCompare(b.company);
+                return 0;
+            }});
+
+            document.getElementById('newsResultsCount').textContent = `Showing ${{filtered.length}} of ${{newsData.length}} verified dispatches`;
+
+            if (filtered.length === 0) {{
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center border rounded-lg" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                        <svg class="mx-auto w-10 h-10 mb-3" style="color: var(--fg-muted);" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0ZM8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM5 5a1 1 0 0 0 0 2 1 1 0 0 0 0-2Zm6 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm-7.465 5.5a.75.75 0 0 1 1.05-.14 4.5 4.5 0 0 0 6.83 0 .75.75 0 1 1 1.17.94 6 6 0 0 1-9.11 0 .75.75 0 0 1 .06-1Z"></path>
+                        </svg>
+                        <h3 class="text-base font-bold" style="color: var(--fg-default);">No matching dispatches found</h3>
+                        <p class="text-xs mt-1" style="color: var(--fg-muted);">Try selecting another company, topic, or resetting search.</p>
+                        <button onclick="clearNewsSearch()" class="mt-3 text-xs font-semibold px-3 py-1.5 rounded-md border" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--accent-fg);">Reset Filters</button>
+                    </div>
+                `;
+                return;
+            }}
+
+            grid.innerHTML = filtered.map(item => {{
+                const brandColor = getPlatformColor(item.company);
+                const impactBadge = item.impact_badge ? `
+                    <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">
+                        ${{item.impact_badge}}
+                    </span>
+                ` : '';
+
+                return `
+                    <div class="primer-card p-5 rounded-lg flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-2.5">
+                                <span class="text-xs font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1.5" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
+                                    <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${{brandColor}};"></span>
+                                    ${{item.company}}
+                                </span>
+                                <span class="text-[11px] font-mono font-medium" style="color: var(--fg-muted);">
+                                    ${{item.published_date}}
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-1.5 mb-2 flex-wrap">
+                                ${{impactBadge}}
+                                <span class="text-[10px] px-2 py-0.5 rounded border font-medium" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-subtle);">
+                                    ${{item.category}}
+                                </span>
+                            </div>
+
+                            <h3 class="text-sm font-bold leading-snug hover:underline cursor-pointer" style="color: var(--fg-default);" onclick="window.open('${{item.url}}', '_blank')">
+                                ${{item.title}}
+                            </h3>
+
+                            <p class="text-xs mt-2.5 leading-relaxed" style="color: var(--fg-muted);">
+                                ${{item.summary}}
+                            </p>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t flex items-center justify-between text-xs" style="border-color: var(--border-muted);">
+                            <div class="flex items-center gap-1.5 text-[11px] font-medium" style="color: var(--success-fg);" title="Domain verified on official enterprise whitelist">
+                                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+                                </svg>
+                                <span class="font-mono text-[10px] truncate max-w-[140px]">${{item.source_domain}}</span>
+                            </div>
+                            <a href="${{item.url}}" target="_blank" class="px-2.5 py-1 rounded text-xs font-semibold transition hover:opacity-80 border flex items-center gap-1" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--accent-fg);">
+                                <span>Official Post</span>
+                                <svg width="10" height="10" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.5.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L9.53 8.78a.75.75 0 0 1-1.06-1.06l4.22-4.22H11a.75.75 0 0 1-.75-.75Z"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }}).join('');
+        }}
+
         // Keyboard Shortcuts
         document.addEventListener('keydown', (e) => {{
+            if (e.key === '1' && document.activeElement.tagName !== 'INPUT') {{
+                e.preventDefault();
+                switchMainTab('vouchers');
+            }}
+            if (e.key === '2' && document.activeElement.tagName !== 'INPUT') {{
+                e.preventDefault();
+                switchMainTab('news');
+            }}
             if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {{
                 e.preventDefault();
-                document.getElementById('searchInput').focus();
+                if (currentMainTab === 'news') {{
+                    document.getElementById('newsSearchInput').focus();
+                }} else {{
+                    document.getElementById('searchInput').focus();
+                }}
             }}
-            if (e.key === 'Escape' && document.activeElement.id === 'searchInput') {{
-                clearSearch();
-                document.getElementById('searchInput').blur();
+            if (e.key === 'Escape') {{
+                if (document.activeElement.id === 'searchInput') {{
+                    clearSearch();
+                    document.getElementById('searchInput').blur();
+                }} else if (document.activeElement.id === 'newsSearchInput') {{
+                    clearNewsSearch();
+                    document.getElementById('newsSearchInput').blur();
+                }}
             }}
             if ((e.key === 'v' || e.key === 'V') && document.activeElement.tagName !== 'INPUT') {{
-                setLayoutView(currentLayout === 'grid' ? 'list' : 'grid');
+                if (currentMainTab === 'vouchers') {{
+                    setLayoutView(currentLayout === 'grid' ? 'list' : 'grid');
+                }}
             }}
             if ((e.key === 't' || e.key === 'T') && document.activeElement.tagName !== 'INPUT') {{
                 toggleTheme();
             }}
         }});
 
+        // Input Listeners
         document.getElementById('searchInput').addEventListener('input', (e) => {{
             currentSearch = e.target.value;
             const clearBtn = document.getElementById('clearSearchBtn');
@@ -1048,6 +1486,14 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             else clearBtn.classList.add('hidden');
             syncUrlParams();
             renderCards();
+        }});
+
+        document.getElementById('newsSearchInput').addEventListener('input', (e) => {{
+            currentNewsSearch = e.target.value;
+            const clearBtn = document.getElementById('clearNewsSearchBtn');
+            if (currentNewsSearch.trim() !== '') clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+            renderNews();
         }});
 
         // Boot
@@ -1060,16 +1506,17 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
 
 def build_all():
     data = load_offers()
+    news_data = load_news()
     
     # 1. Write README.md
-    readme_content = generate_readme(data)
+    readme_content = generate_readme(data, news_data)
     with open(README_FILE, "w", encoding="utf-8") as f:
         f.write(readme_content)
     print(f"[OK] Successfully built {README_FILE}")
     
     # 2. Write docs/index.html
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
-    html_content = generate_web_dashboard(data)
+    html_content = generate_web_dashboard(data, news_data)
     with open(DOCS_HTML, "w", encoding="utf-8") as f:
         f.write(html_content)
     print(f"[OK] Successfully built {DOCS_HTML}")

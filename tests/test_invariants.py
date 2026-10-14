@@ -1,7 +1,7 @@
 """
 End-to-End Output Verification & Mathematical Invariant Test Suite.
 Enforces structural payload integrity, cross-format synchronization (JSON vs README vs HTML),
-and calendar conservation laws across CertPulse.
+calendar conservation laws, and verified authentic news radar integrity across CertPulse.
 """
 
 import re
@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "offers.json"
+NEWS_FILE = ROOT / "data" / "news.json"
 README_FILE = ROOT / "README.md"
 DOCS_HTML = ROOT / "docs" / "index.html"
 
@@ -19,10 +20,34 @@ CANONICAL_STATUSES = {
     "Review Needed", "Server Error", "Network Warning"
 }
 
+APPROVED_NEWS_DOMAINS = {
+    "aws.amazon.com",
+    "microsoft.com",
+    "cloud.google.com",
+    "blogs.oracle.com",
+    "blogs.cisco.com",
+    "github.blog",
+    "linuxfoundation.org",
+    "databricks.com",
+    "snowflake.com"
+}
+
+BANNED_CLICKBAIT_PATTERNS = [
+    r"\bshocking\b", r"\binsane\b", r"\byou won't believe\b",
+    r"\bunbelievable\b", r"\bsecret trick\b", r"\bgame changer\b",
+    r"\bdestroy\b", r"\bmind blowing\b", r"\bexposed\b", r"\bviral\b"
+]
+
 @pytest.fixture(scope="session")
 def loaded_data():
     assert DATA_FILE.exists(), f"Missing primary data store: {DATA_FILE}"
     with open(DATA_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+@pytest.fixture(scope="session")
+def loaded_news():
+    assert NEWS_FILE.exists(), f"Missing news data store: {NEWS_FILE}"
+    with open(NEWS_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
 @pytest.fixture(scope="session")
@@ -68,6 +93,38 @@ def test_json_schema_invariants(loaded_data):
         if val is not None:
             assert isinstance(val, (int, float)) and val >= 0, f"Invalid value_usd for {oid}: {val}"
 
+def test_news_json_schema_invariants(loaded_news):
+    """Asserts that verified engineering news items meet strict integrity and authenticity invariants."""
+    news_items = loaded_news.get("news", [])
+    assert len(news_items) >= 10, f"Expected at least 10 news items, found {len(news_items)}"
+
+    seen_ids = set()
+    for item in news_items:
+        # Key presence
+        for req_field in ["id", "company", "source", "source_domain", "category", "title", "summary", "published_date", "url"]:
+            assert req_field in item, f"News item {item.get('id', 'UNKNOWN')} missing field: {req_field}"
+            assert str(item[req_field]).strip() != "", f"News item {item.get('id')} has empty field {req_field}"
+
+        # Uniqueness
+        nid = item["id"]
+        assert nid not in seen_ids, f"Duplicate news id: {nid}"
+        seen_ids.add(nid)
+
+        # Domain whitelist invariant (strictly authentic primary enterprise domains)
+        domain = item["source_domain"]
+        assert domain in APPROVED_NEWS_DOMAINS, f"Domain '{domain}' not in approved enterprise whitelist for {nid}"
+
+        # URL HTTPS invariant
+        assert item["url"].startswith("https://"), f"News URL must be HTTPS: {item['url']}"
+
+        # Date format invariant (YYYY-MM-DD)
+        assert re.match(r"^\d{4}-\d{2}-\d{2}$", item["published_date"]), f"Invalid published_date for {nid}: {item['published_date']}"
+
+        # Zero clickbait invariant
+        content = (item["title"] + " " + item["summary"]).lower()
+        for pat in BANNED_CLICKBAIT_PATTERNS:
+            assert not re.search(pat, content), f"Clickbait buzzword detected in {nid}: pattern {pat}"
+
 # --- 2. Mathematical Conservation Laws & Cross-Format Sync ---
 
 def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
@@ -99,20 +156,38 @@ def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
     assert f"| **Active Opportunities** | **{expected_count}** |" in readme_text
     assert f"| **Total Financial Value** | **${expected_savings:,} USD** |" in readme_text
 
-def test_web_dashboard_payload_sync(loaded_data, html_text):
+def test_readme_news_radar_sync(loaded_news, readme_text):
+    """Asserts that the intelligence radar table in README.md accurately reflects all news items."""
+    news_items = loaded_news.get("news", [])
+    assert "## 📰 Verified Cloud & Engineering Intelligence Radar" in readme_text, "Missing news radar heading in README"
+    assert f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** |" in readme_text
+
+    for item in news_items:
+        assert item["title"] in readme_text, f"News title '{item['title']}' not rendered in README table"
+        assert item["url"] in readme_text, f"News URL '{item['url']}' not linked in README table"
+
+def test_web_dashboard_payload_sync(loaded_data, loaded_news, html_text):
     """
-    Asserts that the static web dashboard contains the full, valid JSON payload
-    and does not truncate records.
+    Asserts that the static web dashboard contains the full, valid JSON payloads
+    for both offersData and newsData.
     """
     offers = loaded_data.get("offers", [])
+    news = loaded_news.get("news", [])
     
-    # Extract embedded JSON data from script block
-    match = re.search(r"const offersData = (\[.*?\]);", html_text, flags=re.DOTALL)
-    assert match is not None, "Embedded offersData script variable not found in docs/index.html"
-    
-    embedded_data = json.loads(match.group(1))
-    assert len(embedded_data) == len(offers), (
-        f"Dashboard offersData count ({len(embedded_data)}) != JSON offers count ({len(offers)})"
+    # 1. Offers JSON payload sync
+    match_offers = re.search(r"const offersData = (\[.*?\]);", html_text, flags=re.DOTALL)
+    assert match_offers is not None, "Embedded offersData script variable not found in docs/index.html"
+    embedded_offers = json.loads(match_offers.group(1))
+    assert len(embedded_offers) == len(offers), (
+        f"Dashboard offersData count ({len(embedded_offers)}) != JSON offers count ({len(offers)})"
+    )
+
+    # 2. News JSON payload sync
+    match_news = re.search(r"const newsData = (\[.*?\]);", html_text, flags=re.DOTALL)
+    assert match_news is not None, "Embedded newsData script variable not found in docs/index.html"
+    embedded_news = json.loads(match_news.group(1))
+    assert len(embedded_news) == len(news), (
+        f"Dashboard newsData count ({len(embedded_news)}) != JSON news count ({len(news)})"
     )
 
 # --- 3. Anti-Divergence Regression Checks ---
