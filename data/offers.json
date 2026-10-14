@@ -16,7 +16,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "2026-12-31",
       "claim_steps": "Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "oracle-oci-free-cert",
@@ -32,7 +32,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling Cycles",
       "claim_steps": "Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.",
-      "inspection_notes": "Oracle portal bot-protected (403); RSS fallback unavailable \u2014 defaulting to Active"
+      "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)"
     },
     {
       "id": "cisco-rev-up-recert",
@@ -44,11 +44,11 @@
       "value_usd": 300,
       "eligibility": "Anyone holding active Cisco certifications",
       "url": "https://u.cisco.com/",
-      "status": "Active",
+      "status": "Review Needed",
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling",
       "claim_steps": "Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found"
     },
     {
       "id": "ms-applied-skills",
@@ -59,12 +59,12 @@
       "offer_type": "100% Free Credential",
       "value_usd": 100,
       "eligibility": "Global (Free for all)",
-      "url": "https://learn.microsoft.com/credentials/applied-skills/",
-      "status": "Review Needed",
+      "url": "https://learn.microsoft.com/en-us/credentials/applied-skills/",
+      "status": "Active",
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.",
-      "inspection_notes": "No free/voucher/scholarship signal near certification terms \u2014 possible standard paid catalog"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "gcp-cloud-skills-boost",
@@ -76,11 +76,11 @@
       "value_usd": 100,
       "eligibility": "Global (Google Account)",
       "url": "https://www.cloudskillsboost.google/",
-      "status": "Review Needed",
+      "status": "Active",
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.",
-      "inspection_notes": "No free/voucher/scholarship signal near certification terms \u2014 possible standard paid catalog"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "linux-foundation-lift",
@@ -96,7 +96,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Annual Windows",
       "claim_steps": "Submit an application during the annual LiFT scholarship window describing your career goals. Winners receive a 100% free exam voucher + training course.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "snowflake-hands-on-essentials",
@@ -112,7 +112,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "mongodb-developer-cert",
@@ -128,7 +128,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "salesforce-trailhead-quests",
@@ -140,11 +140,11 @@
       "value_usd": 200,
       "eligibility": "Global (Trailhead users)",
       "url": "https://trailhead.salesforce.com/quests",
-      "status": "Review Needed",
+      "status": "Active",
       "verification_date": "2026-10-14",
       "expiry_date": "Monthly Quests",
       "claim_steps": "Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.",
-      "inspection_notes": "No free/voucher/scholarship signal near certification terms \u2014 possible standard paid catalog"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "postman-api-expert",
@@ -156,11 +156,11 @@
       "value_usd": 50,
       "eligibility": "Global (Free for all developers & students)",
       "url": "https://academy.postman.com/",
-      "status": "Review Needed",
+      "status": "Active",
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.",
-      "inspection_notes": "No free/voucher/scholarship signal near certification terms \u2014 possible standard paid catalog"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "juniper-open-learning",
@@ -176,7 +176,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling",
       "claim_steps": "Register for a free Juniper Open Learning webinar session, complete the pre-assessment module with a passing score, and receive a Pearson VUE voucher.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "qualys-certified-specialist",
@@ -192,7 +192,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "databricks-genai-fundamentals",
@@ -204,11 +204,11 @@
       "value_usd": 75,
       "eligibility": "Global (Free for all)",
       "url": "https://www.databricks.com/learn/training/certification",
-      "status": "Active",
+      "status": "Registrations Closed",
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "Detected closure phrase: 'no longer available'"
     },
     {
       "id": "fortinet-cybersecurity-fundamentals",
@@ -224,7 +224,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "github-student-foundations",
@@ -240,7 +240,7 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling",
       "claim_steps": "Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     },
     {
       "id": "aws-educate-badges",
@@ -256,8 +256,8 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Sign up for AWS Educate without an AWS account or credit card. Complete hands-on cloud labs to earn industry-recognized digital credentials.",
-      "inspection_notes": "HTTP 200 OK \u2014 Offer signal verified (Live)"
+      "inspection_notes": "HTTP 200 OK (Live Verified)"
     }
   ],
-  "last_inspected": "2026-10-14T12:03:49.744671"
+  "last_inspected": "2026-10-14T12:38:25.697124"
 }

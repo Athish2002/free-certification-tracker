@@ -3,8 +3,8 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation, Snowflake, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-12-success.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242113%20USD-gold.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-14-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242188%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
 
@@ -14,9 +14,9 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **12** | Verified 100% free exams & live registration windows |
-| **Total Financial Value** | **$2,113 USD** | Aggregate savings if claimed today |
-| **Last Automated Inspection** | `2026-10-14 12:03 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Active Opportunities** | **14** | Verified 100% free exams & live registration windows |
+| **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
+| **Last Automated Inspection** | `2026-10-14 12:38 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -37,12 +37,12 @@
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | `100% Free Exam Voucher` | $245 | 🟢 Active | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
-### Networking
+### Cloud & AI
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| **Cisco** | Cisco Continuing Education (Recertification) | `Free CE Credits` | $300 | 🟢 Active | [**Claim Offer**](https://u.cisco.com/) |
-| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | `100% Free Credential` | $100 | 🟢 Active | [**Claim Offer**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | `Free Skill Badges & Swag` | $100 | 🟢 Active | [**Claim Offer**](https://www.cloudskillsboost.google/) |
 
 ### DevOps & Cloud Native
 
@@ -56,7 +56,24 @@
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | `100% Free Credential` | $150 | 🟢 Active | [**Claim Offer**](https://learn.snowflake.com/en/) |
 | **MongoDB** | MongoDB Associate Developer / DBA | `Free Training & Student Voucher` | $150 | 🟢 Active | [**Claim Offer**](https://learn.mongodb.com/) |
-| **Databricks** | Generative AI Fundamentals | `100% Free Credential` | $75 | 🟢 Active | [**Claim Offer**](https://www.databricks.com/learn/training/certification) |
+
+### CRM & Cloud
+
+| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **Salesforce** | Salesforce Certified Administrator / App Builder | `Quest Sweepstakes Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://trailhead.salesforce.com/quests) |
+
+### API & DevOps
+
+| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **Postman** | Postman API Fundamentals Student / Pro Expert | `100% Free Credential` | $50 | 🟢 Active | [**Claim Offer**](https://academy.postman.com/) |
+
+### Networking
+
+| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
 
 ### DevOps
 
@@ -77,10 +94,8 @@
 
 | Provider | Certification | Concluded Status | Reason / Inspection Note |
 | :--- | :--- | :---: | :--- |
-| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | Review Needed | No free/voucher/scholarship signal near certification terms — possible standard paid catalog |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Review Needed | No free/voucher/scholarship signal near certification terms — possible standard paid catalog |
-| **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | No free/voucher/scholarship signal near certification terms — possible standard paid catalog |
-| **Postman** | Postman API Fundamentals Student / Pro Expert | Review Needed | No free/voucher/scholarship signal near certification terms — possible standard paid catalog |
+| **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
+| **Databricks** | Generative AI Fundamentals | 🟡 Closed / Waitlist | Detected closure phrase: 'no longer available' |
 
 ---
 
@@ -100,12 +115,19 @@
 - **Steps to Claim:** Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.
 - **Official Link:** [https://education.oracle.com/oracle-cloud-infrastructure](https://education.oracle.com/oracle-cloud-infrastructure)
 
-#### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
-- **Provider:** Cisco
-- **Value:** $300 USD
-- **Eligibility:** Anyone holding active Cisco certifications
-- **Steps to Claim:** Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.
-- **Official Link:** [https://u.cisco.com/](https://u.cisco.com/)
+#### Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials
+- **Provider:** Microsoft Azure
+- **Value:** $100 USD
+- **Eligibility:** Global (Free for all)
+- **Steps to Claim:** Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.
+- **Official Link:** [https://learn.microsoft.com/en-us/credentials/applied-skills/](https://learn.microsoft.com/en-us/credentials/applied-skills/)
+
+#### Google Cloud Skills Boost & Innovators Free Badges
+- **Provider:** Google Cloud
+- **Value:** $100 USD
+- **Eligibility:** Global (Google Account)
+- **Steps to Claim:** Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.
+- **Official Link:** [https://www.cloudskillsboost.google/](https://www.cloudskillsboost.google/)
 
 #### Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)
 - **Provider:** Linux Foundation / CNCF
@@ -128,6 +150,20 @@
 - **Steps to Claim:** Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.
 - **Official Link:** [https://learn.mongodb.com/](https://learn.mongodb.com/)
 
+#### Salesforce Trailhead Quests - Free Certification Vouchers
+- **Provider:** Salesforce
+- **Value:** $200 USD
+- **Eligibility:** Global (Trailhead users)
+- **Steps to Claim:** Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.
+- **Official Link:** [https://trailhead.salesforce.com/quests](https://trailhead.salesforce.com/quests)
+
+#### Postman API Fundamentals & Student Expert Certifications
+- **Provider:** Postman
+- **Value:** $50 USD
+- **Eligibility:** Global (Free for all developers & students)
+- **Steps to Claim:** Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.
+- **Official Link:** [https://academy.postman.com/](https://academy.postman.com/)
+
 #### Juniper Open Learning - JNCIA Associate Certification Vouchers
 - **Provider:** Juniper Networks
 - **Value:** $200 USD
@@ -141,13 +177,6 @@
 - **Eligibility:** Global (Free registration)
 - **Steps to Claim:** Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.
 - **Official Link:** [https://www.qualys.com/training](https://www.qualys.com/training)
-
-#### Databricks Generative AI Fundamentals Accreditation
-- **Provider:** Databricks
-- **Value:** $75 USD
-- **Eligibility:** Global (Free for all)
-- **Steps to Claim:** Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.
-- **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
 
 #### Fortinet Certified Fundamentals (FCF) in Cybersecurity
 - **Provider:** Fortinet
@@ -197,4 +226,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 12:03 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 12:38 UTC`.*
