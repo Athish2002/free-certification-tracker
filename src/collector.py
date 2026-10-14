@@ -11,7 +11,7 @@ import httpx
 import logging
 import xml.etree.ElementTree as ET
 from typing import List, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 
 from src.authenticity import check_domain_authenticity, SCAM_DOMAIN_KEYWORDS, BANNED_URL_SHORTENERS
 
@@ -86,7 +86,7 @@ def fetch_reddit_leads() -> List[Dict[str, Any]]:
                         title = title_el.text.strip() if title_el is not None and title_el.text else ""
                         link = link_el.attrib.get("href") if link_el is not None else ""
                         content = content_el.text.strip() if content_el is not None and content_el.text else ""
-                        updated = updated_el.text if updated_el is not None and updated_el.text else datetime.utcnow().isoformat()
+                        updated = updated_el.text if updated_el is not None and updated_el.text else datetime.now(timezone.utc).isoformat()
                         
                         title_lower = title.lower()
                         combined_lower = f"{title_lower} {content.lower()}"

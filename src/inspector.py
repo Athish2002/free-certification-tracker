@@ -113,8 +113,8 @@ def inspect_url_with_retry(
 
     # Static pre-inspection authenticity gate
     pre_auth = audit_offer_authenticity(offer)
-    if pre_auth.get("verdict") == "DECEPTIVE_SCAM":
-        return "Review Needed", f"Security Alert: Deceptive or scam domain detected ({pre_auth['summary']})", url, pre_auth
+    if pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
+        return "Review Needed", f"Security Alert: Domain authenticity failed ({pre_auth['summary']})", url, pre_auth
 
     last_err = ""
     for attempt in range(max_retries):
@@ -171,7 +171,30 @@ def inspect_url_with_retry(
         except (httpx.ConnectTimeout, httpx.ReadTimeout) as e:
             last_err = "Read/Connect Timeout"
             time.sleep(1.5)
+        except httpx.ConnectError as e:
+            err_msg = str(e).lower()
+            if any(term in err_msg for term in ["cert", "ssl", "tls", "handshake"]):
+                fallback_auth = audit_offer_authenticity(offer)
+                fallback_auth["ssl_verified"] = False
+                fallback_auth["is_authentic_vendor"] = False
+                fallback_auth["authenticity_score"] = max(0, fallback_auth["authenticity_score"] - 50)
+                fallback_auth["verdict"] = "SUSPICIOUS_UNTRUSTED"
+                fallback_auth["warning_flags"].append("TLS_CERTIFICATE_VERIFICATION_FAILED")
+                fallback_auth["summary"] = f"0% Authenticity: Untrusted (TLS Handshake Failed: {str(e)[:40]})"
+                return "Review Needed", f"Security Alert: SSL/TLS certificate verification failed ({str(e)[:50]})", url, fallback_auth
+            last_err = f"Connect error: {str(e)[:50]}"
+            time.sleep(1.5)
         except httpx.RequestError as e:
+            err_msg = str(e).lower()
+            if any(term in err_msg for term in ["cert", "ssl", "tls", "handshake"]):
+                fallback_auth = audit_offer_authenticity(offer)
+                fallback_auth["ssl_verified"] = False
+                fallback_auth["is_authentic_vendor"] = False
+                fallback_auth["authenticity_score"] = max(0, fallback_auth["authenticity_score"] - 50)
+                fallback_auth["verdict"] = "SUSPICIOUS_UNTRUSTED"
+                fallback_auth["warning_flags"].append("TLS_CERTIFICATE_VERIFICATION_FAILED")
+                fallback_auth["summary"] = f"0% Authenticity: Untrusted (TLS Handshake Failed: {str(e)[:40]})"
+                return "Review Needed", f"Security Alert: SSL/TLS certificate verification failed ({str(e)[:50]})", url, fallback_auth
             last_err = f"Request error: {str(e)[:50]}"
             time.sleep(1.5)
         except Exception as e:

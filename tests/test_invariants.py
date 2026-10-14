@@ -252,7 +252,7 @@ def test_offer_authenticity_schema_invariants(loaded_data):
         assert details.get("domain_verified") is True, f"Offer {oid} domain not verified in details"
         assert details.get("ssl_verified") is True, f"Offer {oid} SSL not verified in details"
         assert details.get("redirect_secure") is True, f"Offer {oid} redirect not verified in details"
-        assert details.get("trust_tier") in {"Official Vendor Portal", "Accredited Exam Partner"}
+        assert details.get("trust_tier") in {"Official Vendor Portal", "Accredited Exam Partner", "Accredited Educational Institution"}
 
 def test_domain_authenticity_and_anti_scam_invariants(loaded_data):
     """
@@ -271,7 +271,7 @@ def test_domain_authenticity_and_anti_scam_invariants(loaded_data):
         # 2. Domain whitelist & platform matching
         domain_ok, tier, reason, flags = check_domain_authenticity(url, o.get("platform", ""))
         assert domain_ok is True, f"Offer {oid} domain failed authenticity check: {reason} (flags: {flags})"
-        assert tier in {"Official Vendor Portal", "Accredited Exam Partner"}
+        assert tier in {"Official Vendor Portal", "Accredited Exam Partner", "Accredited Educational Institution"}
 
         # 3. Zero scam keywords in domain hostname
         host = clean_hostname(url)
@@ -293,14 +293,20 @@ def test_domain_authenticity_and_anti_scam_invariants(loaded_data):
 def test_authenticity_engine_adversarial_rejection():
     """
     Asserts that the authenticity engine vigorously rejects typosquatting,
-    scam voucher farms, braindumps, paywall traps, and insecure transports.
+    scam voucher farms, braindumps, paywall traps, open redirects, vendor mismatches, and insecure transports.
     """
     adversarial_cases = [
-        # Typosquatting Microsoft
+        # Typosquatting Microsoft (must strictly be DECEPTIVE_SCAM)
         {
             "offer": {"platform": "Microsoft Azure", "url": "https://micros0ft-freecerts.top/promo"},
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Typosquatting Salesforce
+        {
+            "offer": {"platform": "Salesforce", "url": "https://salesf0rce.com/voucher"},
+            "body": "",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
         },
         # Exam braindump domain
         {
@@ -320,6 +326,24 @@ def test_authenticity_engine_adversarial_rejection():
             "body": "",
             "expected_verdict": ["SUSPICIOUS_UNTRUSTED"]
         },
+        # Userinfo spoofing injection
+        {
+            "offer": {"platform": "Microsoft Azure", "url": "https://admin:secret@learn.microsoft.com/credentials"},
+            "body": "",
+            "expected_verdict": ["SUSPICIOUS_UNTRUSTED"]
+        },
+        # Open redirect target to scam domain
+        {
+            "offer": {"platform": "Microsoft Azure", "url": "https://learn.microsoft.com/external?goto=https://scam-dumps.xyz"},
+            "body": "",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Vendor mismatch (cross-vendor spoofing)
+        {
+            "offer": {"platform": "Microsoft Azure", "url": "https://cisco.com/free-vouchers"},
+            "body": "",
+            "expected_verdict": ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]
+        },
         # Legitimate domain with exam dump scam content
         {
             "offer": {"platform": "Oracle Cloud", "url": "https://education.oracle.com/oracle-cloud-infrastructure"},
@@ -330,6 +354,18 @@ def test_authenticity_engine_adversarial_rejection():
         {
             "offer": {"platform": "Cisco", "url": "https://u.cisco.com/"},
             "body": "Credit card is required to enroll. 7-day trial then $49 billed automatically after trial.",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Deceptive paywall auto-renewal
+        {
+            "offer": {"platform": "Salesforce", "url": "https://trailhead.salesforce.com/quests"},
+            "body": "Credit card is required for account creation. Subscription auto-renews at $39/mo.",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Expired promo/coupon code page
+        {
+            "offer": {"platform": "Databricks", "url": "https://www.databricks.com/learn/training/certification"},
+            "body": "Sorry, this promo code is invalid or has expired.",
             "expected_verdict": ["DECEPTIVE_SCAM"]
         }
     ]
@@ -345,7 +381,7 @@ def test_authenticity_engine_adversarial_rejection():
 def test_redirect_chain_security_invariant():
     """
     Asserts that redirect chains with protocol downgrades, shorteners,
-    or malicious destinations are detected and rejected.
+    affiliate trackers, or malicious destinations are detected and rejected.
     """
     # 1. Clean genuine chain
     clean_chain = [
@@ -375,7 +411,27 @@ def test_redirect_chain_security_invariant():
     assert ok is False
     assert "REDIRECT_THROUGH_SHORTENER" in flags
 
-    # 4. Redirecting to external untrusted scam destination
+    # 4. Intermediate hop routing through scam domain
+    scam_hop_chain = [
+        "https://learn.microsoft.com/start",
+        "https://scam-ad-tracker.xyz/click",
+        "https://learn.microsoft.com/finish"
+    ]
+    ok, flags = check_redirect_chain_security(scam_hop_chain, "Microsoft Azure")
+    assert ok is False
+    assert any("REDIRECT_THROUGH_SUSPICIOUS_TLD" in f or "REDIRECT_THROUGH_SCAM" in f for f in flags)
+
+    # 5. Intermediate hop routing through affiliate network
+    affiliate_hop_chain = [
+        "https://aws.amazon.com/promo",
+        "https://cj.com/track",
+        "https://aws.amazon.com/finish"
+    ]
+    ok, flags = check_redirect_chain_security(affiliate_hop_chain, "Amazon Web Services")
+    assert ok is False
+    assert any("AFFILIATE" in f for f in flags)
+
+    # 6. Redirecting to external untrusted scam destination
     scam_dest_chain = [
         "https://u.cisco.com/promo",
         "https://scam-voucher-farm.xyz/affiliate-lead"
@@ -383,6 +439,19 @@ def test_redirect_chain_security_invariant():
     ok, flags = check_redirect_chain_security(scam_dest_chain, "Cisco")
     assert ok is False
     assert "REDIRECT_UNTRUSTED_DESTINATION" in flags
+
+def test_educational_institution_authenticity_invariant():
+    """Asserts that accredited university and academic domains are verified authentic."""
+    uni_cases = [
+        "https://online.stanford.edu/courses/cloud-computing",
+        "https://cs50.harvard.edu/x",
+        "https://mitxonline.mit.edu/courses"
+    ]
+    for url in uni_cases:
+        ok, tier, _, flags = check_domain_authenticity(url, "")
+        assert ok is True
+        assert tier == "Accredited Educational Institution"
+        assert "ACCREDITED_UNIVERSITY_DOMAIN" in flags
 
 def test_readme_and_dashboard_authenticity_sync(loaded_data, readme_text, html_text):
     """
