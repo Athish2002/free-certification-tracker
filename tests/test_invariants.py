@@ -537,4 +537,106 @@ def test_difficulty_tier_and_timeline_metadata(loaded_data):
         assert "recurrence_pattern" in o and str(o["recurrence_pattern"]).strip() != "", f"Offer {oid} missing recurrence_pattern"
 
 
+def test_html_javascript_syntax_validity(html_text):
+    """
+    Asserts that the JavaScript embedded in docs/index.html is 100% syntactically valid
+    and passes Node.js syntax verification with exit code 0.
+    """
+    import subprocess
+    import tempfile
+
+    assert "<script>" in html_text and "</script>" in html_text, "Missing script tag in index.html"
+    script_content = html_text.split("<script>")[1].split("</script>")[0]
+
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as tmp:
+        tmp.write(script_content)
+        tmp_path = Path(tmp.name)
+
+    try:
+        proc = subprocess.run(["node", "--check", str(tmp_path)], capture_output=True, text=True)
+        assert proc.returncode == 0, f"JavaScript syntax error in docs/index.html:\n{proc.stderr}"
+    finally:
+        if tmp_path.exists():
+            tmp_path.unlink()
+
+
+def test_domain_matrix_technical_domains(html_text):
+    """
+    Asserts that all 5 required technical domains (Cloud, Security, AI/Data, DevOps, Networking)
+    are configured and rendered in the Domain & Skill Matrix.
+    """
+    for dom_id in ["cloud", "security", "ai_data", "devops", "networking"]:
+        assert f"id: '{dom_id}'" in html_text, f"Missing domain configuration for: {dom_id}"
+
+
+def test_interactive_browser_view_switching():
+    """
+    Executes headless Chromium browser test via Playwright to verify:
+    1. Zero console errors or uncaught page exceptions.
+    2. Dynamic DOM rendering across Bento Grid, Table, Timeline, and Matrix.
+    3. Keyboard listeners ('v', '1', '2', 't').
+    4. URL query parameter synchronization and deep-linking (?view=timeline, ?view=matrix).
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        pytest.skip("Playwright not installed in environment")
+
+    file_url = DOCS_HTML.as_uri()
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page_errors = []
+        page.on("pageerror", lambda err: page_errors.append(str(err)))
+
+        # 1. Initial Load in Bento Grid
+        page.goto(file_url)
+        page.wait_for_selector("#offersGrid")
+        assert page.locator("#offersGrid .primer-card").count() > 0, "No voucher cards rendered in Bento Grid"
+
+        # 2. Switch to Table
+        page.click("#viewBtnList")
+        assert page.locator("#offersTableBody > div").count() > 0, "No rows rendered in Table view"
+
+        # 3. Switch to Timeline
+        page.click("#viewBtnTimeline")
+        assert page.locator("#offersTimeline .primer-card").count() > 0, "No cards rendered in Timeline view"
+
+        # 4. Switch to Matrix
+        page.click("#viewBtnMatrix")
+        assert page.locator("#offersMatrix .primer-card").count() > 0, "No cards rendered in Matrix view"
+
+        # 5. Keyboard shortcut V (cycle from matrix -> grid)
+        page.keyboard.press("v")
+        assert page.is_visible("#cardsViewContainer"), "Keyboard 'v' failed to switch back to Grid"
+
+        # 6. Keyboard shortcut 2 (jump to News Radar)
+        page.keyboard.press("2")
+        assert page.is_visible("#newsSection"), "Keyboard '2' failed to switch to News tab"
+
+        # 7. Keyboard shortcut 1 (jump to Vouchers)
+        page.keyboard.press("1")
+        assert page.is_visible("#vouchersSection"), "Keyboard '1' failed to switch to Vouchers tab"
+
+        # 8. Keyboard shortcut T (theme toggle)
+        theme_init = page.evaluate("() => document.documentElement.getAttribute('data-theme')")
+        page.keyboard.press("t")
+        theme_toggled = page.evaluate("() => document.documentElement.getAttribute('data-theme')")
+        assert theme_init != theme_toggled, f"Theme did not toggle: {theme_init} -> {theme_toggled}"
+
+        # 9. Direct Deep-Linking URL query parameter (?view=matrix)
+        page.goto(f"{file_url}?view=matrix")
+        assert page.is_visible("#matrixViewContainer"), "Deep-link ?view=matrix did not activate Matrix view"
+
+        # 10. Direct Deep-Linking URL query parameter (?view=timeline)
+        page.goto(f"{file_url}?view=timeline")
+        assert page.is_visible("#timelineViewContainer"), "Deep-link ?view=timeline did not activate Timeline view"
+
+        browser.close()
+
+        assert len(page_errors) == 0, f"Encountered browser page errors: {page_errors}"
+
+
+
 

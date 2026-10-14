@@ -450,6 +450,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             
             <div class="hidden lg:flex items-center gap-2 text-xs" style="color: var(--fg-subtle);">
                 <span class="text-[11px] font-medium">Hotkeys:</span>
+                <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">V</kbd>
+                <span>Views</span>
                 <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">1</kbd>
                 <span>Vouchers</span>
                 <kbd class="px-1.5 py-0.5 rounded border text-[10px] font-mono" style="background-color: var(--canvas-default); border-color: var(--border-default);">2</kbd>
@@ -606,25 +608,25 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     <div class="flex items-center justify-between sm:justify-start gap-2">
                         <!-- Layout Switcher (Grid vs Table vs Timeline vs Matrix) -->
                         <div class="flex items-center rounded-lg border p-0.5 flex-1 sm:flex-initial justify-center" id="layoutControlGroup" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                            <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (V or 1)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
+                            <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (Press V to cycle)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3Zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3Z"></path>
                                 </svg>
                                 <span>Grid</span>
                             </button>
-                            <button id="viewBtnList" onclick="setLayoutView('list')" title="Catalog Table View (V or 2)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
+                            <button id="viewBtnList" onclick="setLayoutView('list')" title="Catalog Table View (Press V to cycle)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M2 3.75C2 3.336 2.336 3 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z"></path>
                                 </svg>
                                 <span>Table</span>
                             </button>
-                            <button id="viewBtnTimeline" onclick="setLayoutView('timeline')" title="Recurrence & Expiry Timeline Roadmap (V or 3)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
+                            <button id="viewBtnTimeline" onclick="setLayoutView('timeline')" title="Recurrence & Expiry Timeline Roadmap (Press V to cycle)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm7.25-3.25v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1-.22-.53V4.75a.75.75 0 0 1 1.5 0Z"></path>
                                 </svg>
                                 <span>Timeline</span>
                             </button>
-                            <button id="viewBtnMatrix" onclick="setLayoutView('matrix')" title="Domain & Skill Matrix View (V or 4)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
+                            <button id="viewBtnMatrix" onclick="setLayoutView('matrix')" title="Domain & Skill Matrix View (Press V to cycle)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M1.5 1h13A1.5 1.5 0 0 1 16 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-11A1.5 1.5 0 0 1 1.5 1Zm0 1.5a.5.5 0 0 0-.5.5v3h4.5V2.5H1.5Zm5.5 0v3h4.5V2.5H7Zm5.5 0v3H15V3a.5.5 0 0 0-.5-.5h-2Zm2 4.5h-3.5v3.5H15V7Zm-4.5 3.5V7H7v3.5h4.5ZM5.5 7H1v3.5h4.5V7Zm0 4.5H1v1.5a.5.5 0 0 0 .5.5H5.5v-2Zm1.5 2h4.5v-2H7v2Zm5.5 0h1.5a.5.5 0 0 0 .5-.5v-1.5h-2v2Z"></path>
                                 </svg>
@@ -1162,9 +1164,15 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         function copyShareLink() {{
             syncUrlParams();
-            navigator.clipboard.writeText(window.location.href).then(() => {{
-                showToast('Direct link with active filters copied!');
-            }});
+            if (navigator.clipboard && navigator.clipboard.writeText) {{
+                navigator.clipboard.writeText(window.location.href).then(() => {{
+                    showToast('Direct link with active filters copied!');
+                }}).catch(() => {{
+                    showToast('Unable to copy share link');
+                }});
+            }} else {{
+                showToast('Clipboard API not supported in this browser');
+            }}
         }}
 
         function exportFilteredJson() {{
@@ -1474,7 +1482,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         </div>
                     `;
                 }}).join('');
-            }} else {{
+            }} else if (currentLayout === 'list') {{
                 // Executive Directory Table Catalog View (Mobile Responsive Cards / Desktop Rows)
                 tableBody.innerHTML = filtered.map(o => {{
                     const isLive = (o.status === 'Active');
@@ -1636,7 +1644,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
                         return `
                             <div class="relative pl-6 sm:pl-8 pb-6 group">
-                                <div class="absolute left-[-9px] sm:left-[-9px] top-1.5 w-4 h-4 rounded-full border-2 flex items-center justify-center" style="background-color: var(--canvas-default); border-color: ${{isLive ? 'var(--success-fg)' : 'var(--border-default)'}};">
+                                <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-2 flex items-center justify-center" style="left: -9px; background-color: var(--canvas-default); border-color: ${{isLive ? 'var(--success-fg)' : 'var(--border-default)'}};">
                                     <div class="w-2 h-2 rounded-full ${{isLive ? 'animate-pulse' : ''}}" style="background-color: ${{isLive ? 'var(--success-fg)' : 'var(--fg-muted)'}};"></div>
                                 </div>
                                 <div class="primer-card p-4 sm:p-5 rounded-xl border flex flex-col justify-between">
@@ -1720,10 +1728,14 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
                 const domains = [
                     {{ id: 'cloud', name: 'Cloud Infrastructure & Architecture', icon: '☁️', matcher: o => o.category.includes('Cloud') || o.platform.includes('AWS') || o.platform.includes('Azure') || o.platform.includes('Google') || o.platform.includes('Oracle') }},
-                    {{ id: 'security', name: 'Cybersecurity & Network Defense', icon: '🛡️', matcher: o => o.category.includes('Security') || o.category.includes('Networking') || ['ISC2', 'Cisco', 'Palo Alto Networks', 'Splunk', 'IBM', 'Qualys', 'Fortinet', 'Juniper Networks'].includes(o.platform) }},
+                    {{ id: 'security', name: 'Cybersecurity & Zero Trust Defense', icon: '🛡️', matcher: o => o.category.includes('Security') || ['ISC2', 'Palo Alto Networks', 'Splunk', 'IBM', 'Qualys', 'Fortinet'].includes(o.platform) || (o.platform === 'Cisco' && (o.category.includes('Security') || o.title.includes('Cyber'))) }},
                     {{ id: 'ai_data', name: 'AI, Machine Learning & Data Systems', icon: '🤖', matcher: o => o.category.includes('AI') || o.category.includes('Data') || ['Databricks', 'Snowflake', 'MongoDB'].includes(o.platform) || o.title.includes('AI') || o.title.includes('Data') }},
-                    {{ id: 'devops', name: 'DevOps, SRE & Cloud Native', icon: '⚙️', matcher: o => o.category.includes('DevOps') || ['Linux Foundation / CNCF', 'Red Hat', 'HashiCorp', 'GitLab', 'GitHub', 'Postman'].includes(o.platform) }}
+                    {{ id: 'devops', name: 'DevOps, SRE & Cloud Native', icon: '⚙️', matcher: o => o.category.includes('DevOps') || ['Linux Foundation / CNCF', 'Red Hat', 'HashiCorp', 'GitLab', 'GitHub', 'Postman'].includes(o.platform) }},
+                    {{ id: 'networking', name: 'Enterprise Networking & Telemetry', icon: '🌐', matcher: o => o.category.includes('Networking') || (['Cisco', 'Juniper Networks'].includes(o.platform) && !o.category.includes('Security') && !o.title.includes('Cyber')) }}
                 ];
+
+                const activeDomains = domains.filter(dom => filtered.some(dom.matcher));
+                const displayDomains = activeDomains.length > 0 ? activeDomains : domains;
 
                 const tiers = [
                     {{ id: 'Foundational', name: 'Foundational', level: 'Level 100', color: 'var(--success-fg)', desc: 'Concepts & Overview' }},
@@ -1751,7 +1763,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         </div>
 
                         <div class="divide-y" style="border-color: var(--border-muted);">
-                            ${{domains.map(dom => {{
+                            ${{displayDomains.map(dom => {{
                                 const domainOffers = filtered.filter(dom.matcher);
                                 
                                 return `
@@ -2029,22 +2041,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         // Keyboard Shortcuts
         document.addEventListener('keydown', (e) => {{
-            if (e.key === '1' && document.activeElement.tagName !== 'INPUT') {{
-                e.preventDefault();
-                switchMainTab('vouchers');
-            }}
-            if (e.key === '2' && document.activeElement.tagName !== 'INPUT') {{
-                e.preventDefault();
-                switchMainTab('news');
-            }}
-            if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {{
-                e.preventDefault();
-                if (currentMainTab === 'news') {{
-                    document.getElementById('newsSearchInput').focus();
-                }} else {{
-                    document.getElementById('searchInput').focus();
-                }}
-            }}
+            const isEditing = ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName);
             if (e.key === 'Escape') {{
                 if (document.activeElement.id === 'searchInput') {{
                     clearSearch();
@@ -2053,15 +2050,34 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     clearNewsSearch();
                     document.getElementById('newsSearchInput').blur();
                 }}
+                return;
             }}
-            if ((e.key === 'v' || e.key === 'V') && document.activeElement.tagName !== 'INPUT') {{
+            if (isEditing) return;
+
+            if (e.key === '1') {{
+                e.preventDefault();
+                switchMainTab('vouchers');
+            }}
+            if (e.key === '2') {{
+                e.preventDefault();
+                switchMainTab('news');
+            }}
+            if (e.key === '/') {{
+                e.preventDefault();
+                if (currentMainTab === 'news') {{
+                    document.getElementById('newsSearchInput').focus();
+                }} else {{
+                    document.getElementById('searchInput').focus();
+                }}
+            }}
+            if (e.key === 'v' || e.key === 'V') {{
                 if (currentMainTab === 'vouchers') {{
                     const views = ['grid', 'list', 'timeline', 'matrix'];
                     const nextIdx = (views.indexOf(currentLayout) + 1) % views.length;
                     setLayoutView(views[nextIdx]);
                 }}
             }}
-            if ((e.key === 't' || e.key === 'T') && document.activeElement.tagName !== 'INPUT') {{
+            if (e.key === 't' || e.key === 'T') {{
                 toggleTheme();
             }}
         }});
