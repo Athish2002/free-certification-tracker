@@ -3,6 +3,18 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "amazon-web-services-multi-region-disaster-recovery",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Multi-region disaster recovery for Amazon API Gateway WebSocket APIs",
+      "summary": "Learn how to build multi-region disaster recovery for Amazon API Gateway WebSocket APIs. This design pattern combines Amazon Route 53 DNS failover, Amazon DynamoDB Global Tables, a canary health probe, and client-side reconnection logic to ...",
+      "published_date": "2024-08-01",
+      "url": "https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/",
+      "impact_badge": "Architecture RFC"
+    },
+    {
       "id": "amazon-web-services-how-uts-established-a-modern-c",
       "company": "Amazon Web Services",
       "source": "AWS Architecture Blog",

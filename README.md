@@ -17,8 +17,8 @@
 | **Active Opportunities** | **14** | Verified 100% free exams & live registration windows |
 | **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **8 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **21 Reports** | Official primary cloud engineering updates |
-| **Last Automated Inspection** | `2026-10-14 14:51 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Verified Tech Dispatches** | **22 Reports** | Official primary cloud engineering updates |
+| **Last Automated Inspection** | `2026-10-14 14:59 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -122,6 +122,7 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Multi-region disaster recovery for Amazon API Gateway WebSocket APIs](https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/)**<br>Learn how to build multi-region disaster recovery for Amazon API Gateway WebSocket APIs. This design pattern combines Amazon Route 53 DNS failover, Amazon DynamoDB Global Tables, a canary health probe, and client-side reconnection logic to ... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[How UTS established a modern curriculum data services foundation on AWS](https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/)**<br>The University of Technology Sydney built a modern curriculum data services foundation on AWS that treats curriculum data as a governed, reusable product, available through APIs, graph traversal, semantic search, and event delivery, while l... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Always-On Assurance: How Cisco is Reimagining the Secure Development Lifecycle](https://blogs.cisco.com/security/always-on-assurance)**<br>Learn how Cisco’s Secure Development Lifecycle (CSDL) is evolving to support AI-driven development, ensuring secure and resilient software at speed. | [Cisco Blogs](https://blogs.cisco.com/security/always-on-assurance)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Beyond AI cost visibility: Designing tokenomics for real users](https://blogs.cisco.com/cisco-on-cisco/beyond-ai-cost-visibility-designing-tokenomics-for-real-users)**<br>Managing AI spend at scale demands more than just usage counts. Learn how mapping tokenomics to organizational hierarchies empowers engineers, managers, and finance to balance innovation with financial discipline. | [Cisco Blogs](https://blogs.cisco.com/cisco-on-cisco/beyond-ai-cost-visibility-designing-tokenomics-for-real-users)<br>`blogs.cisco.com` |
@@ -276,4 +277,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 14:51 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 14:59 UTC`.*
