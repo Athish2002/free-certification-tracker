@@ -32,7 +32,7 @@ def generate_readme(data: Dict[str, Any]) -> str:
     active_offers = [o for o in offers if o.get("status") == "Active"]
     closed_offers = [o for o in offers if o.get("status") != "Active"]
     
-    total_savings = sum(o.get("value_usd", 0) for o in active_offers)
+    total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     last_updated = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     
     # Categorize active offers
@@ -145,7 +145,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
     """Generates a responsive single-page web dashboard with live search and status filters."""
     offers = data.get("offers", [])
     active_offers = [o for o in offers if o.get("status") == "Active"]
-    total_savings = sum(o.get("value_usd", 0) for o in active_offers)
+    total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     
     offers_json_str = json.dumps(offers)
     

@@ -170,6 +170,17 @@ def run_inspection() -> List[Dict[str, Any]]:
         logger.info(f"Auditing [{offer.get('platform')}] {title[:40]}...")
         new_status, reason, canonical_url = inspect_url_with_retry(current_url)
         
+        # Temporal Expiry Invariant: If stated calendar expiration has passed, override to Expired
+        expiry_str = str(offer.get("expiry_date", "")).strip()
+        if re.match(r"^\d{4}-\d{2}-\d{2}$", expiry_str):
+            try:
+                exp_date = datetime.strptime(expiry_str, "%Y-%m-%d").date()
+                if exp_date < datetime.utcnow().date():
+                    new_status = "Expired"
+                    reason = f"Calendar Invariant: Stated expiration date passed ({expiry_str})"
+            except ValueError:
+                pass
+
         logger.info(f" -> Result: {new_status} | Reason: {reason}")
         
         # Canonical URL Self-Healing: Update to clean canonical path if permanently redirected
