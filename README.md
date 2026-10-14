@@ -20,7 +20,7 @@
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **26 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-14 16:48 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-14 17:02 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -41,7 +41,7 @@
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 93% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
 ### Cloud & AI
 
@@ -359,4 +359,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 16:48 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 17:02 UTC`.*
