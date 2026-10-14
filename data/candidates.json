@@ -1,5 +1,5 @@
 {
-  "total_candidates": 6,
+  "total_candidates": 7,
   "leads": [
     {
       "source": "Reddit r/AzureCertification",
@@ -10,7 +10,10 @@
       "keywords": [
         "voucher"
       ],
-      "match_confidence": "High (Title)"
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -22,7 +25,24 @@
         "voucher",
         "levelup"
       ],
-      "match_confidence": "High (Title)"
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Azure 50% off + FREE Retake",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x0ysfq/azure_50_off_free_retake/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-08T18:33:00+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "Medium (Multi-Keyword)",
+      "is_authentic_vendor": true,
+      "verified_vendor_url": "https://www.pearsonvue.com/us/en/test-takers/free-retake.html",
+      "authenticity_tier": "Verified Official Portal"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -34,7 +54,10 @@
         "voucher",
         "challenge"
       ],
-      "match_confidence": "Medium (Multi-Keyword)"
+      "match_confidence": "Medium (Multi-Keyword)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -46,7 +69,10 @@
         "voucher",
         "100%"
       ],
-      "match_confidence": "Medium (Multi-Keyword)"
+      "match_confidence": "Medium (Multi-Keyword)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -57,7 +83,10 @@
       "keywords": [
         "voucher"
       ],
-      "match_confidence": "High (Title)"
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -69,7 +98,10 @@
         "challenge",
         "100%"
       ],
-      "match_confidence": "Medium (Multi-Keyword)"
+      "match_confidence": "Medium (Multi-Keyword)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead"
     }
   ]
 }

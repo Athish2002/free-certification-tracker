@@ -3,8 +3,8 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-25-success.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243836%20USD-gold.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-22-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243502%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
@@ -15,12 +15,12 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **25** | Verified 100% free exams & live registration windows |
-| **Total Financial Value** | **$3,836 USD** | Aggregate savings if claimed today |
+| **Active Opportunities** | **22** | Verified 100% free exams & live registration windows |
+| **Total Financial Value** | **$3,502 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **22 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **26 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-14 16:42 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-14 16:48 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -34,10 +34,8 @@
 | **ISC2** | Certified in Cybersecurity (CC) | `100% Free Exam Voucher` | $199 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.isc2.org/landing/1mcc) |
 | **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.qualys.com/training) |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
-| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | `100% Free Certification` | $110 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://beacon.paloaltonetworks.com/) |
-| **Splunk** | Splunk Core Observability & Defense Fundamentals | `100% Free Accreditation & Badge` | $130 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://lantern.splunk.com/) |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | `100% Free Certification` | $150 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://skillsbuild.org/) |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | `100% Free Certification` | $125 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://u.cisco.com/) |
+| **Splunk** | Splunk Core Observability & Defense Fundamentals | `100% Free Accreditation & Badge` | $130 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://lantern.splunk.com/) |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | `100% Free Certification` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://skillsbuild.org/) |
 
 ### Cloud & Data
 
@@ -64,8 +62,8 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.snowflake.com/en/) |
 | **MongoDB** | MongoDB Associate Developer / DBA | `Free Training & Student Voucher` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.mongodb.com/) |
-| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | `100% Free Accreditation & Badge` | $75 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://academy.databricks.com/) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
+| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | `100% Free Accreditation & Badge` | $75 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://academy.databricks.com/) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 93% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
 ### CRM & Cloud
 
@@ -101,11 +99,10 @@
 
 | Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
-| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | `100% Free Accreditation & Badge` | $150 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://developers.redhat.com/) |
+| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | `100% Free Accreditation & Badge` | $150 | 🟢 Active | 🛡️ 90% Verified | [**Claim Offer**](https://developers.redhat.com/) |
 | **HashiCorp** | HashiCorp Certified: Terraform Associate | `100% Free Exam Voucher` | $70 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://developer.hashicorp.com/) |
-| **GitLab** | GitLab Certified Associate | `100% Free Certification` | $99 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://university.gitlab.com/) |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | `100% Free Exam Voucher` | $395 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://www.cncf.io/) |
-| **GitHub** | GitHub Foundations Certification | `100% Free Exam Voucher` | $99 | 🟢 Active | 🛡️ 100% Verified | [**Claim Offer**](https://education.github.com/) |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | `100% Free Exam Voucher` | $395 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://www.cncf.io/) |
+| **GitHub** | GitHub Foundations Certification | `100% Free Exam Voucher` | $99 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://github.com/education) |
 
 ---
 
@@ -136,6 +133,9 @@
 | :--- | :--- | :---: | :--- |
 | **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
 | **Databricks** | Generative AI Fundamentals | 🟡 Closed / Waitlist | Detected closure phrase: 'no longer available' |
+| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
+| **GitLab** | GitLab Certified Associate | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
 
 ---
 
@@ -144,6 +144,10 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[The AI Security Paradox – How Shadow AI Became the Enterprise’s Biggest Blind Spot](https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot)**<br>AI adoption inside the enterprise is no longer waiting for governance to catch up. Employees are already using generative AI to write code, summarize documents, analyze data, draft communications, and automate routine work, often through to... | [Cisco Blogs](https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot)<br>`blogs.cisco.com` |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Agents at the Edge: Extending AI Security Governance to Physical AI with DefenseClaw](https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw)**<br>AI agents are moving beyond screens and servers into the physical world -- controlling robots, drones, factory equipment, and building systems. DefenseClaw now includes an Edge Connector that brings AI agent security to these constrained de... | [Cisco Blogs](https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw)<br>`blogs.cisco.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Cloud CISO Perspectives: New Gemini Notebook can help CISOs and policymakers prepare for PQC](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/)**<br>Welcome to the first Cloud CISO Perspectives for October 2026. Today, Stephanie Kiel explains the latest on our approach to post-quantum cryptography, and shares a new tool to help CISOs and executives prepare their organizations for PQC.As... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/)<br>`cloud.google.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Predictable AI spend in BigQuery: Introducing cost management for generative AI functions](https://cloud.google.com/blog/products/data-analytics/using-bigquerys-generative-ai-cost-management-features/)**<br>The generative AI functions in BigQuery (AI.GENERATE, AI.IF, AI.CLASSIFY, AI.SCORE, and more) bring large language models (LLMs) directly into your SQL, so a single query can classify millions of support tickets or score each product review... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/using-bigquerys-generative-ai-cost-management-features/)<br>`cloud.google.com` |
 | `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Multi-region disaster recovery for Amazon API Gateway WebSocket APIs](https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/)**<br>Learn how to build multi-region disaster recovery for Amazon API Gateway WebSocket APIs. This design pattern combines Amazon Route 53 DNS failover, Amazon DynamoDB Global Tables, a canary health probe, and client-side reconnection logic to ... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[How UTS established a modern curriculum data services foundation on AWS](https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/)**<br>The University of Technology Sydney built a modern curriculum data services foundation on AWS that treats curriculum data as a governed, reusable product, available through APIs, graph traversal, semantic search, and event delivery, while l... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Always-On Assurance: How Cisco is Reimagining the Secure Development Lifecycle](https://blogs.cisco.com/security/always-on-assurance)**<br>Learn how Cisco’s Secure Development Lifecycle (CSDL) is evolving to support AI-driven development, ensuring secure and resilient software at speed. | [Cisco Blogs](https://blogs.cisco.com/security/always-on-assurance)<br>`blogs.cisco.com` |
@@ -283,20 +287,6 @@
 - **Steps to Claim:** Participate in the official HashiCorp Developer hands-on learning lab tracks and complete the seasonal cloud infrastructure challenge to claim a Pearson VUE 100% exam discount code.
 - **Official Link:** [https://developer.hashicorp.com/](https://developer.hashicorp.com/)
 
-#### Palo Alto Networks Beacon: PCCET Cybersecurity Entry-Level Technician
-- **Provider:** Palo Alto Networks
-- **Value:** $110 USD
-- **Eligibility:** Global (Free Palo Alto Networks Beacon Account)
-- **Steps to Claim:** Register for a free Palo Alto Networks Beacon account. Complete the Foundation Cybersecurity curriculum and take the online digital accreditation assessment at zero cost.
-- **Official Link:** [https://beacon.paloaltonetworks.com/](https://beacon.paloaltonetworks.com/)
-
-#### GitLab University: GitLab Certified Associate & CI/CD Specialist
-- **Provider:** GitLab
-- **Value:** $99 USD
-- **Eligibility:** Open to all developers and GitLab community members
-- **Steps to Claim:** Sign up on GitLab University. Complete the self-paced Git & GitLab CI/CD fundamentals modules and pass the knowledge verification quiz to receive the official GitLab badge.
-- **Official Link:** [https://university.gitlab.com/](https://university.gitlab.com/)
-
 #### Splunk Lantern: Core Cybersecurity Defense & Observability Specialist
 - **Provider:** Splunk
 - **Value:** $130 USD
@@ -332,19 +322,12 @@
 - **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
 - **Official Link:** [https://education.oracle.com/oracle-cloud-infrastructure](https://education.oracle.com/oracle-cloud-infrastructure)
 
-#### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
-- **Provider:** Cisco
-- **Value:** $125 USD
-- **Eligibility:** Global (Free Cisco NetAcad / Skills for All account)
-- **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
-- **Official Link:** [https://u.cisco.com/](https://u.cisco.com/)
-
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Provider:** GitHub
 - **Value:** $99 USD
 - **Eligibility:** Students, educators, and Microsoft Learn challenge qualifiers
 - **Steps to Claim:** Verify status via GitHub Student Developer Pack or complete the GitHub Foundations challenge track on Microsoft Learn to receive a 100% off voucher for the PSI-delivered exam.
-- **Official Link:** [https://education.github.com/](https://education.github.com/)
+- **Official Link:** [https://github.com/education](https://github.com/education)
 
 ---
 
@@ -376,4 +359,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 16:42 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 16:48 UTC`.*

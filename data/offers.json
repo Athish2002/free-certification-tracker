@@ -686,7 +686,7 @@
       "eligibility": "Global (Completed 1 eligible challenge collection)",
       "url": "https://learn.microsoft.com/en-us/training/challenges",
       "status": "Expired",
-      "time_period": "May 21, 2024 – June 24, 2024",
+      "time_period": "May 21, 2024 \u2013 June 24, 2024",
       "concluded_date": "2024-06-24",
       "recurrence_pattern": "Annual (Every May alongside Microsoft Build Conference)",
       "claim_steps": "Registered on Microsoft Learn, completed 1 qualifying interactive challenge collection within 30 days, received 100% voucher code sent to registered email.",
@@ -728,7 +728,7 @@
       "eligibility": "Global (Free registration via Microsoft Learn)",
       "url": "https://learn.microsoft.com/en-us/training/challenges",
       "status": "Expired",
-      "time_period": "Nov 15, 2023 – Jan 15, 2024",
+      "time_period": "Nov 15, 2023 \u2013 Jan 15, 2024",
       "concluded_date": "2024-01-15",
       "recurrence_pattern": "Annual (Every Nov/Dec alongside Microsoft Ignite)",
       "claim_steps": "Enrolled in Microsoft Ignite Cloud Skills Challenge during conference week, completed challenge leaderboard, received unique Pearson VUE voucher.",
@@ -770,7 +770,7 @@
       "eligibility": "Global (All Oracle University registered accounts)",
       "url": "https://education.oracle.com/oracle-cloud-infrastructure",
       "status": "Expired",
-      "time_period": "July 1, 2024 – Oct 31, 2024",
+      "time_period": "July 1, 2024 \u2013 Oct 31, 2024",
       "concluded_date": "2024-10-31",
       "recurrence_pattern": "Annual (Summer promotional cycle across Q3 every year)",
       "claim_steps": "Joined Race to Certification on Oracle University portal, earned sector badges, and scheduled proctored online exams with 2 free attempts.",
@@ -812,7 +812,7 @@
       "eligibility": "Active CCNA / CCNP / CCIE holders",
       "url": "https://u.cisco.com/",
       "status": "Expired",
-      "time_period": "July 15, 2024 – Aug 31, 2024",
+      "time_period": "July 15, 2024 \u2013 Aug 31, 2024",
       "concluded_date": "2024-08-31",
       "recurrence_pattern": "Quarterly (Cisco Learning Network Rev Up sprints every 3-4 months)",
       "claim_steps": "Completed the 'Developing Applications on Cisco Platforms' (DEVNAE) learning path on Cisco U with 100% quiz scores. CE credits auto-submitted to recertify CCNA/CCNP.",
@@ -854,7 +854,7 @@
       "eligibility": "Global (AWS Skill Builder Early Adopter challenge)",
       "url": "https://aws.amazon.com/certification/certified-ai-practitioner/",
       "status": "Expired",
-      "time_period": "Aug 13, 2024 – Oct 31, 2024",
+      "time_period": "Aug 13, 2024 \u2013 Oct 31, 2024",
       "concluded_date": "2024-10-31",
       "recurrence_pattern": "Event-driven (New AWS certification launch beta periods)",
       "claim_steps": "Registered for the newly launched AIF-C01 during the early adopter window via AWS Training to receive free exam retake insurance and promotion codes.",
@@ -896,7 +896,7 @@
       "eligibility": "Global (Participants in Google Cloud Innovators challenge)",
       "url": "https://www.cloudskillsboost.google/",
       "status": "Expired",
-      "time_period": "April 15, 2024 – June 30, 2024",
+      "time_period": "April 15, 2024 \u2013 June 30, 2024",
       "concluded_date": "2024-06-30",
       "recurrence_pattern": "Semi-Annual (Google Cloud Next & Autumn Innovators Challenges)",
       "claim_steps": "Completed 3 Google Cloud Skills Boost quests and earned hands-on badges to receive an official voucher for Kryterion Webassessor.",
@@ -938,7 +938,7 @@
       "eligibility": "Global (Free Databricks Academy account)",
       "url": "https://www.databricks.com/learn/training/certification",
       "status": "Expired",
-      "time_period": "Jan 1, 2024 – Sept 30, 2024",
+      "time_period": "Jan 1, 2024 \u2013 Sept 30, 2024",
       "concluded_date": "2024-09-30",
       "recurrence_pattern": "Annual (Refreshed annually for new LLM releases)",
       "claim_steps": "Completed the 4 video modules on Databricks Academy and passed the 20-question proctored knowledge assessment to earn the Credly badge.",
@@ -980,7 +980,7 @@
       "eligibility": "Registered virtual attendees of GitHub Universe 2024",
       "url": "https://githubuniverse.com/",
       "status": "Expired",
-      "time_period": "Oct 29, 2024 – Nov 15, 2024",
+      "time_period": "Oct 29, 2024 \u2013 Nov 15, 2024",
       "concluded_date": "2024-11-15",
       "recurrence_pattern": "Annual (GitHub Universe conference every October/November)",
       "claim_steps": "Registered for virtual GitHub Universe, completed the post-conference developer survey and challenges to receive a PSI exam voucher code.",
@@ -1028,12 +1028,12 @@
       "time_period": "Rolling 2026-2027",
       "recurrence_pattern": "Continuous Developer Tier",
       "claim_steps": "Create a free Red Hat Developer account. Access the free Red Hat Learning Subscription courses and pass the technical skill assessments on Red Hat Learn to earn official Credly digital badges and certificates.",
-      "inspection_notes": "HTTP 200 OK (Official Red Hat Developer Portal)",
+      "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 90,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 90,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1046,12 +1046,10 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (RH-DO180)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "VENDOR_NAME_MATCHED"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "90% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1072,7 +1070,7 @@
       "time_period": "Q4 2026 Wave",
       "recurrence_pattern": "Biannual HashiDays / Community Challenge",
       "claim_steps": "Participate in the official HashiCorp Developer hands-on learning lab tracks and complete the seasonal cloud infrastructure challenge to claim a Pearson VUE 100% exam discount code.",
-      "inspection_notes": "HTTP 200 OK (Official HashiCorp Developer Portal)",
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
       "is_authentic_vendor": true,
       "authenticity_score": 100,
       "authenticity_details": {
@@ -1092,7 +1090,7 @@
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
           "EXAM_CODE_MATCHED (003)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CREDENTIAL_SIGNALS_FOUND (4)"
         ],
         "warning_flags": [],
         "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -1109,19 +1107,19 @@
       "value_usd": 110,
       "eligibility": "Global (Free Palo Alto Networks Beacon Account)",
       "url": "https://beacon.paloaltonetworks.com/",
-      "status": "Active",
+      "status": "Review Needed",
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling Cycles",
       "exam_code": "PCCET",
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Continuous Academic & Beacon Portal",
       "claim_steps": "Register for a free Palo Alto Networks Beacon account. Complete the Foundation Cybersecurity curriculum and take the online digital accreditation assessment at zero cost.",
-      "inspection_notes": "HTTP 200 OK (Official Palo Alto Networks Beacon Portal)",
+      "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 88,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 88,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1134,12 +1132,10 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (PCCET)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "SINGLE_CREDENTIAL_SIGNAL"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "88% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1153,19 +1149,19 @@
       "value_usd": 99,
       "eligibility": "Open to all developers and GitLab community members",
       "url": "https://university.gitlab.com/",
-      "status": "Active",
+      "status": "Review Needed",
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling Cycles",
       "exam_code": "GL-ASSOC",
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Ongoing GitLab University Track",
       "claim_steps": "Sign up on GitLab University. Complete the self-paced Git & GitLab CI/CD fundamentals modules and pass the knowledge verification quiz to receive the official GitLab badge.",
-      "inspection_notes": "HTTP 200 OK (Official GitLab University)",
+      "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1179,11 +1175,10 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (GL-ASSOC)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CREDENTIAL_SIGNALS_FOUND (2)"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1204,12 +1199,12 @@
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Continuous Self-Paced Track",
       "claim_steps": "Create a free Splunk account. Access Splunk Lantern and Splunk Education free foundational courses. Pass the final exam track to receive accredited digital credentials.",
-      "inspection_notes": "HTTP 200 OK (Official Splunk Portal)",
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1223,11 +1218,10 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (SPLK-1001)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CREDENTIAL_SIGNALS_FOUND (3)"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1248,12 +1242,12 @@
       "time_period": "Continuous 2026-2027",
       "recurrence_pattern": "Global Workforce Initiative",
       "claim_steps": "Register on IBM SkillsBuild. Enroll in the Cybersecurity or AI Practitioner track, complete interactive labs, and take the proctored exit assessment to earn verified IBM digital credentials issued on Credly.",
-      "inspection_notes": "HTTP 200 OK (Official IBM SkillsBuild)",
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1267,11 +1261,10 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (IBM-SB-SEC)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CREDENTIAL_SIGNALS_FOUND (5)"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1292,12 +1285,12 @@
       "time_period": "Q4 2026 - Q1 2027",
       "recurrence_pattern": "Quarterly Application Windows (KubeCon Waves)",
       "claim_steps": "Submit a scholarship application through CNCF during the active KubeCon / CloudNativeCon window. Awardees receive 100% free exam registration vouchers including 2 test attempts.",
-      "inspection_notes": "HTTP 200 OK (Official CNCF Domain)",
+      "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 85,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 85,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1309,13 +1302,10 @@
           "STRICT_HTTPS_PROTOCOL",
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
-          "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (CKA)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CLEAN_REDIRECT_CHAIN"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1338,10 +1328,10 @@
       "claim_steps": "Sign up on Databricks Academy, enroll in the free Lakehouse Fundamentals pathway, complete the interactive curriculum, and pass the accreditation test to earn the official Databricks badge.",
       "inspection_notes": "HTTP 200 OK (Official Databricks Academy)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 85,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 85,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1354,12 +1344,10 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (DB-LAKEHOUSE)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1380,12 +1368,12 @@
       "time_period": "Rolling 2026-2027",
       "recurrence_pattern": "Oracle AI & Cloud Skills Waves",
       "claim_steps": "Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.",
-      "inspection_notes": "HTTP 200 OK (Official Oracle University)",
+      "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 93,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 93,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1399,11 +1387,10 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (1Z0-1127-24)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "SINGLE_CREDENTIAL_SIGNAL"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "93% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1417,19 +1404,19 @@
       "value_usd": 125,
       "eligibility": "Global (Free Cisco NetAcad / Skills for All account)",
       "url": "https://u.cisco.com/",
-      "status": "Active",
+      "status": "Review Needed",
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling Cycles",
       "exam_code": "CISCO-JCA",
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Skills for All Lifelong Learning",
       "claim_steps": "Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.",
-      "inspection_notes": "HTTP 200 OK (Official Cisco U / NetAcad)",
+      "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1443,11 +1430,10 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (CISCO-JCA)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CREDENTIAL_SIGNALS_FOUND (3)"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1460,7 +1446,7 @@
       "offer_type": "100% Free Exam Voucher",
       "value_usd": 99,
       "eligibility": "Students, educators, and Microsoft Learn challenge qualifiers",
-      "url": "https://education.github.com/",
+      "url": "https://github.com/education",
       "status": "Active",
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling Waves",
@@ -1468,12 +1454,12 @@
       "time_period": "Q4 2026 Wave",
       "recurrence_pattern": "Biannual Student & Universe Waves",
       "claim_steps": "Verify status via GitHub Student Developer Pack or complete the GitHub Foundations challenge track on Microsoft Learn to receive a 100% off voucher for the PSI-delivered exam.",
-      "inspection_notes": "HTTP 200 OK (Official GitHub Education Portal)",
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
       "is_authentic_vendor": true,
-      "authenticity_score": 100,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 100,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1487,11 +1473,10 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (GH-FOUNDATIONS)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CREDENTIAL_SIGNALS_FOUND (5)"
         ],
         "warning_flags": [],
-        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     },
     {
@@ -1531,9 +1516,7 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (EX200)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
         "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -1576,9 +1559,7 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (002/003)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
         "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -1621,9 +1602,7 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (PCNSA)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
         "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -1666,14 +1645,12 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "EXAM_CODE_MATCHED (SPLK-1001)",
-          "CREDENTIAL_SIGNALS_FOUND (8)"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
         "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       }
     }
   ],
-  "last_inspected": "2026-10-14T16:19:41.654447+00:00"
+  "last_inspected": "2026-10-14T16:48:11.814224+00:00"
 }

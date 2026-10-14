@@ -3,6 +3,54 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "cisco-the-ai-security-paradox-how",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The AI Security Paradox \u2013 How Shadow AI Became the Enterprise\u2019s Biggest Blind Spot",
+      "summary": "AI adoption inside the enterprise is no longer waiting for governance to catch up. Employees are already using generative AI to write code, summarize documents, analyze data, draft communications, and automate routine work, often through to...",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-agents-at-the-edge-extending",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Agents at the Edge: Extending AI Security Governance to Physical AI with DefenseClaw",
+      "summary": "AI agents are moving beyond screens and servers into the physical world -- controlling robots, drones, factory equipment, and building systems. DefenseClaw now includes an Edge Connector that brings AI agent security to these constrained de...",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "google-cloud-cloud-ciso-perspectives-new-g",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Cloud CISO Perspectives: New Gemini Notebook can help CISOs and policymakers prepare for PQC",
+      "summary": "Welcome to the first Cloud CISO Perspectives for October 2026. Today, Stephanie Kiel explains the latest on our approach to post-quantum cryptography, and shares a new tool to help CISOs and executives prepare their organizations for PQC.As...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-predictable-ai-spend-in-bigque",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Predictable AI spend in BigQuery: Introducing cost management for generative AI functions",
+      "summary": "The generative AI functions in BigQuery (AI.GENERATE, AI.IF, AI.CLASSIFY, AI.SCORE, and more) bring large language models (LLMs) directly into your SQL, so a single query can classify millions of support tickets or score each product review...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/data-analytics/using-bigquerys-generative-ai-cost-management-features/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
       "id": "amazon-web-services-multi-region-disaster-recovery",
       "company": "Amazon Web Services",
       "source": "AWS Architecture Blog",
