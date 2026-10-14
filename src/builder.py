@@ -235,7 +235,10 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
     <title>CertPulse | Free Certification Directory & Tech Radar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* GitHub Primer Dual Theme System: Dark & Light Contrast */
+        /* GitHub Primer Dual Theme System: Dark & Light Contrast (Antigravity & Emil Design Craft) */
+        :root {{
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }}
         :root[data-theme="dark"] {{
             --canvas-default: #0d1117;
             --canvas-subtle: #161b22;
@@ -259,8 +262,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --btn-default-hover: #30363d;
             --btn-primary-bg: #238636;
             --btn-primary-hover: #2ea043;
-            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --card-shadow-hover: 0 6px 20px rgba(1, 4, 9, 0.6);
+            --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 4px rgba(0, 0, 0, 0.2), 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+            --card-shadow-hover: 0 0 0 1px rgba(56, 139, 253, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3), 0 20px 40px -8px rgba(0, 0, 0, 0.65);
+            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
         }}
         :root[data-theme="light"] {{
             --canvas-default: #ffffff;
@@ -285,8 +289,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --btn-default-hover: #eaeef2;
             --btn-primary-bg: #116329;
             --btn-primary-hover: #0d4a1f;
-            --card-shadow: 0 1px 3px rgba(36, 41, 47, 0.15);
-            --card-shadow-hover: 0 4px 14px rgba(36, 41, 47, 0.25);
+            --card-shadow: 0 0 0 1px rgba(36, 41, 47, 0.12), 0 1px 2px rgba(36, 41, 47, 0.04), 0 4px 12px rgba(36, 41, 47, 0.04);
+            --card-shadow-hover: 0 0 0 1px #0550ae, 0 3px 8px rgba(5, 80, 174, 0.12), 0 16px 32px -4px rgba(36, 41, 47, 0.15);
+            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
         }}
 
         * {{
@@ -297,22 +302,34 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             background-color: var(--canvas-default);
             color: var(--fg-default);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            transition: background-color 0.15s ease, color 0.15s ease;
             min-height: 100dvh;
         }}
 
         .primer-card {{
             background-color: var(--canvas-subtle);
             border: 1px solid var(--border-default);
-            box-shadow: var(--card-shadow);
-            transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), 
-                        box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1), 
-                        border-color 0.18s ease;
+            box-shadow: var(--card-shadow), var(--specular-rim);
+            transition: transform 180ms var(--ease-out), 
+                        box-shadow 180ms var(--ease-out), 
+                        border-color 150ms ease;
         }}
         .primer-card:hover {{
-            transform: translateY(-2px);
-            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow-hover), var(--specular-rim);
             border-color: var(--accent-fg);
+        }}
+
+        /* Emil Kowalski Tactile Button Standard */
+        button:active, a.tactile-btn:active {{
+            transform: scale(0.97);
+            transition: transform 100ms var(--ease-out);
+        }}
+
+        /* Accessible focus rings */
+        input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {{
+            outline: 2px solid var(--accent-fg);
+            outline-offset: 2px;
         }}
 
         /* Mobile Touch & Scroll Physics */
@@ -443,54 +460,69 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         
         <!-- SECTION 1: CERTIFICATION VOUCHERS -->
         <div id="vouchersSection">
-            <!-- Hero Bento Grid (Learner Centric & Mobile Stacked) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <!-- Bento 1: Value Saved -->
-                <div class="p-4 sm:p-5 rounded-xl border primer-card">
+            <!-- Hero Bento Grid (Asymmetrical Executive Standard) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 mb-6 sm:mb-8">
+                <!-- Anchor Bento: Total Financial Value (Col-Span 6 on LG) -->
+                <div class="lg:col-span-6 p-5 sm:p-6 rounded-2xl border primer-card relative overflow-hidden flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Total Value Available</span>
-                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
+                            <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--fg-muted);">Live Financial Value</span>
+                        </div>
+                        <span class="p-2 rounded-lg flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M8.75.75a.75.75 0 0 0-1.5 0V2h-.984c-.983 0-1.9.362-2.589 1.026C3.003 3.673 2.6 4.595 2.6 5.64c0 .91.308 1.688.886 2.26.567.562 1.34.942 2.264 1.192l.67.182c.76.205 1.25.437 1.53.685.26.23.35.474.35.743 0 .365-.154.67-.44.89-.3.23-.743.358-1.36.358-.603 0-1.05-.122-1.38-.342a1.29 1.29 0 0 1-.53-.872.75.75 0 0 0-1.49.172c.153.998.666 1.734 1.45 2.198.647.383 1.488.582 2.47.604v1.18a.75.75 0 0 0 1.5 0v-1.19c.983-.024 1.834-.34 2.483-.93.673-.613 1.017-1.472 1.017-2.46 0-.895-.316-1.66-.908-2.23-.58-.558-1.38-.93-2.316-1.182l-.645-.175c-.75-.204-1.223-.424-1.48-.656-.239-.214-.34-.442-.34-.707 0-.323.14-.597.412-.792.292-.21.72-.32 1.288-.32.535 0 .944.103 1.222.288.29.193.473.488.547.88a.75.75 0 0 0 1.478-.276c-.16-.862-.573-1.543-1.25-1.986A4.323 4.323 0 0 0 8.75 3.2V.75Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--fg-default);">
-                        ${total_savings:,} <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">USD</span>
+                    <div class="mt-4">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono tracking-tight tabular-nums" style="color: var(--fg-default);">
+                            ${total_savings:,} <span class="text-sm sm:text-base font-normal font-sans" style="color: var(--fg-muted);">USD Available</span>
+                        </div>
+                        <p class="text-xs sm:text-sm mt-2 leading-relaxed text-pretty max-w-[65ch]" style="color: var(--fg-muted);">
+                            Aggregate tuition value of verified 100% free proctored cloud exams, accredited credentials, and official vendor grants.
+                        </p>
                     </div>
-                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">100% free proctored exams and official accredited credentials.</p>
                 </div>
 
-                <!-- Bento 2: Active Opportunities -->
-                <div class="p-4 sm:p-5 rounded-xl border primer-card">
+                <!-- Bento 2: Active Opportunities (Col-Span 3 on LG) -->
+                <div class="lg:col-span-3 p-5 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Opportunities</span>
-                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--fg-muted);">Opportunities</span>
+                        <span class="p-2 rounded-lg flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--success-fg);">
-                        {len(active_offers)} <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Active / {len(offers)} Total</span>
+                    <div class="mt-4">
+                        <div class="text-2xl sm:text-3xl font-extrabold font-mono tracking-tight tabular-nums" style="color: var(--success-fg);">
+                            {len(active_offers)} <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Active</span>
+                        </div>
+                        <p class="text-xs mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
+                            {len(historical_offers)} historical promotional cycles archived for recurrence tracking.
+                        </p>
                     </div>
-                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">{len(historical_offers)} past promotional voucher campaigns archived for recurrence tracking.</p>
                 </div>
 
-                <!-- Bento 3: Official Guarantee -->
-                <div class="p-4 sm:p-5 rounded-xl border primer-card">
+                <!-- Bento 3: Official Verification (Col-Span 3 on LG) -->
+                <div class="lg:col-span-3 p-5 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Authentic Verification</span>
-                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--fg-muted);">Integrity Standard</span>
+                        <span class="p-2 rounded-lg flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--attention-fg);">
-                        100% Official <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Programs</span>
+                    <div class="mt-4">
+                        <div class="text-2xl sm:text-3xl font-extrabold font-mono tracking-tight tabular-nums" style="color: var(--attention-fg);">
+                            100% Free <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Audited</span>
+                        </div>
+                        <p class="text-xs mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
+                            Autonomous liveness & soft-404 auditor running on GitHub Actions.
+                        </p>
                     </div>
-                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">Direct vendor sponsorships, accredited university grants, and official training vouchers.</p>
                 </div>
             </div>
 
@@ -621,54 +653,69 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         <!-- SECTION 2: INDUSTRY TECH RADAR & ENGINEERING FEED -->
         <div id="newsSection" class="hidden">
-            <!-- News Hero Bento Grid (Mobile Responsive Stack) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                <!-- News Bento 1 -->
-                <div class="p-4 sm:p-5 rounded-xl border primer-card">
+            <!-- News Hero Bento Grid (Asymmetrical Executive Standard) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 mb-6 sm:mb-8">
+                <!-- Anchor Bento: Verified Dispatches (Col-Span 6 on LG) -->
+                <div class="lg:col-span-6 p-5 sm:p-6 rounded-2xl border primer-card relative overflow-hidden flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Enterprise Feeds Monitored</span>
-                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M1.75 1.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H1.75ZM0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v8.5A1.75 1.75 0 0 1 14.25 12H9.06l.72 2.25H11.5a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1 0-1.5h1.72l.72-2.25H1.75A1.75 1.75 0 0 1 0 10.25V1.75Z"></path>
-                            </svg>
-                        </span>
-                    </div>
-                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--fg-default);">
-                        9 Giants <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Tracked</span>
-                    </div>
-                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">AWS, Microsoft Azure, Google Cloud, Oracle Cloud, Cisco, GitHub, CNCF, Databricks, Snowflake.</p>
-                </div>
-
-                <!-- News Bento 2 -->
-                <div class="p-4 sm:p-5 rounded-xl border primer-card">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Dispatches</span>
-                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
+                            <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--fg-muted);">Live Intelligence Feed</span>
+                        </div>
+                        <span class="p-2 rounded-lg flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--success-fg);">
-                        {len(news_items)} Briefings <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Live</span>
+                    <div class="mt-4">
+                        <div class="text-3xl sm:text-4xl font-extrabold font-mono tracking-tight tabular-nums" style="color: var(--success-fg);">
+                            {len(news_items)} Briefings <span class="text-sm sm:text-base font-normal font-sans" style="color: var(--fg-muted);">Live Dispatches</span>
+                        </div>
+                        <p class="text-xs sm:text-sm mt-2 leading-relaxed text-pretty max-w-[65ch]" style="color: var(--fg-muted);">
+                            Silicon architecture breakthroughs, small language models, distributed systems RFCs, and SEC revenue filings.
+                        </p>
                     </div>
-                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">Silicon architecture, foundation SLMs, quantum networking, and SEC revenue filings.</p>
                 </div>
 
-                <!-- News Bento 3 -->
-                <div class="p-4 sm:p-5 rounded-xl border primer-card">
+                <!-- News Bento 2: Enterprise Scope (Col-Span 3 on LG) -->
+                <div class="lg:col-span-3 p-5 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Integrity Standard</span>
-                        <span class="p-1.5 rounded-md flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--fg-muted);">Ecosystem Scope</span>
+                        <span class="p-2 rounded-lg flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M1.75 1.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25v-8.5a.25.25 0 0 0-.25-.25H1.75ZM0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v8.5A1.75 1.75 0 0 1 14.25 12H9.06l.72 2.25H11.5a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1 0-1.5h1.72l.72-2.25H1.75A1.75 1.75 0 0 1 0 10.25V1.75Z"></path>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="mt-4">
+                        <div class="text-2xl sm:text-3xl font-extrabold font-mono tracking-tight tabular-nums" style="color: var(--fg-default);">
+                            9 Giants <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Tracked</span>
+                        </div>
+                        <p class="text-xs mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
+                            AWS, Azure, Google Cloud, Oracle Cloud, Cisco, GitHub, CNCF, Databricks, Snowflake.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- News Bento 3: Anti-Clickbait Guardian (Col-Span 3 on LG) -->
+                <div class="lg:col-span-3 p-5 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--fg-muted);">Integrity Standard</span>
+                        <span class="p-2 rounded-lg flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
+                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                                 <path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path>
                             </svg>
                         </span>
                     </div>
-                    <div class="text-2xl sm:text-3xl font-extrabold mt-1.5 sm:mt-2 font-mono tracking-tight tabular-nums" style="color: var(--attention-fg);">
-                        0% Clickbait <span class="text-xs sm:text-sm font-normal" style="color: var(--fg-muted);">Guaranteed</span>
+                    <div class="mt-4">
+                        <div class="text-2xl sm:text-3xl font-extrabold font-mono tracking-tight tabular-nums" style="color: var(--attention-fg);">
+                            0% Clickbait <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Verified</span>
+                        </div>
+                        <p class="text-xs mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
+                            Strict primary enterprise domain whitelist. Rumor blogs and content mills strictly barred.
+                        </p>
                     </div>
-                    <p class="text-xs mt-1.5 sm:mt-2 text-pretty" style="color: var(--fg-muted);">Automated whitelist verification. Gossip blogs and rumor mills are strictly barred.</p>
                 </div>
             </div>
 
@@ -1003,7 +1050,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             navigator.clipboard.writeText(textToCopy).then(() => {{
                 if (btnEl) {{
                     const originalHtml = btnEl.innerHTML;
-                    btnEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 16 16" fill="var(--success-fg)"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>`;
+                    btnEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 16 16" fill="var(--success-fg)"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg><span class="text-xs font-semibold" style="color: var(--success-fg);">Copied!</span>`;
                     setTimeout(() => {{ btnEl.innerHTML = originalHtml; }}, 1800);
                 }}
                 showToast('Promo steps copied to clipboard!');
@@ -1350,6 +1397,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     `;
                 }}).join('');
             }}
+            initCardTilt();
         }}
 
         function filterCategory(cat) {{
@@ -1495,6 +1543,30 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     </div>
                 `;
             }}).join('');
+            initCardTilt();
+        }}
+
+        // Dynamic Pointer Tilt & Hover Elevation Physics (Desktop fine pointers only)
+        function initCardTilt() {{
+            if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {{
+                document.querySelectorAll('.primer-card').forEach(card => {{
+                    if (card.getAttribute('data-tilt-attached')) return;
+                    card.setAttribute('data-tilt-attached', 'true');
+                    card.addEventListener('mousemove', (e) => {{
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        const rotateX = ((y - centerY) / centerY) * -3;
+                        const rotateY = ((x - centerX) / centerX) * 3;
+                        card.style.transform = `perspective(1000px) rotateX(${{rotateX.toFixed(2)}}deg) rotateY(${{rotateY.toFixed(2)}}deg) translateY(-3px)`;
+                    }});
+                    card.addEventListener('mouseleave', () => {{
+                        card.style.transform = '';
+                    }});
+                }});
+            }}
         }}
 
         // Keyboard Shortcuts
