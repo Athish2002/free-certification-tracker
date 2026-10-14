@@ -57,7 +57,7 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines = []
     lines.append("# CertPulse: Autonomous Free Cloud & Tech Certification Tracker")
     lines.append("")
-    lines.append(f"> **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation, Snowflake, and GitHub.")
+    lines.append(f"> **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.")
     lines.append("")
     lines.append("![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) ")
     lines.append(f"![Active Vouchers](https://img.shields.io/badge/Active%20Offers-{len(active_offers)}-success.svg) ")
@@ -604,19 +604,31 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         </select>
                     </div>
                     <div class="flex items-center justify-between sm:justify-start gap-2">
-                        <!-- Layout Switcher (Grid vs Catalog Table) -->
+                        <!-- Layout Switcher (Grid vs Table vs Timeline vs Matrix) -->
                         <div class="flex items-center rounded-lg border p-0.5 flex-1 sm:flex-initial justify-center" id="layoutControlGroup" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                            <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (V)" class="flex-1 sm:flex-initial min-h-[38px] px-3 py-1.5 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
+                            <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (V or 1)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3Zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3Z"></path>
                                 </svg>
                                 <span>Grid</span>
                             </button>
-                            <button id="viewBtnList" onclick="setLayoutView('list')" title="Catalog Table View (V)" class="flex-1 sm:flex-initial min-h-[38px] px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
+                            <button id="viewBtnList" onclick="setLayoutView('list')" title="Catalog Table View (V or 2)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M2 3.75C2 3.336 2.336 3 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z"></path>
                                 </svg>
                                 <span>Table</span>
+                            </button>
+                            <button id="viewBtnTimeline" onclick="setLayoutView('timeline')" title="Recurrence & Expiry Timeline Roadmap (V or 3)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm7.25-3.25v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1-.22-.53V4.75a.75.75 0 0 1 1.5 0Z"></path>
+                                </svg>
+                                <span>Timeline</span>
+                            </button>
+                            <button id="viewBtnMatrix" onclick="setLayoutView('matrix')" title="Domain & Skill Matrix View (V or 4)" class="flex-1 sm:flex-initial min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium flex items-center justify-center gap-1.5 transition active:scale-[0.98] cursor-pointer" style="color: var(--fg-muted);">
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M1.5 1h13A1.5 1.5 0 0 1 16 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-11A1.5 1.5 0 0 1 1.5 1Zm0 1.5a.5.5 0 0 0-.5.5v3h4.5V2.5H1.5Zm5.5 0v3h4.5V2.5H7Zm5.5 0v3H15V3a.5.5 0 0 0-.5-.5h-2Zm2 4.5h-3.5v3.5H15V7Zm-4.5 3.5V7H7v3.5h4.5ZM5.5 7H1v3.5h4.5V7Zm0 4.5H1v1.5a.5.5 0 0 0 .5.5H5.5v-2Zm1.5 2h4.5v-2H7v2Zm5.5 0h1.5a.5.5 0 0 0 .5-.5v-1.5h-2v2Z"></path>
+                                </svg>
+                                <span>Matrix</span>
                             </button>
                         </div>
                         <!-- Export JSON -->
@@ -657,6 +669,16 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     </div>
                     <div id="offersTableBody" class="divide-y" style="border-color: var(--border-muted);"></div>
                 </div>
+            </div>
+
+            <!-- View Container 3: Recurrence & Expiry Timeline Roadmap -->
+            <div id="timelineViewContainer" class="hidden">
+                <div id="offersTimeline" class="space-y-6"></div>
+            </div>
+
+            <!-- View Container 4: Domain & Skill Matrix -->
+            <div id="matrixViewContainer" class="hidden">
+                <div id="offersMatrix" class="space-y-6"></div>
             </div>
         </div>
 
@@ -897,6 +919,24 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             if (platform.includes('Qualys')) {{
                 return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="#ed1c24" stroke-width="1.5" fill="none"/><path d="M9 10l2.5 2.5" stroke="#ed1c24" stroke-width="2" stroke-linecap="round"/></svg>`;
             }}
+            if (platform.includes('Red Hat')) {{
+                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><path d="M14.5 10.5c-.8 0-1.8-.3-2.6-.7-.6 1.4-2 2.2-3.9 2.2-2.3 0-4-1.2-4-2.8 0-.4.1-.7.3-1C2.9 8.2 2 7.7 2 7.2c0-.5.8-1 2.3-1.3C5 4.5 6.4 3 8 3c2.2 0 3.7 1.6 4.1 3.8 1.4.3 2.4 1 2.4 1.8 0 .5-.7 1-2 1.3.4.2.8.4 1.2.6.5-.2.8-.2.8 0 0 .5-1.1.8-2 .8z" fill="#ee0000"/></svg>`;
+            }}
+            if (platform.includes('HashiCorp')) {{
+                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#027bfd"><path d="M2.5 2h3v12h-3zm8 0h3v12h-3zm-5.5 4.5h5v3h-5z"/></svg>`;
+            }}
+            if (platform.includes('Palo Alto')) {{
+                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#fa582d"><path d="M8 1L2 4v5c0 3.5 2.5 5.5 6 6 3.5-.5 6-2.5 6-6V4L8 1zm0 2.2l4 2v3.8c0 2.4-1.6 3.9-4 4.3-2.4-.4-4-1.9-4-4.3V5.2l4-2z"/></svg>`;
+            }}
+            if (platform.includes('GitLab')) {{
+                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#fc6d26"><path d="M8 14.5L1.5 5.8l2.2-6.5L8 4.2l4.3-4.9 2.2 6.5L8 14.5z"/></svg>`;
+            }}
+            if (platform.includes('Splunk')) {{
+                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#f15b24"><path d="M3 2.5l5.5 5.5L3 13.5h3l5.5-5.5L6 2.5H3zm7 11h3v-2h-3v2z"/></svg>`;
+            }}
+            if (platform.includes('IBM')) {{
+                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#0f62fe"><rect x="1" y="2" width="14" height="1"/><rect x="1" y="4" width="14" height="1"/><rect x="1" y="6" width="14" height="1"/><rect x="1" y="8" width="14" height="1"/><rect x="1" y="10" width="14" height="1"/><rect x="1" y="12" width="14" height="1"/></svg>`;
+            }}
             return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="var(--accent-fg)"><circle cx="8" cy="8" r="6"/></svg>`;
         }}
 
@@ -1032,27 +1072,44 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         }}
 
         function setLayoutView(view, updateUrl = true) {{
+            const validViews = ['grid', 'list', 'timeline', 'matrix'];
+            if (!validViews.includes(view)) view = 'grid';
             currentLayout = view;
-            const gridContainer = document.getElementById('cardsViewContainer');
-            const listContainer = document.getElementById('listViewContainer');
-            const btnGrid = document.getElementById('viewBtnGrid');
-            const btnList = document.getElementById('viewBtnList');
 
-            if (view === 'list') {{
-                gridContainer.classList.add('hidden');
-                listContainer.classList.remove('hidden');
-                btnList.style.backgroundColor = 'var(--btn-default-bg)';
-                btnList.style.color = 'var(--fg-default)';
-                btnGrid.style.backgroundColor = 'transparent';
-                btnGrid.style.color = 'var(--fg-muted)';
-            }} else {{
-                listContainer.classList.add('hidden');
-                gridContainer.classList.remove('hidden');
-                btnGrid.style.backgroundColor = 'var(--btn-default-bg)';
-                btnGrid.style.color = 'var(--fg-default)';
-                btnList.style.backgroundColor = 'transparent';
-                btnList.style.color = 'var(--fg-muted)';
-            }}
+            const containers = {{
+                grid: document.getElementById('cardsViewContainer'),
+                list: document.getElementById('listViewContainer'),
+                timeline: document.getElementById('timelineViewContainer'),
+                matrix: document.getElementById('matrixViewContainer')
+            }};
+
+            const buttons = {{
+                grid: document.getElementById('viewBtnGrid'),
+                list: document.getElementById('viewBtnList'),
+                timeline: document.getElementById('viewBtnTimeline'),
+                matrix: document.getElementById('viewBtnMatrix')
+            }};
+
+            validViews.forEach(v => {{
+                if (containers[v]) {{
+                    if (v === view) containers[v].classList.remove('hidden');
+                    else containers[v].classList.add('hidden');
+                }}
+                if (buttons[v]) {{
+                    if (v === view) {{
+                        buttons[v].style.backgroundColor = 'var(--btn-default-bg)';
+                        buttons[v].style.color = 'var(--fg-default)';
+                        buttons[v].classList.add('font-semibold');
+                        buttons[v].classList.remove('font-medium');
+                    }} else {{
+                        buttons[v].style.backgroundColor = 'transparent';
+                        buttons[v].style.color = 'var(--fg-muted)';
+                        buttons[v].classList.remove('font-semibold');
+                        buttons[v].classList.add('font-medium');
+                    }}
+                }}
+            }});
+
             localStorage.setItem('certpulse_layout', view);
             if (updateUrl) syncUrlParams();
             renderCards();
@@ -1180,6 +1237,16 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             if (platform.includes('Linux') || platform.includes('CNCF')) return isLight ? '#002f6c' : '#58a6ff';
             if (platform.includes('MongoDB')) return isLight ? '#008438' : '#00ed64';
             if (platform.includes('Postman')) return isLight ? '#d44315' : '#ff6c37';
+            if (platform.includes('Red Hat')) return isLight ? '#c00000' : '#ee0000';
+            if (platform.includes('HashiCorp')) return isLight ? '#005fb8' : '#027bfd';
+            if (platform.includes('Palo Alto')) return isLight ? '#c83f1c' : '#fa582d';
+            if (platform.includes('GitLab')) return isLight ? '#d44e15' : '#fc6d26';
+            if (platform.includes('Splunk')) return isLight ? '#c44312' : '#f15b24';
+            if (platform.includes('IBM')) return isLight ? '#0043ce' : '#0f62fe';
+            if (platform.includes('Fortinet')) return isLight ? '#b81d12' : '#ee3124';
+            if (platform.includes('Juniper')) return isLight ? '#005573' : '#00739c';
+            if (platform.includes('Qualys')) return isLight ? '#bd1219' : '#ed1c24';
+            if (platform.includes('Salesforce')) return isLight ? '#0075a3' : '#00a1e0';
             return 'var(--accent-fg)';
         }}
 
@@ -1262,6 +1329,10 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 `;
                 grid.innerHTML = emptyHtml;
                 tableBody.innerHTML = emptyHtml;
+                const timelineContainer = document.getElementById('offersTimeline');
+                if (timelineContainer) timelineContainer.innerHTML = emptyHtml;
+                const matrixContainer = document.getElementById('offersMatrix');
+                if (matrixContainer) matrixContainer.innerHTML = emptyHtml;
                 return;
             }}
 
@@ -1518,6 +1589,248 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         </div>
                     `;
                 }}).join('');
+            }} else if (currentLayout === 'timeline') {{
+                const timelineContainer = document.getElementById('offersTimeline');
+                
+                const rollingOffers = filtered.filter(o => o.status === 'Active' && (!o.time_period || o.time_period.toLowerCase().includes('rolling') || o.time_period.toLowerCase().includes('continuous')));
+                const seasonalOffers = filtered.filter(o => o.status === 'Active' && !rollingOffers.includes(o));
+                const historicalOffers = filtered.filter(o => o.status !== 'Active' || o.is_historical_archive);
+
+                const groups = [
+                    {{
+                        title: "🚀 Active Rolling Tracks & Continuous Enrollment",
+                        desc: "Verified 100% free certifications and exam vouchers open year-round for immediate booking and completion.",
+                        badge: `${{rollingOffers.length}} Active Tracks`,
+                        badgeClass: "var(--success-subtle)",
+                        badgeColor: "var(--success-fg)",
+                        items: rollingOffers
+                    }},
+                    {{
+                        title: "⚡ Active Seasonal Waves & Application Cohorts",
+                        desc: "Time-windowed promotional challenges, community waves, and quarterly scholarship application sprints.",
+                        badge: `${{seasonalOffers.length}} Active Waves`,
+                        badgeClass: "var(--accent-subtle)",
+                        badgeColor: "var(--accent-fg)",
+                        items: seasonalOffers
+                    }},
+                    {{
+                        title: "📜 Historical Waves & Annual Recurrence Milestones",
+                        desc: "Tracked past conference promotional campaigns to predict upcoming seasonal developer conference waves.",
+                        badge: `${{historicalOffers.length}} Recurrence Anchors`,
+                        badgeClass: "rgba(110, 118, 129, 0.15)",
+                        badgeColor: "var(--fg-muted)",
+                        items: historicalOffers
+                    }}
+                ];
+
+                timelineContainer.innerHTML = groups.filter(g => g.items.length > 0).map(group => {{
+                    const cardsHtml = group.items.map(o => {{
+                        const isLive = (o.status === 'Active');
+                        const brandColor = getPlatformColor(o.platform);
+                        const brandIcon = getPlatformIconSvg(o.platform);
+                        const authScore = (typeof o.authenticity_score === 'number') ? o.authenticity_score : 100;
+                        const actionBtnText = isLive ? 'Claim Free' : 'Archive Link';
+                        const actionBtnBg = isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)';
+                        const actionBtnColor = isLive ? '#ffffff' : 'var(--fg-default)';
+                        const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
+
+                        return `
+                            <div class="relative pl-6 sm:pl-8 pb-6 group">
+                                <div class="absolute left-[-9px] sm:left-[-9px] top-1.5 w-4 h-4 rounded-full border-2 flex items-center justify-center" style="background-color: var(--canvas-default); border-color: ${{isLive ? 'var(--success-fg)' : 'var(--border-default)'}};">
+                                    <div class="w-2 h-2 rounded-full ${{isLive ? 'animate-pulse' : ''}}" style="background-color: ${{isLive ? 'var(--success-fg)' : 'var(--fg-muted)'}};"></div>
+                                </div>
+                                <div class="primer-card p-4 sm:p-5 rounded-xl border flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                                            <div class="flex items-center gap-2 flex-wrap">
+                                                <span class="text-xs font-bold px-2 py-0.5 rounded-md flex items-center gap-1.5 border" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border-color: var(--border-default);">
+                                                    <span class="flex items-center justify-center flex-shrink-0">${{brandIcon}}</span>
+                                                    <span>${{o.platform}}</span>
+                                                </span>
+                                                <span class="text-xs font-semibold px-2 py-0.5 rounded-md border flex items-center gap-1 tabular-nums" style="background-color: var(--canvas-inset); color: var(--accent-fg); border-color: var(--border-muted);">
+                                                    <span>📅 ${{o.time_period || 'Rolling'}}</span>
+                                                </span>
+                                                ${{o.recurrence_pattern ? `
+                                                    <span class="text-xs font-medium px-2 py-0.5 rounded-md border hidden xs:inline-flex" style="background-color: var(--canvas-inset); color: var(--fg-muted); border-color: var(--border-muted);">
+                                                        🔁 ${{o.recurrence_pattern}}
+                                                    </span>
+                                                ` : ''}}
+                                            </div>
+                                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
+                                                $${{o.value_usd || 0}} USD Value
+                                            </span>
+                                        </div>
+
+                                        <h3 class="text-sm sm:text-base font-bold hover:underline cursor-pointer" style="color: var(--fg-default);" onclick="window.open('${{o.url}}', '_blank')">
+                                            ${{o.title}}
+                                        </h3>
+
+                                        <div class="flex items-center gap-2 mt-2 flex-wrap">
+                                            ${{o.exam_code ? `
+                                                <span class="text-xs font-mono font-medium px-2 py-0.5 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-default);">
+                                                    Exam: ${{o.exam_code}}
+                                                </span>
+                                            ` : ''}}
+                                            <span class="text-xs px-2 py-0.5 rounded border font-semibold tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
+                                                🛡️ ${{authScore}}% Verified
+                                            </span>
+                                            <span class="text-xs font-medium" style="color: var(--fg-muted);">
+                                                Tier: ${{o.difficulty_tier || 'Associate'}}
+                                            </span>
+                                        </div>
+
+                                        <p class="text-xs mt-2 text-pretty leading-relaxed" style="color: var(--fg-muted);">
+                                            ${{o.claim_steps ? o.claim_steps.slice(0, 160) + (o.claim_steps.length > 160 ? '...' : '') : ''}}
+                                        </p>
+                                    </div>
+
+                                    <div class="mt-3 pt-2.5 border-t flex items-center justify-between gap-2" style="border-color: var(--border-muted);">
+                                        <button onclick="copySteps(this, '${{o.id}}')" class="min-h-[40px] px-3 py-1.5 rounded-lg border text-xs font-semibold hover:opacity-80 active:scale-[0.98] transition flex items-center gap-1.5 cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                                            <span>Copy Guide</span>
+                                        </button>
+                                        <a href="${{o.url}}" target="_blank" class="min-h-[40px] px-4 py-1.5 rounded-lg text-xs font-bold transition hover:opacity-90 active:scale-[0.98] flex items-center gap-1 border shadow-xs cursor-pointer" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
+                                            <span>${{actionBtnText}}</span>
+                                            <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.5.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L9.53 8.78a.75.75 0 0 1-1.06-1.06l4.22-4.22H11a.75.75 0 0 1-.75-.75Z"></path></svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }}).join('');
+
+                    return `
+                        <div class="rounded-xl border p-4 sm:p-5" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-4 border-b" style="border-color: var(--border-muted);">
+                                <div>
+                                    <h3 class="text-sm sm:text-base font-bold" style="color: var(--fg-default);">${{group.title}}</h3>
+                                    <p class="text-xs mt-0.5" style="color: var(--fg-muted);">${{group.desc}}</p>
+                                </div>
+                                <span class="self-start sm:self-center text-xs font-semibold px-2.5 py-1 rounded-md border tabular-nums" style="background-color: ${{group.badgeClass}}; color: ${{group.badgeColor}}; border-color: ${{group.badgeColor}};">
+                                    ${{group.badge}}
+                                </span>
+                            </div>
+                            <div class="border-l-2 ml-2 sm:ml-4 pl-2 sm:pl-4 space-y-2 relative" style="border-color: var(--border-default);">
+                                ${{cardsHtml}}
+                            </div>
+                        </div>
+                    `;
+                }}).join('');
+            }} else if (currentLayout === 'matrix') {{
+                const matrixContainer = document.getElementById('offersMatrix');
+
+                const domains = [
+                    {{ id: 'cloud', name: 'Cloud Infrastructure & Architecture', icon: '☁️', matcher: o => o.category.includes('Cloud') || o.platform.includes('AWS') || o.platform.includes('Azure') || o.platform.includes('Google') || o.platform.includes('Oracle') }},
+                    {{ id: 'security', name: 'Cybersecurity & Network Defense', icon: '🛡️', matcher: o => o.category.includes('Security') || o.category.includes('Networking') || ['ISC2', 'Cisco', 'Palo Alto Networks', 'Splunk', 'IBM', 'Qualys', 'Fortinet', 'Juniper Networks'].includes(o.platform) }},
+                    {{ id: 'ai_data', name: 'AI, Machine Learning & Data Systems', icon: '🤖', matcher: o => o.category.includes('AI') || o.category.includes('Data') || ['Databricks', 'Snowflake', 'MongoDB'].includes(o.platform) || o.title.includes('AI') || o.title.includes('Data') }},
+                    {{ id: 'devops', name: 'DevOps, SRE & Cloud Native', icon: '⚙️', matcher: o => o.category.includes('DevOps') || ['Linux Foundation / CNCF', 'Red Hat', 'HashiCorp', 'GitLab', 'GitHub', 'Postman'].includes(o.platform) }}
+                ];
+
+                const tiers = [
+                    {{ id: 'Foundational', name: 'Foundational', level: 'Level 100', color: 'var(--success-fg)', desc: 'Concepts & Overview' }},
+                    {{ id: 'Associate', name: 'Associate', level: 'Level 200', color: 'var(--accent-fg)', desc: 'Practitioner & Dev' }},
+                    {{ id: 'Professional', name: 'Professional', level: 'Level 300+', color: '#a371f7', desc: 'Specialist & Architect' }}
+                ];
+
+                matrixContainer.innerHTML = `
+                    <div class="rounded-xl border overflow-hidden shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                        <!-- Desktop Matrix Column Header -->
+                        <div class="hidden lg:grid grid-cols-12 gap-3 px-4 py-3 border-b text-xs font-semibold" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">
+                            <div class="col-span-3">Technical Domain</div>
+                            <div class="col-span-3 flex items-center justify-between">
+                                <span>🟢 Foundational (100)</span>
+                                <span class="text-[10px] opacity-70">Entry & Overview</span>
+                            </div>
+                            <div class="col-span-3 flex items-center justify-between">
+                                <span>🔵 Associate (200)</span>
+                                <span class="text-[10px] opacity-70">Practitioner & Dev</span>
+                            </div>
+                            <div class="col-span-3 flex items-center justify-between">
+                                <span>🟣 Professional (300+)</span>
+                                <span class="text-[10px] opacity-70">Specialist & Architect</span>
+                            </div>
+                        </div>
+
+                        <div class="divide-y" style="border-color: var(--border-muted);">
+                            ${{domains.map(dom => {{
+                                const domainOffers = filtered.filter(dom.matcher);
+                                
+                                return `
+                                    <div class="p-4 sm:p-5 lg:grid lg:grid-cols-12 lg:gap-4 items-start">
+                                        <!-- Domain Title Column -->
+                                        <div class="lg:col-span-3 mb-3 lg:mb-0">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-base">${{dom.icon}}</span>
+                                                <h4 class="text-sm font-bold" style="color: var(--fg-default);">${{dom.name}}</h4>
+                                            </div>
+                                            <p class="text-xs mt-1" style="color: var(--fg-muted);">${{domainOffers.length}} vouchers in this domain</p>
+                                        </div>
+
+                                        <!-- Tier Columns -->
+                                        ${{tiers.map(tier => {{
+                                            const tierOffers = domainOffers.filter(o => (o.difficulty_tier || 'Associate') === tier.id);
+                                            
+                                            return `
+                                                <div class="lg:col-span-3 mb-3 lg:mb-0 rounded-lg p-2.5 border" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
+                                                    <div class="flex items-center justify-between pb-1.5 mb-2 border-b lg:hidden" style="border-color: var(--border-muted);">
+                                                        <span class="text-xs font-bold" style="color: ${{tier.color}};">${{tier.name}} (${{tier.level}})</span>
+                                                        <span class="text-[11px] tabular-nums" style="color: var(--fg-muted);">${{tierOffers.length}}</span>
+                                                    </div>
+
+                                                    ${{tierOffers.length === 0 ? `
+                                                        <div class="py-4 text-center text-xs" style="color: var(--fg-muted);">
+                                                            <span class="italic">No vouchers in this tier</span>
+                                                        </div>
+                                                    ` : `
+                                                        <div class="space-y-2">
+                                                            ${{tierOffers.map(o => {{
+                                                                const brandColor = getPlatformColor(o.platform);
+                                                                const brandIcon = getPlatformIconSvg(o.platform);
+                                                                const isLive = (o.status === 'Active');
+
+                                                                return `
+                                                                    <div class="primer-card p-2.5 rounded-lg border text-xs flex flex-col justify-between" style="border-color: var(--border-muted);">
+                                                                        <div>
+                                                                            <div class="flex items-center justify-between gap-1 mb-1">
+                                                                                <span class="font-bold flex items-center gap-1 truncate" style="color: ${{brandColor}};">
+                                                                                    <span class="flex-shrink-0">${{brandIcon}}</span>
+                                                                                    <span class="truncate">${{o.platform}}</span>
+                                                                                </span>
+                                                                                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded tabular-nums flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg);">
+                                                                                    $${{o.value_usd || 0}}
+                                                                                </span>
+                                                                            </div>
+                                                                            <a href="${{o.url}}" target="_blank" class="font-semibold block hover:underline leading-snug line-clamp-2" style="color: var(--fg-default);" title="${{o.title}}">
+                                                                                ${{o.title}}
+                                                                            </a>
+                                                                            ${{o.exam_code ? `
+                                                                                <span class="text-[10px] font-mono mt-1 inline-block px-1 rounded border" style="background-color: var(--canvas-default); border-color: var(--border-muted); color: var(--fg-muted);">
+                                                                                    ${{o.exam_code}}
+                                                                                </span>
+                                                                            ` : ''}}
+                                                                        </div>
+                                                                        <div class="mt-2 pt-1.5 border-t flex items-center justify-between gap-1" style="border-color: var(--border-muted);">
+                                                                            <button onclick="copySteps(this, '${{o.id}}')" class="min-h-[30px] px-2 py-1 rounded text-[11px] font-semibold border hover:opacity-80 cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                                                                                Copy
+                                                                            </button>
+                                                                            <a href="${{o.url}}" target="_blank" class="min-h-[30px] px-2.5 py-1 rounded text-[11px] font-bold border transition flex items-center gap-1" style="background-color: ${{isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)'}}; color: ${{isLive ? '#ffffff' : 'var(--fg-default)'}}; border-color: ${{isLive ? 'transparent' : 'var(--border-default)'}};">
+                                                                                <span>${{isLive ? 'Claim' : 'Archive'}}</span>
+                                                                                <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.5.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L9.53 8.78a.75.75 0 0 1-1.06-1.06l4.22-4.22H11a.75.75 0 0 1-.75-.75Z"></path></svg>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                `;
+                                                            }}).join('')}}
+                                                        </div>
+                                                    `}}
+                                                </div>
+                                            `;
+                                        }}).join('')}}
+                                    </div>
+                                `;
+                            }}).join('')}}
+                        </div>
+                    </div>
+                `;
             }}
             initCardTilt();
         }}
@@ -1743,7 +2056,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             }}
             if ((e.key === 'v' || e.key === 'V') && document.activeElement.tagName !== 'INPUT') {{
                 if (currentMainTab === 'vouchers') {{
-                    setLayoutView(currentLayout === 'grid' ? 'list' : 'grid');
+                    const views = ['grid', 'list', 'timeline', 'matrix'];
+                    const nextIdx = (views.indexOf(currentLayout) + 1) % views.length;
+                    setLayoutView(views[nextIdx]);
                 }}
             }}
             if ((e.key === 't' || e.key === 'T') && document.activeElement.tagName !== 'INPUT') {{

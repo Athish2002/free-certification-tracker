@@ -64,7 +64,8 @@ PLATFORM_DOMAINS: Dict[str, List[str]] = {
         "cisco.com",
         "u.cisco.com",
         "learningnetwork.cisco.com",
-        "blogs.cisco.com"
+        "blogs.cisco.com",
+        "netacad.com"
     ],
     "ISC2": [
         "isc2.org",
@@ -112,6 +113,36 @@ PLATFORM_DOMAINS: Dict[str, List[str]] = {
         "education.github.com",
         "githubuniverse.com",
         "github.blog"
+    ],
+    "Red Hat": [
+        "redhat.com",
+        "learn.redhat.com",
+        "access.redhat.com",
+        "developers.redhat.com"
+    ],
+    "HashiCorp": [
+        "hashicorp.com",
+        "developer.hashicorp.com",
+        "learn.hashicorp.com"
+    ],
+    "Palo Alto Networks": [
+        "paloaltonetworks.com",
+        "beacon.paloaltonetworks.com"
+    ],
+    "GitLab": [
+        "gitlab.com",
+        "university.gitlab.com",
+        "about.gitlab.com"
+    ],
+    "Splunk": [
+        "splunk.com",
+        "lantern.splunk.com",
+        "education.splunk.com"
+    ],
+    "IBM": [
+        "ibm.com",
+        "skillsbuild.org",
+        "yourlearning.ibm.com"
     ]
 }
 
@@ -231,7 +262,12 @@ TYPOSQUATTING_PATTERNS: List[re.Pattern] = [
     re.compile(r"g[i1]thub|g1thub|git-hub", re.IGNORECASE),
     re.compile(r"databr[i1]cks|data-bricks|databr1cks", re.IGNORECASE),
     re.compile(r"f[o0]rt[i1]net|fort1net", re.IGNORECASE),
-    re.compile(r"jun[i1]per|jun1per", re.IGNORECASE)
+    re.compile(r"jun[i1]per|jun1per", re.IGNORECASE),
+    re.compile(r"r[e3]dh[a4]t|red-hat|redh4t", re.IGNORECASE),
+    re.compile(r"h[a4]sh[i1]c[o0]rp|hashic0rp|hashi-corp", re.IGNORECASE),
+    re.compile(r"p[a4]l[o0][a4]lt[o0]|palo-alto", re.IGNORECASE),
+    re.compile(r"g[i1]tl[a4]b|g1tlab|git-lab", re.IGNORECASE),
+    re.compile(r"spl[u0]nk|sp1unk|spl-unk", re.IGNORECASE)
 ]
 
 # Common query parameter names used for URL redirection / destination targets

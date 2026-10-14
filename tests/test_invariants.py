@@ -467,4 +467,74 @@ def test_readme_and_dashboard_authenticity_sync(loaded_data, readme_text, html_t
     assert "100% Authentic" in html_text
     assert "Zero scam domains, zero dumps, strict TLS" in html_text
 
+def test_multiview_dashboard_invariants(html_text):
+    """
+    Asserts that all 4 view modes are implemented in docs/index.html:
+    1. Bento Cards Grid (grid)
+    2. Executive Catalog Table (list)
+    3. Recurrence & Expiry Timeline Roadmap (timeline)
+    4. Domain & Skill Matrix (matrix)
+    """
+    # 1. Switcher buttons
+    for btn_id in ["viewBtnGrid", "viewBtnList", "viewBtnTimeline", "viewBtnMatrix"]:
+        assert f'id="{btn_id}"' in html_text, f"Missing view switcher button: {btn_id}"
+
+    # 2. View containers
+    for container_id in ["cardsViewContainer", "listViewContainer", "timelineViewContainer", "matrixViewContainer"]:
+        assert f'id="{container_id}"' in html_text, f"Missing view container: {container_id}"
+
+    # 3. View switching function supports all 4 modes
+    assert "setLayoutView(view" in html_text
+    assert "'grid', 'list', 'timeline', 'matrix'" in html_text
+
+    # 4. Keyboard shortcuts
+    assert "views.indexOf(currentLayout)" in html_text, "Missing cycling logic for V key"
+
+def test_expanded_vendor_authenticity_coverage(loaded_data):
+    """
+    Enforces authentic coverage across all enterprise vendors requested:
+    Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, CNCF, Databricks, Oracle Cloud, Cisco, GitHub.
+    """
+    offers = loaded_data.get("offers", [])
+    platforms_present = {o.get("platform") for o in offers}
+    
+    expected_platforms = {
+        "Red Hat",
+        "HashiCorp",
+        "Palo Alto Networks",
+        "GitLab",
+        "Splunk",
+        "IBM",
+        "Linux Foundation / CNCF",
+        "Databricks",
+        "Oracle Cloud",
+        "Cisco",
+        "GitHub"
+    }
+
+    for p in expected_platforms:
+        assert p in platforms_present, f"Expected vendor platform '{p}' not present in offers.json"
+
+    # Assert all offers for these platforms are verified authentic
+    for o in offers:
+        if o.get("platform") in expected_platforms:
+            assert o.get("is_authentic_vendor") is True, f"Offer {o.get('id')} failed vendor authenticity"
+            assert o.get("authenticity_score", 0) >= 80, f"Offer {o.get('id')} has score < 80"
+            assert o.get("url", "").startswith("https://"), f"Offer {o.get('id')} must use HTTPS"
+
+def test_difficulty_tier_and_timeline_metadata(loaded_data):
+    """
+    Asserts that every offer has valid difficulty_tier and timeline metadata.
+    """
+    valid_tiers = {"Foundational", "Associate", "Professional"}
+    offers = loaded_data.get("offers", [])
+
+    for o in offers:
+        oid = o.get("id")
+        tier = o.get("difficulty_tier")
+        assert tier in valid_tiers, f"Offer {oid} has invalid difficulty_tier: {tier}"
+        assert "time_period" in o and str(o["time_period"]).strip() != "", f"Offer {oid} missing time_period"
+        assert "recurrence_pattern" in o and str(o["recurrence_pattern"]).strip() != "", f"Offer {oid} missing recurrence_pattern"
+
+
 
