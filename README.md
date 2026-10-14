@@ -18,9 +18,9 @@
 | **Active Opportunities** | **22** | Verified 100% free exams & live registration windows |
 | **Total Financial Value** | **$3,502 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **26 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **28 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-14 17:06 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-14 23:04 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -144,6 +144,8 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[From 2,500 requests to 24: Rebuilding star history without the stargazers](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/)**<br>Our new repo star history API now provides trends without returning individual identities or requiring unbounded database work. These are the engineering tradeoffs we made. The post From 2,500 requests to 24: Rebuilding star history without... | [GitHub Engineering Blog](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/)<br>`github.blog` |
+| `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[GitHub availability report: September 2026](https://github.blog/news-insights/company-news/github-availability-report-september-2026/)**<br>In September, we experienced two incidents that resulted in degraded performance across GitHub services. The post GitHub availability report: September 2026 appeared first on The GitHub Blog. | [GitHub Engineering Blog](https://github.blog/news-insights/company-news/github-availability-report-september-2026/)<br>`github.blog` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[The AI Security Paradox – How Shadow AI Became the Enterprise’s Biggest Blind Spot](https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot)**<br>AI adoption inside the enterprise is no longer waiting for governance to catch up. Employees are already using generative AI to write code, summarize documents, analyze data, draft communications, and automate routine work, often through to... | [Cisco Blogs](https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Agents at the Edge: Extending AI Security Governance to Physical AI with DefenseClaw](https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw)**<br>AI agents are moving beyond screens and servers into the physical world -- controlling robots, drones, factory equipment, and building systems. DefenseClaw now includes an Edge Connector that brings AI agent security to these constrained de... | [Cisco Blogs](https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Cloud CISO Perspectives: New Gemini Notebook can help CISOs and policymakers prepare for PQC](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/)**<br>Welcome to the first Cloud CISO Perspectives for October 2026. Today, Stephanie Kiel explains the latest on our approach to post-quantum cryptography, and shares a new tool to help CISOs and executives prepare their organizations for PQC.As... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/)<br>`cloud.google.com` |
@@ -359,4 +361,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 17:06 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 23:04 UTC`.*

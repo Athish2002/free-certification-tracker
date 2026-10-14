@@ -3,6 +3,30 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "github-from-2-500-requests-to-24-reb",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "From 2,500 requests to 24: Rebuilding star history without the stargazers",
+      "summary": "Our new repo star history API now provides trends without returning individual identities or requiring unbounded database work. These are the engineering tradeoffs we made. The post From 2,500 requests to 24: Rebuilding star history without...",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
+      "id": "github-github-availability-report-se",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "GitHub availability report: September 2026",
+      "summary": "In September, we experienced two incidents that resulted in degraded performance across GitHub services. The post GitHub availability report: September 2026 appeared first on The GitHub Blog.",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/news-insights/company-news/github-availability-report-september-2026/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
       "id": "cisco-the-ai-security-paradox-how",
       "company": "Cisco",
       "source": "Cisco Blogs",
