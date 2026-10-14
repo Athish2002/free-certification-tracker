@@ -1,5 +1,5 @@
 {
-  "total_candidates": 6,
+  "total_candidates": 10,
   "leads": [
     {
       "source": "Reddit r/AzureCertification",
@@ -70,6 +70,51 @@
         "100%"
       ],
       "match_confidence": "Medium (Multi-Keyword)"
+    },
+    {
+      "source": "Reddit r/AWSCertifications",
+      "title": "Has anyone used the Udemy exam voucher + second attempt option? CLF-C02 exam",
+      "url": "https://www.reddit.com/r/AWSCertifications/comments/1x3gngy/has_anyone_used_the_udemy_exam_voucher_second/",
+      "platform": "Amazon Web Services",
+      "timestamp": "2026-10-11T19:09:49+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)"
+    },
+    {
+      "source": "Reddit r/AWSCertifications",
+      "title": "Question about SAP-C03 and 50% exam voucher",
+      "url": "https://www.reddit.com/r/AWSCertifications/comments/1x3etaz/question_about_sapc03_and_50_exam_voucher/",
+      "platform": "Amazon Web Services",
+      "timestamp": "2026-10-11T17:58:31+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)"
+    },
+    {
+      "source": "Reddit r/AWSCertifications",
+      "title": "Pearson VUE offering 50% off + a free retake for select AWS certification exams",
+      "url": "https://www.reddit.com/r/AWSCertifications/comments/1x1p3fq/pearson_vue_offering_50_off_a_free_retake_for/",
+      "platform": "Amazon Web Services",
+      "timestamp": "2026-10-09T15:57:33+00:00",
+      "keywords": [
+        "voucher",
+        "promo code"
+      ],
+      "match_confidence": "Medium (Multi-Keyword)"
+    },
+    {
+      "source": "Reddit r/AWSCertifications",
+      "title": "Looking for AWS Certification Exam Vouchers or Student Discounts",
+      "url": "https://www.reddit.com/r/AWSCertifications/comments/1x1avwz/looking_for_aws_certification_exam_vouchers_or/",
+      "platform": "Amazon Web Services",
+      "timestamp": "2026-10-09T03:27:41+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)"
     }
   ]
 }

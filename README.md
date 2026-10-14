@@ -17,8 +17,8 @@
 | **Active Opportunities** | **14** | Verified 100% free exams & live registration windows |
 | **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **8 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **20 Reports** | Official primary cloud engineering updates |
-| **Last Automated Inspection** | `2026-10-14 14:30 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Verified Tech Dispatches** | **21 Reports** | Official primary cloud engineering updates |
+| **Last Automated Inspection** | `2026-10-14 14:32 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -122,6 +122,7 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[How UTS established a modern curriculum data services foundation on AWS](https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/)**<br>The University of Technology Sydney built a modern curriculum data services foundation on AWS that treats curriculum data as a governed, reusable product, available through APIs, graph traversal, semantic search, and event delivery, while l... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Always-On Assurance: How Cisco is Reimagining the Secure Development Lifecycle](https://blogs.cisco.com/security/always-on-assurance)**<br>Learn how Cisco’s Secure Development Lifecycle (CSDL) is evolving to support AI-driven development, ensuring secure and resilient software at speed. | [Cisco Blogs](https://blogs.cisco.com/security/always-on-assurance)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Beyond AI cost visibility: Designing tokenomics for real users](https://blogs.cisco.com/cisco-on-cisco/beyond-ai-cost-visibility-designing-tokenomics-for-real-users)**<br>Managing AI spend at scale demands more than just usage counts. Learn how mapping tokenomics to organizational hierarchies empowers engineers, managers, and finance to balance innovation with financial discipline. | [Cisco Blogs](https://blogs.cisco.com/cisco-on-cisco/beyond-ai-cost-visibility-designing-tokenomics-for-real-users)<br>`blogs.cisco.com` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[GitHub Copilot app for Beginners: How to teach Copilot about your codebase](https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/)**<br>Learn how to add custom instructions and skills to your repository, use custom agents, and connect MCP servers like Playwright. The post GitHub Copilot app for Beginners: How to teach Copilot about your codebase appeared first on The GitHub... | [GitHub Engineering Blog](https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/)<br>`github.blog` |
@@ -275,4 +276,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 14:30 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 14:32 UTC`.*

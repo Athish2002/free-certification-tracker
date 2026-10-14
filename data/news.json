@@ -3,6 +3,18 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "amazon-web-services-how-uts-established-a-modern-c",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How UTS established a modern curriculum data services foundation on AWS",
+      "summary": "The University of Technology Sydney built a modern curriculum data services foundation on AWS that treats curriculum data as a governed, reusable product, available through APIs, graph traversal, semantic search, and event delivery, while l...",
+      "published_date": "2024-08-01",
+      "url": "https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/",
+      "impact_badge": "Architecture RFC"
+    },
+    {
       "id": "cisco-always-on-assurance-how-cisco",
       "company": "Cisco",
       "source": "Cisco Blogs",
