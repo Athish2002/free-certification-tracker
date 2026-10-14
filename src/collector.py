@@ -2,14 +2,18 @@
 Collector module for CertPulse.
 Fetches high-intent free certification voucher leads from public community feeds
 and official vendor channels without any API fees.
+Enforces domain authenticity checks on discovered outbound links.
 """
 
+import re
 import time
 import httpx
 import logging
 import xml.etree.ElementTree as ET
 from typing import List, Dict, Any
 from datetime import datetime
+
+from src.authenticity import check_domain_authenticity, SCAM_DOMAIN_KEYWORDS, BANNED_URL_SHORTENERS
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("certpulse.collector")
@@ -46,13 +50,15 @@ VOUCHER_KEYWORDS = [
 
 NOISE_KEYWORDS = [
     "passed az", "passed aws", "failed", "exam tomorrow", "cancelled my exam",
-    "lost my voucher", "retry az", "exam dump", "braindump"
+    "lost my voucher", "retry az", "exam dump", "braindump", "dumps"
 ]
+
+URL_REGEX = re.compile(r'https?://[^\s<>"\'\)]+')
 
 def fetch_reddit_leads() -> List[Dict[str, Any]]:
     """
     Fetches Atom RSS feeds from Reddit search endpoints.
-    Applies high-signal intent filters and eliminates noise/exam results posts.
+    Applies high-signal intent filters, scam suppression, and domain authenticity auditing.
     """
     discovered_leads = []
     
@@ -85,15 +91,45 @@ def fetch_reddit_leads() -> List[Dict[str, Any]]:
                         title_lower = title.lower()
                         combined_lower = f"{title_lower} {content.lower()}"
                         
-                        # Discard noise posts (passed exams, complaints, cancellations)
+                        # Discard noise posts (passed exams, complaints, braindump requests)
                         if any(noise in title_lower for noise in NOISE_KEYWORDS):
                             continue
                             
+                        # Extract outbound URLs from post body
+                        found_urls = URL_REGEX.findall(content)
+                        # Filter out Reddit internal URLs
+                        external_urls = [u for u in found_urls if "reddit.com" not in u and "redd.it" not in u]
+                        
+                        # Scam & banned shortener suppression
+                        has_scam_link = False
+                        for ext_url in external_urls:
+                            ext_lower = ext_url.lower()
+                            if any(scam in ext_lower for scam in SCAM_DOMAIN_KEYWORDS):
+                                has_scam_link = True
+                                break
+                            if any(shortener in ext_lower for shortener in BANNED_URL_SHORTENERS):
+                                has_scam_link = True
+                                break
+                                
+                        if has_scam_link:
+                            logger.warning(f"Discarding lead with suspicious / scam link: {title[:40]}")
+                            continue
+
+                        # Check for verified official vendor destination
+                        verified_vendor_url = ""
+                        is_authentic_vendor = False
+                        for ext_url in external_urls:
+                            is_auth, tier, _, _ = check_domain_authenticity(ext_url, target["platform"])
+                            if is_auth:
+                                is_authentic_vendor = True
+                                verified_vendor_url = ext_url
+                                break
+
                         # Intent rule: keyword in title OR 2+ keywords in body
                         matched_in_title = [kw for kw in VOUCHER_KEYWORDS if kw in title_lower]
                         matched_in_body = [kw for kw in VOUCHER_KEYWORDS if kw in combined_lower]
                         
-                        is_high_signal = len(matched_in_title) > 0 or len(matched_in_body) >= 2
+                        is_high_signal = len(matched_in_title) > 0 or len(matched_in_body) >= 2 or is_authentic_vendor
                         
                         if is_high_signal:
                             discovered_leads.append({
@@ -103,7 +139,10 @@ def fetch_reddit_leads() -> List[Dict[str, Any]]:
                                 "platform": target["platform"],
                                 "timestamp": updated,
                                 "keywords": matched_in_title or matched_in_body,
-                                "match_confidence": "High (Title)" if matched_in_title else "Medium (Multi-Keyword)"
+                                "match_confidence": "High (Title)" if matched_in_title else "Medium (Multi-Keyword)",
+                                "is_authentic_vendor": is_authentic_vendor,
+                                "verified_vendor_url": verified_vendor_url,
+                                "authenticity_tier": "Verified Official Portal" if is_authentic_vendor else "Community Lead"
                             })
                 elif response.status_code == 429:
                     logger.warning(f"Reddit r/{sub} returned 429 rate limit (will retry next scheduled run).")

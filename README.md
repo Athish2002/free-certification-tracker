@@ -6,6 +6,7 @@
 ![Active Vouchers](https://img.shields.io/badge/Active%20Offers-14-success.svg) 
 ![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242188%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
+![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
 
 ---
@@ -18,7 +19,8 @@
 | **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **8 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **22 Reports** | Official primary cloud engineering updates |
-| **Last Automated Inspection** | `2026-10-14 15:43 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
+| **Last Automated Inspection** | `2026-10-14 16:00 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -27,67 +29,67 @@
 
 ### Security
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **ISC2** | Certified in Cybersecurity (CC) | `100% Free Exam Voucher` | $199 | 🟢 Active | [**Claim Offer**](https://www.isc2.org/landing/1mcc) |
-| **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | [**Claim Offer**](https://www.qualys.com/training) |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **ISC2** | Certified in Cybersecurity (CC) | `100% Free Exam Voucher` | $199 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.isc2.org/landing/1mcc) |
+| **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.qualys.com/training) |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
 
 ### Cloud & Data
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | `100% Free Exam Voucher` | $245 | 🟢 Active | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 90% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
 ### Cloud & AI
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | `100% Free Credential` | $100 | 🟢 Active | [**Claim Offer**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | `Free Skill Badges & Swag` | $100 | 🟢 Active | [**Claim Offer**](https://www.cloudskillsboost.google/) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | `100% Free Credential` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | `Free Skill Badges & Swag` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.skills.google/) |
 
 ### DevOps & Cloud Native
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | `100% Free Scholarship Voucher` | $395 | 🟢 Active | [**Claim Offer**](https://www.linuxfoundation.org/about/lift-scholarships) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | `100% Free Scholarship Voucher` | $395 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.linuxfoundation.org/about/lift-scholarships) |
 
 ### AI & Data
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | `100% Free Credential` | $150 | 🟢 Active | [**Claim Offer**](https://learn.snowflake.com/en/) |
-| **MongoDB** | MongoDB Associate Developer / DBA | `Free Training & Student Voucher` | $150 | 🟢 Active | [**Claim Offer**](https://learn.mongodb.com/) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.snowflake.com/en/) |
+| **MongoDB** | MongoDB Associate Developer / DBA | `Free Training & Student Voucher` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.mongodb.com/) |
 
 ### CRM & Cloud
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Salesforce** | Salesforce Certified Administrator / App Builder | `Quest Sweepstakes Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://trailhead.salesforce.com/quests) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Salesforce** | Salesforce Certified Administrator / App Builder | `Quest Sweepstakes Voucher` | $200 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://trailhead.salesforce.com/quests) |
 
 ### API & DevOps
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Postman** | Postman API Fundamentals Student / Pro Expert | `100% Free Credential` | $50 | 🟢 Active | [**Claim Offer**](https://academy.postman.com/) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Postman** | Postman API Fundamentals Student / Pro Expert | `100% Free Credential` | $50 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://academy.postman.com/) |
 
 ### Networking
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
 
 ### DevOps
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **GitHub** | GitHub Foundations | `Student 100% Free Voucher` | $99 | 🟢 Active | [**Claim Offer**](https://education.github.com/pack) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **GitHub** | GitHub Foundations | `Student 100% Free Voucher` | $99 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://education.github.com/pack) |
 
 ### Cloud Computing
 
-| Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :--- |
-| **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | `Free Digital Credential` | $50 | 🟢 Active | [**Claim Offer**](https://aws.amazon.com/education/awseducate/) |
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | `Free Digital Credential` | $50 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://aws.amazon.com/education/awseducate/) |
 
 ---
 
@@ -175,7 +177,7 @@
 - **Value:** $100 USD
 - **Eligibility:** Global (Google Account)
 - **Steps to Claim:** Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.
-- **Official Link:** [https://www.cloudskillsboost.google/](https://www.cloudskillsboost.google/)
+- **Official Link:** [https://www.skills.google/](https://www.skills.google/)
 
 #### Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)
 - **Provider:** Linux Foundation / CNCF
@@ -277,4 +279,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 15:43 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 16:00 UTC`.*

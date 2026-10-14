@@ -26,8 +26,8 @@ def run_pipeline():
         with open(CANDIDATES_FILE, "w", encoding="utf-8") as f:
             json.dump({"total_candidates": len(leads), "leads": leads}, f, indent=2)
 
-    # 2. Deep site inspection: Verify 200 OK, detect soft-404s and 'Closed' notices
-    logger.info("Running deep liveness & soft-404 inspection across all tracked URLs...")
+    # 2. Deep site inspection: Verify 200 OK, detect soft-404s, 'Closed' notices, and multi-layer authenticity
+    logger.info("Running deep liveness, soft-404, and multi-layer authenticity inspection across all tracked URLs...")
     run_inspection()
 
     # 3. Ingest verified engineering and cloud intelligence feeds

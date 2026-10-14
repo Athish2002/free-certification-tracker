@@ -8,6 +8,16 @@ import re
 import json
 import pytest
 from pathlib import Path
+from src.authenticity import (
+    clean_hostname,
+    check_domain_authenticity,
+    check_ssl_and_protocol,
+    check_redirect_chain_security,
+    audit_offer_authenticity,
+    SCAM_DOMAIN_KEYWORDS,
+    BANNED_URL_SHORTENERS,
+    SUSPICIOUS_TLDS
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "offers.json"
@@ -210,4 +220,182 @@ def test_mobile_ux_invariants(html_text):
     assert 'min-h-[40px]' in html_text, "Missing min-h-[40px] for interactive buttons and pills in docs/index.html"
     assert 'onStatusFilterChange' in html_text, "Missing onStatusFilterChange function for filter synchronization"
     assert 'offersData.find' in html_text, "copySteps should lookup offer in offersData by ID to avoid escaping bugs"
+
+# --- 4. Multi-Layer Authenticity & Anti-Scam Security Invariants ---
+
+def test_offer_authenticity_schema_invariants(loaded_data):
+    """
+    Enforces that every certification offer contains verified authenticity metadata,
+    high trust scores, and valid structured verification details.
+    """
+    offers = loaded_data.get("offers", [])
+    assert len(offers) > 0, "Offer database cannot be empty"
+
+    for o in offers:
+        oid = o.get("id", "UNKNOWN")
+        
+        # 1. Flag presence & type invariant
+        assert "is_authentic_vendor" in o, f"Offer {oid} missing 'is_authentic_vendor' flag"
+        assert isinstance(o["is_authentic_vendor"], bool), f"Offer {oid} 'is_authentic_vendor' must be boolean"
+        assert o["is_authentic_vendor"] is True, f"Offer {oid} failed authenticity verification: {o.get('inspection_notes')}"
+
+        # 2. Score invariant [80, 100]
+        assert "authenticity_score" in o, f"Offer {oid} missing 'authenticity_score'"
+        score = o["authenticity_score"]
+        assert isinstance(score, int), f"Offer {oid} 'authenticity_score' must be integer"
+        assert 80 <= score <= 100, f"Offer {oid} has authenticity score below acceptable threshold: {score}"
+
+        # 3. Details dictionary invariant
+        assert "authenticity_details" in o, f"Offer {oid} missing 'authenticity_details'"
+        details = o["authenticity_details"]
+        assert isinstance(details, dict), f"Offer {oid} 'authenticity_details' must be a dict"
+        assert details.get("domain_verified") is True, f"Offer {oid} domain not verified in details"
+        assert details.get("ssl_verified") is True, f"Offer {oid} SSL not verified in details"
+        assert details.get("redirect_secure") is True, f"Offer {oid} redirect not verified in details"
+        assert details.get("trust_tier") in {"Official Vendor Portal", "Accredited Exam Partner"}
+
+def test_domain_authenticity_and_anti_scam_invariants(loaded_data):
+    """
+    Asserts zero scam voucher farms, zero braindumps, strict HTTPS,
+    and verified primary vendor or partner domains across all offers.
+    """
+    offers = loaded_data.get("offers", [])
+    for o in offers:
+        oid = o["id"]
+        url = str(o["url"])
+
+        # 1. Strict HTTPS protocol invariant
+        ssl_ok, ssl_flags = check_ssl_and_protocol(url)
+        assert ssl_ok is True, f"Offer {oid} failed SSL/TLS protocol check: {ssl_flags}"
+
+        # 2. Domain whitelist & platform matching
+        domain_ok, tier, reason, flags = check_domain_authenticity(url, o.get("platform", ""))
+        assert domain_ok is True, f"Offer {oid} domain failed authenticity check: {reason} (flags: {flags})"
+        assert tier in {"Official Vendor Portal", "Accredited Exam Partner"}
+
+        # 3. Zero scam keywords in domain hostname
+        host = clean_hostname(url)
+        for scam_kw in SCAM_DOMAIN_KEYWORDS:
+            assert scam_kw not in host, f"Offer {oid} host contains scam keyword '{scam_kw}': {host}"
+
+        # 4. Zero banned shorteners in domain hostname
+        for shortener in BANNED_URL_SHORTENERS:
+            assert host != shortener and not host.endswith("." + shortener), (
+                f"Offer {oid} host uses disallowed shortener '{shortener}': {host}"
+            )
+
+        # 5. Zero suspicious TLDs in domain hostname
+        for tld in SUSPICIOUS_TLDS:
+            assert not host.endswith(tld), (
+                f"Offer {oid} host uses high-risk scam TLD '{tld}': {host}"
+            )
+
+def test_authenticity_engine_adversarial_rejection():
+    """
+    Asserts that the authenticity engine vigorously rejects typosquatting,
+    scam voucher farms, braindumps, paywall traps, and insecure transports.
+    """
+    adversarial_cases = [
+        # Typosquatting Microsoft
+        {
+            "offer": {"platform": "Microsoft Azure", "url": "https://micros0ft-freecerts.top/promo"},
+            "body": "",
+            "expected_verdict": ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]
+        },
+        # Exam braindump domain
+        {
+            "offer": {"platform": "Amazon Web Services", "url": "https://aws-examdumps.xyz/vouchers"},
+            "body": "",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Disallowed shortener cloaking
+        {
+            "offer": {"platform": "Google Cloud", "url": "https://bit.ly/azure-free-voucher"},
+            "body": "",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Insecure HTTP
+        {
+            "offer": {"platform": "Microsoft Azure", "url": "http://learn.microsoft.com/credentials"},
+            "body": "",
+            "expected_verdict": ["SUSPICIOUS_UNTRUSTED"]
+        },
+        # Legitimate domain with exam dump scam content
+        {
+            "offer": {"platform": "Oracle Cloud", "url": "https://education.oracle.com/oracle-cloud-infrastructure"},
+            "body": "Download our guaranteed pass 100% real braindump exam questions and answers.",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        },
+        # Legitimate domain with credit card paywall trap
+        {
+            "offer": {"platform": "Cisco", "url": "https://u.cisco.com/"},
+            "body": "Credit card is required to enroll. 7-day trial then $49 billed automatically after trial.",
+            "expected_verdict": ["DECEPTIVE_SCAM"]
+        }
+    ]
+
+    for case in adversarial_cases:
+        res = audit_offer_authenticity(case["offer"], body_text=case["body"])
+        assert res["is_authentic_vendor"] is False, f"Adversarial case succeeded unexpectedly: {case['offer']['url']}"
+        assert res["verdict"] in case["expected_verdict"], (
+            f"Adversarial case {case['offer']['url']} returned {res['verdict']}, expected {case['expected_verdict']}"
+        )
+        assert res["authenticity_score"] <= 50, f"Adversarial case received too high score: {res['authenticity_score']}"
+
+def test_redirect_chain_security_invariant():
+    """
+    Asserts that redirect chains with protocol downgrades, shorteners,
+    or malicious destinations are detected and rejected.
+    """
+    # 1. Clean genuine chain
+    clean_chain = [
+        "https://learn.microsoft.com/en-us/training",
+        "https://learn.microsoft.com/en-us/credentials/applied-skills/"
+    ]
+    ok, flags = check_redirect_chain_security(clean_chain, "Microsoft Azure")
+    assert ok is True
+    assert "CLEAN_REDIRECT_CHAIN" in flags
+
+    # 2. Insecure HTTP downgrade
+    downgrade_chain = [
+        "https://aws.amazon.com/education",
+        "http://aws.amazon.com/education/awseducate/"
+    ]
+    ok, flags = check_redirect_chain_security(downgrade_chain, "Amazon Web Services")
+    assert ok is False
+    assert "REDIRECT_SSL_DOWNGRADE" in flags
+
+    # 3. Cloaked redirect through shortener
+    shortener_chain = [
+        "https://google.com/promo",
+        "https://bit.ly/gcp-cert",
+        "https://cloudskillsboost.google/"
+    ]
+    ok, flags = check_redirect_chain_security(shortener_chain, "Google Cloud")
+    assert ok is False
+    assert "REDIRECT_THROUGH_SHORTENER" in flags
+
+    # 4. Redirecting to external untrusted scam destination
+    scam_dest_chain = [
+        "https://u.cisco.com/promo",
+        "https://scam-voucher-farm.xyz/affiliate-lead"
+    ]
+    ok, flags = check_redirect_chain_security(scam_dest_chain, "Cisco")
+    assert ok is False
+    assert "REDIRECT_UNTRUSTED_DESTINATION" in flags
+
+def test_readme_and_dashboard_authenticity_sync(loaded_data, readme_text, html_text):
+    """
+    Asserts that the README badge and Web Dashboard prominently display
+    verified vendor authenticity metrics and zero-scam disclosures.
+    """
+    # README authenticity indicators
+    assert "![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg)" in readme_text
+    assert "| **Authenticity Gate** | **100% Primary Vendor Verified** |" in readme_text
+
+    # Web Dashboard authenticity indicators
+    assert "Authenticity Standard" in html_text
+    assert "100% Authentic" in html_text
+    assert "Zero scam domains, zero dumps, strict TLS" in html_text
+
 

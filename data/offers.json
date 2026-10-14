@@ -16,7 +16,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "2026-12-31",
       "claim_steps": "Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (9)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "oracle-oci-free-cert",
@@ -32,7 +54,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling Cycles",
       "claim_steps": "Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.",
-      "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)"
+      "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 90,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 90,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "SINGLE_CREDENTIAL_SIGNAL"
+        ],
+        "warning_flags": [],
+        "summary": "90% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "cisco-rev-up-recert",
@@ -48,7 +92,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling",
       "claim_steps": "Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.",
-      "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found"
+      "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (3)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "ms-applied-skills",
@@ -64,7 +130,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (7)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "gcp-cloud-skills-boost",
@@ -75,12 +163,34 @@
       "offer_type": "Free Skill Badges & Swag",
       "value_usd": 100,
       "eligibility": "Global (Google Account)",
-      "url": "https://www.cloudskillsboost.google/",
+      "url": "https://www.skills.google/",
       "status": "Active",
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (8)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "linux-foundation-lift",
@@ -96,7 +206,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Annual Windows",
       "claim_steps": "Submit an application during the annual LiFT scholarship window describing your career goals. Winners receive a 100% free exam voucher + training course.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (7)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "snowflake-hands-on-essentials",
@@ -112,7 +244,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (8)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "mongodb-developer-cert",
@@ -128,7 +282,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (4)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "salesforce-trailhead-quests",
@@ -144,7 +320,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Monthly Quests",
       "claim_steps": "Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (11)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "postman-api-expert",
@@ -160,7 +358,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (7)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "juniper-open-learning",
@@ -176,7 +396,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling",
       "claim_steps": "Register for a free Juniper Open Learning webinar session, complete the pre-assessment module with a passing score, and receive a Pearson VUE voucher.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (10)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "qualys-certified-specialist",
@@ -192,7 +434,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (6)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "databricks-genai-fundamentals",
@@ -208,7 +472,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.",
-      "inspection_notes": "Detected closure phrase: 'no longer available'"
+      "inspection_notes": "Detected closure phrase: 'no longer available'",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (11)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "fortinet-cybersecurity-fundamentals",
@@ -224,7 +510,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (10)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "github-student-foundations",
@@ -240,7 +548,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Rolling",
       "claim_steps": "Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (8)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "aws-educate-badges",
@@ -256,7 +586,29 @@
       "verification_date": "2026-10-14",
       "expiry_date": "Permanent",
       "claim_steps": "Sign up for AWS Educate without an AWS account or credit card. Complete hands-on cloud labs to earn industry-recognized digital credentials.",
-      "inspection_notes": "HTTP 200 OK (Live Verified)"
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "is_authentic_vendor": true,
+      "authenticity_score": 95,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 95,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (7)"
+        ],
+        "warning_flags": [],
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-msft-build-2024",
@@ -275,7 +627,28 @@
       "recurrence_pattern": "Annual (Every May alongside Microsoft Build Conference)",
       "claim_steps": "Registered on Microsoft Learn, completed 1 qualifying interactive challenge collection within 30 days, received 100% voucher code sent to registered email.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-msft-ignite-2023",
@@ -294,7 +667,28 @@
       "recurrence_pattern": "Annual (Every Nov/Dec alongside Microsoft Ignite)",
       "claim_steps": "Enrolled in Microsoft Ignite Cloud Skills Challenge during conference week, completed challenge leaderboard, received unique Pearson VUE voucher.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-oracle-race-cert-2024",
@@ -313,7 +707,28 @@
       "recurrence_pattern": "Annual (Summer promotional cycle across Q3 every year)",
       "claim_steps": "Joined Race to Certification on Oracle University portal, earned sector badges, and scheduled proctored online exams with 2 free attempts.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-cisco-rev-up-devnae",
@@ -332,7 +747,28 @@
       "recurrence_pattern": "Quarterly (Cisco Learning Network Rev Up sprints every 3-4 months)",
       "claim_steps": "Completed the 'Developing Applications on Cisco Platforms' (DEVNAE) learning path on Cisco U with 100% quiz scores. CE credits auto-submitted to recertify CCNA/CCNP.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-aws-ai-practitioner-early",
@@ -351,7 +787,28 @@
       "recurrence_pattern": "Event-driven (New AWS certification launch beta periods)",
       "claim_steps": "Registered for the newly launched AIF-C01 during the early adopter window via AWS Training to receive free exam retake insurance and promotion codes.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-gcp-ace-challenge",
@@ -370,7 +827,28 @@
       "recurrence_pattern": "Semi-Annual (Google Cloud Next & Autumn Innovators Challenges)",
       "claim_steps": "Completed 3 Google Cloud Skills Boost quests and earned hands-on badges to receive an official voucher for Kryterion Webassessor.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-databricks-genai-2024",
@@ -389,7 +867,28 @@
       "recurrence_pattern": "Annual (Refreshed annually for new LLM releases)",
       "claim_steps": "Completed the 4 video modules on Databricks Academy and passed the 20-question proctored knowledge assessment to earn the Credly badge.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     },
     {
       "id": "hist-github-universe-2024",
@@ -408,8 +907,29 @@
       "recurrence_pattern": "Annual (GitHub Universe conference every October/November)",
       "claim_steps": "Registered for virtual GitHub Universe, completed the post-conference developer survey and challenges to receive a PSI exam voucher code.",
       "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)",
-      "is_historical_archive": true
+      "is_historical_archive": true,
+      "is_authentic_vendor": true,
+      "authenticity_score": 100,
+      "authenticity_details": {
+        "is_authentic_vendor": true,
+        "authenticity_score": 100,
+        "verdict": "VERIFIED_AUTHENTIC",
+        "trust_tier": "Official Vendor Portal",
+        "domain_verified": true,
+        "ssl_verified": true,
+        "redirect_secure": true,
+        "corroboration_passed": true,
+        "checks_passed": [
+          "OFFICIAL_PRIMARY_VENDOR_DOMAIN",
+          "STRICT_HTTPS_PROTOCOL",
+          "STANDARD_PORT_SECURITY",
+          "CLEAN_REDIRECT_CHAIN",
+          "CONTENT_INSPECTION_BYPASS"
+        ],
+        "warning_flags": [],
+        "summary": "100% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+      }
     }
   ],
-  "last_inspected": "2026-10-14T15:43:41.439678"
+  "last_inspected": "2026-10-14T15:50:02.474588+00:00"
 }
