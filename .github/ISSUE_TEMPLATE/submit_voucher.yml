@@ -1,0 +1,68 @@
+name: 🎯 Submit a Free Certification Voucher / Offer
+description: Submit a newly discovered 100% free certification exam voucher or accredited offer
+title: "[VOUCHER]: "
+labels: ["voucher-submission", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting a free certification offer! Please provide the details below so our automated pipeline can verify and index it.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Cloud / Technology Provider
+      options:
+        - Microsoft Azure
+        - Amazon Web Services (AWS)
+        - Google Cloud (GCP)
+        - Cisco
+        - ISC2
+        - Oracle Cloud (OCI)
+        - GitHub
+        - Linux Foundation / CNCF
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: cert_name
+    attributes:
+      label: Certification Name
+      description: E.g., AWS Certified Cloud Practitioner, Azure AI-900, ISC2 CC
+      placeholder: "e.g. AI-900: Microsoft Azure AI Fundamentals"
+    validations:
+      required: true
+  - type: dropdown
+    id: offer_type
+    attributes:
+      label: Offer Type
+      options:
+        - 100% Free Exam Voucher
+        - Cloud Skills Challenge to Earn Voucher
+        - Free Accredited Credential / Badge
+        - Free Continuing Education (CE) Credits
+        - Student Discount / Scholarship
+    validations:
+      required: true
+  - type: input
+    id: value_usd
+    attributes:
+      label: Estimated Value in USD
+      placeholder: "165"
+    validations:
+      required: false
+  - type: input
+    id: url
+    attributes:
+      label: Official Claim Link
+      description: Must be an official vendor or verified announcement link.
+      placeholder: "https://..."
+    validations:
+      required: true
+  - type: textarea
+    id: claim_instructions
+    attributes:
+      label: How to Claim
+      description: Briefly describe the steps required to receive or redeem the voucher.
+      placeholder: "Complete the 3 learning paths on MS Learn before Oct 30 to receive the voucher code by email."
+    validations:
+      required: true

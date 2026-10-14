@@ -1,0 +1,75 @@
+{
+  "total_candidates": 6,
+  "leads": [
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Question about how to get a free voucher",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x3fwtq/question_about_how_to_get_a_free_voucher/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-11T18:40:44+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Microsoft LevelUp Program - Passed assessment (80%+) but never received exam voucher",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x2f1jc/microsoft_levelup_program_passed_assessment_80/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-10T13:14:53+00:00",
+      "keywords": [
+        "voucher",
+        "levelup"
+      ],
+      "match_confidence": "High (Title)"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Passed AI 901 with 1 day Prep",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x042ag/passed_ai_901_with_1_day_prep/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-07T18:20:16+00:00",
+      "keywords": [
+        "voucher",
+        "challenge"
+      ],
+      "match_confidence": "Medium (Multi-Keyword)"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Passed the AZ-104 on Friday!",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1wycxp7/passed_the_az104_on_friday/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-05T16:23:06+00:00",
+      "keywords": [
+        "voucher",
+        "100%"
+      ],
+      "match_confidence": "Medium (Multi-Keyword)"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "AZ - 900 Voucher Code on Microsoft Virtual Trainings Days",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1wy7pjq/az_900_voucher_code_on_microsoft_virtual/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-05T12:49:33+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Finally achieved a long-term goal by passing AZ-305",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1wx2xah/finally_achieved_a_longterm_goal_by_passing_az305/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-04T01:06:06+00:00",
+      "keywords": [
+        "challenge",
+        "100%"
+      ],
+      "match_confidence": "Medium (Multi-Keyword)"
+    }
+  ]
+}

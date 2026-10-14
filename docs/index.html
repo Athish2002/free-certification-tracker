@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CertPulse - Free Cloud & Tech Certification Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#2563eb'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen antialiased">
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center font-bold text-xl shadow-lg shadow-blue-500/20">CP</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        CertPulse 
+                        <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full">Live Tracker</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Autonomous Free Certification & Deep Inspection Engine</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+                    Auto-inspected for Soft 404s & Closed Windows
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Bento Banner -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-gradient-to-br from-blue-900/40 to-slate-800/40 border border-blue-700/30 rounded-2xl p-6 shadow-sm">
+                <span class="text-xs font-semibold uppercase tracking-wider text-blue-400">Total Value Available</span>
+                <div class="text-3xl font-extrabold text-white mt-2">$2,488 <span class="text-sm font-normal text-slate-400">USD</span></div>
+                <p class="text-xs text-slate-400 mt-2">Aggregate value of active verified certifications listed.</p>
+            </div>
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 shadow-sm">
+                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Tracked Opportunities</span>
+                <div class="text-3xl font-extrabold text-white mt-2">16 <span class="text-sm font-normal text-slate-400">Programs</span></div>
+                <p class="text-xs text-slate-400 mt-2">15 currently active and accepting registrations.</p>
+            </div>
+            <div class="bg-slate-800/40 border border-slate-700/50 rounded-2xl p-6 shadow-sm">
+                <span class="text-xs font-semibold uppercase tracking-wider text-purple-400">Inspection Guardian</span>
+                <div class="text-3xl font-extrabold text-white mt-2">100% Free <span class="text-sm font-normal text-slate-400">at $0 Cost</span></div>
+                <p class="text-xs text-slate-400 mt-2">Automated soft-404 heuristics running on GitHub Actions.</p>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div class="relative w-full md:w-96">
+                <input type="text" id="searchInput" placeholder="Search by provider, certification, skill..." 
+                       class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500 placeholder-slate-500">
+            </div>
+            <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0" id="filterPills">
+                <button onclick="filterCategory('All')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-blue-600 text-white whitespace-nowrap pill-btn" data-cat="All">All Categories</button>
+                <button onclick="filterCategory('Security')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 hover:text-white whitespace-nowrap pill-btn" data-cat="Security">Security</button>
+                <button onclick="filterCategory('Cloud')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 hover:text-white whitespace-nowrap pill-btn" data-cat="Cloud">Cloud</button>
+                <button onclick="filterCategory('AI & Data')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 hover:text-white whitespace-nowrap pill-btn" data-cat="AI & Data">AI & Data</button>
+                <button onclick="filterCategory('DevOps')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 hover:text-white whitespace-nowrap pill-btn" data-cat="DevOps">DevOps</button>
+                <button onclick="filterCategory('Networking')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-400 hover:text-white whitespace-nowrap pill-btn" data-cat="Networking">Networking</button>
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="offersGrid">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 mt-16 py-8 text-center text-xs text-slate-500">
+        <p>CertPulse is an open-source, community-driven zero-cost initiative.</p>
+    </footer>
+
+    <script>
+        const offersData = [{"id": "isc2-one-million-cc", "title": "ISC2 Certified in Cybersecurity (CC) - 100% Free Exam + Education", "platform": "ISC2", "category": "Security", "certification_name": "Certified in Cybersecurity (CC)", "offer_type": "100% Free Exam Voucher", "value_usd": 199, "eligibility": "Global (First-time ISC2 candidates)", "url": "https://www.isc2.org/landing/1mcc", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "2026-12-31", "claim_steps": "Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "oracle-oci-free-cert", "title": "Oracle Cloud Infrastructure (OCI) Free Certifications & Learning", "platform": "Oracle Cloud", "category": "Cloud & Data", "certification_name": "OCI Foundations & Associate Certifications", "offer_type": "100% Free Exam Voucher", "value_usd": 245, "eligibility": "Global (Free Oracle University account)", "url": "https://education.oracle.com/oracle-cloud-infrastructure", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling Cycles", "claim_steps": "Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle."}, {"id": "cisco-rev-up-recert", "title": "Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet", "platform": "Cisco", "category": "Networking", "certification_name": "Cisco Continuing Education (Recertification)", "offer_type": "Free CE Credits", "value_usd": 300, "eligibility": "Anyone holding active Cisco certifications", "url": "https://u.cisco.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "ms-applied-skills", "title": "Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials", "platform": "Microsoft Azure", "category": "Cloud & AI", "certification_name": "Microsoft Applied Skills (Azure, AI, Power Platform)", "offer_type": "100% Free Credential", "value_usd": 100, "eligibility": "Global (Free for all)", "url": "https://learn.microsoft.com/credentials/applied-skills/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "gcp-cloud-skills-boost", "title": "Google Cloud Skills Boost & Innovators Free Badges", "platform": "Google Cloud", "category": "Cloud & AI", "certification_name": "Google Cloud Skill Badges & Arcade Milestones", "offer_type": "Free Skill Badges & Swag", "value_usd": 100, "eligibility": "Global (Google Account)", "url": "https://www.cloudskillsboost.google/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "linux-foundation-lift", "title": "Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)", "platform": "Linux Foundation / CNCF", "category": "DevOps & Cloud Native", "certification_name": "Certified Kubernetes Administrator (CKA) / LFCS", "offer_type": "100% Free Scholarship Voucher", "value_usd": 395, "eligibility": "Global (Application-based scholarship for underrepresented & students)", "url": "https://www.linuxfoundation.org/about/diversity-inclusivity/lift-scholarships", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Annual Windows", "claim_steps": "Submit an application during the annual LiFT scholarship window describing your career goals. Winners receive a 100% free exam voucher + training course.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "snowflake-hands-on-essentials", "title": "Snowflake Hands-on Essentials Free Digital Badges", "platform": "Snowflake", "category": "AI & Data", "certification_name": "Snowflake Data Warehousing & Data Applications Badges", "offer_type": "100% Free Credential", "value_usd": 150, "eligibility": "Global (Free registration)", "url": "https://learn.snowflake.com/en/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "mongodb-developer-cert", "title": "MongoDB University Free Courses & Associate Exam Drives", "platform": "MongoDB", "category": "AI & Data", "certification_name": "MongoDB Associate Developer / DBA", "offer_type": "Free Training & Student Voucher", "value_usd": 150, "eligibility": "Global (100% free voucher for students via GitHub Student Pack)", "url": "https://learn.mongodb.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "salesforce-trailhead-quests", "title": "Salesforce Trailhead Quests - Free Certification Vouchers", "platform": "Salesforce", "category": "CRM & Cloud", "certification_name": "Salesforce Certified Administrator / App Builder", "offer_type": "Quest Sweepstakes Voucher", "value_usd": 200, "eligibility": "Global (Trailhead users)", "url": "https://trailhead.salesforce.com/quests", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Monthly Quests", "claim_steps": "Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "postman-api-expert", "title": "Postman API Fundamentals & Student Expert Certifications", "platform": "Postman", "category": "API & DevOps", "certification_name": "Postman API Fundamentals Student / Pro Expert", "offer_type": "100% Free Credential", "value_usd": 50, "eligibility": "Global (Free for all developers & students)", "url": "https://academy.postman.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "juniper-open-learning", "title": "Juniper Open Learning - JNCIA Associate Certification Vouchers", "platform": "Juniper Networks", "category": "Networking", "certification_name": "JNCIA-Junos / JNCIA-SEC Associate", "offer_type": "75%-100% Discount Voucher", "value_usd": 200, "eligibility": "Global (Participants of Open Learning webinars)", "url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Register for a free Juniper Open Learning webinar session, complete the pre-assessment module with a passing score, and receive a Pearson VUE voucher.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "qualys-certified-specialist", "title": "Qualys Certified Specialist - Free Vulnerability & Compliance Certs", "platform": "Qualys", "category": "Security", "certification_name": "Vulnerability Management & CSAM Specialist", "offer_type": "100% Free Credential", "value_usd": 150, "eligibility": "Global (Free registration)", "url": "https://www.qualys.com/training/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "databricks-genai-fundamentals", "title": "Databricks Generative AI Fundamentals Accreditation", "platform": "Databricks", "category": "AI & Data", "certification_name": "Generative AI Fundamentals", "offer_type": "100% Free Credential", "value_usd": 75, "eligibility": "Global (Free for all)", "url": "https://www.databricks.com/learn/certification", "status": "Registrations Closed", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.", "inspection_notes": "Detected closure phrase: 'no longer available'"}, {"id": "fortinet-cybersecurity-fundamentals", "title": "Fortinet Certified Fundamentals (FCF) in Cybersecurity", "platform": "Fortinet", "category": "Security", "certification_name": "Fortinet Certified Fundamentals (FCF)", "offer_type": "100% Free Credential", "value_usd": 100, "eligibility": "Global (Fortinet Training Institute)", "url": "https://www.fortinet.com/training/cybersecurity-professionals", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "github-student-foundations", "title": "GitHub Foundations Certification via Student Developer Pack", "platform": "GitHub", "category": "DevOps", "certification_name": "GitHub Foundations", "offer_type": "Student 100% Free Voucher", "value_usd": 99, "eligibility": "Active students verified via GitHub Student Developer Pack", "url": "https://education.github.com/pack", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.", "inspection_notes": "HTTP 200 OK (Live)"}, {"id": "aws-educate-badges", "title": "AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers", "platform": "Amazon Web Services", "category": "Cloud Computing", "certification_name": "AWS Educate Graduate & Practitioner Badges", "offer_type": "Free Digital Credential", "value_usd": 50, "eligibility": "Global (No credit card required)", "url": "https://aws.amazon.com/education/awseducate/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Sign up for AWS Educate without an AWS account or credit card. Complete hands-on cloud labs to earn industry-recognized digital credentials.", "inspection_notes": "HTTP 200 OK (Live)"}];
+        let currentCategory = 'All';
+        let currentSearch = '';
+
+        function getStatusBadge(status) {
+            if (status === 'Active') {
+                return '<span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">🟢 Active</span>';
+            } else if (status === 'Registrations Closed') {
+                return '<span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/30">🟡 Closed / Waitlist</span>';
+            } else {
+                return '<span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/30">🔴 Expired</span>';
+            }
+        }
+
+        function renderCards() {
+            const grid = document.getElementById('offersGrid');
+            const filtered = offersData.filter(o => {
+                const matchesCat = currentCategory === 'All' || o.category.includes(currentCategory) || o.platform.includes(currentCategory);
+                const text = (o.title + ' ' + o.platform + ' ' + o.certification_name + ' ' + o.category).toLowerCase();
+                const matchesSearch = text.includes(currentSearch.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-12 text-slate-500">No vouchers found matching your search.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(o => `
+                <div class="bg-slate-800/60 border border-slate-700/60 hover:border-slate-600 rounded-2xl p-5 flex flex-col justify-between transition group shadow-sm hover:shadow-md">
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-3">
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-700 text-blue-400 border border-slate-600/50">${o.platform}</span>
+                            <div class="flex items-center gap-2">
+                                ${getStatusBadge(o.status)}
+                                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">$${o.value_usd} USD</span>
+                            </div>
+                        </div>
+                        <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition leading-snug">${o.title}</h3>
+                        <p class="text-xs text-slate-400 mt-2 line-clamp-3">${o.claim_steps}</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                        <span class="text-xs text-slate-500">${o.eligibility}</span>
+                        <a href="${o.url}" target="_blank" class="text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg transition shadow-sm">
+                            ${o.status === 'Active' ? 'Claim Free &rarr;' : 'View Program &rarr;'}
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.pill-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.classList.remove('bg-slate-800', 'text-slate-400');
+                    btn.classList.add('bg-blue-600', 'text-white');
+                } else {
+                    btn.classList.add('bg-slate-800', 'text-slate-400');
+                    btn.classList.remove('bg-blue-600', 'text-white');
+                }
+            });
+            renderCards();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderCards();
+        });
+
+        // Initial render
+        renderCards();
+    </script>
+</body>
+</html>
