@@ -44,7 +44,7 @@ jobs:
 
       - name: Run End-to-End Invariant Verification
         run: |
-          pytest tests/ -v
+          python -m pytest tests/ -v
 
       - name: Commit and Push Changes If Updated
         uses: stefanzweifel/git-auto-commit-action@v5
