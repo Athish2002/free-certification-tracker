@@ -1,6 +1,9 @@
 name: CertPulse Automated Tracker
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # Run every 4 hours automatically (00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC)
     - cron: '0 */4 * * *'

@@ -17,7 +17,7 @@
 | **Active Opportunities** | **14** | Verified 100% free exams & live registration windows |
 | **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **8 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Last Automated Inspection** | `2026-10-14 13:07 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-14 13:33 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -243,4 +243,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 13:07 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 13:33 UTC`.*
