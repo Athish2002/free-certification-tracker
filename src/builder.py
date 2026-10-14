@@ -142,7 +142,7 @@ def generate_readme(data: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 def generate_web_dashboard(data: Dict[str, Any]) -> str:
-    """Generates an authentic GitHub Primer design-system web dashboard with multi-themes, dual layout views, and Octicon UX motions."""
+    """Generates an authentic GitHub Primer web dashboard with Dark and Light Contrast modes and dual presentation views."""
     offers = data.get("offers", [])
     active_offers = [o for o in offers if o.get("status") == "Active"]
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
@@ -157,7 +157,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
     <title>CertPulse | GitHub Primer Free Certification Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* GitHub Primer Authentic Multi-Theme Token Matrix */
+        /* GitHub Primer Dual Theme System: Dark & Light Contrast */
         :root[data-theme="dark"] {{
             --canvas-default: #0d1117;
             --canvas-subtle: #161b22;
@@ -184,87 +184,9 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
             --card-shadow-hover: 0 6px 20px rgba(1, 4, 9, 0.6);
         }}
-        :root[data-theme="dark_dimmed"] {{
-            --canvas-default: #22272e;
-            --canvas-subtle: #2d333b;
-            --canvas-inset: #1c2128;
-            --border-default: #444c56;
-            --border-muted: #373e47;
-            --fg-default: #adbac7;
-            --fg-muted: #768390;
-            --fg-subtle: #545d68;
-            --accent-fg: #539bf5;
-            --accent-emphasis: #316dca;
-            --accent-subtle: rgba(65, 132, 228, 0.15);
-            --success-fg: #57ab5a;
-            --success-emphasis: #347d39;
-            --success-subtle: rgba(70, 149, 74, 0.15);
-            --attention-fg: #c69026;
-            --attention-subtle: rgba(198, 144, 38, 0.15);
-            --danger-fg: #e5534b;
-            --danger-subtle: rgba(229, 83, 75, 0.15);
-            --btn-default-bg: #373e47;
-            --btn-default-hover: #444c56;
-            --btn-primary-bg: #347d39;
-            --btn-primary-hover: #46954a;
-            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-            --card-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.5);
-        }}
-        :root[data-theme="dark_high_contrast"] {{
-            --canvas-default: #0a0c10;
-            --canvas-subtle: #272b33;
-            --canvas-inset: #010409;
-            --border-default: #7a828e;
-            --border-muted: #525964;
-            --fg-default: #f0f3f6;
-            --fg-muted: #9ea7b3;
-            --fg-subtle: #7a828e;
-            --accent-fg: #71b7ff;
-            --accent-emphasis: #409eff;
-            --accent-subtle: rgba(113, 183, 255, 0.2);
-            --success-fg: #26cd4d;
-            --success-emphasis: #09b43a;
-            --success-subtle: rgba(38, 205, 77, 0.2);
-            --attention-fg: #f0b72f;
-            --attention-subtle: rgba(240, 183, 47, 0.2);
-            --danger-fg: #ff6a69;
-            --danger-subtle: rgba(255, 106, 105, 0.2);
-            --btn-default-bg: #272b33;
-            --btn-default-hover: #525964;
-            --btn-primary-bg: #09b43a;
-            --btn-primary-hover: #26cd4d;
-            --card-shadow: 0 0 0 1px #7a828e;
-            --card-shadow-hover: 0 0 0 2px #71b7ff;
-        }}
         :root[data-theme="light"] {{
             --canvas-default: #ffffff;
             --canvas-subtle: #f6f8fa;
-            --canvas-inset: #f6f8fa;
-            --border-default: #d0d7de;
-            --border-muted: #d8dee4;
-            --fg-default: #1f2328;
-            --fg-muted: #656d76;
-            --fg-subtle: #8c959f;
-            --accent-fg: #0969da;
-            --accent-emphasis: #0969da;
-            --accent-subtle: #ddf4ff;
-            --success-fg: #1a7f37;
-            --success-emphasis: #1f883d;
-            --success-subtle: #dafbe1;
-            --attention-fg: #9a6700;
-            --attention-subtle: #fff8c5;
-            --danger-fg: #cf222e;
-            --danger-subtle: #ffebe9;
-            --btn-default-bg: #f6f8fa;
-            --btn-default-hover: #f3f4f6;
-            --btn-primary-bg: #1f883d;
-            --btn-primary-hover: #1a7f37;
-            --card-shadow: 0 1px 3px rgba(31, 35, 40, 0.12);
-            --card-shadow-hover: 0 6px 20px rgba(31, 35, 40, 0.15);
-        }}
-        :root[data-theme="light_high_contrast"] {{
-            --canvas-default: #ffffff;
-            --canvas-subtle: #ffffff;
             --canvas-inset: #f6f8fa;
             --border-default: #24292f;
             --border-muted: #57606a;
@@ -285,34 +207,8 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             --btn-default-hover: #eaeef2;
             --btn-primary-bg: #116329;
             --btn-primary-hover: #0d4a1f;
-            --card-shadow: 0 0 0 1px #24292f;
-            --card-shadow-hover: 0 0 0 2px #0550ae;
-        }}
-        :root[data-theme="copilot_dark"] {{
-            --canvas-default: #0d0d1a;
-            --canvas-subtle: #16162b;
-            --canvas-inset: #070710;
-            --border-default: #2d2b55;
-            --border-muted: #1e1d3b;
-            --fg-default: #e2e8f0;
-            --fg-muted: #94a3b8;
-            --fg-subtle: #64748b;
-            --accent-fg: #a371f7;
-            --accent-emphasis: #8957e5;
-            --accent-subtle: rgba(163, 113, 247, 0.18);
-            --success-fg: #3fb950;
-            --success-emphasis: #238636;
-            --success-subtle: rgba(46, 160, 67, 0.15);
-            --attention-fg: #d29922;
-            --attention-subtle: rgba(187, 128, 9, 0.15);
-            --danger-fg: #f85149;
-            --danger-subtle: rgba(248, 81, 73, 0.15);
-            --btn-default-bg: #1e1d3b;
-            --btn-default-hover: #2d2b55;
-            --btn-primary-bg: #8957e5;
-            --btn-primary-hover: #a371f7;
-            --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-            --card-shadow-hover: 0 6px 24px rgba(137, 87, 229, 0.25);
+            --card-shadow: 0 1px 3px rgba(36, 41, 47, 0.15);
+            --card-shadow-hover: 0 4px 14px rgba(36, 41, 47, 0.25);
         }}
 
         body {{
@@ -379,7 +275,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 </div>
             </div>
 
-            <!-- Right: Controls, View Switcher & Primer Theme Dropdown -->
+            <!-- Right: Controls, Dual Presentation Switcher & Dark/Light Toggle -->
             <div class="flex items-center gap-2">
                 <!-- Live Pipeline Badge -->
                 <div class="hidden lg:flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-md" style="background-color: var(--canvas-inset); border: 1px solid var(--border-default); color: var(--fg-muted);">
@@ -387,31 +283,33 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                     <span>Cron: 4h Sync</span>
                 </div>
 
-                <!-- View Layout Switcher (Grid vs Issues Table) -->
+                <!-- Dual Presentation Layout Switcher (Grid vs Issues Table) -->
                 <div class="flex items-center rounded-md border p-0.5" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                    <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Grid View (v)" class="p-1.5 rounded text-xs transition" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
+                    <button id="viewBtnGrid" onclick="setLayoutView('grid')" title="Bento Grid View (v)" class="px-2.5 py-1 rounded text-xs font-semibold flex items-center gap-1.5 transition" style="background-color: var(--btn-default-bg); color: var(--fg-default);">
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3Zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3Zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3Z"></path>
                         </svg>
+                        <span class="hidden sm:inline">Bento Grid</span>
                     </button>
-                    <button id="viewBtnList" onclick="setLayoutView('list')" title="Issues Table View (v)" class="p-1.5 rounded text-xs transition" style="color: var(--fg-muted);">
+                    <button id="viewBtnList" onclick="setLayoutView('list')" title="Issues Table View (v)" class="px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1.5 transition" style="color: var(--fg-muted);">
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M2 3.75C2 3.336 2.336 3 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25c0-.414.336-.75.75-.75h10.5a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1-.75-.75Z"></path>
                         </svg>
+                        <span class="hidden sm:inline">Issues List</span>
                     </button>
                 </div>
 
-                <!-- Theme Dropdown Selector -->
-                <div class="relative">
-                    <select id="primerThemeSelect" onchange="setPrimerTheme(this.value)" class="text-xs py-1.5 px-2.5 rounded-md border font-medium cursor-pointer focus:outline-none" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                        <option value="dark">🌙 Dark</option>
-                        <option value="dark_dimmed">🌌 Dark Dimmed</option>
-                        <option value="dark_high_contrast">⚡ Dark High Contrast</option>
-                        <option value="light">☀️ Light</option>
-                        <option value="light_high_contrast">🔲 Light High Contrast</option>
-                        <option value="copilot_dark">🟣 Copilot Cosmic</option>
-                    </select>
-                </div>
+                <!-- Dark / Light Contrast Mode Toggle Button -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark / Light Contrast Mode (t)" class="p-2 rounded-md border text-sm transition flex items-center justify-center hover:opacity-80" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                    <!-- Sun Icon (shown when in dark mode) -->
+                    <svg id="themeIconSun" class="w-4 h-4 hidden" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.061Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z"></path>
+                    </svg>
+                    <!-- Moon Icon (shown when in light mode) -->
+                    <svg id="themeIconMoon" class="w-4 h-4 hidden" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z"></path>
+                    </svg>
+                </button>
 
                 <!-- GitHub Star CTA -->
                 <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md border flex items-center gap-1.5 transition hover:opacity-90" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
@@ -433,7 +331,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             <div class="p-5 rounded-lg border primer-card">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Total Value Available</span>
-                    <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg);">
+                    <span class="p-1.5 rounded-md" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M8.75.75a.75.75 0 0 0-1.5 0V2h-.984c-.983 0-1.9.362-2.589 1.026C3.003 3.673 2.6 4.595 2.6 5.64c0 .91.308 1.688.886 2.26.567.562 1.34.942 2.264 1.192l.67.182c.76.205 1.25.437 1.53.685.26.23.35.474.35.743 0 .365-.154.67-.44.89-.3.23-.743.358-1.36.358-.603 0-1.05-.122-1.38-.342a1.29 1.29 0 0 1-.53-.872.75.75 0 0 0-1.49.172c.153.998.666 1.734 1.45 2.198.647.383 1.488.582 2.47.604v1.18a.75.75 0 0 0 1.5 0v-1.19c.983-.024 1.834-.34 2.483-.93.673-.613 1.017-1.472 1.017-2.46 0-.895-.316-1.66-.908-2.23-.58-.558-1.38-.93-2.316-1.182l-.645-.175c-.75-.204-1.223-.424-1.48-.656-.239-.214-.34-.442-.34-.707 0-.323.14-.597.412-.792.292-.21.72-.32 1.288-.32.535 0 .944.103 1.222.288.29.193.473.488.547.88a.75.75 0 0 0 1.478-.276c-.16-.862-.573-1.543-1.25-1.986A4.323 4.323 0 0 0 8.75 3.2V.75Z"></path>
                         </svg>
@@ -449,7 +347,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             <div class="p-5 rounded-lg border primer-card">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Verified Opportunities</span>
-                    <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg);">
+                    <span class="p-1.5 rounded-md" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
                         </svg>
@@ -465,7 +363,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             <div class="p-5 rounded-lg border primer-card">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Self-Healing Invariant Bot</span>
-                    <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg);">
+                    <span class="p-1.5 rounded-md" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7 7 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7 7 0 0 1 14.95 7.16a.75.75 0 1 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z"></path>
                         </svg>
@@ -564,7 +462,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             <div>Audited: <span class="font-mono">{last_updated}</span></div>
         </div>
 
-        <!-- Dynamic Container: Cards Grid or GitHub Issues Table -->
+        <!-- Dual Presentation Container: Bento Cards Grid or GitHub Issues Table -->
         <div id="cardsViewContainer">
             <!-- Grid View -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="offersGrid"></div>
@@ -615,11 +513,11 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
         let currentSearch = '';
         let currentLayout = 'grid';
 
-        // Primer Multi-Theme Controller
+        // Dual Theme Controller: Dark vs Light Contrast
         function initTheme() {{
             const urlParams = new URLSearchParams(window.location.search);
-            const savedTheme = urlParams.get('theme') || localStorage.getItem('certpulse_primer_theme') || 'dark';
-            setPrimerTheme(savedTheme, false);
+            const savedTheme = urlParams.get('theme') || localStorage.getItem('certpulse_theme') || 'dark';
+            applyTheme(savedTheme === 'light' ? 'light' : 'dark', false);
             
             const savedLayout = urlParams.get('view') || localStorage.getItem('certpulse_layout') || 'grid';
             setLayoutView(savedLayout, false);
@@ -637,13 +535,30 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             }}
         }}
 
-        function setPrimerTheme(themeKey, updateUrl = true) {{
-            document.documentElement.setAttribute('data-theme', themeKey);
-            const isLight = themeKey.startsWith('light');
-            document.documentElement.setAttribute('data-color-mode', isLight ? 'light' : 'dark');
-            document.getElementById('primerThemeSelect').value = themeKey;
-            localStorage.setItem('certpulse_primer_theme', themeKey);
+        function toggleTheme() {{
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const target = current === 'dark' ? 'light' : 'dark';
+            applyTheme(target, true);
+            showToast(target === 'light' ? 'Switched to Light Contrast mode' : 'Switched to Dark mode');
+        }}
+
+        function applyTheme(target, updateUrl = true) {{
+            document.documentElement.setAttribute('data-theme', target);
+            document.documentElement.setAttribute('data-color-mode', target);
+            localStorage.setItem('certpulse_theme', target);
+
+            const sun = document.getElementById('themeIconSun');
+            const moon = document.getElementById('themeIconMoon');
+            if (target === 'dark') {{
+                sun.classList.remove('hidden');
+                moon.classList.add('hidden');
+            }} else {{
+                sun.classList.add('hidden');
+                moon.classList.remove('hidden');
+            }}
+
             if (updateUrl) syncUrlParams();
+            renderCards();
         }}
 
         function setLayoutView(view, updateUrl = true) {{
@@ -676,7 +591,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
         function syncUrlParams() {{
             const params = new URLSearchParams();
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-            if (currentTheme !== 'dark') params.set('theme', currentTheme);
+            if (currentTheme === 'light') params.set('theme', 'light');
             if (currentLayout !== 'grid') params.set('view', currentLayout);
             if (currentCategory !== 'All') params.set('cat', currentCategory);
             if (currentSearch.trim() !== '') params.set('q', currentSearch.trim());
@@ -701,7 +616,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             navigator.clipboard.writeText(textToCopy).then(() => {{
                 if (btnEl) {{
                     const originalHtml = btnEl.innerHTML;
-                    btnEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 16 16" fill="#3fb950"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>`;
+                    btnEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 16 16" fill="var(--success-fg)"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>`;
                     setTimeout(() => {{ btnEl.innerHTML = originalHtml; }}, 1800);
                 }}
                 showToast('Promo steps copied to clipboard!');
@@ -748,17 +663,18 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
         }}
 
         function getPlatformColor(platform) {{
-            if (platform.includes('Azure')) return '#0078d4';
-            if (platform.includes('AWS')) return '#ff9900';
-            if (platform.includes('Google')) return '#4285f4';
-            if (platform.includes('Cisco')) return '#1ba0d7';
-            if (platform.includes('ISC2')) return '#008752';
-            if (platform.includes('Oracle')) return '#f80000';
-            if (platform.includes('GitHub')) return '#2ea043';
-            if (platform.includes('Snowflake')) return '#29b5e8';
-            if (platform.includes('MongoDB')) return '#00ed64';
-            if (platform.includes('Postman')) return '#ff6c37';
-            if (platform.includes('Linux')) return '#002f6c';
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            if (platform.includes('Azure')) return isLight ? '#0062a8' : '#0078d4';
+            if (platform.includes('AWS')) return isLight ? '#c05b00' : '#ff9900';
+            if (platform.includes('Google')) return isLight ? '#1a73e8' : '#4285f4';
+            if (platform.includes('Cisco')) return isLight ? '#0b7da8' : '#1ba0d7';
+            if (platform.includes('ISC2')) return isLight ? '#006b40' : '#008752';
+            if (platform.includes('Oracle')) return isLight ? '#c70000' : '#f80000';
+            if (platform.includes('GitHub')) return isLight ? '#1a7f37' : '#2ea043';
+            if (platform.includes('Snowflake')) return isLight ? '#0088be' : '#29b5e8';
+            if (platform.includes('MongoDB')) return isLight ? '#008438' : '#00ed64';
+            if (platform.includes('Postman')) return isLight ? '#d44315' : '#ff6c37';
+            if (platform.includes('Linux')) return isLight ? '#002f6c' : '#58a6ff';
             return 'var(--accent-fg)';
         }}
 
@@ -874,7 +790,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                         <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${{brandColor}};"></span>
                                         ${{o.platform}}
                                     </span>
-                                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md font-mono" style="background-color: ${{badgeBg}}; color: ${{badgeColor}};">
+                                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md font-mono" style="background-color: ${{badgeBg}}; color: ${{badgeColor}}; border: 1px solid ${{badgeColor}};">
                                         ${{statusLabel}}
                                     </span>
                                 </div>
@@ -884,10 +800,10 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                 </h3>
 
                                 <div class="flex items-center gap-2 mt-2">
-                                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded" style="background-color: var(--success-subtle); color: var(--success-fg);">
+                                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                         $${{o.value_usd || 0}} USD Value
                                     </span>
-                                    <span class="text-[11px]" style="color: var(--fg-muted);">
+                                    <span class="text-[11px] font-medium" style="color: var(--fg-muted);">
                                         ${{o.offer_type}}
                                     </span>
                                 </div>
@@ -899,18 +815,18 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                             <path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path>
                                         </svg>
                                     </summary>
-                                    <p class="mt-2 p-2.5 rounded-md border leading-relaxed" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-muted);">
+                                    <p class="mt-2 p-2.5 rounded-md border leading-relaxed" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
                                         ${{o.claim_steps}}
                                     </p>
                                 </details>
                             </div>
 
                             <div class="mt-4 pt-3.5 border-t flex items-center justify-between" style="border-color: var(--border-muted);">
-                                <span class="text-[11px]" style="color: var(--fg-muted);">
+                                <span class="text-[11px] font-medium" style="color: var(--fg-muted);">
                                     ${{o.eligibility || 'Global'}}
                                 </span>
                                 <div class="flex items-center gap-2">
-                                    <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" title="Copy promo steps" class="p-1.5 rounded-md border hover:opacity-80 transition flex items-center justify-center" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-muted);">
+                                    <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" title="Copy promo steps" class="p-1.5 rounded-md border hover:opacity-80 transition flex items-center justify-center" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                                         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                                             <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
                                             <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
@@ -951,7 +867,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" style="background-color: var(--canvas-inset); color: ${{brandColor}}; border: 1px solid var(--border-default);">
                                             ${{o.platform}}
                                         </span>
-                                        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full" style="background-color: var(--success-subtle); color: var(--success-fg);">
+                                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                             $${{o.value_usd || 0}} USD
                                         </span>
                                     </div>
@@ -964,14 +880,14 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                     </div>
                                     <details class="mt-1 text-xs group">
                                         <summary class="font-medium cursor-pointer hover:underline" style="color: var(--accent-fg);">Claim instructions &rarr;</summary>
-                                        <div class="mt-1 p-2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-muted);">
+                                        <div class="mt-1 p-2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
                                             ${{o.claim_steps}}
                                         </div>
                                     </details>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2 whitespace-nowrap">
-                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="p-1.5 rounded border hover:opacity-80 transition" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-muted);" title="Copy instructions">
+                                <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="p-1.5 rounded border hover:opacity-80 transition" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy instructions">
                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>
                                 </button>
                                 <a href="${{o.url}}" target="_blank" class="px-3 py-1.5 rounded text-xs font-semibold text-white transition hover:opacity-90" style="background-color: var(--btn-primary-bg);">
@@ -1019,11 +935,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 setLayoutView(currentLayout === 'grid' ? 'list' : 'grid');
             }}
             if ((e.key === 't' || e.key === 'T') && document.activeElement.tagName !== 'INPUT') {{
-                const themes = ['dark', 'dark_dimmed', 'dark_high_contrast', 'light', 'light_high_contrast', 'copilot_dark'];
-                const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-                const next = themes[(themes.indexOf(cur) + 1) % themes.length];
-                setPrimerTheme(next);
-                showToast('Theme switched: ' + next);
+                toggleTheme();
             }}
         }});
 
