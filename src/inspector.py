@@ -167,6 +167,11 @@ def run_inspection() -> List[Dict[str, Any]]:
         current_url = offer.get("url")
         old_status = offer.get("status", "Active")
         
+        # Preserve historical archive records without probing expired promo URLs
+        if offer.get("is_historical_archive"):
+            logger.info(f"Preserving historical archive record: [{offer.get('platform')}] {title[:40]}")
+            continue
+
         logger.info(f"Auditing [{offer.get('platform')}] {title[:40]}...")
         new_status, reason, canonical_url = inspect_url_with_retry(current_url)
         

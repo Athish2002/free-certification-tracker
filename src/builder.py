@@ -30,7 +30,8 @@ def load_offers() -> Dict[str, Any]:
 def generate_readme(data: Dict[str, Any]) -> str:
     offers: List[Dict[str, Any]] = data.get("offers", [])
     active_offers = [o for o in offers if o.get("status") == "Active"]
-    closed_offers = [o for o in offers if o.get("status") != "Active"]
+    closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
+    historical_offers = [o for o in offers if o.get("is_historical_archive")]
     
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -60,6 +61,7 @@ def generate_readme(data: Dict[str, Any]) -> str:
     lines.append("| :--- | :--- | :--- |")
     lines.append(f"| **Active Opportunities** | **{len(active_offers)}** | Verified 100% free exams & live registration windows |")
     lines.append(f"| **Total Financial Value** | **${total_savings:,} USD** | Aggregate savings if claimed today |")
+    lines.append(f"| **Historical Archive Tracked** | **{len(historical_offers)} Campaigns** | Past promotional cycles & recurrence roadmaps |")
     lines.append(f"| **Last Automated Inspection** | `{last_updated}` | Auto-audited for 404s and 'Closed' notices |")
     lines.append("| **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |")
     lines.append("")
@@ -81,6 +83,26 @@ def generate_readme(data: Dict[str, Any]) -> str:
             status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
             url = o.get("url")
             lines.append(f"| **{provider}** | {cert} | `{otype}` | {val} | {status_text} | [**Claim Offer**]({url}) |")
+        lines.append("")
+
+    if historical_offers:
+        lines.append("---")
+        lines.append("")
+        lines.append("## 📜 Historical Voucher Archive & Recurrence Patterns")
+        lines.append("> Cloud providers regularly launch recurring 100% free certification campaigns (annual developer conferences, seasonal training challenges, and beta programs). Track past campaign timeframes and historical recurrence patterns below to anticipate upcoming waves.")
+        lines.append("")
+        lines.append("| Provider | Certification & Exam Code | Type | Value (USD) | Active Promo Period | Recurrence Pattern | Notes / Archival Reason |")
+        lines.append("| :--- | :--- | :--- | :---: | :---: | :--- | :--- |")
+        for o in historical_offers:
+            provider = o.get("platform")
+            cert = o.get("certification_name")
+            exam = f"<br>`{o.get('exam_code')}`" if o.get("exam_code") else ""
+            otype = o.get("offer_type")
+            val = f"${o.get('value_usd')}" if o.get("value_usd") else "Free"
+            period = o.get("time_period", "Concluded")
+            recur = o.get("recurrence_pattern", "Annual / Rolling")
+            notes = o.get("inspection_notes", "Concluded")
+            lines.append(f"| **{provider}** | **{cert}**{exam} | `{otype}` | {val} | {period} | {recur} | {notes} |")
         lines.append("")
         
     if closed_offers:
@@ -145,9 +167,17 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
     """Generates an authentic GitHub Primer web dashboard with Dark and Light Contrast modes and dual presentation views."""
     offers = data.get("offers", [])
     active_offers = [o for o in offers if o.get("status") == "Active"]
+    closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
+    historical_offers = [o for o in offers if o.get("is_historical_archive")]
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     offers_json_str = json.dumps(offers)
+    
+    cloud_count = sum(1 for o in offers if "Cloud" in o.get("category", "") or "Cloud" in o.get("platform", ""))
+    sec_count = sum(1 for o in offers if "Security" in o.get("category", ""))
+    devops_count = sum(1 for o in offers if "DevOps" in o.get("category", ""))
+    ai_count = sum(1 for o in offers if "AI" in o.get("category", "") or "Data" in o.get("category", ""))
+    net_count = sum(1 for o in offers if "Networking" in o.get("category", ""))
     
     return f"""<!DOCTYPE html>
 <html lang="en" data-theme="dark" data-color-mode="dark">
@@ -356,7 +386,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
                     {len(active_offers)} <span class="text-sm font-normal" style="color: var(--fg-muted);">Active / {len(offers)} Total</span>
                 </div>
-                <p class="text-xs mt-2" style="color: var(--fg-muted);">Audited across Azure, AWS, GCP, Cisco, ISC2, Oracle, & Linux Foundation.</p>
+                <p class="text-xs mt-2" style="color: var(--fg-muted);">{len(historical_offers)} past promotional voucher campaigns archived for recurrence tracking.</p>
             </div>
 
             <!-- Bento 3: Self-Healing Inspection -->
@@ -386,7 +416,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                         <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
                     </svg>
                 </div>
-                <input type="text" id="searchInput" placeholder="Filter vouchers or type 'is:active', 'cat:Cloud'..." 
+                <input type="text" id="searchInput" placeholder="Filter vouchers or type 'is:history', 'cat:Cloud'..." 
                        class="w-full pl-9 pr-14 py-1.5 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                        style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
                 <div class="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
@@ -403,23 +433,27 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 </button>
                 <button onclick="filterCategory('Cloud')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Cloud">
                     <span>Cloud</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">5</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{cloud_count}</span>
                 </button>
                 <button onclick="filterCategory('Security')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Security">
                     <span>Security</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">4</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{sec_count}</span>
                 </button>
                 <button onclick="filterCategory('DevOps')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="DevOps">
                     <span>DevOps</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">3</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{devops_count}</span>
                 </button>
                 <button onclick="filterCategory('AI & Data')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="AI & Data">
                     <span>AI & Data</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">3</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{ai_count}</span>
                 </button>
                 <button onclick="filterCategory('Networking')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Networking">
                     <span>Networking</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">1</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{net_count}</span>
+                </button>
+                <button onclick="filterCategory('History')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
+                    <span>📜 Past History</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">{len(historical_offers)}</span>
                 </button>
             </div>
 
@@ -432,8 +466,9 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 </select>
                 <select id="statusFilter" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
                     <option value="active" selected>Status: Active ({len(active_offers)})</option>
-                    <option value="all">Status: All ({len(offers)})</option>
-                    <option value="closed">Status: Concluded ({len(offers) - len(active_offers)})</option>
+                    <option value="all">Status: All Records ({len(offers)})</option>
+                    <option value="history">Status: Past History ({len(historical_offers)})</option>
+                    <option value="closed">Status: Concluded ({len(closed_offers)})</option>
                 </select>
                 <!-- Share Button -->
                 <button onclick="copyShareLink()" title="Copy Shareable Link" class="p-1.5 rounded-md border hover:opacity-80 transition flex items-center gap-1 text-xs" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
@@ -448,6 +483,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
         <div class="flex items-center gap-2 mb-4 text-xs overflow-x-auto pb-1">
             <span class="font-semibold uppercase tracking-wider text-[11px]" style="color: var(--fg-subtle);">Quick Tokens:</span>
             <button onclick="appendToken('is:active')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--accent-fg);">is:active</button>
+            <button onclick="appendToken('is:history')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">is:history</button>
             <button onclick="appendToken('val:>100')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--success-fg);">val:&gt;100</button>
             <button onclick="appendToken('cat:Security')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Security</button>
             <button onclick="appendToken('cat:Cloud')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Cloud</button>
@@ -710,27 +746,47 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             const parsedQuery = parseGitHubQuery(currentSearch);
 
             let filtered = offersData.filter(o => {{
-                // 1. SubNav Category
-                if (currentCategory !== 'All' && !o.category.includes(currentCategory) && !o.platform.includes(currentCategory)) {{
+                // 1. SubNav Category Filter
+                if (currentCategory === 'History') {{
+                    if (!o.is_historical_archive && o.status !== 'Expired') return false;
+                }} else if (currentCategory !== 'All' && !o.category.includes(currentCategory) && !o.platform.includes(currentCategory)) {{
                     return false;
                 }}
 
                 // 2. Select Status Filter
                 if (statusMode === 'active' && o.status !== 'Active') return false;
-                if (statusMode === 'closed' && o.status === 'Active') return false;
+                if (statusMode === 'history' && !o.is_historical_archive && o.status !== 'Expired') return false;
+                if (statusMode === 'closed' && (o.status === 'Active' || o.is_historical_archive)) return false;
 
                 // 3. GitHub Search Query Tokens
                 if (parsedQuery.status) {{
                     if (parsedQuery.status === 'active' && o.status !== 'Active') return false;
-                    if (parsedQuery.status === 'closed' && o.status === 'Active') return false;
+                    if ((parsedQuery.status === 'history' || parsedQuery.status === 'expired') && !o.is_historical_archive && o.status !== 'Expired') return false;
+                    if (parsedQuery.status === 'closed' && (o.status === 'Active' || o.is_historical_archive)) return false;
                 }}
-                if (parsedQuery.category && !o.category.toLowerCase().includes(parsedQuery.category)) return false;
+                if (parsedQuery.category) {{
+                    if (parsedQuery.category === 'history') {{
+                        if (!o.is_historical_archive && o.status !== 'Expired') return false;
+                    }} else if (!o.category.toLowerCase().includes(parsedQuery.category)) {{
+                        return false;
+                    }}
+                }}
                 if (parsedQuery.platform && !o.platform.toLowerCase().includes(parsedQuery.platform)) return false;
                 if (parsedQuery.minValue !== null && (o.value_usd || 0) < parsedQuery.minValue) return false;
 
-                // 4. Free text keywords
+                // 4. Free text keywords (including exam_code, time_period, recurrence)
                 if (parsedQuery.freeText.length > 0) {{
-                    const text = (o.title + ' ' + o.platform + ' ' + o.certification_name + ' ' + o.category + ' ' + (o.eligibility || '') + ' ' + (o.claim_steps || '')).toLowerCase();
+                    const text = (
+                        o.title + ' ' + 
+                        o.platform + ' ' + 
+                        o.certification_name + ' ' + 
+                        (o.exam_code || '') + ' ' + 
+                        (o.time_period || '') + ' ' + 
+                        (o.recurrence_pattern || '') + ' ' + 
+                        o.category + ' ' + 
+                        (o.eligibility || '') + ' ' + 
+                        (o.claim_steps || '')
+                    ).toLowerCase();
                     const allMatch = parsedQuery.freeText.every(word => text.includes(word));
                     if (!allMatch) return false;
                 }}
@@ -777,10 +833,38 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
             if (currentLayout === 'grid') {{
                 grid.innerHTML = filtered.map(o => {{
                     const isLive = (o.status === 'Active');
-                    const badgeBg = isLive ? 'var(--success-subtle)' : 'var(--attention-subtle)';
-                    const badgeColor = isLive ? 'var(--success-fg)' : 'var(--attention-fg)';
-                    const statusLabel = isLive ? '🟢 Active' : (o.status === 'Registrations Closed' ? '🟡 Closed' : '🔴 Expired');
+                    const isHistory = Boolean(o.is_historical_archive || o.status === 'Expired');
+                    const badgeBg = isLive ? 'var(--success-subtle)' : (isHistory ? 'rgba(110, 118, 129, 0.15)' : 'var(--attention-subtle)');
+                    const badgeColor = isLive ? 'var(--success-fg)' : (isHistory ? 'var(--fg-muted)' : 'var(--attention-fg)');
+                    const statusLabel = isLive ? '🟢 Active' : (isHistory ? '📜 Concluded' : (o.status === 'Registrations Closed' ? '🟡 Closed' : '🔴 Expired'));
                     const brandColor = getPlatformColor(o.platform);
+
+                    const examBadge = o.exam_code ? `
+                        <div class="mt-2 flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-default);" title="Official Exam Code">
+                                Exam: ${{o.exam_code}}
+                            </span>
+                        </div>
+                    ` : '';
+
+                    const timePeriodInfo = o.time_period ? `
+                        <div class="text-[11px] mt-2 font-medium flex items-center gap-1.5" style="color: var(--accent-fg);">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-2a.25.25 0 0 0-.25-.25H2.75a.25.25 0 0 0-.25.25V6h11Z"></path></svg>
+                            <span class="truncate">📅 Period: ${{o.time_period}}</span>
+                        </div>
+                    ` : '';
+
+                    const recurrenceInfo = o.recurrence_pattern ? `
+                        <div class="text-[11px] mt-1 font-medium flex items-center gap-1.5" style="color: var(--fg-muted);">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm7.25-3.25v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1-.22-.53V4.75a.75.75 0 0 1 1.5 0Z"></path></svg>
+                            <span class="truncate">🔁 Recurrence: ${{o.recurrence_pattern}}</span>
+                        </div>
+                    ` : '';
+
+                    const actionBtnText = isLive ? 'Claim Free' : (isHistory ? 'Archive Link' : 'View Link');
+                    const actionBtnBg = isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)';
+                    const actionBtnColor = isLive ? '#ffffff' : 'var(--fg-default)';
+                    const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
 
                     return `
                         <div class="primer-card p-5 rounded-lg flex flex-col justify-between">
@@ -799,7 +883,7 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                     ${{o.title}}
                                 </h3>
 
-                                <div class="flex items-center gap-2 mt-2">
+                                <div class="flex items-center gap-2 mt-2 flex-wrap">
                                     <span class="text-xs font-mono font-bold px-2 py-0.5 rounded border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                         $${{o.value_usd || 0}} USD Value
                                     </span>
@@ -808,16 +892,21 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                     </span>
                                 </div>
 
+                                ${{examBadge}}
+                                ${{timePeriodInfo}}
+                                ${{recurrenceInfo}}
+
                                 <details class="mt-3.5 text-xs group cursor-pointer">
                                     <summary class="font-semibold select-none flex items-center gap-1 hover:underline" style="color: var(--accent-fg);">
-                                        <span>How to Claim</span>
+                                        <span>${{isHistory ? 'Archived Promo Steps & Notes' : 'How to Claim'}}</span>
                                         <svg class="w-3.5 h-3.5 transform group-open:rotate-90 transition-transform" viewBox="0 0 16 16" fill="currentColor">
                                             <path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path>
                                         </svg>
                                     </summary>
-                                    <p class="mt-2 p-2.5 rounded-md border leading-relaxed" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
-                                        ${{o.claim_steps}}
-                                    </p>
+                                    <div class="mt-2 p-2.5 rounded-md border leading-relaxed space-y-1.5" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
+                                        <p>${{o.claim_steps}}</p>
+                                        ${{o.inspection_notes ? `<p class="text-[11px] font-mono pt-1 border-t" style="border-color: var(--border-muted); color: var(--fg-muted);"><strong>Audit:</strong> ${{o.inspection_notes}}</p>` : ''}}
+                                    </div>
                                 </details>
                             </div>
 
@@ -832,8 +921,8 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                             <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
                                         </svg>
                                     </button>
-                                    <a href="${{o.url}}" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md transition shadow-sm flex items-center gap-1 text-white hover:opacity-90" style="background-color: var(--btn-primary-bg);">
-                                        <span>${{isLive ? 'Claim Free' : 'View'}}</span>
+                                    <a href="${{o.url}}" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md transition shadow-sm flex items-center gap-1 hover:opacity-90 border" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
+                                        <span>${{actionBtnText}}</span>
                                         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                                             <path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h4a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0V3.56l-5.72 5.72a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L12.94 2.5H10.5a.75.75 0 0 1-.75-.75Z"></path>
                                         </svg>
@@ -847,8 +936,17 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                 // Issues Table Row View
                 tableBody.innerHTML = filtered.map(o => {{
                     const isLive = (o.status === 'Active');
+                    const isHistory = Boolean(o.is_historical_archive || o.status === 'Expired');
                     const brandColor = getPlatformColor(o.platform);
-                    const statusIconColor = isLive ? 'var(--success-fg)' : 'var(--attention-fg)';
+                    const statusIconColor = isLive ? 'var(--success-fg)' : (isHistory ? 'var(--fg-muted)' : 'var(--attention-fg)');
+                    const actionBtnText = isLive ? 'Claim' : (isHistory ? 'Archive' : 'View');
+                    const actionBtnBg = isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)';
+                    const actionBtnColor = isLive ? '#ffffff' : 'var(--fg-default)';
+                    const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
+
+                    const examCodeChip = o.exam_code ? `<span class="text-[10px] font-mono px-1.5 py-0.2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">Exam: ${{o.exam_code}}</span>` : '';
+                    const periodChip = o.time_period ? `<span class="text-[10px] font-medium" style="color: var(--accent-fg);">📅 ${{o.time_period}}</span>` : '';
+                    const recurChip = o.recurrence_pattern ? `<span class="text-[10px]" style="color: var(--fg-muted);">🔁 ${{o.recurrence_pattern}}</span>` : '';
 
                     return `
                         <div class="issue-row p-3 flex items-start justify-between gap-3 text-xs">
@@ -870,18 +968,22 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                         <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                             $${{o.value_usd || 0}} USD
                                         </span>
+                                        ${{examCodeChip}}
                                     </div>
-                                    <div class="text-[11px] mt-1 flex items-center gap-2" style="color: var(--fg-muted);">
+                                    <div class="text-[11px] mt-1.5 flex items-center gap-2 flex-wrap" style="color: var(--fg-muted);">
                                         <span class="font-mono">#${{o.id}}</span>
                                         <span>•</span>
                                         <span>${{o.category}}</span>
                                         <span>•</span>
                                         <span>${{o.eligibility || 'Global'}}</span>
+                                        ${{periodChip ? `<span>•</span>${{periodChip}}` : ''}}
+                                        ${{recurChip ? `<span>•</span>${{recurChip}}` : ''}}
                                     </div>
                                     <details class="mt-1 text-xs group">
-                                        <summary class="font-medium cursor-pointer hover:underline" style="color: var(--accent-fg);">Claim instructions &rarr;</summary>
-                                        <div class="mt-1 p-2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
-                                            ${{o.claim_steps}}
+                                        <summary class="font-medium cursor-pointer hover:underline" style="color: var(--accent-fg);">${{isHistory ? 'Archived promo details &rarr;' : 'Claim instructions &rarr;'}}</summary>
+                                        <div class="mt-1 p-2 rounded border space-y-1" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
+                                            <p>${{o.claim_steps}}</p>
+                                            ${{o.inspection_notes ? `<p class="text-[10px] font-mono text-[var(--fg-muted)]">Audit: ${{o.inspection_notes}}</p>` : ''}}
                                         </div>
                                     </details>
                                 </div>
@@ -890,8 +992,8 @@ def generate_web_dashboard(data: Dict[str, Any]) -> str:
                                 <button onclick="copySteps(this, '${{o.title.replace(/'/g, "\\\\'") }}', '${{o.claim_steps.replace(/'/g, "\\\\'") }}')" class="p-1.5 rounded border hover:opacity-80 transition" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy instructions">
                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>
                                 </button>
-                                <a href="${{o.url}}" target="_blank" class="px-3 py-1.5 rounded text-xs font-semibold text-white transition hover:opacity-90" style="background-color: var(--btn-primary-bg);">
-                                    ${{isLive ? 'Claim' : 'View'}}
+                                <a href="${{o.url}}" target="_blank" class="px-3 py-1.5 rounded text-xs font-semibold transition hover:opacity-90 border" style="background-color: ${{actionBtnBg}}; color: ${{actionBtnColor}}; border-color: ${{actionBtnBorder}};">
+                                    ${{actionBtnText}}
                                 </a>
                             </div>
                         </div>

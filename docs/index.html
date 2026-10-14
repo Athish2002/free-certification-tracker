@@ -203,9 +203,9 @@
                     </span>
                 </div>
                 <div class="text-3xl font-extrabold mt-2 font-mono tracking-tight" style="color: var(--success-fg);">
-                    14 <span class="text-sm font-normal" style="color: var(--fg-muted);">Active / 16 Total</span>
+                    14 <span class="text-sm font-normal" style="color: var(--fg-muted);">Active / 24 Total</span>
                 </div>
-                <p class="text-xs mt-2" style="color: var(--fg-muted);">Audited across Azure, AWS, GCP, Cisco, ISC2, Oracle, & Linux Foundation.</p>
+                <p class="text-xs mt-2" style="color: var(--fg-muted);">8 past promotional voucher campaigns archived for recurrence tracking.</p>
             </div>
 
             <!-- Bento 3: Self-Healing Inspection -->
@@ -235,7 +235,7 @@
                         <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
                     </svg>
                 </div>
-                <input type="text" id="searchInput" placeholder="Filter vouchers or type 'is:active', 'cat:Cloud'..." 
+                <input type="text" id="searchInput" placeholder="Filter vouchers or type 'is:history', 'cat:Cloud'..." 
                        class="w-full pl-9 pr-14 py-1.5 text-sm rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                        style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
                 <div class="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
@@ -248,27 +248,31 @@
             <div class="flex gap-1.5 overflow-x-auto pb-1 lg:pb-0" id="filterPills">
                 <button onclick="filterCategory('All')" class="cat-pill px-3 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition flex items-center gap-1.5" style="background-color: var(--accent-emphasis); color: #ffffff;" data-cat="All">
                     <span>All</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">16</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-white/20">24</span>
                 </button>
                 <button onclick="filterCategory('Cloud')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Cloud">
                     <span>Cloud</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">5</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">11</span>
                 </button>
                 <button onclick="filterCategory('Security')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Security">
                     <span>Security</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">4</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">3</span>
                 </button>
                 <button onclick="filterCategory('DevOps')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="DevOps">
                     <span>DevOps</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">3</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">4</span>
                 </button>
                 <button onclick="filterCategory('AI & Data')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="AI & Data">
                     <span>AI & Data</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">3</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">11</span>
                 </button>
                 <button onclick="filterCategory('Networking')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-cat="Networking">
                     <span>Networking</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">1</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">3</span>
+                </button>
+                <button onclick="filterCategory('History')" class="cat-pill px-3 py-1 rounded-md text-xs font-medium whitespace-nowrap border transition hover:opacity-80 flex items-center gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
+                    <span>📜 Past History</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono" style="background-color: var(--canvas-inset);">8</span>
                 </button>
             </div>
 
@@ -281,7 +285,8 @@
                 </select>
                 <select id="statusFilter" onchange="renderCards()" class="text-xs py-1.5 px-2.5 rounded-md border font-medium focus:outline-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
                     <option value="active" selected>Status: Active (14)</option>
-                    <option value="all">Status: All (16)</option>
+                    <option value="all">Status: All Records (24)</option>
+                    <option value="history">Status: Past History (8)</option>
                     <option value="closed">Status: Concluded (2)</option>
                 </select>
                 <!-- Share Button -->
@@ -297,6 +302,7 @@
         <div class="flex items-center gap-2 mb-4 text-xs overflow-x-auto pb-1">
             <span class="font-semibold uppercase tracking-wider text-[11px]" style="color: var(--fg-subtle);">Quick Tokens:</span>
             <button onclick="appendToken('is:active')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--accent-fg);">is:active</button>
+            <button onclick="appendToken('is:history')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">is:history</button>
             <button onclick="appendToken('val:>100')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--success-fg);">val:&gt;100</button>
             <button onclick="appendToken('cat:Security')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Security</button>
             <button onclick="appendToken('cat:Cloud')" class="px-2 py-0.5 rounded border text-[11px] font-mono hover:opacity-80 transition" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">cat:Cloud</button>
@@ -307,8 +313,8 @@
 
         <!-- Result Status Sub-bar -->
         <div class="flex items-center justify-between text-xs mb-4 px-1" style="color: var(--fg-muted);">
-            <div id="resultsCount">Showing 14 of 16 vouchers</div>
-            <div>Audited: <span class="font-mono">2026-10-14 12:50 UTC</span></div>
+            <div id="resultsCount">Showing 14 of 24 vouchers</div>
+            <div>Audited: <span class="font-mono">2026-10-14 13:07 UTC</span></div>
         </div>
 
         <!-- Dual Presentation Container: Bento Cards Grid or GitHub Issues Table -->
@@ -357,7 +363,7 @@
 
     <!-- Application Script -->
     <script>
-        const offersData = [{"id": "isc2-one-million-cc", "title": "ISC2 Certified in Cybersecurity (CC) - 100% Free Exam + Education", "platform": "ISC2", "category": "Security", "certification_name": "Certified in Cybersecurity (CC)", "offer_type": "100% Free Exam Voucher", "value_usd": 199, "eligibility": "Global (First-time ISC2 candidates)", "url": "https://www.isc2.org/landing/1mcc", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "2026-12-31", "claim_steps": "Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "oracle-oci-free-cert", "title": "Oracle Cloud Infrastructure (OCI) Free Certifications & Learning", "platform": "Oracle Cloud", "category": "Cloud & Data", "certification_name": "OCI Foundations & Associate Certifications", "offer_type": "100% Free Exam Voucher", "value_usd": 245, "eligibility": "Global (Free Oracle University account)", "url": "https://education.oracle.com/oracle-cloud-infrastructure", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling Cycles", "claim_steps": "Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.", "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)"}, {"id": "cisco-rev-up-recert", "title": "Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet", "platform": "Cisco", "category": "Networking", "certification_name": "Cisco Continuing Education (Recertification)", "offer_type": "Free CE Credits", "value_usd": 300, "eligibility": "Anyone holding active Cisco certifications", "url": "https://u.cisco.com/", "status": "Review Needed", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.", "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found"}, {"id": "ms-applied-skills", "title": "Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials", "platform": "Microsoft Azure", "category": "Cloud & AI", "certification_name": "Microsoft Applied Skills (Azure, AI, Power Platform)", "offer_type": "100% Free Credential", "value_usd": 100, "eligibility": "Global (Free for all)", "url": "https://learn.microsoft.com/en-us/credentials/applied-skills/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "gcp-cloud-skills-boost", "title": "Google Cloud Skills Boost & Innovators Free Badges", "platform": "Google Cloud", "category": "Cloud & AI", "certification_name": "Google Cloud Skill Badges & Arcade Milestones", "offer_type": "Free Skill Badges & Swag", "value_usd": 100, "eligibility": "Global (Google Account)", "url": "https://www.cloudskillsboost.google/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "linux-foundation-lift", "title": "Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)", "platform": "Linux Foundation / CNCF", "category": "DevOps & Cloud Native", "certification_name": "Certified Kubernetes Administrator (CKA) / LFCS", "offer_type": "100% Free Scholarship Voucher", "value_usd": 395, "eligibility": "Global (Application-based scholarship for underrepresented & students)", "url": "https://www.linuxfoundation.org/about/lift-scholarships", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Annual Windows", "claim_steps": "Submit an application during the annual LiFT scholarship window describing your career goals. Winners receive a 100% free exam voucher + training course.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "snowflake-hands-on-essentials", "title": "Snowflake Hands-on Essentials Free Digital Badges", "platform": "Snowflake", "category": "AI & Data", "certification_name": "Snowflake Data Warehousing & Data Applications Badges", "offer_type": "100% Free Credential", "value_usd": 150, "eligibility": "Global (Free registration)", "url": "https://learn.snowflake.com/en/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "mongodb-developer-cert", "title": "MongoDB University Free Courses & Associate Exam Drives", "platform": "MongoDB", "category": "AI & Data", "certification_name": "MongoDB Associate Developer / DBA", "offer_type": "Free Training & Student Voucher", "value_usd": 150, "eligibility": "Global (100% free voucher for students via GitHub Student Pack)", "url": "https://learn.mongodb.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "salesforce-trailhead-quests", "title": "Salesforce Trailhead Quests - Free Certification Vouchers", "platform": "Salesforce", "category": "CRM & Cloud", "certification_name": "Salesforce Certified Administrator / App Builder", "offer_type": "Quest Sweepstakes Voucher", "value_usd": 200, "eligibility": "Global (Trailhead users)", "url": "https://trailhead.salesforce.com/quests", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Monthly Quests", "claim_steps": "Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "postman-api-expert", "title": "Postman API Fundamentals & Student Expert Certifications", "platform": "Postman", "category": "API & DevOps", "certification_name": "Postman API Fundamentals Student / Pro Expert", "offer_type": "100% Free Credential", "value_usd": 50, "eligibility": "Global (Free for all developers & students)", "url": "https://academy.postman.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "juniper-open-learning", "title": "Juniper Open Learning - JNCIA Associate Certification Vouchers", "platform": "Juniper Networks", "category": "Networking", "certification_name": "JNCIA-Junos / JNCIA-SEC Associate", "offer_type": "75%-100% Discount Voucher", "value_usd": 200, "eligibility": "Global (Participants of Open Learning webinars)", "url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Register for a free Juniper Open Learning webinar session, complete the pre-assessment module with a passing score, and receive a Pearson VUE voucher.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "qualys-certified-specialist", "title": "Qualys Certified Specialist - Free Vulnerability & Compliance Certs", "platform": "Qualys", "category": "Security", "certification_name": "Vulnerability Management & CSAM Specialist", "offer_type": "100% Free Credential", "value_usd": 150, "eligibility": "Global (Free registration)", "url": "https://www.qualys.com/training", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "databricks-genai-fundamentals", "title": "Databricks Generative AI Fundamentals Accreditation", "platform": "Databricks", "category": "AI & Data", "certification_name": "Generative AI Fundamentals", "offer_type": "100% Free Credential", "value_usd": 75, "eligibility": "Global (Free for all)", "url": "https://www.databricks.com/learn/training/certification", "status": "Registrations Closed", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.", "inspection_notes": "Detected closure phrase: 'no longer available'"}, {"id": "fortinet-cybersecurity-fundamentals", "title": "Fortinet Certified Fundamentals (FCF) in Cybersecurity", "platform": "Fortinet", "category": "Security", "certification_name": "Fortinet Certified Fundamentals (FCF)", "offer_type": "100% Free Credential", "value_usd": 100, "eligibility": "Global (Fortinet Training Institute)", "url": "https://www.fortinet.com/training/cybersecurity-professionals", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "github-student-foundations", "title": "GitHub Foundations Certification via Student Developer Pack", "platform": "GitHub", "category": "DevOps", "certification_name": "GitHub Foundations", "offer_type": "Student 100% Free Voucher", "value_usd": 99, "eligibility": "Active students verified via GitHub Student Developer Pack", "url": "https://education.github.com/pack", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "aws-educate-badges", "title": "AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers", "platform": "Amazon Web Services", "category": "Cloud Computing", "certification_name": "AWS Educate Graduate & Practitioner Badges", "offer_type": "Free Digital Credential", "value_usd": 50, "eligibility": "Global (No credit card required)", "url": "https://aws.amazon.com/education/awseducate/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Sign up for AWS Educate without an AWS account or credit card. Complete hands-on cloud labs to earn industry-recognized digital credentials.", "inspection_notes": "HTTP 200 OK (Live Verified)"}];
+        const offersData = [{"id": "isc2-one-million-cc", "title": "ISC2 Certified in Cybersecurity (CC) - 100% Free Exam + Education", "platform": "ISC2", "category": "Security", "certification_name": "Certified in Cybersecurity (CC)", "offer_type": "100% Free Exam Voucher", "value_usd": 199, "eligibility": "Global (First-time ISC2 candidates)", "url": "https://www.isc2.org/landing/1mcc", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "2026-12-31", "claim_steps": "Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "oracle-oci-free-cert", "title": "Oracle Cloud Infrastructure (OCI) Free Certifications & Learning", "platform": "Oracle Cloud", "category": "Cloud & Data", "certification_name": "OCI Foundations & Associate Certifications", "offer_type": "100% Free Exam Voucher", "value_usd": 245, "eligibility": "Global (Free Oracle University account)", "url": "https://education.oracle.com/oracle-cloud-infrastructure", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling Cycles", "claim_steps": "Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.", "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)"}, {"id": "cisco-rev-up-recert", "title": "Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet", "platform": "Cisco", "category": "Networking", "certification_name": "Cisco Continuing Education (Recertification)", "offer_type": "Free CE Credits", "value_usd": 300, "eligibility": "Anyone holding active Cisco certifications", "url": "https://u.cisco.com/", "status": "Review Needed", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.", "inspection_notes": "Normal Certification Site: No active free voucher or waiver signal found"}, {"id": "ms-applied-skills", "title": "Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials", "platform": "Microsoft Azure", "category": "Cloud & AI", "certification_name": "Microsoft Applied Skills (Azure, AI, Power Platform)", "offer_type": "100% Free Credential", "value_usd": 100, "eligibility": "Global (Free for all)", "url": "https://learn.microsoft.com/en-us/credentials/applied-skills/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "gcp-cloud-skills-boost", "title": "Google Cloud Skills Boost & Innovators Free Badges", "platform": "Google Cloud", "category": "Cloud & AI", "certification_name": "Google Cloud Skill Badges & Arcade Milestones", "offer_type": "Free Skill Badges & Swag", "value_usd": 100, "eligibility": "Global (Google Account)", "url": "https://www.cloudskillsboost.google/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "linux-foundation-lift", "title": "Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)", "platform": "Linux Foundation / CNCF", "category": "DevOps & Cloud Native", "certification_name": "Certified Kubernetes Administrator (CKA) / LFCS", "offer_type": "100% Free Scholarship Voucher", "value_usd": 395, "eligibility": "Global (Application-based scholarship for underrepresented & students)", "url": "https://www.linuxfoundation.org/about/lift-scholarships", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Annual Windows", "claim_steps": "Submit an application during the annual LiFT scholarship window describing your career goals. Winners receive a 100% free exam voucher + training course.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "snowflake-hands-on-essentials", "title": "Snowflake Hands-on Essentials Free Digital Badges", "platform": "Snowflake", "category": "AI & Data", "certification_name": "Snowflake Data Warehousing & Data Applications Badges", "offer_type": "100% Free Credential", "value_usd": 150, "eligibility": "Global (Free registration)", "url": "https://learn.snowflake.com/en/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "mongodb-developer-cert", "title": "MongoDB University Free Courses & Associate Exam Drives", "platform": "MongoDB", "category": "AI & Data", "certification_name": "MongoDB Associate Developer / DBA", "offer_type": "Free Training & Student Voucher", "value_usd": 150, "eligibility": "Global (100% free voucher for students via GitHub Student Pack)", "url": "https://learn.mongodb.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "salesforce-trailhead-quests", "title": "Salesforce Trailhead Quests - Free Certification Vouchers", "platform": "Salesforce", "category": "CRM & Cloud", "certification_name": "Salesforce Certified Administrator / App Builder", "offer_type": "Quest Sweepstakes Voucher", "value_usd": 200, "eligibility": "Global (Trailhead users)", "url": "https://trailhead.salesforce.com/quests", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Monthly Quests", "claim_steps": "Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "postman-api-expert", "title": "Postman API Fundamentals & Student Expert Certifications", "platform": "Postman", "category": "API & DevOps", "certification_name": "Postman API Fundamentals Student / Pro Expert", "offer_type": "100% Free Credential", "value_usd": 50, "eligibility": "Global (Free for all developers & students)", "url": "https://academy.postman.com/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "juniper-open-learning", "title": "Juniper Open Learning - JNCIA Associate Certification Vouchers", "platform": "Juniper Networks", "category": "Networking", "certification_name": "JNCIA-Junos / JNCIA-SEC Associate", "offer_type": "75%-100% Discount Voucher", "value_usd": 200, "eligibility": "Global (Participants of Open Learning webinars)", "url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Register for a free Juniper Open Learning webinar session, complete the pre-assessment module with a passing score, and receive a Pearson VUE voucher.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "qualys-certified-specialist", "title": "Qualys Certified Specialist - Free Vulnerability & Compliance Certs", "platform": "Qualys", "category": "Security", "certification_name": "Vulnerability Management & CSAM Specialist", "offer_type": "100% Free Credential", "value_usd": 150, "eligibility": "Global (Free registration)", "url": "https://www.qualys.com/training", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "databricks-genai-fundamentals", "title": "Databricks Generative AI Fundamentals Accreditation", "platform": "Databricks", "category": "AI & Data", "certification_name": "Generative AI Fundamentals", "offer_type": "100% Free Credential", "value_usd": 75, "eligibility": "Global (Free for all)", "url": "https://www.databricks.com/learn/training/certification", "status": "Registrations Closed", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.", "inspection_notes": "Detected closure phrase: 'no longer available'"}, {"id": "fortinet-cybersecurity-fundamentals", "title": "Fortinet Certified Fundamentals (FCF) in Cybersecurity", "platform": "Fortinet", "category": "Security", "certification_name": "Fortinet Certified Fundamentals (FCF)", "offer_type": "100% Free Credential", "value_usd": 100, "eligibility": "Global (Fortinet Training Institute)", "url": "https://www.fortinet.com/training/cybersecurity-professionals", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "github-student-foundations", "title": "GitHub Foundations Certification via Student Developer Pack", "platform": "GitHub", "category": "DevOps", "certification_name": "GitHub Foundations", "offer_type": "Student 100% Free Voucher", "value_usd": 99, "eligibility": "Active students verified via GitHub Student Developer Pack", "url": "https://education.github.com/pack", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Rolling", "claim_steps": "Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "aws-educate-badges", "title": "AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers", "platform": "Amazon Web Services", "category": "Cloud Computing", "certification_name": "AWS Educate Graduate & Practitioner Badges", "offer_type": "Free Digital Credential", "value_usd": 50, "eligibility": "Global (No credit card required)", "url": "https://aws.amazon.com/education/awseducate/", "status": "Active", "verification_date": "2026-10-14", "expiry_date": "Permanent", "claim_steps": "Sign up for AWS Educate without an AWS account or credit card. Complete hands-on cloud labs to earn industry-recognized digital credentials.", "inspection_notes": "HTTP 200 OK (Live Verified)"}, {"id": "hist-msft-build-2024", "title": "Microsoft Build 2024: Cloud Skills Challenge - 100% Free Exam Voucher", "platform": "Microsoft Azure", "category": "Cloud & AI", "certification_name": "Azure AI Engineer / Fabric Analytics / DevOps Engineer", "exam_code": "AI-102, DP-600, AZ-400, AZ-204, SC-200", "offer_type": "100% Free Exam Voucher", "value_usd": 165, "eligibility": "Global (Completed 1 eligible challenge collection)", "url": "https://learn.microsoft.com/en-us/training/challenges", "status": "Expired", "time_period": "May 21, 2024 \u2013 June 24, 2024", "concluded_date": "2024-06-24", "recurrence_pattern": "Annual (Every May alongside Microsoft Build Conference)", "claim_steps": "Registered on Microsoft Learn, completed 1 qualifying interactive challenge collection within 30 days, received 100% voucher code sent to registered email.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-msft-ignite-2023", "title": "Microsoft Ignite 2023: Cloud Skills Challenge - 100% Free Certification Voucher", "platform": "Microsoft Azure", "category": "Cloud & AI", "certification_name": "Azure Solutions Architect / Security Operations Analyst / Power Platform", "exam_code": "AZ-104, AZ-305, SC-200, PL-300, MS-102", "offer_type": "100% Free Exam Voucher", "value_usd": 165, "eligibility": "Global (Free registration via Microsoft Learn)", "url": "https://learn.microsoft.com/en-us/training/challenges", "status": "Expired", "time_period": "Nov 15, 2023 \u2013 Jan 15, 2024", "concluded_date": "2024-01-15", "recurrence_pattern": "Annual (Every Nov/Dec alongside Microsoft Ignite)", "claim_steps": "Enrolled in Microsoft Ignite Cloud Skills Challenge during conference week, completed challenge leaderboard, received unique Pearson VUE voucher.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-oracle-race-cert-2024", "title": "Oracle University: Race to Certification 2024 - Free OCI & AI Exam Attempts", "platform": "Oracle Cloud", "category": "Cloud & AI", "certification_name": "OCI Generative AI / Cloud Architect Associate / DevOps", "exam_code": "1Z0-1127-24, 1Z0-1085-24, 1Z0-1072-24, 1Z0-1110-24", "offer_type": "100% Free Exam Attempts (Up to 2)", "value_usd": 245, "eligibility": "Global (All Oracle University registered accounts)", "url": "https://education.oracle.com/oracle-cloud-infrastructure", "status": "Expired", "time_period": "July 1, 2024 \u2013 Oct 31, 2024", "concluded_date": "2024-10-31", "recurrence_pattern": "Annual (Summer promotional cycle across Q3 every year)", "claim_steps": "Joined Race to Certification on Oracle University portal, earned sector badges, and scheduled proctored online exams with 2 free attempts.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-cisco-rev-up-devnae", "title": "Cisco U: Rev Up to Recert - 16 Free Continuing Education (CE) Credits", "platform": "Cisco", "category": "Networking", "certification_name": "Cisco Certified Network Associate / Professional Recertification", "exam_code": "DEVNAE (200-901 / CCNA Recertification)", "offer_type": "100% Free CE Credits (16 CE)", "value_usd": 300, "eligibility": "Active CCNA / CCNP / CCIE holders", "url": "https://u.cisco.com/", "status": "Expired", "time_period": "July 15, 2024 \u2013 Aug 31, 2024", "concluded_date": "2024-08-31", "recurrence_pattern": "Quarterly (Cisco Learning Network Rev Up sprints every 3-4 months)", "claim_steps": "Completed the 'Developing Applications on Cisco Platforms' (DEVNAE) learning path on Cisco U with 100% quiz scores. CE credits auto-submitted to recertify CCNA/CCNP.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-aws-ai-practitioner-early", "title": "AWS Certified AI Practitioner Early Adopter - Beta Retake & Promotion Voucher", "platform": "Amazon Web Services", "category": "Cloud & AI", "certification_name": "AWS Certified AI Practitioner", "exam_code": "AIF-C01", "offer_type": "Early Adopter Discount & Beta Retake Voucher", "value_usd": 100, "eligibility": "Global (AWS Skill Builder Early Adopter challenge)", "url": "https://aws.amazon.com/certification/certified-ai-practitioner/", "status": "Expired", "time_period": "Aug 13, 2024 \u2013 Oct 31, 2024", "concluded_date": "2024-10-31", "recurrence_pattern": "Event-driven (New AWS certification launch beta periods)", "claim_steps": "Registered for the newly launched AIF-C01 during the early adopter window via AWS Training to receive free exam retake insurance and promotion codes.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-gcp-ace-challenge", "title": "Google Cloud Skills Boost: Cloud Engineer Certification Sprint", "platform": "Google Cloud", "category": "Cloud Computing", "certification_name": "Google Cloud Certified Associate Cloud Engineer", "exam_code": "ACE", "offer_type": "100% Free Exam Voucher + Skills Boost Labs", "value_usd": 125, "eligibility": "Global (Participants in Google Cloud Innovators challenge)", "url": "https://www.cloudskillsboost.google/", "status": "Expired", "time_period": "April 15, 2024 \u2013 June 30, 2024", "concluded_date": "2024-06-30", "recurrence_pattern": "Semi-Annual (Google Cloud Next & Autumn Innovators Challenges)", "claim_steps": "Completed 3 Google Cloud Skills Boost quests and earned hands-on badges to receive an official voucher for Kryterion Webassessor.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-databricks-genai-2024", "title": "Databricks Academy: Generative AI Fundamentals Free Launch Badge", "platform": "Databricks", "category": "AI & Data", "certification_name": "Generative AI Fundamentals Accredited Badge", "exam_code": "DATABRICKS-GENAI", "offer_type": "100% Free Official Credential", "value_usd": 75, "eligibility": "Global (Free Databricks Academy account)", "url": "https://www.databricks.com/learn/training/certification", "status": "Expired", "time_period": "Jan 1, 2024 \u2013 Sept 30, 2024", "concluded_date": "2024-09-30", "recurrence_pattern": "Annual (Refreshed annually for new LLM releases)", "claim_steps": "Completed the 4 video modules on Databricks Academy and passed the 20-question proctored knowledge assessment to earn the Credly badge.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}, {"id": "hist-github-universe-2024", "title": "GitHub Universe 2024: Free GitHub Foundations & Actions Certifications", "platform": "GitHub", "category": "DevOps", "certification_name": "GitHub Foundations / Actions / Advanced Security", "exam_code": "GH-FND, GH-ACT, GH-SEC", "offer_type": "100% Free Voucher for Virtual Attendees", "value_usd": 99, "eligibility": "Registered virtual attendees of GitHub Universe 2024", "url": "https://githubuniverse.com/", "status": "Expired", "time_period": "Oct 29, 2024 \u2013 Nov 15, 2024", "concluded_date": "2024-11-15", "recurrence_pattern": "Annual (GitHub Universe conference every October/November)", "claim_steps": "Registered for virtual GitHub Universe, completed the post-conference developer survey and challenges to receive a PSI exam voucher code.", "inspection_notes": "Concluded promo cycle (Preserved for recurrence tracking)", "is_historical_archive": true}];
         let currentCategory = 'All';
         let currentSearch = '';
         let currentLayout = 'grid';
@@ -559,27 +565,47 @@
             const parsedQuery = parseGitHubQuery(currentSearch);
 
             let filtered = offersData.filter(o => {
-                // 1. SubNav Category
-                if (currentCategory !== 'All' && !o.category.includes(currentCategory) && !o.platform.includes(currentCategory)) {
+                // 1. SubNav Category Filter
+                if (currentCategory === 'History') {
+                    if (!o.is_historical_archive && o.status !== 'Expired') return false;
+                } else if (currentCategory !== 'All' && !o.category.includes(currentCategory) && !o.platform.includes(currentCategory)) {
                     return false;
                 }
 
                 // 2. Select Status Filter
                 if (statusMode === 'active' && o.status !== 'Active') return false;
-                if (statusMode === 'closed' && o.status === 'Active') return false;
+                if (statusMode === 'history' && !o.is_historical_archive && o.status !== 'Expired') return false;
+                if (statusMode === 'closed' && (o.status === 'Active' || o.is_historical_archive)) return false;
 
                 // 3. GitHub Search Query Tokens
                 if (parsedQuery.status) {
                     if (parsedQuery.status === 'active' && o.status !== 'Active') return false;
-                    if (parsedQuery.status === 'closed' && o.status === 'Active') return false;
+                    if ((parsedQuery.status === 'history' || parsedQuery.status === 'expired') && !o.is_historical_archive && o.status !== 'Expired') return false;
+                    if (parsedQuery.status === 'closed' && (o.status === 'Active' || o.is_historical_archive)) return false;
                 }
-                if (parsedQuery.category && !o.category.toLowerCase().includes(parsedQuery.category)) return false;
+                if (parsedQuery.category) {
+                    if (parsedQuery.category === 'history') {
+                        if (!o.is_historical_archive && o.status !== 'Expired') return false;
+                    } else if (!o.category.toLowerCase().includes(parsedQuery.category)) {
+                        return false;
+                    }
+                }
                 if (parsedQuery.platform && !o.platform.toLowerCase().includes(parsedQuery.platform)) return false;
                 if (parsedQuery.minValue !== null && (o.value_usd || 0) < parsedQuery.minValue) return false;
 
-                // 4. Free text keywords
+                // 4. Free text keywords (including exam_code, time_period, recurrence)
                 if (parsedQuery.freeText.length > 0) {
-                    const text = (o.title + ' ' + o.platform + ' ' + o.certification_name + ' ' + o.category + ' ' + (o.eligibility || '') + ' ' + (o.claim_steps || '')).toLowerCase();
+                    const text = (
+                        o.title + ' ' + 
+                        o.platform + ' ' + 
+                        o.certification_name + ' ' + 
+                        (o.exam_code || '') + ' ' + 
+                        (o.time_period || '') + ' ' + 
+                        (o.recurrence_pattern || '') + ' ' + 
+                        o.category + ' ' + 
+                        (o.eligibility || '') + ' ' + 
+                        (o.claim_steps || '')
+                    ).toLowerCase();
                     const allMatch = parsedQuery.freeText.every(word => text.includes(word));
                     if (!allMatch) return false;
                 }
@@ -626,10 +652,38 @@
             if (currentLayout === 'grid') {
                 grid.innerHTML = filtered.map(o => {
                     const isLive = (o.status === 'Active');
-                    const badgeBg = isLive ? 'var(--success-subtle)' : 'var(--attention-subtle)';
-                    const badgeColor = isLive ? 'var(--success-fg)' : 'var(--attention-fg)';
-                    const statusLabel = isLive ? '🟢 Active' : (o.status === 'Registrations Closed' ? '🟡 Closed' : '🔴 Expired');
+                    const isHistory = Boolean(o.is_historical_archive || o.status === 'Expired');
+                    const badgeBg = isLive ? 'var(--success-subtle)' : (isHistory ? 'rgba(110, 118, 129, 0.15)' : 'var(--attention-subtle)');
+                    const badgeColor = isLive ? 'var(--success-fg)' : (isHistory ? 'var(--fg-muted)' : 'var(--attention-fg)');
+                    const statusLabel = isLive ? '🟢 Active' : (isHistory ? '📜 Concluded' : (o.status === 'Registrations Closed' ? '🟡 Closed' : '🔴 Expired'));
                     const brandColor = getPlatformColor(o.platform);
+
+                    const examBadge = o.exam_code ? `
+                        <div class="mt-2 flex items-center gap-1.5 flex-wrap">
+                            <span class="text-[10px] font-mono font-medium px-2 py-0.5 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-default);" title="Official Exam Code">
+                                Exam: ${o.exam_code}
+                            </span>
+                        </div>
+                    ` : '';
+
+                    const timePeriodInfo = o.time_period ? `
+                        <div class="text-[11px] mt-2 font-medium flex items-center gap-1.5" style="color: var(--accent-fg);">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-2a.25.25 0 0 0-.25-.25H2.75a.25.25 0 0 0-.25.25V6h11Z"></path></svg>
+                            <span class="truncate">📅 Period: ${o.time_period}</span>
+                        </div>
+                    ` : '';
+
+                    const recurrenceInfo = o.recurrence_pattern ? `
+                        <div class="text-[11px] mt-1 font-medium flex items-center gap-1.5" style="color: var(--fg-muted);">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm7.25-3.25v3.69l2.28 2.28a.75.75 0 1 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1-.22-.53V4.75a.75.75 0 0 1 1.5 0Z"></path></svg>
+                            <span class="truncate">🔁 Recurrence: ${o.recurrence_pattern}</span>
+                        </div>
+                    ` : '';
+
+                    const actionBtnText = isLive ? 'Claim Free' : (isHistory ? 'Archive Link' : 'View Link');
+                    const actionBtnBg = isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)';
+                    const actionBtnColor = isLive ? '#ffffff' : 'var(--fg-default)';
+                    const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
 
                     return `
                         <div class="primer-card p-5 rounded-lg flex flex-col justify-between">
@@ -648,7 +702,7 @@
                                     ${o.title}
                                 </h3>
 
-                                <div class="flex items-center gap-2 mt-2">
+                                <div class="flex items-center gap-2 mt-2 flex-wrap">
                                     <span class="text-xs font-mono font-bold px-2 py-0.5 rounded border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                         $${o.value_usd || 0} USD Value
                                     </span>
@@ -657,16 +711,21 @@
                                     </span>
                                 </div>
 
+                                ${examBadge}
+                                ${timePeriodInfo}
+                                ${recurrenceInfo}
+
                                 <details class="mt-3.5 text-xs group cursor-pointer">
                                     <summary class="font-semibold select-none flex items-center gap-1 hover:underline" style="color: var(--accent-fg);">
-                                        <span>How to Claim</span>
+                                        <span>${isHistory ? 'Archived Promo Steps & Notes' : 'How to Claim'}</span>
                                         <svg class="w-3.5 h-3.5 transform group-open:rotate-90 transition-transform" viewBox="0 0 16 16" fill="currentColor">
                                             <path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"></path>
                                         </svg>
                                     </summary>
-                                    <p class="mt-2 p-2.5 rounded-md border leading-relaxed" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
-                                        ${o.claim_steps}
-                                    </p>
+                                    <div class="mt-2 p-2.5 rounded-md border leading-relaxed space-y-1.5" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
+                                        <p>${o.claim_steps}</p>
+                                        ${o.inspection_notes ? `<p class="text-[11px] font-mono pt-1 border-t" style="border-color: var(--border-muted); color: var(--fg-muted);"><strong>Audit:</strong> ${o.inspection_notes}</p>` : ''}
+                                    </div>
                                 </details>
                             </div>
 
@@ -681,8 +740,8 @@
                                             <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
                                         </svg>
                                     </button>
-                                    <a href="${o.url}" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md transition shadow-sm flex items-center gap-1 text-white hover:opacity-90" style="background-color: var(--btn-primary-bg);">
-                                        <span>${isLive ? 'Claim Free' : 'View'}</span>
+                                    <a href="${o.url}" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-md transition shadow-sm flex items-center gap-1 hover:opacity-90 border" style="background-color: ${actionBtnBg}; color: ${actionBtnColor}; border-color: ${actionBtnBorder};">
+                                        <span>${actionBtnText}</span>
                                         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                                             <path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h4a.75.75 0 0 1 .75.75v4a.75.75 0 0 1-1.5 0V3.56l-5.72 5.72a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L12.94 2.5H10.5a.75.75 0 0 1-.75-.75Z"></path>
                                         </svg>
@@ -696,8 +755,17 @@
                 // Issues Table Row View
                 tableBody.innerHTML = filtered.map(o => {
                     const isLive = (o.status === 'Active');
+                    const isHistory = Boolean(o.is_historical_archive || o.status === 'Expired');
                     const brandColor = getPlatformColor(o.platform);
-                    const statusIconColor = isLive ? 'var(--success-fg)' : 'var(--attention-fg)';
+                    const statusIconColor = isLive ? 'var(--success-fg)' : (isHistory ? 'var(--fg-muted)' : 'var(--attention-fg)');
+                    const actionBtnText = isLive ? 'Claim' : (isHistory ? 'Archive' : 'View');
+                    const actionBtnBg = isLive ? 'var(--btn-primary-bg)' : 'var(--btn-default-bg)';
+                    const actionBtnColor = isLive ? '#ffffff' : 'var(--fg-default)';
+                    const actionBtnBorder = isLive ? 'transparent' : 'var(--border-default)';
+
+                    const examCodeChip = o.exam_code ? `<span class="text-[10px] font-mono px-1.5 py-0.2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">Exam: ${o.exam_code}</span>` : '';
+                    const periodChip = o.time_period ? `<span class="text-[10px] font-medium" style="color: var(--accent-fg);">📅 ${o.time_period}</span>` : '';
+                    const recurChip = o.recurrence_pattern ? `<span class="text-[10px]" style="color: var(--fg-muted);">🔁 ${o.recurrence_pattern}</span>` : '';
 
                     return `
                         <div class="issue-row p-3 flex items-start justify-between gap-3 text-xs">
@@ -719,18 +787,22 @@
                                         <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border" style="background-color: var(--success-subtle); color: var(--success-fg); border-color: var(--success-fg);">
                                             $${o.value_usd || 0} USD
                                         </span>
+                                        ${examCodeChip}
                                     </div>
-                                    <div class="text-[11px] mt-1 flex items-center gap-2" style="color: var(--fg-muted);">
+                                    <div class="text-[11px] mt-1.5 flex items-center gap-2 flex-wrap" style="color: var(--fg-muted);">
                                         <span class="font-mono">#${o.id}</span>
                                         <span>•</span>
                                         <span>${o.category}</span>
                                         <span>•</span>
                                         <span>${o.eligibility || 'Global'}</span>
+                                        ${periodChip ? `<span>•</span>${periodChip}` : ''}
+                                        ${recurChip ? `<span>•</span>${recurChip}` : ''}
                                     </div>
                                     <details class="mt-1 text-xs group">
-                                        <summary class="font-medium cursor-pointer hover:underline" style="color: var(--accent-fg);">Claim instructions &rarr;</summary>
-                                        <div class="mt-1 p-2 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
-                                            ${o.claim_steps}
+                                        <summary class="font-medium cursor-pointer hover:underline" style="color: var(--accent-fg);">${isHistory ? 'Archived promo details &rarr;' : 'Claim instructions &rarr;'}</summary>
+                                        <div class="mt-1 p-2 rounded border space-y-1" style="background-color: var(--canvas-inset); border-color: var(--border-muted); color: var(--fg-default);">
+                                            <p>${o.claim_steps}</p>
+                                            ${o.inspection_notes ? `<p class="text-[10px] font-mono text-[var(--fg-muted)]">Audit: ${o.inspection_notes}</p>` : ''}
                                         </div>
                                     </details>
                                 </div>
@@ -739,8 +811,8 @@
                                 <button onclick="copySteps(this, '${o.title.replace(/'/g, "\\'") }', '${o.claim_steps.replace(/'/g, "\\'") }')" class="p-1.5 rounded border hover:opacity-80 transition" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);" title="Copy instructions">
                                     <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path></svg>
                                 </button>
-                                <a href="${o.url}" target="_blank" class="px-3 py-1.5 rounded text-xs font-semibold text-white transition hover:opacity-90" style="background-color: var(--btn-primary-bg);">
-                                    ${isLive ? 'Claim' : 'View'}
+                                <a href="${o.url}" target="_blank" class="px-3 py-1.5 rounded text-xs font-semibold transition hover:opacity-90 border" style="background-color: ${actionBtnBg}; color: ${actionBtnColor}; border-color: ${actionBtnBorder};">
+                                    ${actionBtnText}
                                 </a>
                             </div>
                         </div>

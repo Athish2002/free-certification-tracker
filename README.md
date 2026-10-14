@@ -16,7 +16,8 @@
 | :--- | :--- | :--- |
 | **Active Opportunities** | **14** | Verified 100% free exams & live registration windows |
 | **Total Financial Value** | **$2,188 USD** | Aggregate savings if claimed today |
-| **Last Automated Inspection** | `2026-10-14 12:50 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Historical Archive Tracked** | **8 Campaigns** | Past promotional cycles & recurrence roadmaps |
+| **Last Automated Inspection** | `2026-10-14 13:07 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -86,6 +87,22 @@
 | Provider | Certification & Program | Type | Value (USD) | Status | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | `Free Digital Credential` | $50 | 🟢 Active | [**Claim Offer**](https://aws.amazon.com/education/awseducate/) |
+
+---
+
+## 📜 Historical Voucher Archive & Recurrence Patterns
+> Cloud providers regularly launch recurring 100% free certification campaigns (annual developer conferences, seasonal training challenges, and beta programs). Track past campaign timeframes and historical recurrence patterns below to anticipate upcoming waves.
+
+| Provider | Certification & Exam Code | Type | Value (USD) | Active Promo Period | Recurrence Pattern | Notes / Archival Reason |
+| :--- | :--- | :--- | :---: | :---: | :--- | :--- |
+| **Microsoft Azure** | **Azure AI Engineer / Fabric Analytics / DevOps Engineer**<br>`AI-102, DP-600, AZ-400, AZ-204, SC-200` | `100% Free Exam Voucher` | $165 | May 21, 2024 – June 24, 2024 | Annual (Every May alongside Microsoft Build Conference) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Microsoft Azure** | **Azure Solutions Architect / Security Operations Analyst / Power Platform**<br>`AZ-104, AZ-305, SC-200, PL-300, MS-102` | `100% Free Exam Voucher` | $165 | Nov 15, 2023 – Jan 15, 2024 | Annual (Every Nov/Dec alongside Microsoft Ignite) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Oracle Cloud** | **OCI Generative AI / Cloud Architect Associate / DevOps**<br>`1Z0-1127-24, 1Z0-1085-24, 1Z0-1072-24, 1Z0-1110-24` | `100% Free Exam Attempts (Up to 2)` | $245 | July 1, 2024 – Oct 31, 2024 | Annual (Summer promotional cycle across Q3 every year) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Cisco** | **Cisco Certified Network Associate / Professional Recertification**<br>`DEVNAE (200-901 / CCNA Recertification)` | `100% Free CE Credits (16 CE)` | $300 | July 15, 2024 – Aug 31, 2024 | Quarterly (Cisco Learning Network Rev Up sprints every 3-4 months) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Amazon Web Services** | **AWS Certified AI Practitioner**<br>`AIF-C01` | `Early Adopter Discount & Beta Retake Voucher` | $100 | Aug 13, 2024 – Oct 31, 2024 | Event-driven (New AWS certification launch beta periods) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Google Cloud** | **Google Cloud Certified Associate Cloud Engineer**<br>`ACE` | `100% Free Exam Voucher + Skills Boost Labs` | $125 | April 15, 2024 – June 30, 2024 | Semi-Annual (Google Cloud Next & Autumn Innovators Challenges) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Databricks** | **Generative AI Fundamentals Accredited Badge**<br>`DATABRICKS-GENAI` | `100% Free Official Credential` | $75 | Jan 1, 2024 – Sept 30, 2024 | Annual (Refreshed annually for new LLM releases) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **GitHub** | **GitHub Foundations / Actions / Advanced Security**<br>`GH-FND, GH-ACT, GH-SEC` | `100% Free Voucher for Virtual Attendees` | $99 | Oct 29, 2024 – Nov 15, 2024 | Annual (GitHub Universe conference every October/November) | Concluded promo cycle (Preserved for recurrence tracking) |
 
 ---
 
@@ -226,4 +243,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 12:50 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-14 13:07 UTC`.*
