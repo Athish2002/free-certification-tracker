@@ -461,7 +461,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (9)"
+          "CREDENTIAL_SIGNALS_FOUND (7)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -1606,12 +1606,12 @@
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Continuous Academic & Beacon Portal",
       "claim_steps": "Register for a free Palo Alto Networks Beacon account. Complete the Foundation Cybersecurity curriculum and take the online digital accreditation assessment at zero cost.",
-      "inspection_notes": "DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM",
+      "inspection_notes": "DOM Render Invariant: Empty rendered DOM or failed client-side hydration",
       "is_authentic_vendor": true,
-      "authenticity_score": 90,
+      "authenticity_score": 85,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 90,
+        "authenticity_score": 85,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1624,10 +1624,10 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
-        "summary": "90% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "voucher_code": "PALOALTO_BEACON_ACADEMY_GRANT",
       "redemption_portal": "https://beacon.paloaltonetworks.com/",
@@ -2392,5 +2392,5 @@
       "inspection_method": "Historical Archive Invariant"
     }
   ],
-  "last_inspected": "2026-10-15T08:00:24.081570+00:00"
+  "last_inspected": "2026-10-15T09:05:03.666230+00:00"
 }

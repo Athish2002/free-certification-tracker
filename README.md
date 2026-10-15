@@ -22,7 +22,7 @@
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **29 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-15 08:00 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-15 09:05 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -90,7 +90,7 @@
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
-| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
+| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 
 </details>
@@ -634,4 +634,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-15 08:00 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-15 09:05 UTC`.*
