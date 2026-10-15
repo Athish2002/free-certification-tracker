@@ -79,10 +79,10 @@
       "claim_steps": "Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.",
       "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)",
       "is_authentic_vendor": true,
-      "authenticity_score": 85,
+      "authenticity_score": 93,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 85,
+        "authenticity_score": 93,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -95,10 +95,11 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "CONTENT_INSPECTION_BYPASS"
+          "VENDOR_NAME_MATCHED",
+          "SINGLE_CREDENTIAL_SIGNAL"
         ],
         "warning_flags": [],
-        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "93% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "difficulty_tier": "Foundational",
       "time_period": "Rolling 2026",
@@ -121,7 +122,7 @@
           "Confirm your exam appointment via the integrated proctoring engine with $0.00 cart balance."
         ]
       },
-      "inspection_method": "Playwright Headless DOM"
+      "inspection_method": "Playwright DOM (HTTP Fallback)"
     },
     {
       "id": "cisco-rev-up-recert",
@@ -2017,7 +2018,7 @@
           "The exam booking registers through Oracle proctoring provider at $0.00 total fee."
         ]
       },
-      "inspection_method": "Playwright Headless DOM"
+      "inspection_method": "Playwright DOM (HTTP Fallback)"
     },
     {
       "id": "cisco-netacad-cyberops",
@@ -2391,5 +2392,5 @@
       "inspection_method": "Historical Archive Invariant"
     }
   ],
-  "last_inspected": "2026-10-15T04:32:07.637193+00:00"
+  "last_inspected": "2026-10-15T05:14:50.100461+00:00"
 }
