@@ -37,6 +37,9 @@ BROWSER_HEADERS = {
 
 # Heuristic phrases indicating an offer/voucher campaign is over even if HTTP 200
 CLOSED_PATTERNS = [
+    "has concluded",
+    "closed new enrollments",
+    "has closed new enrollments",
     "registration is closed",
     "registrations are closed",
     "registration has closed",
@@ -50,11 +53,21 @@ CLOSED_PATTERNS = [
     "capacity reached",
     "seats are full",
     "program is closed",
+    "program has closed",
+    "program concluded",
+    "program has concluded",
+    "program has ended",
     "no longer accepting submissions",
+    "no longer accepting applications",
+    "no longer accepting new enrollments",
+    "enrollments are closed",
+    "enrollment is closed",
     "no longer available",
     "campaign concluded",
-    "offer ended"
+    "offer ended",
+    "milestone achieved"
 ]
+
 
 SOFT_404_PATTERNS = [
     "page not found",

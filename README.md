@@ -3,8 +3,8 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-22-success.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243502%20USD-gold.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-21-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243303%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
@@ -15,27 +15,17 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **22** | Verified 100% free exams & live registration windows |
-| **Total Financial Value** | **$3,502 USD** | Aggregate savings if claimed today |
+| **Active Opportunities** | **21** | Verified 100% free exams & live registration windows |
+| **Total Financial Value** | **$3,303 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **28 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-14 23:04 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-15 02:02 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
 
 ## Verified Active Certification Offers
-
-### Security
-
-| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
-| **ISC2** | Certified in Cybersecurity (CC) | `100% Free Exam Voucher` | $199 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.isc2.org/landing/1mcc) |
-| **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.qualys.com/training) |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
-| **Splunk** | Splunk Core Observability & Defense Fundamentals | `100% Free Accreditation & Badge` | $130 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://lantern.splunk.com/) |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | `100% Free Certification` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://skillsbuild.org/) |
 
 ### Cloud & Data
 
@@ -82,6 +72,15 @@
 | Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | `75%-100% Discount Voucher` | $200 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+
+### Security
+
+| Provider | Certification & Program | Type | Value (USD) | Status | Authenticity | Claim Link |
+| :--- | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Qualys** | Vulnerability Management & CSAM Specialist | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.qualys.com/training) |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | `100% Free Credential` | $100 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.fortinet.com/training/cybersecurity-professionals) |
+| **Splunk** | Splunk Core Observability & Defense Fundamentals | `100% Free Accreditation & Badge` | $130 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://lantern.splunk.com/) |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | `100% Free Certification` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://skillsbuild.org/) |
 
 ### DevOps
 
@@ -131,6 +130,7 @@
 
 | Provider | Certification | Concluded Status | Reason / Inspection Note |
 | :--- | :--- | :---: | :--- |
+| **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Detected closure phrase: 'has concluded' |
 | **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
 | **Databricks** | Generative AI Fundamentals | 🟡 Closed / Waitlist | Detected closure phrase: 'no longer available' |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | Normal Certification Site: No active free voucher or waiver signal found |
@@ -176,13 +176,6 @@
 ---
 
 ## Detailed Claiming Instructions
-
-#### ISC2 Certified in Cybersecurity (CC) - 100% Free Exam + Education
-- **Provider:** ISC2
-- **Value:** $199 USD
-- **Eligibility:** Global (First-time ISC2 candidates)
-- **Steps to Claim:** Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.
-- **Official Link:** [https://www.isc2.org/landing/1mcc](https://www.isc2.org/landing/1mcc)
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Provider:** Oracle Cloud
@@ -361,4 +354,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-14 23:04 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-15 02:02 UTC`.*

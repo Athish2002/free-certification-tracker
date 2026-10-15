@@ -12,11 +12,11 @@
       "value_usd": 199,
       "eligibility": "Global (First-time ISC2 candidates)",
       "url": "https://www.isc2.org/landing/1mcc",
-      "status": "Active",
+      "status": "Registrations Closed",
       "verification_date": "2026-10-14",
       "expiry_date": "2026-12-31",
       "claim_steps": "Sign up for a free ISC2 Candidate account, complete the free self-paced CC course, and book the Pearson VUE exam with the 100% discount promo code.",
-      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
+      "inspection_notes": "Detected closure phrase: 'has concluded'",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
