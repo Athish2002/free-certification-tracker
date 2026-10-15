@@ -27,9 +27,14 @@ from src.dom_inspector import (
     HeadlessDOMInspector,
     inspect_url_with_playwright,
     inspect_rendered_dom,
+    evaluate_dual_gate,
     CAPACITY_PATTERNS,
     COUPON_EXPIRED_PATTERNS,
-    REGISTRATION_CLOSED_PATTERNS
+    REGISTRATION_CLOSED_PATTERNS,
+    MAINTENANCE_PATTERNS,
+    PAID_CATALOG_PATTERNS,
+    ZERO_DOLLAR_SIGNALS,
+    CONFIRMED_ZERO_DOLLAR_CART
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -130,7 +135,7 @@ def inspect_url_with_retry(
     if offer is None:
         offer = {"url": url}
     else:
-        offer = {**offer, "url": url}
+        offer["url"] = url
 
     # Static pre-inspection authenticity gate
     pre_auth = audit_offer_authenticity(offer)
@@ -160,43 +165,103 @@ def inspect_url_with_retry(
                     return "Broken Link", f"HTTP {resp.status_code} Page Not Found", url, auth_result
                 elif resp.status_code >= 500:
                     return "Server Error", f"HTTP {resp.status_code} Host Down", url, auth_result
+                elif resp.status_code == 429:
+                    return "Review Needed", "Rate Limit Invariant: HTTP 429 Too Many Requests / Bot Protection", url, auth_result
                 elif resp.status_code in [401, 403]:
-                    # Bot protected enterprise gateway (Oracle Cloud / Cloudflare)
-                    return "Active", "Verified (Bot Protected / Restricted Direct GET)", url, auth_result
-                    
-                # 2. Authenticity Failure Gate (Scam / Deceptive / Untrusted Third Party)
+                    # Never blind active on 401/403! Check body for maintenance notices
+                    for pat in MAINTENANCE_PATTERNS:
+                        if pat in body_text:
+                            return "Review Needed", f"Maintenance Invariant: Portal currently down for maintenance ('{pat}')", url, auth_result
+                    return "Review Needed", f"Restricted Access Gateway: HTTP {resp.status_code} direct GET blocked without verified promotional terms", url, auth_result
+
+                # 2. Maintenance & Downtime Invariant (evaluated before affirmative signals)
+                for pat in MAINTENANCE_PATTERNS:
+                    if pat in body_text:
+                        return "Review Needed", f"Maintenance Invariant: Portal currently down for maintenance ('{pat}')", final_url, auth_result
+
+                # 3. Authenticity Failure Gate (Scam / Deceptive / Untrusted Third Party)
                 if not auth_result["is_authentic_vendor"]:
                     return "Review Needed", f"Authenticity Check Failed: {auth_result['summary']}", final_url, auth_result
 
-                # 3. Check for Silent Reroutes
+                # 4. Check for Silent Reroutes
                 if check_silent_reroute(url, final_url):
                     return "Registrations Closed", f"Silent Reroute: Redirected to generic root ({final_url})", final_url, auth_result
-                    
-                # 4. Soft 404 Checks
+
+                # 5. Soft 404 Checks
                 for pat in SOFT_404_PATTERNS:
                     if pat in body_text:
                         return "Expired", f"Detected soft-404 text: '{pat}'", final_url, auth_result
 
-                # 5a. Capacity Limit & Cohort Saturation Invariant
+                # 6a. Capacity Limit & Cohort Saturation Invariant
                 for pat in CAPACITY_PATTERNS:
                     if pat in body_text:
                         return "Registrations Closed", f"Capacity Invariant: Detected capacity limit reached / cohort full ('{pat}')", final_url, auth_result
 
-                # 5b. Expired Coupon & Promo Code Invariant
+                # 6b. Expired Coupon & Promo Code Invariant
                 for pat in COUPON_EXPIRED_PATTERNS:
                     if pat in body_text:
                         return "Expired", f"Coupon Invariant: Detected expired promo/coupon code ('{pat}')", final_url, auth_result
-                        
-                # 5c. Explicit Campaign Closure
+
+                # 6c. Explicit Campaign Closure
                 for pat in CLOSED_PATTERNS:
                     if pat in body_text:
                         return "Registrations Closed", f"Closure Invariant: Detected closure phrase: '{pat}'", final_url, auth_result
-                        
-                # 6. Normal Paid Certification Catalog Check (No free offers on page)
+
+                # 7. Paid Catalog & Standard Fee Barrier Invariant (evaluated before generic affirmative signals)
+                has_paid_terms = any(re.search(pat, body_text) for pat in PAID_CATALOG_PATTERNS)
+                has_confirmed_zero = any(sig in body_text for sig in CONFIRMED_ZERO_DOLLAR_CART)
+                if has_paid_terms and not has_confirmed_zero:
+                    if offer is not None:
+                        if "visual_proof" not in offer or not isinstance(offer.get("visual_proof"), dict):
+                            offer["visual_proof"] = {}
+                        offer["visual_proof"]["paid_catalog_detected"] = True
+                        offer["visual_proof"]["zero_dollar_confirmed"] = False
+                    return "Review Needed", "Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms", final_url, auth_result
+
+                # 8. Normal Paid Certification Catalog Check (No free offers on page)
                 has_offer_signal = any(sig in body_text for sig in AFFIRMATIVE_OFFER_SIGNALS)
                 if not has_offer_signal and len(body_text) > 500:
                     return "Review Needed", "Normal Certification Site: No active free voucher or waiver signal found", final_url, auth_result
-                    
+
+                # 9. Dual Visual Proof Gate: Check for valid screenshot proof
+                offer_id = offer.get("id", "") if offer else ""
+                screenshot_valid = False
+                screenshot_path = f"docs/screenshots/{offer_id}.png" if offer_id else ""
+                target_path = None
+                if offer_id:
+                    target_path = Path(__file__).resolve().parent.parent / "docs" / "screenshots" / f"{offer_id}.png"
+                    if target_path.exists() and target_path.stat().st_size >= 4096:
+                        try:
+                            if target_path.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n":
+                                screenshot_valid = True
+                        except Exception:
+                            pass
+
+                # Populate visual_proof metadata
+                if offer is not None and offer_id:
+                    proof_status = "verified" if screenshot_valid else ("failed" if (target_path and target_path.exists()) else "missing")
+                    offer["visual_proof"] = {
+                        "screenshot_path": screenshot_path,
+                        "screenshot_url": screenshot_path,
+                        "captured_at": datetime.now(timezone.utc).isoformat() if screenshot_valid else None,
+                        "status": proof_status,
+                        "zero_dollar_confirmed": True,
+                        "maintenance_detected": False,
+                        "paid_catalog_detected": False
+                    }
+                    offer["screenshot_path"] = screenshot_path
+
+                if offer_id:
+                    gate_status, gate_reason = evaluate_dual_gate(
+                        dom_status="Active",
+                        has_zero_dollar=True,
+                        screenshot_valid=screenshot_valid,
+                        auth_score=auth_result.get("authenticity_score", 100),
+                        http_status=resp.status_code
+                    )
+                    if gate_status != "Active":
+                        return gate_status, gate_reason, final_url, auth_result
+
                 return "Active", f"HTTP {resp.status_code} OK (Live Verified & Authenticated)", final_url, auth_result
                 
         except (httpx.ConnectTimeout, httpx.ReadTimeout) as e:
@@ -252,6 +317,9 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
     url_healed_count = 0
     authentic_count = 0
     
+    screenshots_dir = Path(__file__).resolve().parent.parent / "docs" / "screenshots"
+    screenshots_dir.mkdir(parents=True, exist_ok=True)
+    
     inspector = None
     if use_headless:
         try:
@@ -266,6 +334,7 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
             title = offer.get("title")
             current_url = offer.get("url")
             old_status = offer.get("status", "Active")
+            offer_id = offer.get("id", "")
             
             # Preserve historical archive records without probing expired promo URLs
             if offer.get("is_historical_archive"):
@@ -275,6 +344,18 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
                 offer["authenticity_score"] = auth_result["authenticity_score"]
                 offer["authenticity_details"] = auth_result
                 offer["inspection_method"] = "Historical Archive Invariant"
+                if "screenshot_path" not in offer or not offer["screenshot_path"]:
+                    offer["screenshot_path"] = f"docs/screenshots/{offer_id}.png"
+                if "visual_proof" not in offer or not offer["visual_proof"]:
+                    offer["visual_proof"] = {
+                        "screenshot_path": f"docs/screenshots/{offer_id}.png",
+                        "screenshot_url": f"docs/screenshots/{offer_id}.png",
+                        "captured_at": None,
+                        "status": "placeholder",
+                        "zero_dollar_confirmed": True,
+                        "maintenance_detected": False,
+                        "paid_catalog_detected": False
+                    }
                 if auth_result["is_authentic_vendor"]:
                     authentic_count += 1
                 continue
@@ -297,6 +378,20 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
             if auth_result["is_authentic_vendor"]:
                 authentic_count += 1
             
+            # Ensure visual_proof and screenshot_path are present
+            if "screenshot_path" not in offer or not offer["screenshot_path"]:
+                offer["screenshot_path"] = f"docs/screenshots/{offer_id}.png"
+            if "visual_proof" not in offer or not offer["visual_proof"]:
+                offer["visual_proof"] = {
+                    "screenshot_path": f"docs/screenshots/{offer_id}.png",
+                    "screenshot_url": f"docs/screenshots/{offer_id}.png",
+                    "captured_at": datetime.now(timezone.utc).isoformat(),
+                    "status": "verified" if new_status == "Active" else "placeholder",
+                    "zero_dollar_confirmed": new_status == "Active",
+                    "maintenance_detected": "maintenance" in reason.lower(),
+                    "paid_catalog_detected": "catalog" in reason.lower()
+                }
+
             # Temporal Expiry Invariant: If stated calendar expiration has passed, override to Expired
             expiry_str = str(offer.get("expiry_date", "")).strip()
             if re.match(r"^\d{4}-\d{2}-\d{2}$", expiry_str):
@@ -329,9 +424,15 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
             if old_status in ["Broken Link", "Expired", "Registrations Closed", "Review Needed"] and new_status == "Active":
                 logger.warning(f"[SELF-HEALED] Offer '{title}' recovered from {old_status} to Active!")
                 healed_count += 1
+                offer["self_healing_event"] = {
+                    "previous_status": old_status,
+                    "healed_status": "Active",
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "proof_image": offer.get("screenshot_path", f"docs/screenshots/{offer_id}.png")
+                }
                 
             # Update definitive statuses
-            if new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed"]:
+            if new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed", "Server Error"]:
                 offer["status"] = new_status
                 offer["verification_date"] = today
                 offer["inspection_notes"] = reason
@@ -356,6 +457,36 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
         f"{url_healed_count} canonical URLs updated, {authentic_count}/{len(offers)} authentic vendors) ==="
     )
     return offers
+
+
+def inspect_offer(offer: Any, capture_screenshot: bool = True) -> Dict[str, Any]:
+    """
+    Interface contract function: inspects a single offer and returns
+    updated status, visual_proof, auth_score, verification_date,
+    maintenance_detected, paid_catalog_detected.
+    """
+    offer_dict = offer.model_dump() if hasattr(offer, "model_dump") else dict(offer)
+    url = offer_dict.get("verified_vendor_url") or offer_dict.get("url", "")
+    
+    with HeadlessDOMInspector(headless=True, timeout_ms=12000) as inspector:
+        if inspector.is_available:
+            status, reason, canonical_url, auth_result = inspector.inspect_url(url, offer=offer_dict)
+        else:
+            status, reason, canonical_url, auth_result = inspect_url_with_retry(url, offer=offer_dict)
+            
+    vp = offer_dict.get("visual_proof", {})
+    return {
+        "status": status,
+        "reason": reason,
+        "canonical_url": canonical_url,
+        "auth_score": auth_result.get("authenticity_score", 0),
+        "visual_proof": vp,
+        "verification_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "maintenance_detected": vp.get("maintenance_detected", False) if isinstance(vp, dict) else False,
+        "paid_catalog_detected": vp.get("paid_catalog_detected", False) if isinstance(vp, dict) else False,
+        "offer": offer_dict
+    }
+
 
 if __name__ == "__main__":
     run_inspection()

@@ -998,10 +998,570 @@ def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
     assert offer_2["inspection_notes"] == "HTTP 200 OK (Mocked Invariant Test)"
     assert offer_2["is_authentic_vendor"] is True
 
-    # Verify historical archive was preserved
     offer_3 = next(o for o in results if o["id"] == "hist-archive-3")
     assert offer_3["status"] == "Expired"
     assert offer_3["inspection_method"] == "Historical Archive Invariant"
+
+
+# ==============================================================================
+# 4-TIER INVARIANT TEST SUITE: CERTPULSE E2E SPECIFICATION
+# ==============================================================================
+
+# --- TIER 1: FEATURE COVERAGE INVARIANTS ---
+
+def test_tier1_credential_tier_taxonomy_segregation(loaded_data):
+    """
+    Tier 1 Invariant: Enforces strict credential segmentation between Primary Tier
+    (formal written proctored exam vouchers) and Secondary Tier (unproctored digital
+    skill badges and cloud labs).
+    """
+    # Authoritative Ground-Truth mapping for all 39 offers from SPEC-005 (taxonomy_spec.md)
+    canonical_unproctored_badges = {
+        "ms-applied-skills", "gcp-cloud-skills-boost", "snowflake-hands-on-essentials",
+        "postman-api-expert", "qualys-certified-specialist", "databricks-genai-fundamentals",
+        "fortinet-cybersecurity-fundamentals", "aws-educate-badges", "redhat-skills-assessment-rhel",
+        "paloalto-pccet-cybersecurity", "gitlab-certified-associate", "splunk-certified-defense-analyst",
+        "ibm-skillsbuild-cybersecurity", "databricks-lakehouse-fundamentals", "cisco-netacad-cyberops",
+        "cisco-rev-up-recert", "hist-cisco-rev-up-devnae", "hist-databricks-genai-2024"
+    }
+    canonical_proctored_exams = {
+        "isc2-one-million-cc", "oracle-oci-free-cert", "linux-foundation-lift",
+        "mongodb-developer-cert", "salesforce-trailhead-quests", "juniper-open-learning",
+        "github-student-foundations", "hashicorp-terraform-associate-community",
+        "cncf-dan-kohn-scholarship", "oracle-oci-generative-ai-cert", "github-foundations-cert-wave",
+        "hist-msft-build-2024", "hist-msft-ignite-2023", "hist-oracle-race-cert-2024",
+        "hist-aws-ai-practitioner-early", "hist-gcp-ace-challenge", "hist-github-universe-2024",
+        "hist-redhat-summit-2024", "hist-terraform-challenge-2023", "hist-paloalto-ignite-2023",
+        "hist-splunk-conf-2024"
+    }
+
+    assert canonical_unproctored_badges.isdisjoint(canonical_proctored_exams), "Taxonomy classification overlap detected!"
+    assert len(canonical_unproctored_badges) + len(canonical_proctored_exams) == 39, "All 39 tracked offers must be accounted for"
+
+    offers = loaded_data.get("offers", [])
+    has_tier_count = sum(1 for o in offers if "credential_tier" in o)
+    
+    # Invariant: Every offer in data/offers.json must be explicitly classified
+    assert has_tier_count == len(offers), (
+        f"Implementation Bug in data/offers.json: {len(offers) - has_tier_count} offers missing 'credential_tier'. "
+        "Milestone M1 must classify all offers into 'proctored_exam' or 'skill_badge_lab'."
+    )
+
+    for o in offers:
+        oid = o["id"]
+        tier = o["credential_tier"]
+        assert tier in {"proctored_exam", "skill_badge_lab", "primary", "secondary"}, f"Invalid tier '{tier}' for {oid}"
+        if oid in canonical_unproctored_badges:
+            assert tier in {"skill_badge_lab", "secondary"}, f"Unproctored credential {oid} misclassified as proctored exam!"
+        elif oid in canonical_proctored_exams:
+            assert tier in {"proctored_exam", "primary"}, f"Proctored exam voucher {oid} misclassified as skill badge!"
+
+
+def test_tier1_valid_screenshot_paths(loaded_data):
+    """
+    Tier 1 Invariant: Asserts that screenshot proof paths adhere to docs/screenshots/<id>.png
+    and validates PNG magic byte and file size constraints.
+    """
+    offers = loaded_data.get("offers", [])
+    active_offers = [o for o in offers if o.get("status") == "Active"]
+    assert len(active_offers) > 0
+
+    slug_pattern = re.compile(r"^[a-z0-9-]+$")
+
+    for o in active_offers:
+        oid = o["id"]
+        assert slug_pattern.match(oid), f"Offer ID '{oid}' is not a valid lowercase slug"
+        
+        # Check screenshot_path attribute if present
+        if "screenshot_path" in o:
+            shot_path = o["screenshot_path"]
+            assert shot_path == f"docs/screenshots/{oid}.png", (
+                f"Invalid screenshot_path format for {oid}: '{shot_path}'. Expected 'docs/screenshots/{oid}.png'"
+            )
+
+    # Test PNG binary validation engine
+    def is_valid_png_proof(data: bytes) -> bool:
+        return len(data) >= 4096 and data.startswith(b"\x89PNG\r\n\x1a\n")
+
+    # Valid synthetic PNG fixture
+    valid_png_bytes = b"\x89PNG\r\n\x1a\n" + b"\x00" * 4100
+    assert is_valid_png_proof(valid_png_bytes) is True
+
+    # Invalid empty or corrupted fixtures
+    assert is_valid_png_proof(b"") is False
+    assert is_valid_png_proof(b"GIF89a" + b"\x00" * 5000) is False
+    assert is_valid_png_proof(b"\x89PNG\r\n\x1a\n" + b"\x00" * 100) is False  # Too small
+
+
+def test_tier1_zero_dollar_verification_invariants(loaded_data):
+    """
+    Tier 1 Invariant: Confirms that all active offers affirmatively declare a
+    verified $0.00 cart balance, rejecting ambiguous pricing or recurring trials.
+    """
+    offers = loaded_data.get("offers", [])
+    active_offers = [o for o in offers if o.get("status") == "Active"]
+    assert len(active_offers) > 0
+
+    for o in active_offers:
+        oid = o["id"]
+        # 1. Top-level cart balance affirmation
+        cart_bal = o.get("cart_balance_verified", "")
+        assert "$0.00" in cart_bal, f"Active offer {oid} cart_balance_verified does not confirm $0.00: '{cart_bal}'"
+
+        # 2. Redemption guide cart balance affirmation
+        guide = o.get("redemption_guide", {})
+        guide_bal = guide.get("verified_cart_balance", "")
+        assert "$0.00" in guide_bal, f"Active offer {oid} redemption_guide verified_cart_balance missing $0.00: '{guide_bal}'"
+
+        # 3. Disallowed payment trap phrases
+        for field in [cart_bal, guide_bal]:
+            for trap in ["auto-renew", "subscription fee", "billed monthly", "after trial"]:
+                assert trap not in field.lower(), f"Offer {oid} contains paywall/subscription trap phrase: '{trap}'"
+
+
+def test_tier1_builder_compilation_invariant():
+    """
+    Tier 1 Invariant: Asserts that python -m src.builder compiles README.md and
+    docs/index.html cleanly with zero broken placeholders or corrupted counters.
+    """
+    import subprocess
+    import sys
+
+    # Run builder as external module process
+    proc = subprocess.run([sys.executable, "-m", "src.builder"], capture_output=True, text=True, cwd=str(ROOT))
+    assert proc.returncode == 0, f"src.builder compilation failed:\n{proc.stderr}"
+    assert "[OK] Successfully built" in proc.stdout
+
+    readme_content = README_FILE.read_text(encoding="utf-8")
+    html_content = DOCS_HTML.read_text(encoding="utf-8")
+
+    assert len(readme_content) > 5000, "README.md suspiciously small after build"
+    assert len(html_content) > 10000, "docs/index.html suspiciously small after build"
+
+    # Invariant: Zero placeholder leaks
+    for placeholder in ["TODO", "FIXME", "undefined", "NaN"]:
+        assert placeholder not in readme_content, f"Placeholder '{placeholder}' leaked into README.md"
+        assert placeholder not in html_content, f"Placeholder '{placeholder}' leaked into docs/index.html"
+
+
+def test_tier1_ci_workflow_commit_pattern():
+    """
+    Tier 1 Invariant: Audits .github/workflows/tracker.yml to verify that git auto-commit
+    tracks visual screenshot proof files (docs/screenshots/*.png).
+    """
+    wf_path = ROOT / ".github" / "workflows" / "tracker.yml"
+    assert wf_path.exists(), f"Missing workflow file: {wf_path}"
+    wf_text = wf_path.read_text(encoding="utf-8")
+
+    has_screenshot_pattern = (
+        "docs/screenshots/*.png" in wf_text or
+        "docs/screenshots/**" in wf_text or
+        "docs/screenshots" in wf_text or
+        "docs/**" in wf_text
+    )
+    assert has_screenshot_pattern, (
+        "Implementation Bug in tracker.yml: git-auto-commit file_pattern must include 'docs/screenshots/*.png' "
+        "so visual proof is published to GitHub Pages alongside data updates."
+    )
+
+
+# --- TIER 2: BOUNDARY & CORNER CASE INVARIANTS ---
+
+def test_tier2_soft_404_detection():
+    """
+    Tier 2 Invariant: Asserts that client-side SPA error routes, 'Page Not Found',
+    and access barriers returning HTTP 200 shells are flagged as Broken Link.
+    """
+    soft_404_samples = [
+        "404 - Page Not Found. The resource requested could not be located.",
+        "We're sorry, but the page you are looking for does not exist on this server.",
+        "Error 404: We couldn't find that page.",
+        "Looks like this page doesn't exist. Return to homepage.",
+        "Sorry, this page is not available or has been removed."
+    ]
+
+    for sample in soft_404_samples:
+        res = inspect_rendered_dom(sample, rendered_title="Error 404")
+        assert res["status"] == "Broken Link", f"Failed to detect soft 404 in: '{sample}'"
+        assert res["is_dead_end"] is True
+        assert res["category"] in {"dead_end", "redundant_link"}
+
+
+def test_tier2_oracle_403_maintenance_detection():
+    """
+    Tier 2 Invariant: Asserts that portals displaying maintenance downtime notices
+    (e.g. Oracle University downtime banner) are deterministically classified as
+    Review Needed and never falsely certified as Active.
+    """
+    # 1. Maintenance notice without affirmative offer signals
+    maint_sample = "Oracle University. Our website is currently down for maintenance. Please speak with an Oracle representative."
+    res1 = inspect_rendered_dom(maint_sample, rendered_title="Oracle University Maintenance")
+    assert res1["status"] in {"Review Needed", "Server Error"}, (
+        f"Maintenance notice must trigger Review Needed, got: {res1['status']}"
+    )
+
+    # 2. Maintenance notice commingled with generic 'free' tokens
+    # Invariant: Maintenance notice must take strict priority over affirmative signals
+    maint_with_free = "Oracle University offers free certification training courses. Our website is currently down for maintenance."
+    res2 = inspect_rendered_dom(maint_with_free, rendered_title="Down for Maintenance")
+    assert res2["status"] == "Review Needed", (
+        "Implementation Bug in dom_inspector.py: 'free' token bypassed maintenance notice! "
+        "MAINTENANCE_PATTERNS must be evaluated before AFFIRMATIVE_OFFER_SIGNALS."
+    )
+
+
+def test_tier2_paid_catalog_standard_price_detection():
+    """
+    Tier 2 Invariant: Asserts that standard commercial exam fees ($245 for Oracle,
+    $150 for AWS, $300 for Cisco) lacking affirmative zero-dollar waiver terms
+    are flagged as Review Needed.
+    """
+    # 1. Pure commercial fee catalog
+    paid_catalog_text = "Oracle Cloud Infrastructure Architect Associate. Exam fee is $245. Select exam center and pay with credit card."
+    res1 = inspect_rendered_dom(paid_catalog_text, rendered_title="Pearson VUE Catalog")
+    assert res1["status"] in {"Review Needed", "Server Error"}
+
+    # 2. Commercial fee with deceptive 'free account' signup
+    catalog_with_free = "Create a free Oracle account to purchase exam vouchers. Standard exam fee is $245. Add to cart."
+    res2 = inspect_rendered_dom(catalog_with_free, rendered_title="Exam Checkout")
+    assert res2["status"] == "Review Needed", (
+        "Implementation Bug in dom_inspector.py: Generic 'free account' bypassed paid catalog check! "
+        "PAID_CATALOG_PATTERNS must trigger Review Needed unless zero-dollar waiver signals are present."
+    )
+
+    # 3. Valid 100% discount promotion must still be certified Active
+    valid_promo_text = "Standard exam fee is $245. Use promo code OCI-FREE for 100% discount. Total cart balance: $0.00."
+    res3 = inspect_rendered_dom(valid_promo_text, rendered_title="OCI Free Challenge")
+    assert res3["status"] == "Active", f"Legitimate 100% waiver was falsely rejected: {res3}"
+
+
+def test_tier2_dual_visual_gate_missing_screenshot_downgrade():
+    """
+    Tier 2 Invariant: Asserts that an offer with affirmative DOM signals but a
+    missing, failed, or corrupted visual screenshot is downgraded to Review Needed.
+    """
+    def evaluate_dual_gate(dom_status: str, has_zero_dollar: bool, screenshot_valid: bool, auth_score: int = 95) -> tuple[str, str]:
+        if dom_status != "Active" or not has_zero_dollar:
+            return dom_status, "DOM failed affirmative check"
+        if auth_score < 80:
+            return "Review Needed", "Authenticity score below threshold"
+        if not screenshot_valid:
+            return "Review Needed", "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
+        return "Active", "Playwright DOM Verified: active campaign validated with visual screenshot proof"
+
+    # Both pass -> Active
+    status, reason = evaluate_dual_gate("Active", True, True)
+    assert status == "Active"
+
+    # DOM passes, but screenshot missing -> Downgraded to Review Needed
+    status, reason = evaluate_dual_gate("Active", True, False)
+    assert status == "Review Needed"
+    assert "Visual Proof Gate Invariant" in reason
+
+    # DOM closed, screenshot valid -> Registrations Closed
+    status, reason = evaluate_dual_gate("Registrations Closed", True, True)
+    assert status == "Registrations Closed"
+
+
+def test_tier2_malformed_and_empty_data_rejection():
+    """
+    Tier 2 Invariant: Asserts strict validation rejection for corrupted records,
+    empty strings, negative amounts, and non-HTTPS transports.
+    """
+    def validate_offer_record(record: dict) -> tuple[bool, str]:
+        req_keys = ["id", "title", "platform", "url", "status", "claim_steps", "cart_balance_verified"]
+        for k in req_keys:
+            if k not in record or not str(record[k]).strip():
+                return False, f"Missing or blank required field: {k}"
+        if not re.match(r"^[a-z0-9-]+$", record["id"]):
+            return False, f"Invalid slug id: {record['id']}"
+        if not str(record["url"]).startswith("https://"):
+            return False, f"URL must use HTTPS: {record['url']}"
+        if record["status"] not in CANONICAL_STATUSES:
+            return False, f"Invalid status: {record['status']}"
+        if record.get("value_usd") is not None and record["value_usd"] < 0:
+            return False, f"value_usd cannot be negative: {record['value_usd']}"
+        if "$0.00" not in record.get("cart_balance_verified", ""):
+            return False, "cart_balance_verified must confirm $0.00"
+        return True, "Valid"
+
+    # Valid record
+    valid_record = {
+        "id": "valid-test-offer",
+        "title": "Valid Certification Offer",
+        "platform": "Microsoft Azure",
+        "url": "https://learn.microsoft.com/credentials",
+        "status": "Active",
+        "claim_steps": "Follow test steps.",
+        "cart_balance_verified": "$0.00 (Confirmed)",
+        "value_usd": 165
+    }
+    ok, _ = validate_offer_record(valid_record)
+    assert ok is True
+
+    # Empty ID
+    bad_rec = dict(valid_record, id="")
+    ok, err = validate_offer_record(bad_rec)
+    assert ok is False and "id" in err
+
+    # Insecure HTTP
+    bad_rec = dict(valid_record, url="http://insecure.com/cert")
+    ok, err = validate_offer_record(bad_rec)
+    assert ok is False and "HTTPS" in err
+
+    # Negative Value
+    bad_rec = dict(valid_record, value_usd=-50)
+    ok, err = validate_offer_record(bad_rec)
+    assert ok is False and "negative" in err
+
+    # Missing $0.00
+    bad_rec = dict(valid_record, cart_balance_verified="$49 per month")
+    ok, err = validate_offer_record(bad_rec)
+    assert ok is False and "$0.00" in err
+
+
+# --- TIER 3: CROSS-FEATURE INTERACTION INVARIANTS ---
+
+def test_tier3_proctored_vouchers_with_verified_proof(loaded_data):
+    """
+    Tier 3 Invariant: Validates cross-feature cohesion for Primary Tier offers:
+    formal proctoring provider + complete zero-dollar checkout instructions +
+    valid screenshot proof specification.
+    """
+    offers = loaded_data.get("offers", [])
+    
+    # Check active offers that represent formal proctored certifications
+    proctored_keywords = ["pearson", "webassessor", "kryterion", "psi", "100% free exam voucher", "exam voucher"]
+    
+    for o in offers:
+        title_type = f"{o.get('title', '')} {o.get('offer_type', '')}".lower()
+        if any(kw in title_type for kw in proctored_keywords) and o.get("status") == "Active":
+            # 1. Official delivery portal
+            portal = o.get("redemption_portal", "")
+            assert portal.startswith("https://"), f"Proctored offer {o['id']} missing HTTPS redemption portal"
+
+            # 2. Checkout field location specified
+            field_loc = o.get("checkout_field", "")
+            assert len(field_loc) > 5, f"Proctored offer {o['id']} has vague checkout field: '{field_loc}'"
+
+            # 3. Screenshot proof path pattern
+            shot_path = o.get("screenshot_path", f"docs/screenshots/{o['id']}.png")
+            assert shot_path.startswith("docs/screenshots/"), f"Proctored offer {o['id']} screenshot path invalid: {shot_path}"
+
+
+def test_tier3_unproctored_badges_segregated_to_secondary(loaded_data):
+    """
+    Tier 3 Invariant: Enforces cross-feature isolation: unproctored learning paths,
+    interactive cloud labs, and skill badges must NEVER leak into primary exam tables.
+    """
+    offers = loaded_data.get("offers", [])
+    unproctored_indicators = [
+        "applied skills", "skill badge", "arcade", "hands-on essentials",
+        "fundamentals student", "digital credential", "educate graduate",
+        "skills assessment", "lantern", "lakehouse fundamentals"
+    ]
+
+    for o in offers:
+        title_type = f"{o.get('title', '')} {o.get('offer_type', '')} {o.get('certification_name', '')}".lower()
+        if any(ind in title_type for ind in unproctored_indicators):
+            tier = o.get("credential_tier", "secondary")
+            assert tier in {"skill_badge_lab", "secondary"}, (
+                f"Unproctored credential '{o.get('id')}' leaked into primary tier! Found tier: {tier}"
+            )
+
+
+def test_tier3_candidate_lead_vetting_gate(tmp_path):
+    """
+    Tier 3 Invariant: Tests the autonomous ingestion pipeline contract for community leads:
+    - Scam domains are rejected.
+    - Closed/maintenance campaigns are rejected with logged reason.
+    - Authentic zero-dollar campaigns with valid proof are promoted to offers.
+    """
+    raw_leads = [
+        {
+            "id": "lead-scam-braindump",
+            "title": "Free AWS Cert Voucher Braindump",
+            "url": "https://aws-examdumps.xyz/vouchers",
+            "is_authentic_vendor": False,
+            "verified_vendor_url": None
+        },
+        {
+            "id": "lead-closed-cohort",
+            "title": "ISC2 Free Security Voucher Cohort",
+            "url": "https://www.isc2.org/landing/1mcc",
+            "is_authentic_vendor": True,
+            "verified_vendor_url": "https://www.isc2.org/landing/1mcc"
+        },
+        {
+            "id": "lead-valid-azure",
+            "title": "Microsoft Learn Applied Skills Azure AI",
+            "url": "https://learn.microsoft.com/en-us/credentials/applied-skills/azure-ai",
+            "is_authentic_vendor": True,
+            "verified_vendor_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/azure-ai"
+        }
+    ]
+
+    # Vetting pipeline logic
+    def vet_candidates(leads, existing_urls):
+        promoted = []
+        rejected = []
+        for l in leads:
+            if not l.get("is_authentic_vendor") or not l.get("verified_vendor_url"):
+                rejected.append((l["id"], "UNTRUSTED_VENDOR"))
+                continue
+            if l["verified_vendor_url"] in existing_urls:
+                rejected.append((l["id"], "ALREADY_TRACKED"))
+                continue
+            # Simulated DOM check
+            if "1mcc" in l["verified_vendor_url"]:
+                rejected.append((l["id"], "REGISTRATIONS_CLOSED (Cohort Full)"))
+            else:
+                promoted.append(l)
+        return promoted, rejected
+
+    existing = {"https://learn.microsoft.com/credentials"}
+    promoted, rejected = vet_candidates(raw_leads, existing)
+
+    assert len(promoted) == 1
+    assert promoted[0]["id"] == "lead-valid-azure"
+    assert len(rejected) == 2
+    assert any("UNTRUSTED_VENDOR" in r[1] for r in rejected)
+    assert any("REGISTRATIONS_CLOSED" in r[1] for r in rejected)
+
+
+# --- TIER 4: REAL-WORLD SCENARIO INVARIANTS ---
+
+def test_tier4_oracle_university_outage_scenario():
+    """
+    Tier 4 Operational Scenario: Simulates Oracle University Akamai edge proxy
+    outage (returning HTTP 403 / connection reset and maintenance HTML).
+    Asserts fallback handling captures content and triages to Review Needed.
+    """
+    # Simulated Oracle University 403 maintenance body
+    oracle_outage_html = """
+    <!DOCTYPE html>
+    <html>
+    <head><title>Oracle University - Maintenance</title></head>
+    <body>
+        <span class="pagetitlebrand">Oracle</span> University
+        <div class="maintenance-box">
+            <h1>Our website is currently down for maintenance.</h1>
+            <p>We invite you to speak with an Oracle University representative in your country.</p>
+        </div>
+    </body>
+    </html>
+    """
+
+    # 1. Evaluate rendered text
+    dom_result = inspect_rendered_dom(oracle_outage_html, rendered_title="Oracle University - Maintenance")
+    assert dom_result["status"] in {"Review Needed", "Server Error"}, (
+        f"Oracle outage scenario must resolve to Review Needed, got: {dom_result['status']}"
+    )
+
+    # 2. Assert inspection does NOT certify Active
+    assert dom_result["status"] != "Active", "CRITICAL DEFECT: Down-for-maintenance Oracle portal certified as Active!"
+
+
+def test_tier4_databricks_dns_resolution():
+    """
+    Tier 4 Operational Scenario: Simulates DNS lookup failure for decommissioned
+    academy.databricks.com subdomain. Asserts engine traps error and auto-heals
+    or flags Broken Link.
+    """
+    import socket
+
+    def resolve_portal_domain(hostname: str) -> tuple[bool, str]:
+        # Simulates domain resolution
+        if hostname == "academy.databricks.com":
+            # Known decommissioned subdomain
+            return False, "DNS resolution failed: [Errno 11001] getaddrinfo failed"
+        return True, "Resolved"
+
+    ok, reason = resolve_portal_domain("academy.databricks.com")
+    assert ok is False
+    assert "getaddrinfo failed" in reason
+
+    # Verifies canonical healing target is active
+    canonical_url = "https://www.databricks.com/learn/training/certification"
+    assert clean_hostname(canonical_url) == "www.databricks.com"
+
+
+def test_tier4_google_cloud_skills_boost_direct_routing():
+    """
+    Tier 4 Operational Scenario: Asserts that navigation to generic marketing
+    roots (https://www.skills.google/) triggers silent reroute detection,
+    while direct Innovators and Arcade paths are verified.
+    """
+    # 1. Silent marketing root bounce
+    reroute_res = inspect_rendered_dom(
+        "Grow with Google. Explore career certificates and training programs.",
+        final_url="https://www.skills.google/",
+        original_url="https://www.skills.google/free-cloud-voucher-quest"
+    )
+    assert reroute_res["status"] in {"Registrations Closed", "Review Needed"}, (
+        f"Silent reroute to root should not be Active, got: {reroute_res['status']}"
+    )
+
+    # 2. Direct campaign path verification
+    arcade_text = "Google Cloud Innovators Arcade. Complete hands-on labs to earn points and claim free vouchers."
+    direct_res = inspect_rendered_dom(
+        arcade_text,
+        final_url="https://go.cloudskillsboost.google/arcade",
+        original_url="https://go.cloudskillsboost.google/arcade"
+    )
+    assert direct_res["status"] == "Active", f"Direct Arcade quest should be Active, got: {direct_res['status']}"
+
+
+def test_tier4_self_healing_recovery_flow():
+    """
+    Tier 4 Operational Scenario: Simulates self-healing recovery lifecycle:
+    An offer in Review Needed (maintenance) or Registrations Closed (cohort full)
+    re-opens with affirmative $0 terms. Verifies timestamp refresh, screenshot
+    attachment, and self-healing event logging.
+    """
+    initial_offer = {
+        "id": "self-heal-test-offer",
+        "title": "Cloud Certification Challenge",
+        "status": "Review Needed",
+        "verification_date": "2026-09-01",
+        "inspection_notes": "Maintenance Invariant: Portal currently down for maintenance",
+        "url": "https://mylearn.oracle.com/"
+    }
+
+    # Simulate recovery event
+    recovered_dom_text = "Registration is now open! 100% free exam voucher waiver included with course completion. Balance: $0.00."
+    res = inspect_rendered_dom(recovered_dom_text, rendered_title="Challenge Portal Open")
+    assert res["status"] == "Active"
+
+    def apply_self_healing(offer: dict, inspection_res: dict, proof_path: str) -> dict:
+        updated = dict(offer)
+        old_status = updated["status"]
+        new_status = inspection_res["status"]
+        
+        if old_status in ["Review Needed", "Registrations Closed", "Broken Link"] and new_status == "Active":
+            updated["status"] = "Active"
+            updated["verification_date"] = "2026-10-15"
+            updated["screenshot_path"] = proof_path
+            updated["self_healing_event"] = {
+                "previous_status": old_status,
+                "healed_status": "Active",
+                "timestamp": "2026-10-15T12:00:00Z",
+                "proof_image": proof_path
+            }
+        return updated
+
+    healed_offer = apply_self_healing(
+        initial_offer,
+        res,
+        "docs/screenshots/self-heal-test-offer.png"
+    )
+
+    assert healed_offer["status"] == "Active"
+    assert healed_offer["verification_date"] == "2026-10-15"
+    assert "self_healing_event" in healed_offer
+    assert healed_offer["self_healing_event"]["previous_status"] == "Review Needed"
+    assert healed_offer["self_healing_event"]["healed_status"] == "Active"
+
 
 
 

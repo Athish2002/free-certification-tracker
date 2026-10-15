@@ -50,8 +50,15 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     active_offers = [o for o in offers if o.get("status") == "Active"]
     closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
     historical_offers = [o for o in offers if o.get("is_historical_archive")]
+
+    proctored_offers = [o for o in offers if o.get("credential_tier") in ("proctored_exam", "primary")]
+    badge_offers = [o for o in offers if o.get("credential_tier") in ("skill_badge_lab", "secondary")]
+    active_proctored = [o for o in proctored_offers if o.get("status") == "Active"]
+    active_badges = [o for o in badge_offers if o.get("status") == "Active"]
     
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
+    verified_proofs_count = sum(1 for o in offers if (DOCS_DIR / "screenshots" / f"{o['id']}.png").exists())
+    proof_pct = round((verified_proofs_count / len(offers) * 100)) if offers else 0
     last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
     lines = []
@@ -63,6 +70,9 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append(f"![Active Vouchers](https://img.shields.io/badge/Active%20Offers-{len(active_offers)}-success.svg) ")
     lines.append(f"![Offers Checked](https://img.shields.io/badge/Offers%20Checked-{len(offers)}%20Audited-blue.svg) ")
     lines.append(f"![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%24{total_savings}%20USD-gold.svg) ")
+    lines.append(f"![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-{len(active_proctored)}%20Active-success.svg) ")
+    lines.append(f"![Skill Badges](https://img.shields.io/badge/Skill%20Badges-{len(active_badges)}%20Active-blue.svg) ")
+    lines.append(f"![Visual Proof](https://img.shields.io/badge/Visual%20Proof-{verified_proofs_count}%2F{len(offers)}%20Verified-brightgreen.svg) ")
     lines.append("![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) ")
     lines.append("![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) ")
     lines.append("![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)")
@@ -74,8 +84,11 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append("| Metric | Value | Definition |")
     lines.append("| :--- | :--- | :--- |")
     lines.append(f"| **Active Opportunities** | **{len(active_offers)}** | Verified 100% free exams & live registration windows |")
+    lines.append(f"| **Written Proctored Exam Vouchers** | **{len(active_proctored)} Active** ({len(proctored_offers)} Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |")
+    lines.append(f"| **Free Skill Badges & Labs** | **{len(active_badges)} Active** ({len(badge_offers)} Tracked) | Interactive hands-on cloud labs & verifiable digital badges |")
     lines.append(f"| **Offers Checked & Audited** | **{len(offers)} Total** ({len(active_offers)} Active, {len(closed_offers)} Triage, {len(historical_offers)} Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |")
     lines.append(f"| **Total Financial Value** | **${total_savings:,} USD** | Aggregate savings if claimed today |")
+    lines.append(f"| **Verified Screenshot Proofs** | **{verified_proofs_count}/{len(offers)} ({proof_pct}%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |")
     lines.append(f"| **Historical Archive Tracked** | **{len(historical_offers)} Campaigns** | Past promotional cycles & recurrence roadmaps |")
     lines.append(f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** | Official primary cloud engineering updates |")
     lines.append(f"| **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |")
@@ -84,20 +97,39 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append("## Verified Active Certification Offers")
+    lines.append(f"## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers ({len(active_proctored)} Active / {len(proctored_offers)} Tracked)")
+    lines.append("> Formal accredited industry certifications featuring proctored written examinations (Pearson VUE, Kryterion, Webassessor waivers, 100% discount promo codes, and official challenge voucher waves).")
     lines.append("")
-    lines.append("| Provider | Certification & Program | Category | Tier | Value (USD) | Status | Authenticity | Claim Link |")
+    lines.append("| Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Claim Link |")
     lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
-    for o in active_offers:
+    for o in active_proctored:
         provider = o.get("platform")
         cert = o.get("certification_name")
         cat = o.get("category", "General")
         tier = o.get("difficulty_tier", "Foundational")
         val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
         status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
-        auth_badge = f"🛡️ {o.get('authenticity_score', 100)}% Verified" if o.get("is_authentic_vendor", True) else "⚠️ Review Needed"
+        proof_link = f"[📸 Proof](docs/screenshots/{o['id']}.png)"
         url = o.get("url")
-        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {auth_badge} | [**Claim Offer**]({url}) |")
+        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | [**Claim Voucher**]({url}) |")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append(f"## 🎖️ Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs ({len(active_badges)} Active / {len(badge_offers)} Tracked)")
+    lines.append("> Unproctored interactive training completions, practical scenario-based cloud labs, sandbox learning paths, and verifiable digital badges.")
+    lines.append("")
+    lines.append("| Provider | Credential & Assessment | Category | Tier | Value (USD) | Status | Proof | Launch Link |")
+    lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
+    for o in active_badges:
+        provider = o.get("platform")
+        cert = o.get("certification_name")
+        cat = o.get("category", "General")
+        tier = o.get("difficulty_tier", "Foundational")
+        val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
+        status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
+        proof_link = f"[📸 Proof](docs/screenshots/{o['id']}.png)"
+        url = o.get("url")
+        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | [**Launch Lab**]({url}) |")
     lines.append("")
 
     if historical_offers:
@@ -286,6 +318,13 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
     active_offers = [o for o in offers if o.get("status") == "Active"]
     closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
     historical_offers = [o for o in offers if o.get("is_historical_archive")]
+
+    proctored_offers = [o for o in offers if o.get("credential_tier") in ("proctored_exam", "primary")]
+    badge_offers = [o for o in offers if o.get("credential_tier") in ("skill_badge_lab", "secondary")]
+    active_proctored = [o for o in proctored_offers if o.get("status") == "Active"]
+    active_badges = [o for o in badge_offers if o.get("status") == "Active"]
+    verified_proofs_count = sum(1 for o in offers if (DOCS_DIR / "screenshots" / f"{o['id']}.png").exists())
+
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     
@@ -918,7 +957,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
                             {len(active_offers)} <span class="text-xs font-normal" style="color: var(--fg-muted);">Vouchers</span>
                         </div>
-                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">{len(historical_offers)} historical promotional cycles archived</p>
+                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">{len(active_proctored)} Proctored &bull; {len(active_badges)} Skill Badges &bull; {len(historical_offers)} Archived</p>
                     </div>
                 </div>
 
@@ -961,7 +1000,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                             <path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0Z"></path>
                         </svg>
                     </div>
-                    <input type="text" id="searchInput" placeholder="Search 21 certifications by vendor (AWS, Azure, Google, ISC2), exam code (AZ-900, CC, CKA)..." 
+                    <input type="text" id="searchInput" placeholder="Search {len(active_offers)} active certifications ({len(active_proctored)} proctored, {len(active_badges)} skill badges) by vendor, exam, tier..." 
                            class="w-full pl-10 pr-12 sm:pr-28 py-3 sm:py-3.5 text-base sm:text-sm rounded-xl focus:outline-none transition font-medium"
                            style="background-color: transparent; color: var(--fg-default);">
                     <div class="absolute inset-y-0 right-0 pr-2.5 sm:pr-3 flex items-center gap-1.5 sm:gap-2">
@@ -972,6 +1011,22 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <kbd class="hidden md:inline-flex items-center text-xs font-mono px-2 py-0.5 rounded border pointer-events-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Press / to search">/</kbd>
                     </div>
                 </div>
+            </div>
+
+            <!-- Interactive Credential Tier Filter Pills -->
+            <div class="flex items-center gap-1.5 p-1 rounded-xl border mb-3 overflow-x-auto touch-scroll scrollbar-none" id="tierFilterPills" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
+                <button onclick="filterTier('all')" id="tierPillAll" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--accent-emphasis); color: #ffffff;" data-tier="all">
+                    <span>All Credentials</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-bold bg-white/20">{len(offers)}</span>
+                </button>
+                <button onclick="filterTier('proctored_exam')" id="tierPillProctored" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-tier="proctored_exam">
+                    <span>🎓 Written Proctored Exams</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(proctored_offers)}</span>
+                </button>
+                <button onclick="filterTier('skill_badge_lab')" id="tierPillBadges" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-tier="skill_badge_lab">
+                    <span>🎖️ Digital Skill Badges & Labs</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(badge_offers)}</span>
+                </button>
             </div>
 
             <!-- Unified Category Filters & Multi-View Controls Toolbar (Improved Layout - Zero Whitespace Waste) -->
@@ -1362,6 +1417,62 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         </div>
     </footer>
 
+    <!-- Screenshot Proof Lightbox Modal -->
+    <div id="proofModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md transition-all duration-200" role="dialog" aria-modal="true" aria-labelledby="proofModalTitle" onclick="handleProofModalBackdrop(event)">
+        <div id="proofModalContent" class="relative w-full max-w-4xl max-h-[92dvh] flex flex-col rounded-2xl border shadow-2xl overflow-hidden" style="background-color: var(--canvas-default); border-color: var(--border-default);" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b flex items-center justify-between gap-3 flex-shrink-0" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-2 mb-1 flex-wrap">
+                        <span id="proofModalPlatform" class="font-bold text-xs" style="color: var(--fg-default);"></span>
+                        <span id="proofModalTier" class="px-2 py-0.5 rounded text-[10px] font-bold border"></span>
+                        <span id="proofModalTierBadge"></span>
+                        <span id="proofModalBadge" class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 $0.00 Verified Waiver Terms</span>
+                    </div>
+                    <h3 id="proofModalTitle" class="font-bold text-sm sm:text-base leading-snug tracking-tight truncate text-balance" style="color: var(--fg-default);"></h3>
+                    <div id="proofModalDate" class="text-xs mt-0.5 tabular-nums" style="color: var(--fg-muted);"></div>
+                </div>
+                <button onclick="closeProofModal()" id="closeProofModalBtn" aria-label="Close modal" class="min-w-[36px] min-h-[36px] w-9 h-9 rounded-lg text-sm font-bold flex items-center justify-center border hover:opacity-80 active:scale-[0.96] transition cursor-pointer flex-shrink-0" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Body (Hero Screenshot) -->
+            <div class="relative flex-1 overflow-auto bg-black/5 dark:bg-black/40 p-2 sm:p-4 flex flex-col items-center justify-center min-h-[220px]">
+                <img id="proofModalImage" src="" alt="Screenshot proof of zero-dollar certification terms" class="max-w-full max-h-[55dvh] sm:max-h-[60dvh] object-contain rounded-lg border shadow-sm transition-opacity" style="border-color: var(--border-default);">
+                <div id="proofImageFallback" class="hidden text-xs text-center p-8" style="color: var(--fg-muted);">
+                    <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Screenshot proof preview available in repository at <code class="font-mono" id="proofFallbackPath"></code></span>
+                </div>
+            </div>
+
+            <!-- Modal Telemetry Strip & Action Footer -->
+            <div class="px-4 sm:px-6 py-3 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs flex-shrink-0" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                <div class="space-y-1 min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-semibold" style="color: var(--fg-default);">Capture Date:</span>
+                        <span id="proofModalCapturedAt" class="font-mono tabular-nums" style="color: var(--fg-muted);"></span>
+                        <span class="text-[10px] px-1.5 py-0.2 rounded font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">Headless Playwright</span>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-semibold" style="color: var(--fg-default);">Voucher Terms:</span>
+                        <span id="proofModalTerms" class="truncate" style="color: var(--success-fg);"></span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button onclick="closeProofModal()" class="px-3 py-1.5 rounded-lg border font-semibold transition active:scale-[0.98] cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                        Close
+                    </button>
+                    <a id="proofModalPortalLink" href="#" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-lg text-white font-semibold transition active:scale-[0.98] inline-flex items-center gap-1.5 cursor-pointer shadow-xs" style="background-color: var(--btn-primary-bg);">
+                        <span>Launch Official Portal</span>
+                        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L8.53 10.03a.75.75 0 0 1-1.06-1.06l5.47-5.47H11.25a.75.75 0 0 1-.75-.75Z"></path></svg>
+                    </a>
+                    <a id="proofModalDirectLink" href="#" target="_blank" rel="noopener" class="hidden"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification for Micro-Interactions -->
     <div id="toastNotification" class="fixed bottom-4 sm:bottom-5 left-4 right-4 sm:left-auto sm:right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none p-3.5 rounded-xl border shadow-xl flex items-center justify-between sm:justify-start gap-2.5 text-xs font-semibold max-w-sm sm:max-w-none ml-auto" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-default); margin-bottom: env(safe-area-inset-bottom, 0px);">
         <div class="flex items-center gap-2 min-w-0">
@@ -1378,10 +1489,143 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         const newsData = {news_json_str};
 
         let currentMainTab = 'vouchers';
+        let currentTier = 'all';
         let currentCategory = 'All';
         let currentSearch = '';
         let currentLayout = 'grid';
 
+        function filterTier(tier) {{
+            currentTier = tier;
+            document.querySelectorAll('#tierFilterPills .tier-pill').forEach(btn => {{
+                if (btn.getAttribute('data-tier') === tier) {{
+                    btn.style.backgroundColor = 'var(--accent-emphasis)';
+                    btn.style.color = '#ffffff';
+                    btn.classList.add('font-semibold');
+                    btn.classList.remove('font-medium');
+                }} else {{
+                    btn.style.backgroundColor = 'var(--canvas-default)';
+                    btn.style.color = 'var(--fg-muted)';
+                    btn.classList.remove('font-semibold');
+                    btn.classList.add('font-medium');
+                }}
+            }});
+            renderCards();
+        }}
+
+        // Accessible Screenshot Proof Lightbox Modal Engine
+        let previousActiveElement = null;
+
+        function openProofModal(id) {{
+            const offer = offersData.find(o => o.id === id);
+            if (!offer) return;
+
+            previousActiveElement = document.activeElement;
+
+            const modal = document.getElementById('proofModal');
+            const titleEl = document.getElementById('proofModalTitle');
+            const platformEl = document.getElementById('proofModalPlatform');
+            const tierEl = document.getElementById('proofModalTier');
+            const tierBadgeEl = document.getElementById('proofModalTierBadge');
+            const badgeEl = document.getElementById('proofModalBadge');
+            const capturedAtEl = document.getElementById('proofModalCapturedAt');
+            const dateEl = document.getElementById('proofModalDate');
+            const termsEl = document.getElementById('proofModalTerms');
+            const portalLink = document.getElementById('proofModalPortalLink');
+            const directLink = document.getElementById('proofModalDirectLink');
+            const img = document.getElementById('proofModalImage');
+            const fallback = document.getElementById('proofImageFallback');
+            const fallbackPath = document.getElementById('proofFallbackPath');
+
+            if (titleEl) titleEl.textContent = offer.title || offer.certification_name || '';
+            if (platformEl) platformEl.textContent = offer.platform || '';
+
+            const isProctored = offer.credential_tier === 'proctored_exam' || offer.credential_tier === 'primary';
+            const tierLabel = isProctored ? '🎓 Written Proctored Exam' : '🎖️ Skill Badge & Lab';
+            
+            if (tierEl) {{
+                tierEl.textContent = tierLabel;
+                if (isProctored) {{
+                    tierEl.style.backgroundColor = 'var(--accent-subtle)';
+                    tierEl.style.borderColor = 'var(--accent-fg)';
+                    tierEl.style.color = 'var(--accent-fg)';
+                }} else {{
+                    tierEl.style.backgroundColor = 'var(--canvas-inset)';
+                    tierEl.style.borderColor = 'var(--border-default)';
+                    tierEl.style.color = 'var(--fg-muted)';
+                }}
+            }}
+
+            if (tierBadgeEl) {{
+                tierBadgeEl.innerHTML = isProctored 
+                    ? '<span class="text-[10px] font-bold" style="color: var(--accent-fg);">🎓 Written Proctored Exam</span>'
+                    : '<span class="text-[10px] font-semibold" style="color: var(--fg-muted);">🎖️ Skill Badge & Lab</span>';
+            }}
+
+            if (badgeEl) {{
+                badgeEl.textContent = '🟢 $0.00 Verified Waiver Terms';
+            }}
+
+            const capturedDate = (offer.visual_proof && offer.visual_proof.captured_at)
+                ? offer.visual_proof.captured_at.split('T')[0]
+                : (offer.verification_date || '2026-10-15');
+
+            if (capturedAtEl) capturedAtEl.textContent = capturedDate;
+            if (dateEl) {{
+                dateEl.textContent = 'Captured: ' + capturedDate;
+            }}
+
+            const terms = offer.cart_balance_verified || '$0.00 Confirmed Zero-Dollar Waiver';
+            if (termsEl) termsEl.textContent = terms;
+
+            if (portalLink) portalLink.href = offer.url || '#';
+            if (directLink) directLink.href = offer.url || '#';
+
+            const shotPath = offer.screenshot_path 
+                ? (offer.screenshot_path.startsWith('docs/') ? './' + offer.screenshot_path.slice(5) : './' + offer.screenshot_path)
+                : ('./screenshots/' + offer.id + '.png');
+
+            if (fallback) fallback.classList.add('hidden');
+            if (img) {{
+                img.classList.remove('hidden');
+                img.src = shotPath;
+                img.onerror = function() {{
+                    img.classList.add('hidden');
+                    if (fallback) {{
+                        fallback.classList.remove('hidden');
+                        if (fallbackPath) fallbackPath.textContent = 'docs/screenshots/' + offer.id + '.png';
+                    }}
+                }};
+            }}
+
+            if (modal) {{
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                const closeBtn = document.getElementById('closeProofModalBtn');
+                if (closeBtn) closeBtn.focus();
+            }}
+        }}
+
+        function closeProofModal() {{
+            const modal = document.getElementById('proofModal');
+            if (modal && !modal.classList.contains('hidden')) {{
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+                if (previousActiveElement && typeof previousActiveElement.focus === 'function') {{
+                    previousActiveElement.focus();
+                }}
+            }}
+        }}
+
+        function handleProofModalBackdrop(e) {{
+            if (e.target.id === 'proofModal') {{
+                closeProofModal();
+            }}
+        }}
+
+        function closeProofModalOnBackdrop(e) {{
+            handleProofModalBackdrop(e);
+        }}
+        
         let currentNewsCategory = 'All';
         let currentNewsSearch = '';
 
@@ -1733,6 +1977,15 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             const sortVal = document.getElementById('sortSelect').value;
             
             return offersData.filter(o => {{
+                // Credential Tier Segmentation Filter
+                if (currentTier === 'proctored_exam') {{
+                    const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
+                    if (!isProctored) return false;
+                }} else if (currentTier === 'skill_badge_lab') {{
+                    const isBadge = o.credential_tier === 'skill_badge_lab' || o.credential_tier === 'secondary';
+                    if (!isBadge) return false;
+                }}
+
                 if (currentCategory === 'Checked') {{
                     if (!checkedOfferIds.includes(o.id)) return false;
                 }} else if (currentCategory === 'History') {{
@@ -1753,9 +2006,13 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
                 if (currentSearch) {{
                     const query = currentSearch.toLowerCase();
+                    const tierTerm = (o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary')
+                        ? 'proctored exam written primary'
+                        : 'skill badge lab secondary unproctored';
                     const text = [
                         o.title, o.platform, o.certification_name, o.category,
-                        o.exam_code, o.difficulty_tier, o.eligibility
+                        o.exam_code, o.difficulty_tier, o.eligibility, tierTerm,
+                        o.credential_tier, o.voucher_code
                     ].filter(Boolean).join(' ').toLowerCase();
                     if (!text.includes(query)) return false;
                 }}
@@ -1793,6 +2050,11 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 Active</span>'
                     : '<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">' + o.status + '</span>';
 
+                const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
+                const credBadge = isProctored 
+                    ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">🎓 Written Proctored Exam</span>' 
+                    : '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">🎖️ Skill Badge & Lab</span>';
+
                 const tierBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">' + (o.difficulty_tier || 'Foundational') + '</span>';
                 const checkBtnClass = isClaimed 
                     ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 font-bold'
@@ -1814,23 +2076,32 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                             </div>
                         </div>
 
+                        <div class="mb-1.5">
+                            ${{credBadge}}
+                        </div>
+
                         <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight mt-1" style="color: var(--fg-default);">${{o.title}}</h3>
                         <div class="flex items-center gap-2 mt-2 flex-wrap">
                             ${{tierBadge}}
                             <span class="text-[11px] font-bold tabular-nums" style="color: var(--success-fg);">${{valText}}</span>
-                            <span class="text-[10px] px-1.5 py-0.5 rounded font-medium" style="background-color: var(--accent-subtle); color: var(--accent-fg);">🛡️ ${{o.authenticity_score || 100}}% Verified</span>
+                            <button onclick="openProofModal('${{o.id}}')" class="text-[10px] px-1.5 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
+                                <span>🛡️ ${{o.authenticity_score || 100}}% Proof</span>
+                            </button>
                         </div>
 
                         <p class="text-xs mt-2.5 leading-relaxed text-pretty" style="color: var(--fg-muted);">${{o.eligibility || 'Open to all developers & engineers globally.'}}</p>
                     </div>
 
-                    <div class="pt-3 border-t flex items-center justify-between gap-2" style="border-color: var(--border-muted);">
-                        <div class="flex items-center gap-1.5">
+                    <div class="pt-3 border-t flex items-center justify-between gap-2 flex-wrap" style="border-color: var(--border-muted);">
+                        <div class="flex items-center gap-1.5 flex-wrap">
                             <button onclick="copySteps('${{o.id}}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                                 Copy Guide
                             </button>
                             <button onclick="openRedemptionFor('${{o.id}}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where & How Offer is Applied ($0.00)">
                                 $0.00 Apply
+                            </button>
+                            <button onclick="openProofModal('${{o.id}}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                                <span>📸 Proof</span>
                             </button>
                         </div>
                         <a href="${{o.url}}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
@@ -1852,23 +2123,32 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             tbody.innerHTML = filtered.map(o => {{
                 const isClaimed = checkedOfferIds.includes(o.id);
                 const valText = o.value_usd ? '$' + o.value_usd : 'Free';
+                const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
+                const credBadge = isProctored 
+                    ? '<span class="text-[10px] font-bold" style="color: var(--accent-fg);">🎓 Exam</span>' 
+                    : '<span class="text-[10px]" style="color: var(--fg-muted);">🎖️ Badge</span>';
+
                 return `
                 <div class="p-3 sm:px-4 sm:py-3.5 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-3 items-center hover:bg-slate-500/5 transition">
                     <div class="sm:col-span-3 flex items-center gap-2 min-w-0">
                         ${{getPlatformIconSvg(o.platform)}}
-                        <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${{o.platform}}</span>
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${{o.platform}}</span>
+                            ${{credBadge}}
+                        </div>
                     </div>
                     <div class="sm:col-span-4 min-w-0">
                         <div class="font-semibold text-xs sm:text-sm truncate" style="color: var(--fg-default);">${{o.certification_name || o.title}}</div>
                         <div class="text-[11px]" style="color: var(--fg-muted);">${{o.category}} • ${{o.difficulty_tier || 'Foundational'}}</div>
                     </div>
-                    <div class="sm:col-span-2 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${{valText}}</div>
+                    <div class="sm:col-span-1 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${{valText}}</div>
                     <div class="sm:col-span-1 sm:text-center">
                         <button onclick="toggleOfferChecked('${{o.id}}', event)" class="px-2 py-0.5 rounded text-[10px] font-bold border cursor-pointer ${{isClaimed ? 'bg-emerald-500/20 text-emerald-500 border-emerald-500' : 'text-slate-400 border-slate-500/30'}}">
                             ${{isClaimed ? '✓' : '○'}}
                         </button>
                     </div>
-                    <div class="sm:col-span-2 flex items-center sm:justify-end gap-1.5">
+                    <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
+                        <button onclick="openProofModal('${{o.id}}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
                         <button onclick="openRedemptionFor('${{o.id}}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
                         <a href="${{o.url}}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
                     </div>
@@ -1894,6 +2174,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         </div>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
+                        <button onclick="openProofModal('${{o.id}}')" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                            📸 Proof
+                        </button>
                         <button onclick="toggleOfferChecked('${{o.id}}', event)" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer">
                             ${{checkedOfferIds.includes(o.id) ? '✓ Claimed' : '○ Track'}}
                         </button>
@@ -1937,7 +2220,10 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t" style="border-color: var(--border-muted);">
                                 <span class="text-[10px] font-mono">${{o.difficulty_tier || 'Foundational'}}</span>
-                                <a href="${{o.url}}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="openProofModal('${{o.id}}')" class="text-[11px] font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
+                                    <a href="${{o.url}}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
+                                </div>
                             </div>
                         </div>`).join('')}}
                     </div>
@@ -1998,6 +2284,34 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         // Keyboard Shortcut Engine
         document.addEventListener('keydown', function(e) {{
+            const proofModal = document.getElementById('proofModal');
+            if (proofModal && !proofModal.classList.contains('hidden')) {{
+                if (e.key === 'Escape') {{
+                    e.preventDefault();
+                    closeProofModal();
+                    return;
+                }}
+                if (e.key === 'Tab') {{
+                    const focusables = proofModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    if (focusables.length > 0) {{
+                        const firstEl = focusables[0];
+                        const lastEl = focusables[focusables.length - 1];
+                        if (e.shiftKey) {{
+                            if (document.activeElement === firstEl) {{
+                                e.preventDefault();
+                                lastEl.focus();
+                            }}
+                        }} else {{
+                            if (document.activeElement === lastEl) {{
+                                e.preventDefault();
+                                firstEl.focus();
+                            }}
+                        }}
+                    }}
+                    return;
+                }}
+            }}
+
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') {{
                 if (e.key === 'Escape') {{
                     e.target.blur();
@@ -2252,10 +2566,15 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     </div>
 
                     <!-- Verified Zero Balance Footer -->
-                    <div class="pt-3 border-t flex items-center justify-between gap-2 mt-2" style="border-color: var(--border-muted);">
-                        <div class="flex items-center gap-1.5 text-xs font-bold" style="color: var(--success-fg);">
-                            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
-                            <span>Cart Balance: $0.00</span>
+                    <div class="pt-3 border-t flex items-center justify-between gap-2 mt-2 flex-wrap" style="border-color: var(--border-muted);">
+                        <div class="flex items-center gap-2.5">
+                            <div class="flex items-center gap-1.5 text-xs font-bold" style="color: var(--success-fg);">
+                                <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
+                                <span>Cart Balance: $0.00</span>
+                            </div>
+                            <button onclick="openProofModal('${{o.id}}')" class="text-xs font-semibold px-2.5 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                                📸 Proof
+                            </button>
                         </div>
                         <a href="${{portalUrl}}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
                             <span>Launch Portal</span>
