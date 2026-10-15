@@ -23,6 +23,14 @@ from urllib.parse import urlparse
 from typing import Dict, Any, List, Tuple, Optional
 
 from src.authenticity import audit_offer_authenticity
+from src.dom_inspector import (
+    HeadlessDOMInspector,
+    inspect_url_with_playwright,
+    inspect_rendered_dom,
+    CAPACITY_PATTERNS,
+    COUPON_EXPIRED_PATTERNS,
+    REGISTRATION_CLOSED_PATTERNS
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("certpulse.inspector")
@@ -168,11 +176,21 @@ def inspect_url_with_retry(
                 for pat in SOFT_404_PATTERNS:
                     if pat in body_text:
                         return "Expired", f"Detected soft-404 text: '{pat}'", final_url, auth_result
+
+                # 5a. Capacity Limit & Cohort Saturation Invariant
+                for pat in CAPACITY_PATTERNS:
+                    if pat in body_text:
+                        return "Registrations Closed", f"Capacity Invariant: Detected capacity limit reached / cohort full ('{pat}')", final_url, auth_result
+
+                # 5b. Expired Coupon & Promo Code Invariant
+                for pat in COUPON_EXPIRED_PATTERNS:
+                    if pat in body_text:
+                        return "Expired", f"Coupon Invariant: Detected expired promo/coupon code ('{pat}')", final_url, auth_result
                         
-                # 5. Explicit Campaign Closure
+                # 5c. Explicit Campaign Closure
                 for pat in CLOSED_PATTERNS:
                     if pat in body_text:
-                        return "Registrations Closed", f"Detected closure phrase: '{pat}'", final_url, auth_result
+                        return "Registrations Closed", f"Closure Invariant: Detected closure phrase: '{pat}'", final_url, auth_result
                         
                 # 6. Normal Paid Certification Catalog Check (No free offers on page)
                 has_offer_signal = any(sig in body_text for sig in AFFIRMATIVE_OFFER_SIGNALS)
@@ -217,9 +235,12 @@ def inspect_url_with_retry(
     fallback_auth = audit_offer_authenticity(offer)
     return "Network Warning", f"Temporary network timeout after {max_retries} attempts: {last_err}", url, fallback_auth
 
-def run_inspection() -> List[Dict[str, Any]]:
-    """Runs deep inspection, authenticity audit, and self-healing engine on all tracked offers."""
-    logger.info("=== Starting Self-Healing Site Inspector & Authenticity Engine ===")
+# Alias convenience function
+inspect_url_dom = inspect_url_with_playwright
+
+def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
+    """Runs deep inspection, headless Playwright DOM analysis, authenticity audit, and self-healing engine on all tracked offers."""
+    logger.info("=== Starting Self-Healing Site Inspector & Playwright DOM Authenticity Engine ===")
     
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -231,74 +252,93 @@ def run_inspection() -> List[Dict[str, Any]]:
     url_healed_count = 0
     authentic_count = 0
     
-    for offer in offers:
-        title = offer.get("title")
-        current_url = offer.get("url")
-        old_status = offer.get("status", "Active")
-        
-        # Preserve historical archive records without probing expired promo URLs
-        if offer.get("is_historical_archive"):
-            logger.info(f"Preserving historical archive record & verifying authenticity: [{offer.get('platform')}] {title[:40]}")
-            auth_result = audit_offer_authenticity(offer, body_text="", redirect_chain=[current_url])
+    inspector = None
+    if use_headless:
+        try:
+            inspector = HeadlessDOMInspector(headless=True, timeout_ms=12000)
+            inspector.start()
+        except Exception as e:
+            logger.warning(f"Headless Playwright DOM Inspector initialization skipped: {e}")
+            inspector = None
+
+    try:
+        for offer in offers:
+            title = offer.get("title")
+            current_url = offer.get("url")
+            old_status = offer.get("status", "Active")
+            
+            # Preserve historical archive records without probing expired promo URLs
+            if offer.get("is_historical_archive"):
+                logger.info(f"Preserving historical archive record & verifying authenticity: [{offer.get('platform')}] {title[:40]}")
+                auth_result = audit_offer_authenticity(offer, body_text="", redirect_chain=[current_url])
+                offer["is_authentic_vendor"] = auth_result["is_authentic_vendor"]
+                offer["authenticity_score"] = auth_result["authenticity_score"]
+                offer["authenticity_details"] = auth_result
+                offer["inspection_method"] = "Historical Archive Invariant"
+                if auth_result["is_authentic_vendor"]:
+                    authentic_count += 1
+                continue
+
+            if inspector and inspector.is_available:
+                logger.info(f"Auditing with Playwright DOM [{offer.get('platform')}] {title[:40]}...")
+                new_status, reason, canonical_url, auth_result = inspector.inspect_url(current_url, offer=offer)
+                offer["inspection_method"] = "Playwright Headless DOM"
+            else:
+                logger.info(f"Auditing with HTTP Gate [{offer.get('platform')}] {title[:40]}...")
+                new_status, reason, canonical_url, auth_result = inspect_url_with_retry(current_url, offer=offer)
+                offer["inspection_method"] = "HTTP Multi-Layer Gate"
+            # Store structured authenticity verification results
             offer["is_authentic_vendor"] = auth_result["is_authentic_vendor"]
             offer["authenticity_score"] = auth_result["authenticity_score"]
             offer["authenticity_details"] = auth_result
             if auth_result["is_authentic_vendor"]:
                 authentic_count += 1
-            continue
-
-        logger.info(f"Auditing [{offer.get('platform')}] {title[:40]}...")
-        new_status, reason, canonical_url, auth_result = inspect_url_with_retry(current_url, offer=offer)
-        
-        # Store structured authenticity verification results
-        offer["is_authentic_vendor"] = auth_result["is_authentic_vendor"]
-        offer["authenticity_score"] = auth_result["authenticity_score"]
-        offer["authenticity_details"] = auth_result
-        if auth_result["is_authentic_vendor"]:
-            authentic_count += 1
-        
-        # Temporal Expiry Invariant: If stated calendar expiration has passed, override to Expired
-        expiry_str = str(offer.get("expiry_date", "")).strip()
-        if re.match(r"^\d{4}-\d{2}-\d{2}$", expiry_str):
-            try:
-                exp_date = datetime.strptime(expiry_str, "%Y-%m-%d").date()
-                if exp_date < datetime.now(timezone.utc).date():
-                    new_status = "Expired"
-                    reason = f"Calendar Invariant: Stated expiration date passed ({expiry_str})"
-            except ValueError:
-                pass
-
-        logger.info(f" -> Result: {new_status} | Reason: {reason} | Authenticity: {auth_result['authenticity_score']}%")
-        
-        # Canonical URL Self-Healing: Update to clean canonical path if permanently redirected
-        if canonical_url != current_url and new_status == "Active":
-            # Only update if within same domain or official migration
-            parsed_orig = urlparse(current_url).netloc
-            parsed_canon = urlparse(canonical_url).netloc
-            is_same_vendor_migration = (
-                parsed_orig in parsed_canon or 
-                parsed_canon in parsed_orig or 
-                (parsed_orig.endswith('.google') and parsed_canon.endswith('.google'))
-            )
-            if is_same_vendor_migration:
-                logger.info(f"[URL HEALED] Updating '{title}' URL from {current_url} -> {canonical_url}")
-                offer["url"] = canonical_url
-                url_healed_count += 1
-                
-        # State Self-Healing: Re-open offer if portal recovered
-        if old_status in ["Broken Link", "Expired", "Registrations Closed", "Review Needed"] and new_status == "Active":
-            logger.warning(f"[SELF-HEALED] Offer '{title}' recovered from {old_status} to Active!")
-            healed_count += 1
             
-        # Update definitive statuses
-        if new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed"]:
-            offer["status"] = new_status
-            offer["verification_date"] = today
-            offer["inspection_notes"] = reason
-            if old_status != new_status:
-                logger.warning(f"Status transition for '{title}': {old_status} -> {new_status}")
-                status_changes += 1
+            # Temporal Expiry Invariant: If stated calendar expiration has passed, override to Expired
+            expiry_str = str(offer.get("expiry_date", "")).strip()
+            if re.match(r"^\d{4}-\d{2}-\d{2}$", expiry_str):
+                try:
+                    exp_date = datetime.strptime(expiry_str, "%Y-%m-%d").date()
+                    if exp_date < datetime.now(timezone.utc).date():
+                        new_status = "Expired"
+                        reason = f"Calendar Invariant: Stated expiration date passed ({expiry_str})"
+                except ValueError:
+                    pass
+
+            logger.info(f" -> Result: {new_status} | Reason: {reason} | Authenticity: {auth_result['authenticity_score']}%")
+            
+            # Canonical URL Self-Healing: Update to clean canonical path if permanently redirected
+            if canonical_url != current_url and new_status == "Active":
+                # Only update if within same domain or official migration
+                parsed_orig = urlparse(current_url).netloc
+                parsed_canon = urlparse(canonical_url).netloc
+                is_same_vendor_migration = (
+                    parsed_orig in parsed_canon or 
+                    parsed_canon in parsed_orig or 
+                    (parsed_orig.endswith('.google') and parsed_canon.endswith('.google'))
+                )
+                if is_same_vendor_migration:
+                    logger.info(f"[URL HEALED] Updating '{title}' URL from {current_url} -> {canonical_url}")
+                    offer["url"] = canonical_url
+                    url_healed_count += 1
+                    
+            # State Self-Healing: Re-open offer if portal recovered
+            if old_status in ["Broken Link", "Expired", "Registrations Closed", "Review Needed"] and new_status == "Active":
+                logger.warning(f"[SELF-HEALED] Offer '{title}' recovered from {old_status} to Active!")
+                healed_count += 1
                 
+            # Update definitive statuses
+            if new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed"]:
+                offer["status"] = new_status
+                offer["verification_date"] = today
+                offer["inspection_notes"] = reason
+                if old_status != new_status:
+                    logger.warning(f"Status transition for '{title}': {old_status} -> {new_status}")
+                    status_changes += 1
+    finally:
+        if inspector:
+            inspector.close()
+            
     data["last_inspected"] = datetime.now(timezone.utc).isoformat()
     
     # Atomic Database Save: write to temp file then rename

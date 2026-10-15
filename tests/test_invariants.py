@@ -18,6 +18,14 @@ from src.authenticity import (
     BANNED_URL_SHORTENERS,
     SUSPICIOUS_TLDS
 )
+from src.dom_inspector import (
+    inspect_rendered_dom,
+    HeadlessDOMInspector,
+    CAPACITY_PATTERNS,
+    COUPON_EXPIRED_PATTERNS,
+    REGISTRATION_CLOSED_PATTERNS,
+    DEAD_END_PATTERNS
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "offers.json"
@@ -619,23 +627,368 @@ def test_interactive_browser_view_switching():
         page.keyboard.press("1")
         assert page.is_visible("#vouchersSection"), "Keyboard '1' failed to switch to Vouchers tab"
 
-        # 8. Keyboard shortcut T (theme toggle)
+        # 8. Keyboard shortcut 3 (jump to Where Offers Are Applied / Redemption Guide)
+        page.keyboard.press("3")
+        assert page.is_visible("#redemptionSection"), "Keyboard '3' failed to switch to Redemption tab"
+        assert page.locator("#redemptionGrid .primer-card").count() > 0, "No cards rendered in Redemption view"
+
+        # 9. Keyboard shortcut 1 (jump to Vouchers)
+        page.keyboard.press("1")
+        assert page.is_visible("#vouchersSection"), "Keyboard '1' failed to switch back to Vouchers tab"
+
+        # 10. Keyboard shortcut T (theme toggle)
         theme_init = page.evaluate("() => document.documentElement.getAttribute('data-theme')")
         page.keyboard.press("t")
         theme_toggled = page.evaluate("() => document.documentElement.getAttribute('data-theme')")
         assert theme_init != theme_toggled, f"Theme did not toggle: {theme_init} -> {theme_toggled}"
 
-        # 9. Direct Deep-Linking URL query parameter (?view=matrix)
+        # 11. Direct Deep-Linking URL query parameter (?view=matrix)
         page.goto(f"{file_url}?view=matrix")
         assert page.is_visible("#matrixViewContainer"), "Deep-link ?view=matrix did not activate Matrix view"
 
-        # 10. Direct Deep-Linking URL query parameter (?view=timeline)
+        # 12. Direct Deep-Linking URL query parameter (?view=timeline)
         page.goto(f"{file_url}?view=timeline")
         assert page.is_visible("#timelineViewContainer"), "Deep-link ?view=timeline did not activate Timeline view"
+
+        # 13. Direct Deep-Linking URL query parameter (?tab=redemption)
+        page.goto(f"{file_url}?tab=redemption")
+        assert page.is_visible("#redemptionSection"), "Deep-link ?tab=redemption did not activate Redemption tab"
+        assert page.locator("#redemptionGrid .primer-card").count() > 0, "No cards rendered in ?tab=redemption view"
 
         browser.close()
 
         assert len(page_errors) == 0, f"Encountered browser page errors: {page_errors}"
+
+
+# --- 5. Where Offers Are Applied & Zero-Dollar Checkout Invariants ---
+
+def test_redemption_guide_schema_invariants(loaded_data):
+    """
+    Enforces that every certification offer contains complete, structured redemption mechanisms,
+    checkout field locations, official delivery portals, and step-by-step zero-dollar instructions.
+    """
+    offers = loaded_data.get("offers", [])
+    assert len(offers) > 0, "Offer database cannot be empty"
+
+    valid_flow_types = {
+        "Checkout Promo Code",
+        "Automated Account Link Waiver",
+        "Direct Assessment Launch",
+        "Scholarship Award Token",
+        "Continuing Education Claim",
+        "Training Milestone Token",
+        "Event Voucher Code"
+    }
+
+    for o in offers:
+        oid = o.get("id", "UNKNOWN")
+
+        # 1. Top-level redemption fields presence and type
+        for field in ["voucher_code", "redemption_portal", "checkout_field", "application_flow_type", "cart_balance_verified"]:
+            assert field in o, f"Offer {oid} missing redemption field: {field}"
+            assert str(o[field]).strip() != "", f"Offer {oid} has empty redemption field: {field}"
+
+        assert o["application_flow_type"] in valid_flow_types, (
+            f"Offer {oid} has non-standard application_flow_type: {o['application_flow_type']}"
+        )
+        assert "$0.00" in o["cart_balance_verified"], (
+            f"Offer {oid} cart_balance_verified must confirm zero-dollar checkout: {o['cart_balance_verified']}"
+        )
+
+        # 2. Structured redemption_guide dictionary
+        assert "redemption_guide" in o, f"Offer {oid} missing 'redemption_guide' dict"
+        guide = o["redemption_guide"]
+        assert isinstance(guide, dict), f"Offer {oid} 'redemption_guide' must be a dictionary"
+
+        for subfield in ["portal_name", "portal_url", "field_location", "flow_type", "verified_cart_balance", "instructions"]:
+            assert subfield in guide, f"Offer {oid} redemption_guide missing subfield: {subfield}"
+            assert guide[subfield], f"Offer {oid} redemption_guide has empty subfield: {subfield}"
+
+        assert "$0.00" in guide["verified_cart_balance"]
+        instructions = guide["instructions"]
+        assert isinstance(instructions, list), f"Offer {oid} instructions must be a list"
+        assert len(instructions) >= 2, f"Offer {oid} must have at least 2 step-by-step instructions"
+        for step in instructions:
+            assert isinstance(step, str) and len(step.strip()) > 10, f"Offer {oid} has too short instruction step: {step}"
+
+        # 3. Protocol security on redemption portal
+        if o.get("status") == "Active":
+            assert str(guide["portal_url"]).startswith("https://"), (
+                f"Active offer {oid} redemption portal must use HTTPS: {guide['portal_url']}"
+            )
+
+
+def test_readme_and_dashboard_redemption_sync(loaded_data, readme_text, html_text):
+    """
+    Asserts that README.md and docs/index.html are synchronized with the
+    Where Offers Are Applied zero-dollar checkout reference.
+    """
+    active_offers = [o for o in loaded_data.get("offers", []) if o.get("status") == "Active"]
+
+    # 1. README redemption table and sections
+    assert "## 💳 Where & How Vouchers Are Applied (Zero-Dollar Checkout Guide)" in readme_text, (
+        "Missing redemption guide section header in README.md"
+    )
+    assert "| Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |" in readme_text, (
+        "Missing redemption table headers in README.md"
+    )
+    assert "**$0.00**" in readme_text, "Missing bold $0.00 balance indicator in README.md"
+
+    for o in active_offers:
+        assert o["certification_name"] in readme_text, (
+            f"Active offer {o['id']} certification name missing from README redemption table"
+        )
+        assert o["checkout_field"] in readme_text, (
+            f"Active offer {o['id']} checkout field location missing from README redemption table"
+        )
+
+    # 2. Web Dashboard interactive redemption elements
+    assert 'id="tabBtnRedemption"' in html_text, "Missing tabBtnRedemption in docs/index.html"
+    assert 'id="redemptionSection"' in html_text, "Missing redemptionSection in docs/index.html"
+    assert 'id="redemptionGrid"' in html_text, "Missing redemptionGrid container in docs/index.html"
+    assert 'renderRedemption' in html_text, "Missing renderRedemption function in docs/index.html"
+    assert 'openRedemptionFor' in html_text, "Missing openRedemptionFor function in docs/index.html"
+    assert 'copyVoucherToken' in html_text, "Missing copyVoucherToken function in docs/index.html"
+    assert 'Cart Balance: $0.00' in html_text, "Missing Cart Balance: $0.00 badge in docs/index.html"
+    assert '<span>3</span>' in html_text or '>3<' in html_text, "Missing Hotkey 3 hint in docs/index.html"
+
+
+# --- 6. Headless Playwright DOM Inspection & Invariant Logic ---
+
+def test_headless_dom_inspector_invariant_logic():
+    """
+    Asserts that the headless DOM inspection engine correctly detects:
+    1. Cohort / seat capacity reached
+    2. Expired promo / coupon codes
+    3. Campaign closures
+    4. Client-side dead-ends & soft-404s
+    5. Silent reroutes
+    6. Legitimate affirmative offer signals
+    """
+    # 1. Capacity Reached Invariant
+    cap_text = "We apologize, but maximum capacity has been reached for this cohort of free exam candidates."
+    res = inspect_rendered_dom(cap_text, rendered_title="Exam Registration Portal")
+    assert res["status"] == "Registrations Closed"
+    assert res["is_capacity_reached"] is True
+    assert res["category"] == "capacity_reached"
+    assert "capacity has been reached" in res["matched_phrase"]
+
+    # 2. Expired Coupon Invariant
+    coupon_text = "The promo code invalid or coupon has expired. Please check your redemption code."
+    res = inspect_rendered_dom(coupon_text, rendered_title="Cart Checkout")
+    assert res["status"] == "Expired"
+    assert res["is_coupon_expired"] is True
+    assert res["category"] == "coupon_expired"
+
+    # 3. Closed Campaign Invariant
+    closed_text = "This learning challenge has concluded and is no longer accepting submissions."
+    res = inspect_rendered_dom(closed_text)
+    assert res["status"] == "Registrations Closed"
+    assert res["is_campaign_closed"] is True
+    assert res["category"] == "campaign_closed"
+
+    # 4. Soft 404 / Dead-End Invariant
+    dead_text = "Sorry, 404 - page not found. The page you're looking for doesn't exist."
+    res = inspect_rendered_dom(dead_text)
+    assert res["status"] == "Broken Link"
+    assert res["is_dead_end"] is True
+    assert res["category"] == "dead_end"
+
+    # 5. Silent Reroute Invariant
+    res = inspect_rendered_dom(
+        "Welcome to the general homepage catalog.",
+        final_url="https://cloud.vendor.com/en-us",
+        original_url="https://cloud.vendor.com/promo/free-voucher-challenge"
+    )
+    assert res["status"] == "Registrations Closed"
+    assert res["category"] == "silent_reroute"
+
+    # 6. Authentic Active Offer Signal
+    active_text = "Complete the 30-day learning path to receive a 100% free certification exam voucher waiver."
+    res = inspect_rendered_dom(active_text, rendered_title="Cloud Skills Challenge")
+    assert res["status"] == "Active"
+    assert res["category"] == "active"
+
+    # 7. Redundant Link Invariant ("link is redundant" / "link is no longer active")
+    redundant_text = "Notice: This link is redundant and has been replaced by the general documentation portal."
+    res = inspect_rendered_dom(redundant_text, rendered_title="Offer Redirect")
+    assert res["status"] == "Broken Link"
+    assert res["is_dead_end"] is True
+    assert res["is_redundant_link"] is True
+    assert res["category"] == "redundant_link"
+    assert "link is redundant" in res["matched_phrase"]
+
+    # 8. User Prompt Phrasing: "offer is over"
+    over_text = "The special promotional offer is over. Please check back next quarter."
+    res = inspect_rendered_dom(over_text, rendered_title="Campaign Landing")
+    assert res["status"] == "Registrations Closed"
+    assert res["is_campaign_closed"] is True
+    assert "offer is over" in res["matched_phrase"]
+
+    # 9. Empty DOM / Hydration Failure Invariant
+    empty_res = inspect_rendered_dom("", rendered_title="")
+    assert empty_res["status"] == "Review Needed"
+    assert empty_res["category"] == "empty_dom"
+
+    # 10. Missing Affirmative Signals on Non-Empty Catalog Page
+    catalog_res = inspect_rendered_dom(
+        "Standard exam fee is $250. Select your test center and pay with credit card.",
+        rendered_title="Pearson VUE Standard Catalog"
+    )
+    assert catalog_res["status"] == "Review Needed"
+    assert catalog_res["category"] == "no_offer_signal"
+
+
+def test_playwright_headless_dom_rendering_on_local_fixture(tmp_path):
+    """
+    Asserts that HeadlessDOMInspector launches headless Chromium,
+    executes client-side JavaScript, and verifies dynamic DOM modifications.
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        pytest.skip("Playwright not installed in environment")
+
+    # Create a local HTML page that uses JavaScript to inject a capacity closure alert
+    html_content = """<!DOCTYPE html>
+    <html>
+    <head><title>Cloud Challenge Portal</title></head>
+    <body>
+        <div id="app">Loading campaign status...</div>
+        <script>
+            // Simulate client-side SPA state fetch
+            setTimeout(() => {
+                document.getElementById('app').innerHTML = `
+                    <h1>Certification Registration</h1>
+                    <div role="alert" class="alert-box">
+                        Notice: seats are full and capacity has been reached for this cohort.
+                    </div>
+                `;
+            }, 50);
+        </script>
+    </body>
+    </html>"""
+
+    test_file = tmp_path / "spa_test.html"
+    test_file.write_text(html_content, encoding="utf-8")
+    test_uri = test_file.as_uri()
+
+    with HeadlessDOMInspector(headless=True, timeout_ms=8000) as inspector:
+        assert inspector.is_available is True, "Headless Chromium failed to start"
+        
+        status, reason, final_url, auth_result = inspector.inspect_url(
+            test_uri,
+            offer={
+                "id": "test-spa-offer",
+                "platform": "Microsoft Azure",
+                "url": test_uri
+            }
+        )
+        assert status == "Registrations Closed", f"Expected Registrations Closed, got {status} ({reason})"
+        assert "capacity has been reached" in reason.lower() or "seats are full" in reason.lower()
+
+
+def test_dashboard_redemption_and_keyboard_invariants(html_text):
+    """Asserts that the web dashboard implements robust clipboard fallbacks and multi-tab keyboard shortcuts."""
+    assert "document.execCommand('copy')" in html_text, "Missing execCommand copy fallback in copyVoucherToken"
+    assert "redemptionSearchInput" in html_text, "Missing redemptionSearchInput in docs/index.html"
+    assert "currentMainTab === 'redemption'" in html_text, "Missing contextual tab check for redemption search in docs/index.html"
+
+
+def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
+    """
+    Asserts the loop invariant of run_inspection(): every non-archive offer in the collection
+    must have its status, verification date, authenticity details, and notes updated,
+    verifying that the update block is NOT indented outside the loop.
+    """
+    import src.inspector as insp
+
+    test_offers_data = {
+        "offers": [
+            {
+                "id": "test-offer-1",
+                "title": "Test Cloud Certification 1",
+                "platform": "Microsoft Azure",
+                "category": "Cloud Architecture",
+                "certification_name": "Azure Fundamentals",
+                "url": "https://learn.microsoft.com/en-us/credentials/cert-1",
+                "status": "Active",
+                "claim_steps": "Follow instructions.",
+                "value_usd": 99,
+                "is_historical_archive": False
+            },
+            {
+                "id": "test-offer-2",
+                "title": "Test Cloud Certification 2",
+                "platform": "AWS",
+                "category": "Cloud Architecture",
+                "certification_name": "AWS Cloud Practitioner",
+                "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+                "status": "Active",
+                "claim_steps": "Follow instructions.",
+                "value_usd": 100,
+                "is_historical_archive": False
+            },
+            {
+                "id": "hist-archive-3",
+                "title": "Historical Promo 2024",
+                "platform": "Oracle Cloud",
+                "category": "Cloud Architecture",
+                "certification_name": "OCI Architect Associate",
+                "url": "https://mylearn.oracle.com/ou/learning-path/historical-path",
+                "status": "Expired",
+                "claim_steps": "Expired historical record.",
+                "value_usd": 245,
+                "is_historical_archive": True
+            }
+        ],
+        "last_inspected": "2026-01-01T00:00:00Z"
+    }
+
+    test_file = tmp_path / "test_offers.json"
+    test_file.write_text(json.dumps(test_offers_data, indent=2), encoding="utf-8")
+
+    # Point DATA_FILE to tmp_path
+    monkeypatch.setattr(insp, "DATA_FILE", test_file)
+
+    # Mock inspect_url_with_retry to simulate successful verification without live network calls
+    def mock_inspect(url, offer=None, max_retries=2):
+        return "Active", "HTTP 200 OK (Mocked Invariant Test)", url, {
+            "is_authentic_vendor": True,
+            "authenticity_score": 100,
+            "verdict": "VERIFIED_AUTHENTIC",
+            "summary": "Mock Verified",
+            "domain_verified": True,
+            "ssl_verified": True,
+            "redirect_secure": True,
+            "corroboration_passed": True,
+            "warning_flags": []
+        }
+
+    monkeypatch.setattr(insp, "inspect_url_with_retry", mock_inspect)
+
+    # Run inspection in headless=False (HTTP gate) mode
+    results = insp.run_inspection(use_headless=False)
+
+    assert len(results) == 3, f"Expected 3 offers, got {len(results)}"
+
+    # CRITICAL: Verify offer 1 was updated (would fail if update block was outside the loop)
+    offer_1 = next(o for o in results if o["id"] == "test-offer-1")
+    assert "verification_date" in offer_1, "Offer 1 was skipped! (Loop de-dent regression)"
+    assert offer_1["inspection_notes"] == "HTTP 200 OK (Mocked Invariant Test)"
+    assert offer_1["is_authentic_vendor"] is True
+
+    # Verify offer 2 was also updated
+    offer_2 = next(o for o in results if o["id"] == "test-offer-2")
+    assert "verification_date" in offer_2, "Offer 2 was skipped!"
+    assert offer_2["inspection_notes"] == "HTTP 200 OK (Mocked Invariant Test)"
+    assert offer_2["is_authentic_vendor"] is True
+
+    # Verify historical archive was preserved
+    offer_3 = next(o for o in results if o["id"] == "hist-archive-3")
+    assert offer_3["status"] == "Expired"
+    assert offer_3["inspection_method"] == "Historical Archive Invariant"
+
 
 
 
