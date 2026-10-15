@@ -282,7 +282,10 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
             if inspector and inspector.is_available:
                 logger.info(f"Auditing with Playwright DOM [{offer.get('platform')}] {title[:40]}...")
                 new_status, reason, canonical_url, auth_result = inspector.inspect_url(current_url, offer=offer)
-                offer["inspection_method"] = "Playwright Headless DOM"
+                if "Bot Protected" in reason or "HTTP Fallback" in reason or "Direct GET" in reason:
+                    offer["inspection_method"] = "Playwright DOM (HTTP Fallback)"
+                else:
+                    offer["inspection_method"] = "Playwright Headless DOM"
             else:
                 logger.info(f"Auditing with HTTP Gate [{offer.get('platform')}] {title[:40]}...")
                 new_status, reason, canonical_url, auth_result = inspect_url_with_retry(current_url, offer=offer)
