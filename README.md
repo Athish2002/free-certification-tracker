@@ -3,8 +3,9 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-22-success.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243277%20USD-gold.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-23-success.svg) 
+![Offers Checked](https://img.shields.io/badge/Offers%20Checked-39%20Audited-blue.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243477%20USD-gold.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
@@ -15,12 +16,13 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **22** | Verified 100% free exams & live registration windows |
-| **Total Financial Value** | **$3,277 USD** | Aggregate savings if claimed today |
+| **Active Opportunities** | **23** | Verified 100% free exams & live registration windows |
+| **Offers Checked & Audited** | **39 Total** (23 Active, 4 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
+| **Total Financial Value** | **$3,477 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **29 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-15 05:14 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-15 07:56 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -35,6 +37,7 @@
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | DevOps & Cloud Native | `Professional` | $395 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.linuxfoundation.org/about/lift-scholarships) |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.snowflake.com/en/) |
 | **MongoDB** | MongoDB Associate Developer / DBA | AI & Data | `Associate` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.mongodb.com/) |
+| **Salesforce** | Salesforce Certified Administrator / App Builder | CRM & Cloud | `Associate` | $200 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://trailhead.salesforce.com/quests) |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | API & DevOps | `Foundational` | $50 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://academy.postman.com/) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | `Associate` | $200 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
 | **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.qualys.com/training) |
@@ -79,7 +82,7 @@
 ---
 
 <details>
-<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 5 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 4 Opportunities)</b> — <i>Click to expand</i></summary>
 
 > Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.
 
@@ -87,7 +90,6 @@
 | :--- | :--- | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
-| **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 
@@ -140,7 +142,7 @@
 ---
 
 <details>
-<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 22 Active Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 23 Active Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Provider:** Oracle Cloud
@@ -183,6 +185,13 @@
 - **Eligibility:** Global (100% free voucher for students via GitHub Student Pack)
 - **Steps to Claim:** Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.
 - **Official Link:** [https://learn.mongodb.com/](https://learn.mongodb.com/)
+
+#### Salesforce Trailhead Quests - Free Certification Vouchers
+- **Provider:** Salesforce
+- **Value:** $200 USD
+- **Eligibility:** Global (Trailhead users)
+- **Steps to Claim:** Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.
+- **Official Link:** [https://trailhead.salesforce.com/quests](https://trailhead.salesforce.com/quests)
 
 #### Postman API Fundamentals & Student Expert Certifications
 - **Provider:** Postman
@@ -311,6 +320,7 @@
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | [Linux Foundation Training and Certification](https://training.linuxfoundation.org/) | `Cart Summary -> 'Coupon Code' field on billing review` | `Scholarship Award Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | [Snowflake University Learning Portal](https://learn.snowflake.com/en/) | `Course Catalog -> 'Enroll for Free' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **MongoDB** | MongoDB Associate Developer / DBA | [MongoDB University Certification Center](https://learn.mongodb.com/pages/certification) | `Registration Checkout -> 'Have a coupon or voucher?' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Salesforce** | Salesforce Certified Administrator / App Builder | [Kryterion Webassessor (Salesforce)](https://www.webassessor.com/salesforce) | `Payment Step -> 'Coupon/Voucher Code' text box` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | [Postman Academy Assessment Center](https://academy.postman.com/) | `Academy Final Assessment -> 'Submit Collection' automated test runner` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | [Pearson VUE (Juniper Networks)](https://home.pearsonvue.com/junipernetworks) | `Checkout Screen -> 'Add Voucher or Promo Code' modal` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Qualys** | Vulnerability Management & CSAM Specialist | [Qualys Training Academy Portal](https://www.qualys.com/training/) | `Qualys Training Portal -> 'Launch Certification Exam' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
@@ -329,7 +339,7 @@
 | **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 22 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 23 Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Voucher / Promo Code:** `ORACLE_MYLEARN_SSO_WAIVER`
@@ -402,6 +412,18 @@
   1. Claim your 100% student voucher via GitHub Student Developer Pack or academic partner link.
   1. Proceed to schedule Associate Developer exam registration.
   1. Paste voucher into 'Have a coupon or voucher?' field to drop $150 registration fee to $0.00.
+
+#### Salesforce Trailhead Quests - Free Certification Vouchers
+- **Voucher / Promo Code:** `TRAILHEAD_QUEST_SWEEPSTAKES_CODE`
+- **Official Redemption Portal:** [Kryterion Webassessor (Salesforce)](https://www.webassessor.com/salesforce)
+- **Checkout Field Location:** `Payment Step -> 'Coupon/Voucher Code' text box`
+- **Application Flow Type:** `Checkout Promo Code`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Complete the eligible monthly Trailhead Quest badges before the calendar deadline.
+  1. Winners receive an official Salesforce certification voucher code via registered email.
+  1. Log in to Webassessor (webassessor.com/salesforce) and select your Administrator or Developer exam.
+  1. Paste the code into 'Coupon/Voucher Code' and apply; balance drops from $200/$400 to $0.00.
 
 #### Postman API Fundamentals & Student Expert Certifications
 - **Voucher / Promo Code:** `POSTMAN_STUDENT_EXPERT_GRANT`
@@ -632,4 +654,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-15 05:14 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-15 07:56 UTC`.*

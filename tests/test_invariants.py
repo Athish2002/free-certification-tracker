@@ -174,6 +174,14 @@ def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
     assert f"| **Active Opportunities** | **{expected_count}** |" in readme_text
     assert f"| **Total Financial Value** | **${expected_savings:,} USD** |" in readme_text
 
+    # 4. Assert Checked Offers badge & Executive Summary Table
+    checked_badge_match = re.search(r"!\[Offers Checked\]\(https://img\.shields\.io/badge/Offers%20Checked-(\d+)%20Audited-blue\.svg\)", readme_text)
+    assert checked_badge_match is not None, "Offers Checked badge missing in README"
+    assert int(checked_badge_match.group(1)) == len(offers), (
+        f"README badge checked count ({checked_badge_match.group(1)}) desynchronized with total offers ({len(offers)})"
+    )
+    assert f"| **Offers Checked & Audited** | **{len(offers)} Total**" in readme_text
+
 def test_readme_news_radar_sync(loaded_news, readme_text):
     """Asserts that the intelligence radar table in README.md accurately reflects all news items."""
     news_items = loaded_news.get("news", [])
@@ -206,6 +214,12 @@ def test_web_dashboard_payload_sync(loaded_data, loaded_news, html_text):
     embedded_news = json.loads(match_news.group(1))
     assert len(embedded_news) == len(news), (
         f"Dashboard newsData count ({len(embedded_news)}) != JSON news count ({len(news)})"
+    )
+
+    # 3. Dynamic check counters in dashboard
+    active_count = len([o for o in offers if o.get("status") == "Active"])
+    assert f"{active_count}/{active_count} LIVE &bull; {len(offers)} CHECKED" in html_text, (
+        f"Bento 2 dynamic check counter ({active_count}/{active_count} LIVE • {len(offers)} CHECKED) missing in dashboard"
     )
 
 # --- 3. Anti-Divergence Regression Checks ---

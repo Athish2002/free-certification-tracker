@@ -61,6 +61,7 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append("")
     lines.append("![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) ")
     lines.append(f"![Active Vouchers](https://img.shields.io/badge/Active%20Offers-{len(active_offers)}-success.svg) ")
+    lines.append(f"![Offers Checked](https://img.shields.io/badge/Offers%20Checked-{len(offers)}%20Audited-blue.svg) ")
     lines.append(f"![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%24{total_savings}%20USD-gold.svg) ")
     lines.append("![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) ")
     lines.append("![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) ")
@@ -73,6 +74,7 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append("| Metric | Value | Definition |")
     lines.append("| :--- | :--- | :--- |")
     lines.append(f"| **Active Opportunities** | **{len(active_offers)}** | Verified 100% free exams & live registration windows |")
+    lines.append(f"| **Offers Checked & Audited** | **{len(offers)} Total** ({len(active_offers)} Active, {len(closed_offers)} Triage, {len(historical_offers)} Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |")
     lines.append(f"| **Total Financial Value** | **${total_savings:,} USD** | Aggregate savings if claimed today |")
     lines.append(f"| **Historical Archive Tracked** | **{len(historical_offers)} Campaigns** | Past promotional cycles & recurrence roadmaps |")
     lines.append(f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** | Official primary cloud engineering updates |")
@@ -910,7 +912,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 <div class="p-4 sm:p-5 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Active Offers</span>
-                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded" style="background-color: var(--success-subtle); color: var(--success-fg);">21/21 LIVE</span>
+                        <span class="text-[10px] font-bold px-1.5 py-0.2 rounded tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg);">{len(active_offers)}/{len(active_offers)} LIVE &bull; {len(offers)} CHECKED</span>
                     </div>
                     <div class="mt-3">
                         <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">

@@ -442,7 +442,7 @@
       "verification_date": "2026-10-15",
       "expiry_date": "Permanent",
       "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.",
-      "inspection_notes": "Playwright DOM Verified: HTTP 200 OK, active campaign validated",
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -461,7 +461,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (9)"
+          "CREDENTIAL_SIGNALS_FOUND (4)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -499,16 +499,16 @@
       "value_usd": 200,
       "eligibility": "Global (Trailhead users)",
       "url": "https://trailhead.salesforce.com/quests",
-      "status": "Review Needed",
+      "status": "Active",
       "verification_date": "2026-10-15",
       "expiry_date": "Monthly Quests",
       "claim_steps": "Complete monthly designated Trailhead Quests or certification preparation trails to enter sweepstakes for $200 free Salesforce certification vouchers.",
-      "inspection_notes": "DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM",
+      "inspection_notes": "HTTP 200 OK (Live Verified & Authenticated)",
       "is_authentic_vendor": true,
-      "authenticity_score": 88,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 88,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -521,10 +521,11 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "SINGLE_CREDENTIAL_SIGNAL"
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (11)"
         ],
         "warning_flags": [],
-        "summary": "88% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "difficulty_tier": "Associate",
       "time_period": "Monthly",
@@ -1686,7 +1687,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (6)"
+          "CREDENTIAL_SIGNALS_FOUND (2)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -2392,5 +2393,5 @@
       "inspection_method": "Historical Archive Invariant"
     }
   ],
-  "last_inspected": "2026-10-15T05:14:50.100461+00:00"
+  "last_inspected": "2026-10-15T07:54:55.242624+00:00"
 }
