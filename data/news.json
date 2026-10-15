@@ -3,6 +3,54 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "cisco-cisco-takes-the-court-powerin",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Cisco Takes the Court: Powering a More Connected Future Across the NBA",
+      "summary": "As the 2026-2027 NBA season begins, Cisco is partnering with the Hawks, Cavaliers, and Brooklyn Sports &#038; Entertainment to build the secure, AI-ready digital infrastructure needed to power the future of live sports venues.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/industries/cisco-takes-the-court-powering-a-more-connected-future-across-the-nba",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "google-cloud-bringing-the-borderless-lakeho",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Bringing the borderless Lakehouse into the agentic era with innovations for Gemini",
+      "summary": "As enterprises shift their AI usage from experimental chatbots to autonomous agents, teams are hitting a critical bottleneck: accessing and reasoning over data scattered across multiple clouds, SaaS platforms, and on-premises systems. To tu...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/data-analytics/borderless-lakehouse-integrates-with-gemini/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-temporal-serverless-workers-on",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Temporal Serverless Workers on Cloud Run: Scale workers ahead of demand",
+      "summary": "The open-source Temporal execution platform is rapidly becoming a foundational layer of modern software infrastructure \u2014 especially for orchestration in distributed systems and AI agent workloads. However, deploying and scaling workers in T...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/serverless/temporal-serverless-workers-on-cloud-run-worker-pools/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "amazon-web-services-how-dynata-scaled-ai-across-th",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How Dynata scaled AI across the development lifecycle with AI-DLC and Kiro IDE",
+      "summary": "Dynata reimagined its development lifecycle with AI, moving from AI-assisted coding to the AI-Driven Development Lifecycle (AI-DLC) methodology with Kiro IDE. Learn how the company reduced the development phase of full-stack features from t...",
+      "published_date": "2024-08-01",
+      "url": "https://aws.amazon.com/blogs/architecture/how-dynata-scaled-ai-across-the-development-lifecycle-with-ai-dlc-and-kiro-ide/",
+      "impact_badge": "Architecture RFC"
+    },
+    {
       "id": "cisco-segment-routing-fundamentals",
       "company": "Cisco",
       "source": "Cisco Blogs",

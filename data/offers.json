@@ -461,7 +461,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (7)"
+          "CREDENTIAL_SIGNALS_FOUND (9)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -1606,12 +1606,12 @@
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Continuous Academic & Beacon Portal",
       "claim_steps": "Register for a free Palo Alto Networks Beacon account. Complete the Foundation Cybersecurity curriculum and take the online digital accreditation assessment at zero cost.",
-      "inspection_notes": "DOM Render Invariant: Empty rendered DOM or failed client-side hydration",
+      "inspection_notes": "DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM",
       "is_authentic_vendor": true,
-      "authenticity_score": 85,
+      "authenticity_score": 90,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 85,
+        "authenticity_score": 90,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1624,10 +1624,10 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "CONTENT_INSPECTION_BYPASS"
+          "VENDOR_NAME_MATCHED"
         ],
         "warning_flags": [],
-        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "90% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "voucher_code": "PALOALTO_BEACON_ACADEMY_GRANT",
       "redemption_portal": "https://beacon.paloaltonetworks.com/",
@@ -1978,10 +1978,10 @@
       "claim_steps": "Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.",
       "inspection_notes": "Verified (Bot Protected / Restricted Direct GET)",
       "is_authentic_vendor": true,
-      "authenticity_score": 93,
+      "authenticity_score": 85,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 93,
+        "authenticity_score": 85,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -1994,11 +1994,10 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "VENDOR_NAME_MATCHED",
-          "SINGLE_CREDENTIAL_SIGNAL"
+          "CONTENT_INSPECTION_BYPASS"
         ],
         "warning_flags": [],
-        "summary": "93% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "voucher_code": "ORACLE_GENAI_WAVE_FREE_ATTEMPT",
       "redemption_portal": "https://mylearn.oracle.com/",
@@ -2018,7 +2017,7 @@
           "The exam booking registers through Oracle proctoring provider at $0.00 total fee."
         ]
       },
-      "inspection_method": "Playwright DOM (HTTP Fallback)"
+      "inspection_method": "Playwright Headless DOM"
     },
     {
       "id": "cisco-netacad-cyberops",
@@ -2392,5 +2391,5 @@
       "inspection_method": "Historical Archive Invariant"
     }
   ],
-  "last_inspected": "2026-10-15T09:05:03.666230+00:00"
+  "last_inspected": "2026-10-15T16:39:26.504288+00:00"
 }

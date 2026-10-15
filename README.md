@@ -20,9 +20,9 @@
 | **Offers Checked & Audited** | **39 Total** (22 Active, 5 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
 | **Total Financial Value** | **$3,277 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **29 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **33 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-15 09:05 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-15 16:39 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -51,7 +51,7 @@
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://skillsbuild.org/) |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | Cloud & DevOps | `Professional` | $395 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://www.cncf.io/) |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://academy.databricks.com/) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | 🛡️ 93% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 | **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Foundational` | $99 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://github.com/education) |
 
 ---
@@ -90,7 +90,7 @@
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Cisco** | Cisco Continuing Education (Recertification) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
-| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
+| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 
 </details>
@@ -100,13 +100,17 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **29 Reports** |
+| **Verified Tech Dispatches** | **33 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (29 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (33 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco Takes the Court: Powering a More Connected Future Across the NBA](https://blogs.cisco.com/industries/cisco-takes-the-court-powering-a-more-connected-future-across-the-nba)**<br>As the 2026-2027 NBA season begins, Cisco is partnering with the Hawks, Cavaliers, and Brooklyn Sports &#038; Entertainment to build the secure, AI-ready digital infrastructure needed to power the future of live sports venues. | [Cisco Blogs](https://blogs.cisco.com/industries/cisco-takes-the-court-powering-a-more-connected-future-across-the-nba)<br>`blogs.cisco.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Bringing the borderless Lakehouse into the agentic era with innovations for Gemini](https://cloud.google.com/blog/products/data-analytics/borderless-lakehouse-integrates-with-gemini/)**<br>As enterprises shift their AI usage from experimental chatbots to autonomous agents, teams are hitting a critical bottleneck: accessing and reasoning over data scattered across multiple clouds, SaaS platforms, and on-premises systems. To tu... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/borderless-lakehouse-integrates-with-gemini/)<br>`cloud.google.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Temporal Serverless Workers on Cloud Run: Scale workers ahead of demand](https://cloud.google.com/blog/products/serverless/temporal-serverless-workers-on-cloud-run-worker-pools/)**<br>The open-source Temporal execution platform is rapidly becoming a foundational layer of modern software infrastructure — especially for orchestration in distributed systems and AI agent workloads. However, deploying and scaling workers in T... | [Google Cloud Blog](https://cloud.google.com/blog/products/serverless/temporal-serverless-workers-on-cloud-run-worker-pools/)<br>`cloud.google.com` |
+| `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[How Dynata scaled AI across the development lifecycle with AI-DLC and Kiro IDE](https://aws.amazon.com/blogs/architecture/how-dynata-scaled-ai-across-the-development-lifecycle-with-ai-dlc-and-kiro-ide/)**<br>Dynata reimagined its development lifecycle with AI, moving from AI-assisted coding to the AI-Driven Development Lifecycle (AI-DLC) methodology with Kiro IDE. Learn how the company reduced the development phase of full-stack features from t... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/how-dynata-scaled-ai-across-the-development-lifecycle-with-ai-dlc-and-kiro-ide/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Segment Routing Fundamentals: From MPLS to SRv6](https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6)**<br>Explore the fundamentals of Segment Routing in this technical deep dive. Learn how SR MPLS and SRv6 work, the benefits of stateless traffic engineering, and why TI-LFA is essential for modern, resilient network data planes. | [Cisco Blogs](https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6)<br>`blogs.cisco.com` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[From 2,500 requests to 24: Rebuilding star history without the stargazers](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/)**<br>Our new repo star history API now provides trends without returning individual identities or requiring unbounded database work. These are the engineering tradeoffs we made. The post From 2,500 requests to 24: Rebuilding star history without... | [GitHub Engineering Blog](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/)<br>`github.blog` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[GitHub availability report: September 2026](https://github.blog/news-insights/company-news/github-availability-report-september-2026/)**<br>In September, we experienced two incidents that resulted in degraded performance across GitHub services. The post GitHub availability report: September 2026 appeared first on The GitHub Blog. | [GitHub Engineering Blog](https://github.blog/news-insights/company-news/github-availability-report-september-2026/)<br>`github.blog` |
@@ -634,4 +638,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-15 09:05 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-15 16:39 UTC`.*
