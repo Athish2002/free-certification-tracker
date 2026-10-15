@@ -18,9 +18,9 @@
 | **Active Opportunities** | **21** | Verified 100% free exams & live registration windows |
 | **Total Financial Value** | **$3,303 USD** | Aggregate savings if claimed today |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **28 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **29 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-15 02:02 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-15 02:04 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -144,6 +144,7 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Segment Routing Fundamentals: From MPLS to SRv6](https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6)**<br>Explore the fundamentals of Segment Routing in this technical deep dive. Learn how SR MPLS and SRv6 work, the benefits of stateless traffic engineering, and why TI-LFA is essential for modern, resilient network data planes. | [Cisco Blogs](https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6)<br>`blogs.cisco.com` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[From 2,500 requests to 24: Rebuilding star history without the stargazers](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/)**<br>Our new repo star history API now provides trends without returning individual identities or requiring unbounded database work. These are the engineering tradeoffs we made. The post From 2,500 requests to 24: Rebuilding star history without... | [GitHub Engineering Blog](https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/)<br>`github.blog` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[GitHub availability report: September 2026](https://github.blog/news-insights/company-news/github-availability-report-september-2026/)**<br>In September, we experienced two incidents that resulted in degraded performance across GitHub services. The post GitHub availability report: September 2026 appeared first on The GitHub Blog. | [GitHub Engineering Blog](https://github.blog/news-insights/company-news/github-availability-report-september-2026/)<br>`github.blog` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[The AI Security Paradox – How Shadow AI Became the Enterprise’s Biggest Blind Spot](https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot)**<br>AI adoption inside the enterprise is no longer waiting for governance to catch up. Employees are already using generative AI to write code, summarize documents, analyze data, draft communications, and automate routine work, often through to... | [Cisco Blogs](https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot)<br>`blogs.cisco.com` |
@@ -354,4 +355,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-15 02:02 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-15 02:04 UTC`.*
