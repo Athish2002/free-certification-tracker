@@ -20,7 +20,7 @@
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **29 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-15 02:04 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-15 03:56 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -53,7 +53,7 @@
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | `100% Free Credential` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.snowflake.com/en/) |
 | **MongoDB** | MongoDB Associate Developer / DBA | `Free Training & Student Voucher` | $150 | 🟢 Active | 🛡️ 95% Verified | [**Claim Offer**](https://learn.mongodb.com/) |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | `100% Free Accreditation & Badge` | $75 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://academy.databricks.com/) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 93% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | `100% Free Exam Voucher` | $245 | 🟢 Active | 🛡️ 85% Verified | [**Claim Offer**](https://education.oracle.com/oracle-cloud-infrastructure) |
 
 ### CRM & Cloud
 
@@ -355,4 +355,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-15 02:04 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-15 03:56 UTC`.*
