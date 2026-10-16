@@ -3,6 +3,42 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "cisco-accelerating-decision-superior",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Accelerating Decision Superiority: Discover Cisco\u2019s Solutions at AFCEA TechNet Indo-Pacific 2026",
+      "summary": "Join Cisco at AFCEA TechNet Indo-Pacific 2026 (Booth 401) to explore how our AI-powered defense and zero-trust solutions secure the tactical edge, accelerate allied interoperability, and advance mission readiness.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/industries/accelerating-decision-superiority-discover-ciscos-solutions-at-afcea-technet-indo-pacific-2026",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "google-cloud-architecting-autonomy-a-desig",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Architecting autonomy: A design pattern for high-compute, governed agents in biotech",
+      "summary": "In production systems today, most AI agents operate as lightweight dispatchers. They parse a prompt, make an API call, retrieve a record, and hand back control. Their execution is fast, stateless and cheap. Biotechnology does not work this ...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/healthcare-life-sciences/architecting-scalable-agentic-biotech-workloads/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-day-0-support-for-reflection-s",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Day 0 support for Reflection\u2019s Beam on Google Cloud: 5x faster perf with llm-d and NVIDIA Dynamo",
+      "summary": "Today, Reflection released Beam, its first open-weight model built to give developers, researchers, and enterprises open control and customization for frontier software engineering and long-horizon agentic tasks. Released under a permissive...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/ai-infrastructure/day-0-support-with-5x-perf-for-reflection-beam-on-google-cloud/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
       "id": "google-cloud-announcing-wiz-runtime-sensor",
       "company": "Google Cloud",
       "source": "Google Cloud Blog",
