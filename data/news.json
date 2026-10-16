@@ -3,6 +3,30 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "google-cloud-announcing-wiz-runtime-sensor",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Announcing Wiz Runtime Sensor add-on for GKE: Turnkey threat detection for Kubernetes",
+      "summary": "Everything is moving faster in the age of AI, and that includes security threats. What used to take attackers weeks to exploit can now happen in just a few minutes. Standard vulnerability scans that run on artifacts at rest can catch basic ...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/identity-security/wiz-sensor-for-gke-turnkey-threat-detection-for-kubernetes/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-the-save-method-learn-the-fun",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "The SAVE method: Learn the fundamentals to engineer trustworthy generative media",
+      "summary": "Google Cloud Consulting works with organizations every day to build generative media that\u2019s trustworthy, brand-aligned, and stands out. Instead of relying on clever or complicated prompting, we\u2019ve identified four recurring basics to generat...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/consulting/fundamentals-to-engineer-trustworthy-gen-media/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
       "id": "google-cloud-gke-cpu",
       "company": "Google Cloud",
       "source": "Google Cloud Blog",

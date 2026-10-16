@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **38 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **40 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-16 09:17 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-16 16:23 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,15 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **38 Reports** |
+| **Verified Tech Dispatches** | **40 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (38 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (40 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Announcing Wiz Runtime Sensor add-on for GKE: Turnkey threat detection for Kubernetes](https://cloud.google.com/blog/products/identity-security/wiz-sensor-for-gke-turnkey-threat-detection-for-kubernetes/)**<br>Everything is moving faster in the age of AI, and that includes security threats. What used to take attackers weeks to exploit can now happen in just a few minutes. Standard vulnerability scans that run on artifacts at rest can catch basic ... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/wiz-sensor-for-gke-turnkey-threat-detection-for-kubernetes/)<br>`cloud.google.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[The SAVE method: Learn the fundamentals to engineer trustworthy generative media](https://cloud.google.com/blog/topics/consulting/fundamentals-to-engineer-trustworthy-gen-media/)**<br>Google Cloud Consulting works with organizations every day to build generative media that’s trustworthy, brand-aligned, and stands out. Instead of relying on clever or complicated prompting, we’ve identified four recurring basics to generat... | [Google Cloud Blog](https://cloud.google.com/blog/topics/consulting/fundamentals-to-engineer-trustworthy-gen-media/)<br>`cloud.google.com` |
 | `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[GKE CPU 起動ブースト: オーバープロビジョニングなしでアプリの起動を高速化](https://cloud.google.com/blog/ja/products/containers-kubernetes/gke-cpu-startup-boost-faster-pod-starts-lower-costs/)**<br>※この投稿は米国時間 2026 年 10 月 3 日に、Google Cloud blog に投稿されたものの抄訳です。 トラフィックの急増に対応してマイクロサービスを起動する場合でも、新しいソフトウェア リリースをデプロイする場合でも、アプリケーション レプリカをスケールアップする場合でも、Google Kubernetes Engine（GKE）で実行されるアプリケーションの高速で応答性の高いユーザー エクスペリエンスを維持するには、Pod の起動時間が重要です しかし、... | [Google Cloud Blog](https://cloud.google.com/blog/ja/products/containers-kubernetes/gke-cpu-startup-boost-faster-pod-starts-lower-costs/)<br>`cloud.google.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[The Quantum Security Transition: A Policy Agenda for Post-Quantum Readiness in Asia Pacific](https://blogs.cisco.com/gov/the-quantum-security-transition-a-policy-agenda-for-post-quantum-readiness-in-asia-pacific)**<br>Governments should treat quantum risk as a national resilience challenge, integrating post-quantum cryptography into cybersecurity strategies and procurement to protect critical infrastructure and ensure long-term digital trust. | [Cisco Blogs](https://blogs.cisco.com/gov/the-quantum-security-transition-a-policy-agenda-for-post-quantum-readiness-in-asia-pacific)<br>`blogs.cisco.com` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[Staying Evergreen: How we automated secure access and repo hygiene in a shared org](https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/)**<br>Put native GitHub features to work to review outside collaborator access and archive stale repositories. The post Staying Evergreen: How we automated secure access and repo hygiene in a shared org appeared first on The GitHub Blog. | [GitHub Engineering Blog](https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/)<br>`github.blog` |
@@ -595,4 +597,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-16 09:17 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-16 16:23 UTC`.*
