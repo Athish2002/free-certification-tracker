@@ -3,11 +3,11 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-13-success.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-16-success.svg) 
 ![Offers Checked](https://img.shields.io/badge/Offers%20Checked-39%20Audited-blue.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%241694%20USD-gold.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242018%20USD-gold.svg) 
 ![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-4%20Active-success.svg) 
-![Skill Badges](https://img.shields.io/badge/Skill%20Badges-9%20Active-blue.svg) 
+![Skill Badges](https://img.shields.io/badge/Skill%20Badges-12%20Active-blue.svg) 
 ![Visual Proof](https://img.shields.io/badge/Visual%20Proof-39%2F39%20Verified-brightgreen.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
@@ -19,16 +19,16 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **13** | Verified 100% free exams & live registration windows |
+| **Active Opportunities** | **16** | Verified 100% free exams & live registration windows |
 | **Written Proctored Exam Vouchers** | **4 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
-| **Free Skill Badges & Labs** | **9 Active** (18 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
-| **Offers Checked & Audited** | **39 Total** (13 Active, 14 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
-| **Total Financial Value** | **$1,694 USD** | Aggregate savings if claimed today |
+| **Free Skill Badges & Labs** | **12 Active** (18 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
+| **Offers Checked & Audited** | **39 Total** (16 Active, 11 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
+| **Total Financial Value** | **$2,018 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **37 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-16 03:16 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-16 03:20 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -45,20 +45,23 @@
 
 ---
 
-## 🎖️ Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs (9 Active / 18 Tracked)
+## 🎖️ Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs (12 Active / 18 Tracked)
 > Unproctored interactive training completions, practical scenario-based cloud labs, sandbox learning paths, and verifiable digital badges.
 
 | Provider | Credential & Assessment | Category | Tier | Value (USD) | Status | Proof | Launch Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | Cloud & AI | `Associate` | $100 | 🟢 Active | [📸 Proof](docs/screenshots/ms-applied-skills.png) | [**Launch Lab**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | $100 | 🟢 Active | [📸 Proof](docs/screenshots/gcp-cloud-skills-boost.png) | [**Launch Lab**](https://cloud.google.com/innovators) |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | API & DevOps | `Foundational` | $50 | 🟢 Active | [📸 Proof](docs/screenshots/postman-api-expert.png) | [**Launch Lab**](https://academy.postman.com/) |
 | **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/qualys-certified-specialist.png) | [**Launch Lab**](https://www.qualys.com/training) |
 | **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | $75 | 🟢 Active | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | Cloud Computing | `Foundational` | $50 | 🟢 Active | [📸 Proof](docs/screenshots/aws-educate-badges.png) | [**Launch Lab**](https://aws.amazon.com/education/awseducate/) |
 | **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | Cloud & DevOps | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/redhat-skills-assessment-rhel.png) | [**Launch Lab**](https://developers.redhat.com/) |
+| **GitLab** | GitLab Certified Associate | Cloud & DevOps | `Associate` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/gitlab-certified-associate.png) | [**Launch Lab**](https://university.gitlab.com/) |
 | **Splunk** | Splunk Core Observability & Defense Fundamentals | Security | `Foundational` | $130 | 🟢 Active | [📸 Proof](docs/screenshots/splunk-certified-defense-analyst.png) | [**Launch Lab**](https://lantern.splunk.com/) |
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [**Launch Lab**](https://skillsbuild.org/) |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [**Launch Lab**](https://www.netacad.com/) |
 
 ---
 
@@ -87,7 +90,7 @@
 ---
 
 <details>
-<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 14 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 11 Opportunities)</b> — <i>Click to expand</i></summary>
 
 > Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.
 
@@ -95,18 +98,15 @@
 | :--- | :--- | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
-| **Cisco** | Cisco Continuing Education (Recertification) | ⚠️ Server Error | HTTP 500 Host Down |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
+| **Cisco** | Cisco Continuing Education (Recertification) | ⚠️ Broken Link | HTTP 404 Page Not Found |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | ⚠️ Broken Link | HTTP 404 Page Not Found |
 | **MongoDB** | MongoDB Associate Developer / DBA | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **GitHub** | GitHub Foundations | Review Needed | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
-| **GitLab** | GitLab Certified Associate | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | ⚠️ Broken Link | HTTP 404 Page Not Found |
 | **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 
 </details>
 
@@ -165,7 +165,7 @@
 ---
 
 <details>
-<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 13 Active Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 16 Active Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials
 - **Provider:** Microsoft Azure
@@ -173,6 +173,13 @@
 - **Eligibility:** Global (Free for all)
 - **Steps to Claim:** Select an Applied Skills topic on Microsoft Learn, complete the 2-hour interactive cloud lab assessment, and earn a verifiable Microsoft credential badge.
 - **Official Link:** [https://learn.microsoft.com/en-us/credentials/applied-skills/](https://learn.microsoft.com/en-us/credentials/applied-skills/)
+
+#### Google Cloud Skills Boost & Innovators Free Badges
+- **Provider:** Google Cloud
+- **Value:** $100 USD
+- **Eligibility:** Global (Google Account)
+- **Steps to Claim:** Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.
+- **Official Link:** [https://cloud.google.com/innovators](https://cloud.google.com/innovators)
 
 #### Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)
 - **Provider:** Linux Foundation / CNCF
@@ -230,6 +237,13 @@
 - **Steps to Claim:** Participate in the official HashiCorp Developer hands-on learning lab tracks and complete the seasonal cloud infrastructure challenge to claim a Pearson VUE 100% exam discount code.
 - **Official Link:** [https://developer.hashicorp.com/certifications/terraform-associate](https://developer.hashicorp.com/certifications/terraform-associate)
 
+#### GitLab University: GitLab Certified Associate & CI/CD Specialist
+- **Provider:** GitLab
+- **Value:** $99 USD
+- **Eligibility:** Open to all developers and GitLab community members
+- **Steps to Claim:** Sign up on GitLab University. Complete the self-paced Git & GitLab CI/CD fundamentals modules and pass the knowledge verification quiz to receive the official GitLab badge.
+- **Official Link:** [https://university.gitlab.com/](https://university.gitlab.com/)
+
 #### Splunk Lantern: Core Cybersecurity Defense & Observability Specialist
 - **Provider:** Splunk
 - **Value:** $130 USD
@@ -251,6 +265,13 @@
 - **Steps to Claim:** Sign up on Databricks Academy, enroll in the free Lakehouse Fundamentals pathway, complete the interactive curriculum, and pass the accreditation test to earn the official Databricks badge.
 - **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
 
+#### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
+- **Provider:** Cisco
+- **Value:** $125 USD
+- **Eligibility:** Global (Free Cisco NetAcad / Skills for All account)
+- **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
+- **Official Link:** [https://www.netacad.com/](https://www.netacad.com/)
+
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Provider:** GitHub
 - **Value:** $99 USD
@@ -268,6 +289,7 @@
 | Provider | Certification | Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |
 | :--- | :--- | :--- | :--- | :---: | :---: |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | [Microsoft Learn Credentials Portal](https://learn.microsoft.com/en-us/credentials/applied-skills/) | `Microsoft Learn Credential Page -> 'Take Assessment Lab' launch container` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/) | `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | [Linux Foundation Training and Certification](https://training.linuxfoundation.org/) | `Cart Summary -> 'Coupon Code' field on billing review` | `Scholarship Award Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | [Postman Academy Assessment Center](https://academy.postman.com/) | `Academy Final Assessment -> 'Submit Collection' automated test runner` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | [Pearson VUE (Juniper Networks)](https://home.pearsonvue.com/junipernetworks) | `Checkout Screen -> 'Add Voucher or Promo Code' modal` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
@@ -276,13 +298,15 @@
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | [AWS Educate and Emerging Talent Portal](https://aws.amazon.com/education/awseducate/) | `Student Pathway -> 'Earn Badge' final assessment` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | [Red Hat Developer Learning Portal](https://developers.redhat.com/) | `Red Hat Developer Dashboard -> 'Start Skills Assessment' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **HashiCorp** | HashiCorp Certified: Terraform Associate | [Kryterion Webassessor (HashiCorp)](https://www.webassessor.com/hashicorp) | `Checkout Page -> 'Coupon/Voucher Code' field` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **GitLab** | GitLab Certified Associate | [GitLab University Certification Center](https://university.gitlab.com/) | `Course Checkout -> 'Have a discount code?' field` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Splunk** | Splunk Core Observability & Defense Fundamentals | [Splunk Lantern and Education Portal](https://lantern.splunk.com/) | `Lantern Training Portal -> 'Start Guided Scenario' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/) | `Student Learning Dashboard -> 'Complete Credential Track' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/training/certification) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 13 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 16 Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials
 - **Voucher / Promo Code:** `MICROSOFT_ZERO_DOLLAR_LAB`
@@ -295,6 +319,18 @@
   1. Sign in with your personal Microsoft account (MSA).
   1. Click Take assessment lab on the verified scenario of your choice.
   1. The browser-based interactive cloud lab launches instantly with zero credit card entry and zero checkout fee ($0.00).
+
+#### Google Cloud Skills Boost & Innovators Free Badges
+- **Voucher / Promo Code:** `GCP_INNOVATOR_MONTHLY_PASS`
+- **Official Redemption Portal:** [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/)
+- **Checkout Field Location:** `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'`
+- **Application Flow Type:** `Checkout Promo Code`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Join Google Cloud Innovators community (free membership) at cloud.google.com/innovators.
+  1. Activate your complimentary 35 monthly learning credits benefit via Cloud Skills Boost.
+  1. Enroll in any Skill Badge or certification quest learning path.
+  1. Apply credits at checkout to drop lab balance to $0.00 and earn verifiable digital badges.
 
 #### Linux Foundation LiFT Scholarships (Free CKA, CKAD, LFCS Exams)
 - **Voucher / Promo Code:** `LIFT_SCHOLARSHIP_AWARD_CODE`
@@ -392,6 +428,18 @@
   1. Log into HashiCorp Webassessor portal and select Terraform Associate.
   1. Enter voucher code in the payment screen to drop fee from $70.50 to $0.00.
 
+#### GitLab University: GitLab Certified Associate & CI/CD Specialist
+- **Voucher / Promo Code:** `GITLAB_UNIVERSITY_EXAM_TOKEN`
+- **Official Redemption Portal:** [GitLab University Certification Center](https://university.gitlab.com/)
+- **Checkout Field Location:** `Course Checkout -> 'Have a discount code?' field`
+- **Application Flow Type:** `Checkout Promo Code`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Create an account on GitLab University (university.gitlab.com).
+  1. Enroll in GitLab Certified Associate or Git Associate certification courses.
+  1. Apply community campaign promo codes during quarterly learning events.
+  1. Verify cart balance drops to $0.00 and launch practical lab assessment.
+
 #### Splunk Lantern: Core Cybersecurity Defense & Observability Specialist
 - **Voucher / Promo Code:** `SPLUNK_LANTERN_DEFENSE_PASS`
 - **Official Redemption Portal:** [Splunk Lantern and Education Portal](https://lantern.splunk.com/)
@@ -427,6 +475,18 @@
   1. Select Lakehouse Fundamentals Accreditation or Generative AI Fundamentals.
   1. Complete the comprehensive multimedia course.
   1. Take the 20-question accreditation assessment; 80%+ score immediately issues verifiable Credly badge ($0.00).
+
+#### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
+- **Voucher / Promo Code:** `NETACAD_QUALIFICATION_WAIVER`
+- **Official Redemption Portal:** [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/)
+- **Checkout Field Location:** `NetAcad Course Completion -> 'Request Exam Discount' voucher form`
+- **Application Flow Type:** `Training Milestone Token`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Enroll in the Cisco NetAcad CyberOps Associate training path.
+  1. Score 70%+ on first attempt of final course exam.
+  1. Receive qualifying voucher request link from course instructor / dashboard.
+  1. Redeem voucher at Pearson VUE for discount / waiver on official 200-201 CBROPS exam.
 
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Voucher / Promo Code:** `GITHUB_FOUNDATIONS_WAVE_TOKEN`
@@ -477,4 +537,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-16 03:16 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-16 03:20 UTC`.*
