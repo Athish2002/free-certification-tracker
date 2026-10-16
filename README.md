@@ -28,7 +28,7 @@
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **38 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-16 03:54 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-16 07:14 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -528,22 +528,38 @@
 ## Architecture: How This Repo Updates Itself ($0 Cost)
 
 ```mermaid
-flowchart LR
-    A[Public RSS & Community Feeds] -->|Scheduled Cron every 4h| B[GitHub Actions Runner]
-    B -->|Inspect Liveness & Soft 404s| C[Deep Inspector Engine]
-    B -->|Poll Official Engineering Feeds| N[News Collector]
-    C -->|Classify & Flag Status| D[data/offers.json]
-    N -->|Filter Buzzwords & Verify Domains| M[data/news.json]
-    D & M -->|Static Builder| E[README.md]
-    D & M -->|Static Deploy| F[GitHub Pages Dashboard]
+flowchart TD
+    subgraph Ingest [1. Ingestion Engine - Every 4h]
+        A[Official Enterprise Engineering Feeds] --> C[GitHub Actions Runner]
+        B[Community Candidate Feeds] --> C
+    end
+
+    subgraph Verify [2. Dual Visual Verification & Authenticity Gate]
+        C --> D[Playwright Headless Chromium]
+        D --> E[DOM Liveness & Closed Notice Detector]
+        D --> F[Screenshot Proof Capture<br>docs/screenshots/*.png]
+        E & F --> G[Self-Healing Recovery & Authenticity Gate]
+    end
+
+    subgraph Store [3. Segmented Datastores]
+        G --> H[(data/offers.json)]
+        C --> I[(data/news.json)]
+    end
+
+    subgraph Publish [4. Synchronized Autonomous Deployment]
+        H & I --> J[Static Site & README Compiler]
+        J --> K[README.md with Proof Links]
+        J --> L[GitHub Pages Web Dashboard]
+    end
 ```
 
-1. **Zero External Servers**: Runs directly on GitHub Actions (`ubuntu-latest`).
-2. **Deep Inspection Guardian**: The crawler not only checks HTTP status codes (404/500) but reads page HTML to spot 'Registrations Closed' or 'All vouchers claimed' notices.
-3. **Verified Tech Radar Ingestion**: Polls primary enterprise feeds, applies strict domain whitelisting, and enforces zero-clickbait heuristic filters.
-4. **Zero Git Noise**: Only commits changes to `README.md` and data stores when actual updates are detected.
-5. **Playwright Headless DOM Inspection**: Launches headless Chromium to render dynamic client-side SPAs, evaluating capacity limits, expired coupon codes, closed registrations, and redundant links.
-6. **Zero-Dollar Redemption Engine**: Structured step-by-step checkout guides guaranteeing verified $0.00 cart balances.
+1. **Zero External Servers**: Runs 100% natively on scheduled GitHub Actions (`ubuntu-latest`) at zero infrastructure cost.
+2. **Strict Credential Segmentation**: Unambiguously separates primary accredited proctored exams (Pearson VUE, Kryterion, Webassessor waivers) from secondary unproctored digital skill badges and learning paths.
+3. **Dual Visual Proof & Screenshot Capture**: Launches headless Chromium to render client-side SPAs, screening for capacity limits, expired codes, and maintenance downtime while capturing full viewport proof screenshots in `docs/screenshots/`.
+4. **Self-Healing Recovery Engine**: Automatically detects when previously closed or maintenance-blocked portals reopen, capturing refreshed visual proof and transitioning status back to `🟢 Active` without human intervention.
+5. **Verified Tech Radar Ingestion**: Ingests official engineering dispatches directly from enterprise sources (AWS, Azure, Google Cloud, Cisco, GitHub, Databricks), enforcing strict domain whitelisting and zero clickbait.
+6. **Zero-Dollar Redemption Engine**: Provides explicit, verified step-by-step checkout navigation guides guaranteeing confirmed $0.00 cart balances.
+7. **Atomic Single-Source Synchronization**: `README.md` and `docs/index.html` are compiled simultaneously from the identical ground-truth datasets, guaranteeing zero drift between the repository and GitHub Pages.
 
 > [!TIP]
 > For an in-depth post-mortem analyzing why prior certification voucher projects failed and how CertPulse's closed-loop architecture solves each failure mode, read our [RFC & Historical Post-Mortem Deep Dive](docs/DEEP_DIVE_PAST_FAILURES_AND_ARCHITECTURE_RFC.md).
@@ -558,4 +574,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-16 03:54 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-16 07:14 UTC`.*
