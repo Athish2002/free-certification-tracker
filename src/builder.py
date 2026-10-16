@@ -326,12 +326,13 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
 def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> str:
     """
     Generates a high-craft, single-page web dashboard:
-    - Default theme: Catppuccin Latte with 10 developer themes selectable in header.
+    - Default theme: GitHub Primer Dark (#0d1117) with Primer Light toggle.
     - Bespoke CertPulse squircle logo + vector pulse emblem.
     - Official vector SVG logos for all 22+ enterprise platforms.
     - Interactive check/claimed goal counters with localStorage persistence.
     - Automated inspection check counters (21/21 Live, 100% Verified).
     - Multi-view presentation (Grid, Table, Timeline, Matrix).
+    - Strict credential separation: primary written proctored exams on top, secondary unproctored badges in collapsible accordion.
     - High-performance, zero redundant boxes, compact mobile UX.
     """
     if news_data is None:
@@ -363,19 +364,20 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
     net_count = sum(1 for o in offers if "Networking" in o.get("category", ""))
     
     return f"""<!DOCTYPE html>
-<html lang="en" data-theme="catppuccin-latte">
+<html lang="en" data-theme="github-dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#eff1f5" id="themeColorMeta">
+    <meta name="theme-color" content="#0d1117" id="themeColorMeta">
     <title>CertPulse | Free Certification Tracker & Tech Radar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-    // Inline Zero-FOIT theme initialization (default: catppuccin-latte)
+    // Inline Zero-FOIT theme initialization (default: github-dark)
     (function() {{
         try {{
-            const saved = localStorage.getItem('certpulse_theme_v2') || 'catppuccin-latte';
-            document.documentElement.setAttribute('data-theme', saved);
+            const saved = localStorage.getItem('certpulse_theme_v2') || 'github-dark';
+            const normalized = (saved === 'github-light' || saved === 'light') ? 'github-light' : 'github-dark';
+            document.documentElement.setAttribute('data-theme', normalized);
         }} catch(e) {{}}
     }})();
     </script>
@@ -385,37 +387,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }}
 
-        /* 1. Catppuccin Latte (Default Light Theme - Warm & Elegant) */
-        [data-theme="catppuccin-latte"] {{
-            --canvas-default: #eff1f5;
-            --canvas-subtle: #ffffff;
-            --canvas-inset: #e6e9ef;
-            --border-default: #ccd0da;
-            --border-muted: #bcc0cc;
-            --fg-default: #4c4f69;
-            --fg-muted: #6c6f85;
-            --fg-subtle: #8c8fa1;
-            --accent-fg: #1e66f5;
-            --accent-emphasis: #1e66f5;
-            --accent-subtle: rgba(30, 102, 245, 0.12);
-            --success-fg: #40a02b;
-            --success-emphasis: #40a02b;
-            --success-subtle: rgba(64, 160, 43, 0.12);
-            --attention-fg: #df8e1d;
-            --attention-subtle: rgba(223, 142, 29, 0.12);
-            --danger-fg: #d20f39;
-            --danger-subtle: rgba(210, 15, 57, 0.12);
-            --btn-default-bg: #e6e9ef;
-            --btn-default-hover: #dce0e8;
-            --btn-primary-bg: #1e66f5;
-            --btn-primary-hover: #1855c7;
-            --card-shadow: 0 0 0 1px rgba(188, 192, 204, 0.4), 0 2px 6px rgba(76, 79, 105, 0.04), 0 8px 24px -2px rgba(76, 79, 105, 0.06);
-            --card-shadow-hover: 0 0 0 1px #1e66f5, 0 6px 18px rgba(30, 102, 245, 0.14), 0 20px 40px -4px rgba(76, 79, 105, 0.12);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
-        }}
-
-        /* 2. GitHub Dark */
-        [data-theme="github-dark"], [data-theme="dark"] {{
+        /* GitHub Primer Dark (Canonical Executive Dark Theme) */
+        :root, [data-theme="github-dark"], [data-theme="dark"] {{
             --canvas-default: #0d1117;
             --canvas-subtle: #161b22;
             --canvas-inset: #010409;
@@ -424,7 +397,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --fg-default: #e6edf3;
             --fg-muted: #848d97;
             --fg-subtle: #6e7681;
-            --accent-fg: #2f81f7;
+            --accent-fg: #58a6ff;
             --accent-emphasis: #1f6feb;
             --accent-subtle: rgba(56, 139, 253, 0.15);
             --success-fg: #3fb950;
@@ -443,8 +416,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
         }}
 
-        /* 3. GitHub Light */
-        [data-theme="github-light"], [data-theme="light"] {{
+        /* GitHub Primer Light (High-Contrast Clean Light Counterpart) */
+        [data-theme="github-light"], [data-theme="light"], [data-theme="catppuccin-latte"] {{
             --canvas-default: #ffffff;
             --canvas-subtle: #f6f8fa;
             --canvas-inset: #f6f8fa;
@@ -472,208 +445,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
         }}
 
-        /* 4. Catppuccin Mocha */
-        [data-theme="catppuccin-mocha"] {{
-            --canvas-default: #1e1e2e;
-            --canvas-subtle: #181825;
-            --canvas-inset: #11111b;
-            --border-default: #45475a;
-            --border-muted: #313244;
-            --fg-default: #cdd6f4;
-            --fg-muted: #a6adc8;
-            --fg-subtle: #7f849c;
-            --accent-fg: #89b4fa;
-            --accent-emphasis: #89b4fa;
-            --accent-subtle: rgba(137, 180, 250, 0.15);
-            --success-fg: #a6e3a1;
-            --success-emphasis: #a6e3a1;
-            --success-subtle: rgba(166, 227, 161, 0.15);
-            --attention-fg: #fab387;
-            --attention-subtle: rgba(250, 179, 135, 0.15);
-            --danger-fg: #f38ba8;
-            --danger-subtle: rgba(243, 139, 168, 0.15);
-            --btn-default-bg: #313244;
-            --btn-default-hover: #45475a;
-            --btn-primary-bg: #89b4fa;
-            --btn-primary-hover: #74a4f7;
-            --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 4px 16px -2px rgba(17, 17, 27, 0.6);
-            --card-shadow-hover: 0 0 0 1px #89b4fa, 0 8px 24px -4px rgba(137, 180, 250, 0.25);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }}
-
-        /* 5. Tokyo Night */
-        [data-theme="tokyo-night"] {{
-            --canvas-default: #1a1b26;
-            --canvas-subtle: #24283b;
-            --canvas-inset: #15161e;
-            --border-default: #414868;
-            --border-muted: #292e42;
-            --fg-default: #c0caf5;
-            --fg-muted: #9aa5ce;
-            --fg-subtle: #565f89;
-            --accent-fg: #7aa2f7;
-            --accent-emphasis: #7aa2f7;
-            --accent-subtle: rgba(122, 162, 247, 0.15);
-            --success-fg: #9ece6a;
-            --success-emphasis: #9ece6a;
-            --success-subtle: rgba(158, 206, 106, 0.15);
-            --attention-fg: #e0af68;
-            --attention-subtle: rgba(224, 175, 104, 0.15);
-            --danger-fg: #f7768e;
-            --danger-subtle: rgba(247, 118, 142, 0.15);
-            --btn-default-bg: #292e42;
-            --btn-default-hover: #414868;
-            --btn-primary-bg: #7aa2f7;
-            --btn-primary-hover: #6791e8;
-            --card-shadow: 0 0 0 1px rgba(192, 202, 245, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.5);
-            --card-shadow-hover: 0 0 0 1px #7aa2f7, 0 8px 24px -4px rgba(122, 162, 247, 0.2);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }}
-
-        /* 6. Nord Frost */
-        [data-theme="nord"] {{
-            --canvas-default: #2e3440;
-            --canvas-subtle: #3b4252;
-            --canvas-inset: #242933;
-            --border-default: #4c566a;
-            --border-muted: #434c5e;
-            --fg-default: #eceff4;
-            --fg-muted: #d8dee9;
-            --fg-subtle: #7b88a1;
-            --accent-fg: #88c0d0;
-            --accent-emphasis: #88c0d0;
-            --accent-subtle: rgba(136, 192, 208, 0.15);
-            --success-fg: #a3be8c;
-            --success-emphasis: #a3be8c;
-            --success-subtle: rgba(163, 190, 140, 0.15);
-            --attention-fg: #ebcb8b;
-            --attention-subtle: rgba(235, 203, 139, 0.15);
-            --danger-fg: #bf616a;
-            --danger-subtle: rgba(191, 97, 106, 0.15);
-            --btn-default-bg: #434c5e;
-            --btn-default-hover: #4c566a;
-            --btn-primary-bg: #88c0d0;
-            --btn-primary-hover: #78b0c0;
-            --card-shadow: 0 0 0 1px rgba(216, 222, 233, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.4);
-            --card-shadow-hover: 0 0 0 1px #88c0d0, 0 8px 24px -4px rgba(136, 192, 208, 0.2);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }}
-
-        /* 7. Dracula */
-        [data-theme="dracula"] {{
-            --canvas-default: #282a36;
-            --canvas-subtle: #383a59;
-            --canvas-inset: #21222c;
-            --border-default: #6272a4;
-            --border-muted: #44475a;
-            --fg-default: #f8f8f2;
-            --fg-muted: #e2e2dc;
-            --fg-subtle: #9299b8;
-            --accent-fg: #bd93f9;
-            --accent-emphasis: #bd93f9;
-            --accent-subtle: rgba(189, 147, 249, 0.15);
-            --success-fg: #50fa7b;
-            --success-emphasis: #50fa7b;
-            --success-subtle: rgba(80, 250, 123, 0.15);
-            --attention-fg: #ffb86c;
-            --attention-subtle: rgba(255, 184, 108, 0.15);
-            --danger-fg: #ff5555;
-            --danger-subtle: rgba(255, 85, 85, 0.15);
-            --btn-default-bg: #44475a;
-            --btn-default-hover: #6272a4;
-            --btn-primary-bg: #bd93f9;
-            --btn-primary-hover: #ab7ef5;
-            --card-shadow: 0 0 0 1px rgba(248, 248, 242, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.5);
-            --card-shadow-hover: 0 0 0 1px #bd93f9, 0 8px 24px -4px rgba(189, 147, 249, 0.2);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }}
-
-        /* 8. Solarized Dark */
-        [data-theme="solarized-dark"] {{
-            --canvas-default: #002b36;
-            --canvas-subtle: #073642;
-            --canvas-inset: #001f27;
-            --border-default: #586e75;
-            --border-muted: #0e4452;
-            --fg-default: #93a1a1;
-            --fg-muted: #839496;
-            --fg-subtle: #657b83;
-            --accent-fg: #268bd2;
-            --accent-emphasis: #268bd2;
-            --accent-subtle: rgba(38, 139, 210, 0.15);
-            --success-fg: #859900;
-            --success-emphasis: #859900;
-            --success-subtle: rgba(133, 153, 0, 0.15);
-            --attention-fg: #b58900;
-            --attention-subtle: rgba(181, 137, 0, 0.15);
-            --danger-fg: #dc322f;
-            --danger-subtle: rgba(220, 50, 47, 0.15);
-            --btn-default-bg: #073642;
-            --btn-default-hover: #0e4452;
-            --btn-primary-bg: #268bd2;
-            --btn-primary-hover: #1e70a9;
-            --card-shadow: 0 0 0 1px rgba(147, 161, 161, 0.12), 0 4px 16px -2px rgba(0, 0, 0, 0.5);
-            --card-shadow-hover: 0 0 0 1px #268bd2, 0 8px 24px -4px rgba(38, 139, 210, 0.2);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-        }}
-
-        /* 9. Solarized Light */
-        [data-theme="solarized-light"] {{
-            --canvas-default: #fdf6e3;
-            --canvas-subtle: #eee8d5;
-            --canvas-inset: #e0dacf;
-            --border-default: #b58900;
-            --border-muted: #93a1a1;
-            --fg-default: #073642;
-            --fg-muted: #586e75;
-            --fg-subtle: #657b83;
-            --accent-fg: #268bd2;
-            --accent-emphasis: #268bd2;
-            --accent-subtle: rgba(38, 139, 210, 0.12);
-            --success-fg: #859900;
-            --success-emphasis: #859900;
-            --success-subtle: rgba(133, 153, 0, 0.12);
-            --attention-fg: #b58900;
-            --attention-subtle: rgba(181, 137, 0, 0.12);
-            --danger-fg: #dc322f;
-            --danger-subtle: rgba(220, 50, 47, 0.12);
-            --btn-default-bg: #eee8d5;
-            --btn-default-hover: #e0dacf;
-            --btn-primary-bg: #268bd2;
-            --btn-primary-hover: #1e70a9;
-            --card-shadow: 0 0 0 1px rgba(147, 161, 161, 0.2), 0 2px 6px rgba(0, 43, 54, 0.05);
-            --card-shadow-hover: 0 0 0 1px #268bd2, 0 6px 18px rgba(38, 139, 210, 0.15);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
-        }}
-
-        /* 10. Obsidian (Pitch Black) */
-        [data-theme="obsidian"] {{
-            --canvas-default: #000000;
-            --canvas-subtle: #0a0a0a;
-            --canvas-inset: #000000;
-            --border-default: #333333;
-            --border-muted: #222222;
-            --fg-default: #ededed;
-            --fg-muted: #a1a1a1;
-            --fg-subtle: #707070;
-            --accent-fg: #0070f3;
-            --accent-emphasis: #0070f3;
-            --accent-subtle: rgba(0, 112, 243, 0.15);
-            --success-fg: #00e599;
-            --success-emphasis: #00e599;
-            --success-subtle: rgba(0, 229, 153, 0.15);
-            --attention-fg: #f5a623;
-            --attention-subtle: rgba(245, 166, 35, 0.15);
-            --danger-fg: #ee0000;
-            --danger-subtle: rgba(238, 0, 0, 0.15);
-            --btn-default-bg: #1a1a1a;
-            --btn-default-hover: #2a2a2a;
-            --btn-primary-bg: #0070f3;
-            --btn-primary-hover: #0056bd;
-            --card-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.7);
-            --card-shadow-hover: 0 0 0 1px #0070f3, 0 8px 24px -4px rgba(0, 112, 243, 0.25);
-            --specular-rim: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-        }}
 
         * {{
             -webkit-tap-highlight-color: transparent;
@@ -789,100 +560,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 <div id="navGoalPill" class="hidden sm:flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded-lg border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-default);" title="Your Claimed / Checked Certifications">
                     <span class="w-2 h-2 rounded-full" style="background-color: var(--success-fg);"></span>
                     <span>Goals: <strong id="navGoalText" class="tabular-nums" style="color: var(--success-fg);">0 / {len(active_offers)}</strong></span>
-                </div>
-
-                <!-- Theme Selector Dropdown Button -->
-                <div class="relative">
-                    <button onclick="toggleThemeDropdown(event)" id="themePickerBtn" 
-                            class="h-10 sm:h-9 px-2.5 sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer"
-                            style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);"
-                            title="Select Theme (\\ or T)" aria-label="Select Theme">
-                        <span id="activeThemeDot" class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: var(--accent-fg);"></span>
-                        <span id="activeThemeName" class="text-xs hidden md:inline">Catppuccin Latte</span>
-                        <svg class="w-3 h-3 flex-shrink-0 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </button>
-
-                    <!-- Theme Selector Dropdown Popover -->
-                    <div id="themeDropdown" class="hidden absolute right-0 mt-2 w-64 rounded-xl p-2 z-[60] border shadow-2xl transition-all"
-                         style="background-color: var(--canvas-subtle); border-color: var(--border-default); box-shadow: var(--card-shadow-hover);"
-                         onclick="event.stopPropagation()">
-                        <div class="px-2 py-1.5 border-b mb-1 flex items-center justify-between" style="border-color: var(--border-muted);">
-                            <span class="text-[10px] uppercase font-bold tracking-wider" style="color: var(--fg-subtle);">Select Theme</span>
-                            <span class="text-[9px] font-mono" style="color: var(--fg-subtle);">Hotkey: <kbd class="px-1 rounded border" style="border-color: var(--border-default);">\\</kbd></span>
-                        </div>
-                        
-                        <div class="text-[10px] font-bold px-2 py-1" style="color: var(--fg-subtle);">Light Themes</div>
-                        <div class="space-y-0.5">
-                            <div class="theme-item" onclick="selectTheme('catppuccin-latte')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #eff1f5; border-color: #bcc0cc;"></span>
-                                    <span class="text-xs font-semibold" style="color: var(--fg-default);">Catppuccin Latte</span>
-                                </div>
-                                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold" style="background: rgba(30,102,245,0.12); color: #1e66f5;">Default</span>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('github-light')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #ffffff; border-color: #d0d7de;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">GitHub Light</span>
-                                </div>
-                                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold" style="background: rgba(9,105,218,0.1); color: #0969da;">Clean</span>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('solarized-light')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #fdf6e3; border-color: #93a1a1;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Solarized Light</span>
-                                </div>
-                                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold" style="background: rgba(38,139,210,0.1); color: #268bd2;">Warm</span>
-                            </div>
-                        </div>
-
-                        <div class="text-[10px] font-bold px-2 py-1 mt-2 border-t" style="color: var(--fg-subtle); border-color: var(--border-muted);">Dark Themes</div>
-                        <div class="space-y-0.5">
-                            <div class="theme-item" onclick="selectTheme('github-dark')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #0d1117; border-color: #30363d;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">GitHub Dark</span>
-                                </div>
-                                <span class="text-[9px] px-1.5 py-0.5 rounded font-bold" style="background: rgba(47,129,247,0.15); color: #58a6ff;">Dark</span>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('catppuccin-mocha')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #1e1e2e; border-color: #45475a;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Catppuccin Mocha</span>
-                                </div>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('tokyo-night')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #1a1b26; border-color: #414868;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Tokyo Night</span>
-                                </div>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('nord')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #2e3440; border-color: #4c566a;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Nord Frost</span>
-                                </div>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('dracula')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #282a36; border-color: #6272a4;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Dracula</span>
-                                </div>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('solarized-dark')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #002b36; border-color: #586e75;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Solarized Dark</span>
-                                </div>
-                            </div>
-                            <div class="theme-item" onclick="selectTheme('obsidian')">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-3 h-3 rounded-full border" style="background: #000000; border-color: #333333;"></span>
-                                    <span class="text-xs font-medium" style="color: var(--fg-default);">Obsidian</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Dark / Light Contrast Mode Toggle Button -->
@@ -1909,23 +1586,14 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="var(--accent-fg)"><circle cx="8" cy="8" r="6"/></svg>`;
         }}
 
-        // 10 Iconic Developer Themes Configuration
+        // Canonical Themes (GitHub Primer Dark as single executive theme, Primer Light for high-contrast accessibility)
         const THEMES = [
-            {{ id: 'catppuccin-latte', name: 'Catppuccin Latte', dot: '#1e66f5', meta: '#eff1f5' }},
-            {{ id: 'github-light', name: 'GitHub Light', dot: '#0969da', meta: '#ffffff' }},
-            {{ id: 'solarized-light', name: 'Solarized Light', dot: '#268bd2', meta: '#fdf6e3' }},
-            {{ id: 'github-dark', name: 'GitHub Dark', dot: '#2f81f7', meta: '#0d1117' }},
-            {{ id: 'catppuccin-mocha', name: 'Catppuccin Mocha', dot: '#89b4fa', meta: '#1e1e2e' }},
-            {{ id: 'tokyo-night', name: 'Tokyo Night', dot: '#7aa2f7', meta: '#1a1b26' }},
-            {{ id: 'nord', name: 'Nord Frost', dot: '#88c0d0', meta: '#2e3440' }},
-            {{ id: 'dracula', name: 'Dracula', dot: '#bd93f9', meta: '#282a36' }},
-            {{ id: 'solarized-dark', name: 'Solarized Dark', dot: '#268bd2', meta: '#002b36' }},
-            {{ id: 'obsidian', name: 'Obsidian', dot: '#0070f3', meta: '#000000' }}
+            {{ id: 'github-dark', name: 'Primer Dark', dot: '#58a6ff', meta: '#0d1117' }},
+            {{ id: 'github-light', name: 'Primer Light', dot: '#0969da', meta: '#ffffff' }}
         ];
 
         function selectTheme(id) {{
             applyTheme(id);
-            closeThemeDropdown();
             toast('Theme: ' + getThemeName(id));
         }}
 
@@ -1935,19 +1603,16 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         }}
 
         function applyTheme(id) {{
-            const theme = THEMES.find(t => t.id === id) || THEMES[0];
+            const isLight = (id === 'github-light' || id === 'light' || id === 'catppuccin-latte' || id === 'solarized-light');
+            const targetId = isLight ? 'github-light' : 'github-dark';
+            const theme = THEMES.find(t => t.id === targetId) || THEMES[0];
             document.documentElement.setAttribute('data-theme', theme.id);
             localStorage.setItem('certpulse_theme_v2', theme.id);
             
-            const dot = document.getElementById('activeThemeDot');
-            const name = document.getElementById('activeThemeName');
             const meta = document.getElementById('themeColorMeta');
-            if (dot) dot.style.backgroundColor = theme.dot;
-            if (name) name.textContent = theme.name;
             if (meta) meta.content = theme.meta;
 
             // Sync Sun/Moon icon for quick toggle button
-            const isLight = ['catppuccin-latte', 'github-light', 'solarized-light', 'light'].includes(theme.id);
             const sun = document.getElementById('themeIconSun');
             const moon = document.getElementById('themeIconMoon');
             if (sun && moon) {{
@@ -1962,25 +1627,15 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         }}
 
         function toggleTheme() {{
-            const current = document.documentElement.getAttribute('data-theme') || 'catppuccin-latte';
-            const isLight = ['catppuccin-latte', 'github-light', 'solarized-light', 'light'].includes(current);
-            const nextTheme = isLight ? 'github-dark' : 'catppuccin-latte';
+            const current = document.documentElement.getAttribute('data-theme') || 'github-dark';
+            const isLight = (current === 'github-light' || current === 'light' || current === 'catppuccin-latte');
+            const nextTheme = isLight ? 'github-dark' : 'github-light';
             applyTheme(nextTheme);
-            toast('Switched to ' + getThemeName(nextTheme));
+            toast('Theme: ' + (nextTheme === 'github-dark' ? 'Primer Dark' : 'Primer Light'));
         }}
 
-        function toggleThemeDropdown(e) {{
-            e.stopPropagation();
-            const dd = document.getElementById('themeDropdown');
-            if (dd) dd.classList.toggle('hidden');
-        }}
-
-        function closeThemeDropdown() {{
-            const dd = document.getElementById('themeDropdown');
-            if (dd) dd.classList.add('hidden');
-        }}
-
-        document.addEventListener('click', () => closeThemeDropdown());
+        function toggleThemeDropdown() {{}}
+        function closeThemeDropdown() {{}}
 
         // Checkbox & Goal Counter System (localStorage persisted)
         function toggleOfferChecked(id, event) {{
@@ -2236,13 +1891,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         }}
 
         function renderGridView(filtered) {{
-            const grid = document.getElementById('offersGrid');
-            if (filtered.length === 0) {{
-                grid.innerHTML = '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No certifications match your active search or filters.</div>';
-                return;
-            }}
-
-            grid.innerHTML = filtered.map(o => {{
+            const renderCardHtml = (o) => {{
                 const isClaimed = checkedOfferIds.includes(o.id);
                 const valText = o.value_usd ? '$' + o.value_usd + ' USD' : '100% Free';
                 const statusBadge = o.status === 'Active' 
@@ -2324,7 +1973,66 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         </a>
                     </div>
                 </div>`;
-            }}).join('');
+            }};
+
+            const grid = document.getElementById('offersGrid');
+            if (filtered.length === 0) {{
+                grid.innerHTML = '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No certifications match your active search or filters.</div>';
+                return;
+            }}
+
+            if (currentTier !== 'all') {{
+                grid.innerHTML = filtered.map(o => renderCardHtml(o)).join('');
+                return;
+            }}
+
+            const proctoredList = filtered.filter(o => o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary');
+            const badgesList = filtered.filter(o => o.credential_tier === 'skill_badge_lab' || o.credential_tier === 'secondary');
+
+            let html = '';
+
+            // 1. Primary Tier: Written Proctored Exams & Discounts (Top Section)
+            if (proctoredList.length > 0) {{
+                html += `
+                <div class="col-span-full flex items-center justify-between p-3 rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                    <div class="flex items-center gap-2">
+                        <span class="text-base">🎓</span>
+                        <div>
+                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Primary Tier: Industry-Recognized Written Proctored Exams & Discounts</h2>
+                            <p class="text-[11px]" style="color: var(--fg-muted);">Pearson VUE / Kryterion / Webassessor proctored exams, official waivers, and verified voucher waves (${{proctoredList.length}} Opportunities)</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">${{proctoredList.length}} Exams</span>
+                </div>`;
+                html += proctoredList.map(o => renderCardHtml(o)).join('');
+            }}
+
+            // 2. Secondary Tier: Digital Skill Badges & Cloud Labs (Secondary Collapsible Section)
+            if (badgesList.length > 0) {{
+                html += `
+                <details class="col-span-full mt-4 rounded-2xl border p-4 sm:p-5 transition-all shadow-xs group" style="background-color: var(--canvas-subtle); border-color: var(--border-default);" open>
+                    <summary class="cursor-pointer list-none flex items-center justify-between select-none">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-base">🎖️</span>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs</h2>
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-semibold border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">${{badgesList.length}} Badges</span>
+                                </div>
+                                <p class="text-[11px] mt-0.5" style="color: var(--fg-muted);">Unproctored practical learning paths, sandbox labs, and verifiable Credly/Skill badges (Click to collapse / expand)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border transition group-open:rotate-180" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                            <svg class="w-3.5 h-3.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                    </summary>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 mt-4 border-t" style="border-color: var(--border-muted);">
+                        ${{badgesList.map(o => renderCardHtml(o)).join('')}}
+                    </div>
+                </details>`;
+            }}
+
+            grid.innerHTML = html;
         }}
 
         function renderTableView(filtered) {{
@@ -2334,13 +2042,25 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 return;
             }}
 
-            tbody.innerHTML = filtered.map(o => {{
+            const renderTableRow = (o) => {{
                 const isClaimed = checkedOfferIds.includes(o.id);
                 const valText = o.value_usd ? '$' + o.value_usd : 'Free';
                 const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
                 const credBadge = isProctored 
-                    ? '<span class="text-[10px] font-bold" style="color: var(--accent-fg);">🎓 Exam</span>' 
-                    : '<span class="text-[10px]" style="color: var(--fg-muted);">🎖️ Badge</span>';
+                    ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">🎓 Exam</span>' 
+                    : '<span class="text-[10px] px-1.5 py-0.5 rounded border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">🎖️ Badge</span>';
+
+                const tv = o.truth_verification;
+                let truthBadge = '';
+                if (tv) {{
+                    if (tv.policy_type === 'partial_discount_copay') {{
+                        truthBadge = '<span class="text-[10px] font-bold text-amber-500 ml-1.5" title="75% Discount - Pearson VUE Copay">⚠️ 75% Off</span>';
+                    }} else if (tv.policy_type === 'student_verified_only') {{
+                        truthBadge = '<span class="text-[10px] text-blue-400 ml-1.5" title="Student Pack">🎓 Student</span>';
+                    }} else if (tv.policy_type === 'annual_window_closed') {{
+                        truthBadge = '<span class="text-[10px] text-amber-500 ml-1.5" title="Annual Window Closed">📅 Closed</span>';
+                    }}
+                }}
 
                 return `
                 <div class="p-3 sm:px-4 sm:py-3.5 grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-3 items-center hover:bg-slate-500/5 transition">
@@ -2348,7 +2068,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         ${{getPlatformIconSvg(o.platform)}}
                         <div class="flex flex-col min-w-0">
                             <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${{o.platform}}</span>
-                            ${{credBadge}}
+                            <div class="flex items-center gap-1 mt-0.5">${{credBadge}} ${{truthBadge}}</div>
                         </div>
                     </div>
                     <div class="sm:col-span-4 min-w-0">
@@ -2367,7 +2087,26 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <a href="${{o.url}}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
                     </div>
                 </div>`;
-            }}).join('');
+            }};
+
+            if (currentTier !== 'all') {{
+                tbody.innerHTML = filtered.map(renderTableRow).join('');
+                return;
+            }}
+
+            const proctored = filtered.filter(o => o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary');
+            const badges = filtered.filter(o => o.credential_tier === 'skill_badge_lab' || o.credential_tier === 'secondary');
+
+            let html = '';
+            if (proctored.length > 0) {{
+                html += `<div class="px-4 py-2 text-xs font-bold flex items-center gap-2 border-b" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-default);"><span>🎓 Primary: Written Proctored Exams & Discounts (${{proctored.length}})</span></div>`;
+                html += proctored.map(renderTableRow).join('');
+            }}
+            if (badges.length > 0) {{
+                html += `<div class="px-4 py-2 text-xs font-bold flex items-center gap-2 border-b mt-2" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);"><span>🎖️ Secondary: Free Digital Skill Badges & Cloud Labs (${{badges.length}})</span></div>`;
+                html += badges.map(renderTableRow).join('');
+            }}
+            tbody.innerHTML = html;
         }}
 
         function renderTimelineView(filtered) {{
@@ -2554,12 +2293,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             }} else if (key === '3') {{
                 e.preventDefault();
                 switchMainTab('redemption');
-            }} else if (key === 't') {{
+            }} else if (key === 't' || key === '\\\\') {{
                 e.preventDefault();
                 toggleTheme();
-            }} else if (key === '\\\\') {{
-                e.preventDefault();
-                toggleThemeDropdown(e);
             }} else if (key === '/') {{
                 e.preventDefault();
                 if (currentMainTab === 'redemption') {{
@@ -2804,7 +2540,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             const viewParam = urlParams.get('view');
             const tabParam = urlParams.get('tab');
 
-            const savedTheme = localStorage.getItem('certpulse_theme_v2') || 'catppuccin-latte';
+            const savedTheme = localStorage.getItem('certpulse_theme_v2') || 'github-dark';
             applyTheme(savedTheme);
             updateGoalCounters();
 
