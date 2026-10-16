@@ -1442,8 +1442,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     <div class="flex items-center gap-2 mb-1 flex-wrap">
                         <span id="proofModalPlatform" class="font-bold text-xs" style="color: var(--fg-default);"></span>
                         <span id="proofModalTier" class="px-2 py-0.5 rounded text-[10px] font-bold border"></span>
-                        <span id="proofModalTierBadge"></span>
-                        <span id="proofModalBadge" class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 $0.00 Verified Waiver Terms</span>
+                        <span id="proofModalTierBadge" class="hidden"></span>
+                        <span id="proofModalBadge" class="px-2 py-0.5 rounded text-[10px] font-bold"></span>
                     </div>
                     <h3 id="proofModalTitle" class="font-bold text-sm sm:text-base leading-snug tracking-tight truncate text-balance" style="color: var(--fg-default);"></h3>
                     <div id="proofModalDate" class="text-xs mt-0.5 tabular-nums" style="color: var(--fg-muted);"></div>
@@ -1452,6 +1452,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     ✕
                 </button>
             </div>
+
+            <!-- Dynamic Status & Quarantine Alert Banner -->
+            <div id="proofModalAlert" class="hidden px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2"></div>
 
             <!-- Modal Body (Hero Screenshot) -->
             <div class="relative flex-1 overflow-auto bg-black/5 dark:bg-black/40 p-2 sm:p-4 flex flex-col items-center justify-center min-h-[220px]">
@@ -1541,8 +1544,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             const titleEl = document.getElementById('proofModalTitle');
             const platformEl = document.getElementById('proofModalPlatform');
             const tierEl = document.getElementById('proofModalTier');
-            const tierBadgeEl = document.getElementById('proofModalTierBadge');
             const badgeEl = document.getElementById('proofModalBadge');
+            const alertEl = document.getElementById('proofModalAlert');
             const capturedAtEl = document.getElementById('proofModalCapturedAt');
             const dateEl = document.getElementById('proofModalDate');
             const termsEl = document.getElementById('proofModalTerms');
@@ -1571,27 +1574,145 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 }}
             }}
 
-            if (tierBadgeEl) {{
-                tierBadgeEl.innerHTML = isProctored 
-                    ? '<span class="text-[10px] font-bold" style="color: var(--accent-fg);">🎓 Written Proctored Exam</span>'
-                    : '<span class="text-[10px] font-semibold" style="color: var(--fg-muted);">🎖️ Skill Badge & Lab</span>';
+            const status = offer.status || 'Active';
+
+            if (status === 'Active') {{
+                if (alertEl) alertEl.classList.add('hidden');
+                if (badgeEl) {{
+                    badgeEl.className = 'px-2 py-0.5 rounded text-[10px] font-bold border';
+                    badgeEl.style.backgroundColor = 'var(--success-subtle)';
+                    badgeEl.style.borderColor = 'var(--success-fg)';
+                    badgeEl.style.color = 'var(--success-fg)';
+                    badgeEl.textContent = '🟢 $0.00 Verified Active Terms';
+                }}
+                if (termsEl) {{
+                    termsEl.style.color = 'var(--success-fg)';
+                    termsEl.textContent = offer.cart_balance_verified || '$0.00 Confirmed Zero-Dollar Waiver';
+                }}
+                if (portalLink) {{
+                    portalLink.className = 'px-3.5 py-1.5 rounded-lg text-white font-semibold transition active:scale-[0.98] inline-flex items-center gap-1.5 cursor-pointer shadow-xs';
+                    portalLink.style.backgroundColor = 'var(--btn-primary-bg)';
+                    portalLink.style.borderColor = '';
+                    portalLink.style.color = '#ffffff';
+                    portalLink.innerHTML = '<span>Launch Official Portal</span><svg width=\"12\" height=\"12\" viewBox=\"0 0 16 16\" fill=\"currentColor\"><path d=\"M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L8.53 10.03a.75.75 0 0 1-1.06-1.06l5.47-5.47H11.25a.75.75 0 0 1-.75-.75Z\"></path></svg>';
+                }}
+            }} else if (status === 'Broken Link') {{
+                if (alertEl) {{
+                    alertEl.classList.remove('hidden');
+                    alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-red-500/10 border-red-500/20 text-red-500 font-medium';
+                    alertEl.innerHTML = '<span class=\"text-sm\">⚠️</span><span><strong>Broken Link / Inaccessible Portal:</strong> The tracked URL returned an HTTP 404 or dead-end during our automated audit. The screenshot proof below records this exact failure state. This offer is quarantined in Triage and is NOT active.</span>';
+                }}
+                if (badgeEl) {{
+                    badgeEl.className = 'px-2 py-0.5 rounded text-[10px] font-bold border border-red-500/30 bg-red-500/20 text-red-500';
+                    badgeEl.style.backgroundColor = '';
+                    badgeEl.style.borderColor = '';
+                    badgeEl.style.color = '';
+                    badgeEl.textContent = '⚠️ Broken Link (HTTP 404)';
+                }}
+                if (termsEl) {{
+                    termsEl.style.color = '#ef4444';
+                    termsEl.textContent = 'Verification Failed — HTTP 404 / Dead-End';
+                }}
+                if (portalLink) {{
+                    portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer opacity-75';
+                    portalLink.style.backgroundColor = 'var(--btn-default-bg)';
+                    portalLink.style.borderColor = 'var(--border-default)';
+                    portalLink.style.color = 'var(--fg-default)';
+                    portalLink.innerHTML = '<span>Inspect Failing Portal</span>';
+                }}
+            }} else if (status === 'Registrations Closed') {{
+                if (alertEl) {{
+                    alertEl.classList.remove('hidden');
+                    alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
+                    alertEl.innerHTML = '<span class=\"text-sm\">🟡</span><span><strong>Registrations Closed:</strong> The vendor has closed registrations or cohort capacity has been reached. The screenshot below captures the official closure notice. Quarantined in Triage until vendor reopens.</span>';
+                }}
+                if (badgeEl) {{
+                    badgeEl.className = 'px-2 py-0.5 rounded text-[10px] font-bold border border-amber-500/30 bg-amber-500/20 text-amber-500';
+                    badgeEl.style.backgroundColor = '';
+                    badgeEl.style.borderColor = '';
+                    badgeEl.style.color = '';
+                    badgeEl.textContent = '🟡 Closed / Waitlist';
+                }}
+                if (termsEl) {{
+                    termsEl.style.color = '#f59e0b';
+                    termsEl.textContent = 'Cohort Capacity Reached or Registrations Concluded';
+                }}
+                if (portalLink) {{
+                    portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer';
+                    portalLink.style.backgroundColor = 'var(--btn-default-bg)';
+                    portalLink.style.borderColor = 'var(--border-default)';
+                    portalLink.style.color = 'var(--fg-default)';
+                    portalLink.innerHTML = '<span>Inspect Vendor Portal</span>';
+                }}
+            }} else if (status === 'Review Needed') {{
+                if (alertEl) {{
+                    alertEl.classList.remove('hidden');
+                    alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
+                    alertEl.innerHTML = '<span class=\"text-sm\">🟡</span><span><strong>Under Review (Triage Pool):</strong> Affirmative zero-dollar waiver terms could not be confirmed in the rendered DOM. Quarantined in Triage until verified.</span>';
+                }}
+                if (badgeEl) {{
+                    badgeEl.className = 'px-2 py-0.5 rounded text-[10px] font-bold border border-amber-500/30 bg-amber-500/20 text-amber-500';
+                    badgeEl.style.backgroundColor = '';
+                    badgeEl.style.borderColor = '';
+                    badgeEl.style.color = '';
+                    badgeEl.textContent = '🟡 Under Review (Triage)';
+                }}
+                if (termsEl) {{
+                    termsEl.style.color = '#f59e0b';
+                    termsEl.textContent = offer.inspection_notes || 'Pending Affirmative Zero-Dollar Waiver Terms';
+                }}
+                if (portalLink) {{
+                    portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer';
+                    portalLink.style.backgroundColor = 'var(--btn-default-bg)';
+                    portalLink.style.borderColor = 'var(--border-default)';
+                    portalLink.style.color = 'var(--fg-default)';
+                    portalLink.innerHTML = '<span>Inspect Vendor Portal</span>';
+                }}
+            }} else if (status === 'Server Error') {{
+                if (alertEl) {{
+                    alertEl.classList.remove('hidden');
+                    alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-red-500/10 border-red-500/20 text-red-500 font-medium';
+                    alertEl.innerHTML = '<span class=\"text-sm\">⚠️</span><span><strong>Server Error (HTTP 500):</strong> The vendor server failed to respond or is down for maintenance. Quarantined in Triage.</span>';
+                }}
+                if (badgeEl) {{
+                    badgeEl.className = 'px-2 py-0.5 rounded text-[10px] font-bold border border-red-500/30 bg-red-500/20 text-red-500';
+                    badgeEl.style.backgroundColor = '';
+                    badgeEl.style.borderColor = '';
+                    badgeEl.style.color = '';
+                    badgeEl.textContent = '⚠️ Server Error (HTTP 500)';
+                }}
+                if (termsEl) {{
+                    termsEl.style.color = '#ef4444';
+                    termsEl.textContent = 'Host Down / Gateway Error';
+                }}
+                if (portalLink) {{
+                    portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer opacity-75';
+                    portalLink.style.backgroundColor = 'var(--btn-default-bg)';
+                    portalLink.style.borderColor = 'var(--border-default)';
+                    portalLink.style.color = 'var(--fg-default)';
+                    portalLink.innerHTML = '<span>Inspect Server Status</span>';
+                }}
+            }} else {{
+                if (alertEl) alertEl.classList.add('hidden');
+                if (badgeEl) {{
+                    badgeEl.className = 'px-2 py-0.5 rounded text-[10px] font-bold border border-slate-500/30 bg-slate-500/20 text-slate-400';
+                    badgeEl.style.backgroundColor = '';
+                    badgeEl.style.borderColor = '';
+                    badgeEl.style.color = '';
+                    badgeEl.textContent = '📜 Historical Archive';
+                }}
+                if (termsEl) {{
+                    termsEl.style.color = 'var(--fg-muted)';
+                    termsEl.textContent = 'Concluded Campaign (Preserved for Recurrence Tracking)';
+                }}
+                if (portalLink) {{
+                    portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer';
+                    portalLink.style.backgroundColor = 'var(--btn-default-bg)';
+                    portalLink.style.borderColor = 'var(--border-default)';
+                    portalLink.style.color = 'var(--fg-default)';
+                    portalLink.innerHTML = '<span>Inspect Archive Portal</span>';
+                }}
             }}
-
-            if (badgeEl) {{
-                badgeEl.textContent = '🟢 $0.00 Verified Waiver Terms';
-            }}
-
-            const capturedDate = (offer.visual_proof && offer.visual_proof.captured_at)
-                ? offer.visual_proof.captured_at.split('T')[0]
-                : (offer.verification_date || '2026-10-15');
-
-            if (capturedAtEl) capturedAtEl.textContent = capturedDate;
-            if (dateEl) {{
-                dateEl.textContent = 'Captured: ' + capturedDate;
-            }}
-
-            const terms = offer.cart_balance_verified || '$0.00 Confirmed Zero-Dollar Waiver';
-            if (termsEl) termsEl.textContent = terms;
 
             if (portalLink) portalLink.href = offer.url || '#';
             if (directLink) directLink.href = offer.url || '#';
@@ -2502,8 +2623,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             const searchVal = (searchInput ? searchInput.value : '').toLowerCase().trim();
             const flowSelect = document.getElementById('redemptionFlowFilter');
             const flowVal = flowSelect ? flowSelect.value : 'all';
-
-            const activeOffers = offersData.filter(o => o.status === 'Active' || !o.is_historical_archive);
+            const activeOffers = offersData.filter(o => o.status === 'Active');
             const filtered = activeOffers.filter(o => {{
                 if (flowVal !== 'all' && (o.application_flow_type || '').toLowerCase() !== flowVal.toLowerCase()) return false;
                 if (searchVal) {{

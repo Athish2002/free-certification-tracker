@@ -137,7 +137,12 @@ REDUNDANT_LINK_PATTERNS = [
 DEAD_END_PATTERNS = [
     "page not found",
     "error 404",
+    "404 error",
     "404 - page not found",
+    "not found",
+    "couldn't find what you're looking for",
+    "no longer exists",
+    "requires registration/login or no longer exists",
     "we couldn't find that page",
     "page you're looking for doesn't exist",
     "the page has been removed",
@@ -696,10 +701,22 @@ class HeadlessDOMInspector:
                 else:
                     reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
 
+            # Enforce ground-truth invariant: non-active offers never confirm zero-dollar terms
+            if status != "Active":
+                zero_dollar_confirmed = False
+
             # Populate visual_proof metadata on offer
             if offer is not None:
                 target_file = screenshots_dir / f"{offer_id}.png" if offer_id else None
-                proof_status = "verified" if screenshot_ok else ("failed" if (target_file and target_file.exists()) else "missing")
+                if status == "Active" and screenshot_ok:
+                    proof_status = "verified"
+                elif status in ["Broken Link", "Server Error"]:
+                    proof_status = "failed"
+                elif not screenshot_ok or not target_file or not target_file.exists():
+                    proof_status = "missing"
+                else:
+                    proof_status = "placeholder"
+
                 offer["visual_proof"] = {
                     "screenshot_path": screenshot_path,
                     "screenshot_url": screenshot_path,

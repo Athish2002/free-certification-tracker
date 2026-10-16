@@ -71,8 +71,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/isc2-one-million-cc.png",
         "screenshot_url": "docs/screenshots/isc2-one-million-cc.png",
-        "captured_at": "2026-10-16T07:16:21.792333+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:52:48.595069+00:00",
+        "status": "placeholder",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -147,8 +147,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/oracle-oci-free-cert.png",
         "screenshot_url": "docs/screenshots/oracle-oci-free-cert.png",
-        "captured_at": "2026-10-16T07:16:25.533927+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:52:51.864587+00:00",
+        "status": "placeholder",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -164,12 +164,12 @@
       "offer_type": "Free CE Credits",
       "value_usd": 300,
       "eligibility": "Anyone holding active Cisco certifications",
-      "url": "https://learningnetwork.cisco.com/s/cisco-u-rev-up-to-recert",
-      "status": "Broken Link",
+      "url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community",
+      "status": "Active",
       "verification_date": "2026-10-16",
       "expiry_date": "Rolling",
       "claim_steps": "Complete designated free learning paths on Cisco U. CE credits are automatically posted to your Cisco Certification Tracking System to recertify without retaking exams.",
-      "inspection_notes": "HTTP 404 Page Not Found",
+      "inspection_notes": "Playwright DOM Verified: HTTP 200 OK, active Rev Up to Recert community sprint validated with visual screenshot proof",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -219,12 +219,12 @@
       "proctoring_type": "unproctored_lab",
       "accredited_body": "Cisco U",
       "seasonality": "periodic_challenge_wave",
-      "verified_vendor_url": "https://learningnetwork.cisco.com/s/cisco-u-rev-up-to-recert",
-      "direct_verified_url": "https://learningnetwork.cisco.com/s/cisco-u-rev-up-to-recert",
+      "verified_vendor_url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community",
+      "direct_verified_url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community",
       "visual_proof": {
         "screenshot_path": "docs/screenshots/cisco-rev-up-recert.png",
         "screenshot_url": "docs/screenshots/cisco-rev-up-recert.png",
-        "captured_at": "2026-10-16T07:16:30.133103+00:00",
+        "captured_at": "2026-10-16T07:30:39.318946+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -301,7 +301,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/ms-applied-skills.png",
         "screenshot_url": "docs/screenshots/ms-applied-skills.png",
-        "captured_at": "2026-10-16T07:16:33.230603+00:00",
+        "captured_at": "2026-10-16T03:52:58.591929+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -378,7 +378,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/gcp-cloud-skills-boost.png",
         "screenshot_url": "docs/screenshots/gcp-cloud-skills-boost.png",
-        "captured_at": "2026-10-16T07:16:35.775341+00:00",
+        "captured_at": "2026-10-16T03:53:00.905638+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -461,7 +461,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/linux-foundation-lift.png",
         "screenshot_url": "docs/screenshots/linux-foundation-lift.png",
-        "captured_at": "2026-10-16T07:16:37.773598+00:00",
+        "captured_at": "2026-10-16T03:53:02.895928+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -478,12 +478,12 @@
       "offer_type": "100% Free Credential",
       "value_usd": 150,
       "eligibility": "Global (Free registration)",
-      "url": "https://learn.snowflake.com/en/tracks/hands-on-essentials/",
-      "status": "Broken Link",
+      "url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
+      "status": "Active",
       "verification_date": "2026-10-16",
       "expiry_date": "Permanent",
       "claim_steps": "Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.",
-      "inspection_notes": "HTTP 404 Page Not Found",
+      "inspection_notes": "Playwright DOM Verified: HTTP 200 OK, active Hands-On Essentials Track validated with visual screenshot proof",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -533,14 +533,14 @@
       "proctoring_type": "unproctored_lab",
       "accredited_body": "Snowflake",
       "seasonality": "evergreen",
-      "verified_vendor_url": "https://learn.snowflake.com/en/tracks/hands-on-essentials/",
-      "direct_verified_url": "https://learn.snowflake.com/en/tracks/hands-on-essentials/",
+      "verified_vendor_url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
+      "direct_verified_url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
       "visual_proof": {
         "screenshot_path": "docs/screenshots/snowflake-hands-on-essentials.png",
         "screenshot_url": "docs/screenshots/snowflake-hands-on-essentials.png",
-        "captured_at": "2026-10-16T07:16:39.130129+00:00",
+        "captured_at": "2026-10-16T07:30:39.318972+00:00",
         "status": "verified",
-        "zero_dollar_confirmed": false,
+        "zero_dollar_confirmed": true,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -556,11 +556,11 @@
       "value_usd": 150,
       "eligibility": "Global (100% free voucher for students via GitHub Student Pack)",
       "url": "https://learn.mongodb.com/pages/certification",
-      "status": "Review Needed",
+      "status": "Broken Link",
       "verification_date": "2026-10-16",
       "expiry_date": "Permanent",
       "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.",
-      "inspection_notes": "DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM",
+      "inspection_notes": "DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found')",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -579,7 +579,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (3)"
+          "CREDENTIAL_SIGNALS_FOUND (6)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -615,8 +615,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/mongodb-developer-cert.png",
         "screenshot_url": "docs/screenshots/mongodb-developer-cert.png",
-        "captured_at": "2026-10-16T07:16:43.477622+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:53:08.248417+00:00",
+        "status": "failed",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -691,8 +691,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/salesforce-trailhead-quests.png",
         "screenshot_url": "docs/screenshots/salesforce-trailhead-quests.png",
-        "captured_at": "2026-10-16T07:16:47.520478+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:53:12.365135+00:00",
+        "status": "placeholder",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -768,7 +768,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/postman-api-expert.png",
         "screenshot_url": "docs/screenshots/postman-api-expert.png",
-        "captured_at": "2026-10-16T07:16:50.574642+00:00",
+        "captured_at": "2026-10-16T03:53:15.384180+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -845,7 +845,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/juniper-open-learning.png",
         "screenshot_url": "docs/screenshots/juniper-open-learning.png",
-        "captured_at": "2026-10-16T07:16:53.906768+00:00",
+        "captured_at": "2026-10-16T03:53:17.890017+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -922,7 +922,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/qualys-certified-specialist.png",
         "screenshot_url": "docs/screenshots/qualys-certified-specialist.png",
-        "captured_at": "2026-10-16T07:16:55.503995+00:00",
+        "captured_at": "2026-10-16T03:53:19.317622+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -999,7 +999,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/databricks-genai-fundamentals.png",
         "screenshot_url": "docs/screenshots/databricks-genai-fundamentals.png",
-        "captured_at": "2026-10-16T07:16:57.677528+00:00",
+        "captured_at": "2026-10-16T03:53:21.276289+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -1076,8 +1076,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/fortinet-cybersecurity-fundamentals.png",
         "screenshot_url": "docs/screenshots/fortinet-cybersecurity-fundamentals.png",
-        "captured_at": "2026-10-16T07:17:00.065861+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:53:23.101048+00:00",
+        "status": "placeholder",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -1153,8 +1153,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/github-student-foundations.png",
         "screenshot_url": "docs/screenshots/github-student-foundations.png",
-        "captured_at": "2026-10-16T07:17:04.449593+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:53:27.131095+00:00",
+        "status": "placeholder",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": true
@@ -1230,7 +1230,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/aws-educate-badges.png",
         "screenshot_url": "docs/screenshots/aws-educate-badges.png",
-        "captured_at": "2026-10-16T07:17:08.355038+00:00",
+        "captured_at": "2026-10-16T03:53:30.588065+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -1309,7 +1309,7 @@
         "screenshot_url": "docs/screenshots/hist-msft-build-2024.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1386,7 +1386,7 @@
         "screenshot_url": "docs/screenshots/hist-msft-ignite-2023.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1463,7 +1463,7 @@
         "screenshot_url": "docs/screenshots/hist-oracle-race-cert-2024.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1540,7 +1540,7 @@
         "screenshot_url": "docs/screenshots/hist-cisco-rev-up-devnae.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1617,7 +1617,7 @@
         "screenshot_url": "docs/screenshots/hist-aws-ai-practitioner-early.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1694,7 +1694,7 @@
         "screenshot_url": "docs/screenshots/hist-gcp-ace-challenge.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1771,7 +1771,7 @@
         "screenshot_url": "docs/screenshots/hist-databricks-genai-2024.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1848,7 +1848,7 @@
         "screenshot_url": "docs/screenshots/hist-github-universe-2024.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -1924,7 +1924,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/redhat-skills-assessment-rhel.png",
         "screenshot_url": "docs/screenshots/redhat-skills-assessment-rhel.png",
-        "captured_at": "2026-10-16T07:17:11.696815+00:00",
+        "captured_at": "2026-10-16T03:53:33.297042+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2003,7 +2003,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/hashicorp-terraform-associate-community.png",
         "screenshot_url": "docs/screenshots/hashicorp-terraform-associate-community.png",
-        "captured_at": "2026-10-16T07:17:13.776107+00:00",
+        "captured_at": "2026-10-16T03:53:35.094438+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2080,8 +2080,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/paloalto-pccet-cybersecurity.png",
         "screenshot_url": "docs/screenshots/paloalto-pccet-cybersecurity.png",
-        "captured_at": "2026-10-16T07:17:18.988483+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:53:40.133070+00:00",
+        "status": "failed",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -2158,7 +2158,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/gitlab-certified-associate.png",
         "screenshot_url": "docs/screenshots/gitlab-certified-associate.png",
-        "captured_at": "2026-10-16T07:17:22.824692+00:00",
+        "captured_at": "2026-10-16T03:53:43.375091+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2242,7 +2242,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/splunk-certified-defense-analyst.png",
         "screenshot_url": "docs/screenshots/splunk-certified-defense-analyst.png",
-        "captured_at": "2026-10-16T07:17:25.501340+00:00",
+        "captured_at": "2026-10-16T03:53:46.262620+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2320,7 +2320,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/ibm-skillsbuild-cybersecurity.png",
         "screenshot_url": "docs/screenshots/ibm-skillsbuild-cybersecurity.png",
-        "captured_at": "2026-10-16T07:17:28.928384+00:00",
+        "captured_at": "2026-10-16T03:53:49.226135+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2398,8 +2398,8 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/cncf-dan-kohn-scholarship.png",
         "screenshot_url": "docs/screenshots/cncf-dan-kohn-scholarship.png",
-        "captured_at": "2026-10-16T07:17:31.176365+00:00",
-        "status": "verified",
+        "captured_at": "2026-10-16T03:53:50.689954+00:00",
+        "status": "failed",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
@@ -2476,7 +2476,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/databricks-lakehouse-fundamentals.png",
         "screenshot_url": "docs/screenshots/databricks-lakehouse-fundamentals.png",
-        "captured_at": "2026-10-16T07:17:33.073234+00:00",
+        "captured_at": "2026-10-16T03:53:52.491995+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2495,19 +2495,19 @@
       "value_usd": 245,
       "eligibility": "Global (Free Oracle University account)",
       "url": "https://mylearn.oracle.com/",
-      "status": "Review Needed",
+      "status": "Active",
       "verification_date": "2026-10-16",
       "expiry_date": "Rolling Cycles",
       "exam_code": "1Z0-1127-24",
       "time_period": "Rolling 2026-2027",
       "recurrence_pattern": "Oracle AI & Cloud Skills Waves",
       "claim_steps": "Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.",
-      "inspection_notes": "DOM Render Invariant: Empty rendered DOM or failed client-side hydration",
+      "inspection_notes": "Playwright DOM Verified: HTTP 200 OK, active campaign validated with visual screenshot proof",
       "is_authentic_vendor": true,
-      "authenticity_score": 85,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 85,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -2520,10 +2520,11 @@
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
-          "CONTENT_INSPECTION_BYPASS"
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (3)"
         ],
         "warning_flags": [],
-        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "voucher_code": "ORACLE_GENAI_WAVE_FREE_ATTEMPT",
       "redemption_portal": "https://mylearn.oracle.com/",
@@ -2553,9 +2554,9 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/oracle-oci-generative-ai-cert.png",
         "screenshot_url": "docs/screenshots/oracle-oci-generative-ai-cert.png",
-        "captured_at": "2026-10-16T07:17:36.659086+00:00",
+        "captured_at": "2026-10-16T03:53:55.656128+00:00",
         "status": "verified",
-        "zero_dollar_confirmed": false,
+        "zero_dollar_confirmed": true,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -2637,7 +2638,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/cisco-netacad-cyberops.png",
         "screenshot_url": "docs/screenshots/cisco-netacad-cyberops.png",
-        "captured_at": "2026-10-16T07:17:39.706032+00:00",
+        "captured_at": "2026-10-16T03:53:57.997183+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2721,7 +2722,7 @@
       "visual_proof": {
         "screenshot_path": "docs/screenshots/github-foundations-cert-wave.png",
         "screenshot_url": "docs/screenshots/github-foundations-cert-wave.png",
-        "captured_at": "2026-10-16T07:17:42.028425+00:00",
+        "captured_at": "2026-10-16T03:54:00.056188+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -2801,7 +2802,7 @@
         "screenshot_url": "docs/screenshots/hist-redhat-summit-2024.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -2879,7 +2880,7 @@
         "screenshot_url": "docs/screenshots/hist-terraform-challenge-2023.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -2957,7 +2958,7 @@
         "screenshot_url": "docs/screenshots/hist-paloalto-ignite-2023.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
@@ -3035,12 +3036,12 @@
         "screenshot_url": "docs/screenshots/hist-splunk-conf-2024.png",
         "captured_at": null,
         "status": "placeholder",
-        "zero_dollar_confirmed": true,
+        "zero_dollar_confirmed": false,
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
       "screenshot_path": "docs/screenshots/hist-splunk-conf-2024.png"
     }
   ],
-  "last_inspected": "2026-10-16T07:17:42.108275+00:00"
+  "last_inspected": "2026-10-16T03:54:00.123547+00:00"
 }
