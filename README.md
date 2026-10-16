@@ -3,10 +3,10 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-19-success.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-20-success.svg) 
 ![Offers Checked](https://img.shields.io/badge/Offers%20Checked-39%20Audited-blue.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242713%20USD-gold.svg) 
-![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-5%20Active-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242958%20USD-gold.svg) 
+![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-6%20Active-success.svg) 
 ![Skill Badges](https://img.shields.io/badge/Skill%20Badges-14%20Active-blue.svg) 
 ![Visual Proof](https://img.shields.io/badge/Visual%20Proof-39%2F39%20Verified-brightgreen.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
@@ -19,25 +19,26 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **19** | Verified 100% free exams & live registration windows |
-| **Written Proctored Exam Vouchers** | **5 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
+| **Active Opportunities** | **20** | Verified 100% free exams & live registration windows |
+| **Written Proctored Exam Vouchers** | **6 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
 | **Free Skill Badges & Labs** | **14 Active** (18 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
-| **Offers Checked & Audited** | **39 Total** (19 Active, 8 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
-| **Total Financial Value** | **$2,713 USD** | Aggregate savings if claimed today |
+| **Offers Checked & Audited** | **39 Total** (20 Active, 7 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
+| **Total Financial Value** | **$2,958 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **38 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-16 07:31 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-16 07:35 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
 
-## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers (5 Active / 21 Tracked)
+## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers (6 Active / 21 Tracked)
 > Formal accredited industry certifications featuring proctored written examinations (Pearson VUE, Kryterion, Webassessor waivers, 100% discount promo codes, and official challenge voucher waves).
 
 | Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Foundational` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [**Claim Voucher**](https://mylearn.oracle.com/) |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | DevOps & Cloud Native | `Professional` | $395 | 🟢 Active | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | [**Claim Voucher**](https://www.linuxfoundation.org/about/lift-scholarships) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | `Associate` | $200 | 🟢 Active | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [**Claim Voucher**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
 | **HashiCorp** | HashiCorp Certified: Terraform Associate | Cloud & DevOps | `Associate` | $70 | 🟢 Active | [📸 Proof](docs/screenshots/hashicorp-terraform-associate-community.png) | [**Claim Voucher**](https://developer.hashicorp.com/certifications/terraform-associate) |
@@ -93,19 +94,18 @@
 ---
 
 <details>
-<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 8 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 7 Opportunities)</b> — <i>Click to expand</i></summary>
 
 > Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.
 
 | Provider | Certification | Triage Status | Reason / Inspection Note |
 | :--- | :--- | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **GitHub** | GitHub Foundations | Review Needed | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
-| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | ⚠️ Server Error | HTTP 500 Host Down |
+| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | ⚠️ Broken Link | HTTP 404 Page Not Found |
 
 </details>
@@ -166,7 +166,14 @@
 ---
 
 <details>
-<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 19 Active Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 20 Active Opportunities)</b> — <i>Click to expand</i></summary>
+
+#### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
+- **Provider:** Oracle Cloud
+- **Value:** $245 USD
+- **Eligibility:** Global (Free Oracle University account)
+- **Steps to Claim:** Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.
+- **Official Link:** [https://mylearn.oracle.com/](https://mylearn.oracle.com/)
 
 #### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
 - **Provider:** Cisco
@@ -310,6 +317,7 @@
 
 | Provider | Certification | Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |
 | :--- | :--- | :--- | :--- | :---: | :---: |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | `Oracle University MyLearn -> 'Schedule Free Exam' button` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Continuing Education (Recertification) | [Cisco Continuing Education Portal](https://ce.cisco.com/) | `CE Portal Dashboard -> 'Submit Items' -> Claim CE Credits` | `Continuing Education Claim` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | [Microsoft Learn Credentials Portal](https://learn.microsoft.com/en-us/credentials/applied-skills/) | `Microsoft Learn Credential Page -> 'Take Assessment Lab' launch container` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/) | `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
@@ -331,7 +339,19 @@
 | **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 19 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 20 Opportunities)</b> — <i>Click to expand</i></summary>
+
+#### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
+- **Voucher / Promo Code:** `ORACLE_MYLEARN_SSO_WAIVER`
+- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/)
+- **Checkout Field Location:** `Oracle University MyLearn -> 'Schedule Free Exam' button`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Sign in to Oracle MyLearn with a free Oracle Single Sign-On (SSO) account.
+  1. Complete the designated OCI Foundations or Associate learning path training modules.
+  1. Click Schedule Certification Exam directly within the course navigation bar.
+  1. Confirm your exam appointment via the integrated proctoring engine with $0.00 cart balance.
 
 #### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
 - **Voucher / Promo Code:** `CISCO_CE_CREDIT_TOKEN`
@@ -614,4 +634,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-16 07:31 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-16 07:35 UTC`.*
