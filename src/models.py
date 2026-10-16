@@ -190,6 +190,9 @@ class Offer(BaseModel):
     authenticity_score: int = Field(default=90, ge=0, le=100)
     authenticity_details: Optional[Dict[str, Any]] = None
 
+    # Online Truth Oracle Verification
+    truth_verification: Optional[Dict[str, Any]] = None
+
     # Visual Proof Metadata (R2, R3)
     visual_proof: Optional[VisualProof] = None
     screenshot_path: Optional[str] = None

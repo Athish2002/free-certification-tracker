@@ -257,6 +257,22 @@ def run_pipeline(
     elif dry_run:
         logger.info("[DRY RUN] Skipping Playwright DOM inspection.")
 
+    # 3.5 Authoritative Online Truth Oracle Corroboration Gate
+    if not dry_run:
+        logger.info("Executing Truth Oracle policy corroboration and anti-misleading audit...")
+        from src.truth_oracle import audit_and_enrich_offers
+        if DATA_FILE.exists():
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                o_data = json.load(f)
+            enriched, summary = audit_and_enrich_offers(o_data.get("offers", []), strict_enforcement=True)
+            o_data["offers"] = enriched
+            o_data["last_truth_corroborated"] = datetime.now(timezone.utc).isoformat()
+            temp_o = DATA_FILE.with_suffix(".tmp")
+            with open(temp_o, "w", encoding="utf-8") as f:
+                json.dump(o_data, f, indent=2)
+            temp_o.replace(DATA_FILE)
+            logger.info(f"Truth Oracle corroboration complete: {summary['corrections_applied']} corrections applied.")
+
     # 4. Ingest verified engineering and cloud intelligence feeds
     if not dry_run:
         logger.info("Ingesting verified engineering and research dispatches...")

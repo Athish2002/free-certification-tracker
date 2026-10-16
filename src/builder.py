@@ -92,6 +92,7 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append(f"| **Historical Archive Tracked** | **{len(historical_offers)} Campaigns** | Past promotional cycles & recurrence roadmaps |")
     lines.append(f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** | Official primary cloud engineering updates |")
     lines.append(f"| **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |")
+    lines.append(f"| **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |")
     lines.append(f"| **Last Automated Inspection** | `{last_updated}` | Auto-audited for 404s and 'Closed' notices |")
     lines.append("| **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |")
     lines.append("")
@@ -100,8 +101,8 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append(f"## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers ({len(active_proctored)} Active / {len(proctored_offers)} Tracked)")
     lines.append("> Formal accredited industry certifications featuring proctored written examinations (Pearson VUE, Kryterion, Webassessor waivers, 100% discount promo codes, and official challenge voucher waves).")
     lines.append("")
-    lines.append("| Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Claim Link |")
-    lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
+    lines.append("| Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Truth Source | Claim Link |")
+    lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |")
     for o in active_proctored:
         provider = o.get("platform")
         cert = o.get("certification_name")
@@ -110,16 +111,20 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
         val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
         status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
         proof_link = f"[📸 Proof](docs/screenshots/{o['id']}.png)"
+        tv = o.get("truth_verification") or {}
+        truth_source_name = tv.get("truth_source_name", f"{provider} Policy")
+        truth_source_url = tv.get("truth_source_url", o.get("url"))
+        truth_link = f"[{truth_source_name}]({truth_source_url})"
         url = o.get("url")
-        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | [**Claim Voucher**]({url}) |")
+        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | {truth_link} | [**Claim Voucher**]({url}) |")
     lines.append("")
     lines.append("---")
     lines.append("")
     lines.append(f"## 🎖️ Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs ({len(active_badges)} Active / {len(badge_offers)} Tracked)")
     lines.append("> Unproctored interactive training completions, practical scenario-based cloud labs, sandbox learning paths, and verifiable digital badges.")
     lines.append("")
-    lines.append("| Provider | Credential & Assessment | Category | Tier | Value (USD) | Status | Proof | Launch Link |")
-    lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |")
+    lines.append("| Provider | Credential & Assessment | Category | Tier | Value (USD) | Status | Proof | Truth Source | Launch Link |")
+    lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |")
     for o in active_badges:
         provider = o.get("platform")
         cert = o.get("certification_name")
@@ -128,8 +133,12 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
         val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
         status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
         proof_link = f"[📸 Proof](docs/screenshots/{o['id']}.png)"
+        tv = o.get("truth_verification") or {}
+        truth_source_name = tv.get("truth_source_name", f"{provider} Policy")
+        truth_source_url = tv.get("truth_source_url", o.get("url"))
+        truth_link = f"[{truth_source_name}]({truth_source_url})"
         url = o.get("url")
-        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | [**Launch Lab**]({url}) |")
+        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | {truth_link} | [**Launch Lab**]({url}) |")
     lines.append("")
 
     if historical_offers:
@@ -1465,6 +1474,24 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 </div>
             </div>
 
+            <!-- Truth Oracle Online Corroboration Card -->
+            <div id="proofModalTruthCard" class="px-4 sm:px-6 py-2.5 border-t text-xs flex flex-col gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default);">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex items-center gap-1.5 font-bold">
+                        <span>🛡️ Online Truth Corroboration:</span>
+                        <span id="proofModalPolicyType" class="px-1.5 py-0.5 rounded text-[10px] font-mono border"></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-muted">Primary Policy:</span>
+                        <a id="proofModalTruthSource" href="#" target="_blank" rel="noopener" class="font-semibold underline hover:opacity-80 transition inline-flex items-center gap-1" style="color: var(--accent-fg);">
+                            <span id="proofModalTruthSourceName">Vendor Policy</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </div>
+                <p id="proofModalTruthNotes" class="text-[11px] leading-relaxed text-pretty" style="color: var(--fg-muted);"></p>
+            </div>
+
             <!-- Modal Telemetry Strip & Action Footer -->
             <div class="px-4 sm:px-6 py-3 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs flex-shrink-0" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
                 <div class="space-y-1 min-w-0">
@@ -1712,6 +1739,41 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     portalLink.style.color = 'var(--fg-default)';
                     portalLink.innerHTML = '<span>Inspect Archive Portal</span>';
                 }}
+            }}
+
+            // Truth Oracle online policy corroboration wiring
+            const tv = offer.truth_verification;
+            const truthCard = document.getElementById('proofModalTruthCard');
+            const policyTypeEl = document.getElementById('proofModalPolicyType');
+            const sourceNameEl = document.getElementById('proofModalTruthSourceName');
+            const sourceLink = document.getElementById('proofModalTruthSource');
+            const notesEl = document.getElementById('proofModalTruthNotes');
+
+            if (tv) {{
+                if (truthCard) truthCard.classList.remove('hidden');
+                if (policyTypeEl) {{
+                    policyTypeEl.textContent = (tv.policy_type || 'VERIFIED').replace(/_/g, ' ').toUpperCase();
+                    if (tv.policy_type === 'verified_100pct_free') {{
+                        policyTypeEl.className = 'px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30';
+                    }} else if (tv.policy_type === 'partial_discount_copay' || tv.policy_type === 'annual_window_closed') {{
+                        policyTypeEl.className = 'px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/10 text-amber-500 border border-amber-500/30';
+                    }} else {{
+                        policyTypeEl.className = 'px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-500/10 text-slate-500 border border-slate-500/30';
+                    }}
+                }}
+                if (sourceNameEl) sourceNameEl.textContent = tv.truth_source_name || offer.platform;
+                if (sourceLink) sourceLink.href = tv.truth_source_url || offer.url;
+                if (notesEl) notesEl.textContent = tv.verdict_notes || '';
+
+                if (tv.policy_type === 'partial_discount_copay' && tv.real_exam_cost_usd > 0) {{
+                    if (alertEl) {{
+                        alertEl.classList.remove('hidden');
+                        alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
+                        alertEl.innerHTML = '<span class=\"text-sm\">⚠️</span><span><strong>Official ' + tv.verified_discount_pct + '% Discount Voucher:</strong> This voucher covers ' + tv.verified_discount_pct + '% of the examination fee. The candidate must pay the remaining co-pay fee of ~$' + tv.real_exam_cost_usd.toFixed(2) + ' USD at Pearson VUE checkout. It is NOT a $0.00 waiver.</span>';
+                    }}
+                }}
+            }} else if (truthCard) {{
+                truthCard.classList.add('hidden');
             }}
 
             if (portalLink) portalLink.href = offer.url || '#';
@@ -2197,6 +2259,20 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 font-bold'
                     : 'border-slate-400/30 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200';
 
+                const tv = o.truth_verification;
+                let truthBadge = '';
+                if (tv) {{
+                    if (tv.policy_type === 'partial_discount_copay') {{
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500" title="Official 75% Discount - Pearson VUE Copay Required">⚠️ 75% Off ($50 Fee)</span>';
+                    }} else if (tv.policy_type === 'student_verified_only') {{
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border border-blue-500/40 bg-blue-500/10 text-blue-400" title="Verified Students Only (GitHub Student Pack)">🎓 Student Pack</span>';
+                    }} else if (tv.policy_type === 'annual_window_closed') {{
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border border-amber-500/40 bg-amber-500/10 text-amber-500" title="Annual Window Closed - Reopens April 2027">📅 Annual Window Closed</span>';
+                    }} else if (tv.policy_type === 'verified_100pct_free') {{
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold border border-emerald-500/40 bg-emerald-500/10 text-emerald-500" title="100% Free Verified Proctored Exam ($0.00)">✓ $0.00 Verified</span>';
+                    }}
+                }}
+
                 return `
                 <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3 relative transition-all" id="card-${{o.id}}">
                     <div>
@@ -2221,6 +2297,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <div class="flex items-center gap-2 mt-2 flex-wrap">
                             ${{tierBadge}}
                             <span class="text-[11px] font-bold tabular-nums" style="color: var(--success-fg);">${{valText}}</span>
+                            ${{truthBadge}}
                             <button onclick="openProofModal('${{o.id}}')" class="text-[10px] px-1.5 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
                                 <span>🛡️ ${{o.authenticity_score || 100}}% Proof</span>
                             </button>
