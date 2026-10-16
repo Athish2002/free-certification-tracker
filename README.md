@@ -29,7 +29,7 @@
 | **Verified Tech Dispatches** | **38 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-16 09:13 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-16 09:17 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -102,7 +102,7 @@
 | :--- | :--- | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | Truth Gate Invariant: The Linux Foundation LiFT scholarship application window is strictly annual (April 1 to April 30). The 2026 cycle is officially closed. Next application window opens April 2027. |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | Truth Gate Invariant: MongoDB offers 100% free exam vouchers exclusively to verified students through GitHub Student Developer Pack. Standard price for general public is $150 USD. Portal migrated from learn.mongodb.com to university.mongodb.com. |
+| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **GitHub** | GitHub Foundations | Review Needed | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
@@ -595,4 +595,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-16 09:13 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-16 09:17 UTC`.*
