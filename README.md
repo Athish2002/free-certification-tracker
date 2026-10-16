@@ -3,10 +3,10 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-17-success.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-16-success.svg) 
 ![Offers Checked](https://img.shields.io/badge/Offers%20Checked-39%20Audited-blue.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242263%20USD-gold.svg) 
-![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-5%20Active-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242018%20USD-gold.svg) 
+![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-4%20Active-success.svg) 
 ![Skill Badges](https://img.shields.io/badge/Skill%20Badges-12%20Active-blue.svg) 
 ![Visual Proof](https://img.shields.io/badge/Visual%20Proof-39%2F39%20Verified-brightgreen.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
@@ -19,21 +19,21 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **17** | Verified 100% free exams & live registration windows |
-| **Written Proctored Exam Vouchers** | **5 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
+| **Active Opportunities** | **16** | Verified 100% free exams & live registration windows |
+| **Written Proctored Exam Vouchers** | **4 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
 | **Free Skill Badges & Labs** | **12 Active** (18 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
-| **Offers Checked & Audited** | **39 Total** (17 Active, 10 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
-| **Total Financial Value** | **$2,263 USD** | Aggregate savings if claimed today |
+| **Offers Checked & Audited** | **39 Total** (16 Active, 11 Triage, 12 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
+| **Total Financial Value** | **$2,018 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **12 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **38 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
-| **Last Automated Inspection** | `2026-10-16 07:14 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-16 07:17 UTC` | Auto-audited for 404s and 'Closed' notices |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
 
-## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers (5 Active / 21 Tracked)
+## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers (4 Active / 21 Tracked)
 > Formal accredited industry certifications featuring proctored written examinations (Pearson VUE, Kryterion, Webassessor waivers, 100% discount promo codes, and official challenge voucher waves).
 
 | Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Claim Link |
@@ -41,7 +41,6 @@
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | DevOps & Cloud Native | `Professional` | $395 | 🟢 Active | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | [**Claim Voucher**](https://www.linuxfoundation.org/about/lift-scholarships) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | `Associate` | $200 | 🟢 Active | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [**Claim Voucher**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
 | **HashiCorp** | HashiCorp Certified: Terraform Associate | Cloud & DevOps | `Associate` | $70 | 🟢 Active | [📸 Proof](docs/screenshots/hashicorp-terraform-associate-community.png) | [**Claim Voucher**](https://developer.hashicorp.com/certifications/terraform-associate) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [**Claim Voucher**](https://mylearn.oracle.com/) |
 | **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Foundational` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [**Claim Voucher**](https://github.com/education) |
 
 ---
@@ -91,7 +90,7 @@
 ---
 
 <details>
-<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 10 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 11 Opportunities)</b> — <i>Click to expand</i></summary>
 
 > Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.
 
@@ -101,12 +100,13 @@
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 | **Cisco** | Cisco Continuing Education (Recertification) | ⚠️ Broken Link | HTTP 404 Page Not Found |
 | **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | ⚠️ Broken Link | HTTP 404 Page Not Found |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
+| **MongoDB** | MongoDB Associate Developer / DBA | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **GitHub** | GitHub Foundations | Review Needed | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | ⚠️ Server Error | HTTP 500 Host Down |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | ⚠️ Broken Link | HTTP 404 Page Not Found |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | Review Needed | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 
 </details>
 
@@ -166,7 +166,7 @@
 ---
 
 <details>
-<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 17 Active Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 16 Active Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials
 - **Provider:** Microsoft Azure
@@ -266,13 +266,6 @@
 - **Steps to Claim:** Sign up on Databricks Academy, enroll in the free Lakehouse Fundamentals pathway, complete the interactive curriculum, and pass the accreditation test to earn the official Databricks badge.
 - **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
 
-#### Oracle University: Free OCI Generative AI Professional Certification
-- **Provider:** Oracle Cloud
-- **Value:** $245 USD
-- **Eligibility:** Global (Free Oracle University account)
-- **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
-- **Official Link:** [https://mylearn.oracle.com/](https://mylearn.oracle.com/)
-
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Provider:** Cisco
 - **Value:** $125 USD
@@ -310,12 +303,11 @@
 | **Splunk** | Splunk Core Observability & Defense Fundamentals | [Splunk Lantern and Education Portal](https://lantern.splunk.com/) | `Lantern Training Portal -> 'Start Guided Scenario' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/) | `Student Learning Dashboard -> 'Complete Credential Track' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/training/certification) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | `Oracle MyLearn Course Page -> 'Schedule Free Exam' button` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 17 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 16 Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Microsoft Applied Skills - 100% Free Verifiable Cloud Credentials
 - **Voucher / Promo Code:** `MICROSOFT_ZERO_DOLLAR_LAB`
@@ -485,18 +477,6 @@
   1. Complete the comprehensive multimedia course.
   1. Take the 20-question accreditation assessment; 80%+ score immediately issues verifiable Credly badge ($0.00).
 
-#### Oracle University: Free OCI Generative AI Professional Certification
-- **Voucher / Promo Code:** `ORACLE_GENAI_WAVE_FREE_ATTEMPT`
-- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/)
-- **Checkout Field Location:** `Oracle MyLearn Course Page -> 'Schedule Free Exam' button`
-- **Application Flow Type:** `Automated Account Link Waiver`
-- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
-- **Checkout Steps:**
-  1. Sign into Oracle University MyLearn with your Oracle SSO profile.
-  1. Complete the OCI Generative AI Professional learning path.
-  1. Click the integrated exam scheduling button during promotional cycle waves.
-  1. The exam booking registers through Oracle proctoring provider at $0.00 total fee.
-
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Voucher / Promo Code:** `NETACAD_QUALIFICATION_WAIVER`
 - **Official Redemption Portal:** [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/)
@@ -574,4 +554,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-16 07:14 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-16 07:17 UTC`.*
