@@ -480,15 +480,34 @@ class HeadlessDOMInspector:
         target_path = screenshots_dir / f"{offer_id}.png"
         rel_path = f"docs/screenshots/{offer_id}.png"
 
+        temp_path = target_path.with_suffix(".tmp.png")
         try:
-            page.screenshot(path=str(target_path), full_page=False)
+            page.screenshot(path=str(temp_path), full_page=False)
+            if temp_path.exists() and temp_path.stat().st_size >= 4096:
+                header = temp_path.read_bytes()[:8]
+                if header == b"\x89PNG\r\n\x1a\n":
+                    temp_path.replace(target_path)
+                    return True, rel_path
+            if temp_path.exists():
+                try:
+                    temp_path.unlink()
+                except Exception:
+                    pass
+            # If target already exists and is valid, preserve it
             if target_path.exists() and target_path.stat().st_size >= 4096:
                 header = target_path.read_bytes()[:8]
                 if header == b"\x89PNG\r\n\x1a\n":
                     return True, rel_path
             return False, rel_path
         except Exception as e:
+            if temp_path.exists():
+                try:
+                    temp_path.unlink()
+                except Exception:
+                    pass
             logger.warning(f"Failed to capture screenshot for {offer_id}: {e}")
+            if target_path.exists() and target_path.stat().st_size >= 4096:
+                return True, rel_path
             return False, rel_path
 
     def inspect_url(

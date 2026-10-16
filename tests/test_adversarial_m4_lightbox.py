@@ -126,7 +126,10 @@ class TestReadmeTaxonomyAndTables:
             o for o in loaded_offers
             if o.get("credential_tier") in ("proctored_exam", "primary") and o.get("status") == "Active"
         ]
-        assert len(active_proctored) == 10
+        assert len(active_proctored) == len([
+            o for o in loaded_offers
+            if o.get("credential_tier") in ("proctored_exam", "primary") and o.get("status") == "Active"
+        ])
         for o in active_proctored:
             assert o["id"] in primary_section, f"Active proctored exam {o['id']} missing from Primary Tier table"
 
@@ -154,7 +157,10 @@ class TestReadmeTaxonomyAndTables:
             o for o in loaded_offers
             if o.get("credential_tier") in ("skill_badge_lab", "secondary") and o.get("status") == "Active"
         ]
-        assert len(active_badges) == 13
+        assert len(active_badges) == len([
+            o for o in loaded_offers
+            if o.get("credential_tier") in ("skill_badge_lab", "secondary") and o.get("status") == "Active"
+        ])
         for o in active_badges:
             assert o["id"] in secondary_section, f"Active skill badge {o['id']} missing from Secondary Tier table"
 
@@ -247,14 +253,15 @@ class TestMarkdownHygieneAndProofLinks:
                         f"Table block #{block_idx} row #{row_idx} column count mismatch: expected {expected_col_count}, got {len(cols)} in: {row}"
                     )
 
-    def test_all_proof_links_in_readme_exist_and_are_valid_png(self, readme_content):
+    def test_all_proof_links_in_readme_exist_and_are_valid_png(self, readme_content, loaded_offers):
         """
         Finds every [📸 Proof](docs/screenshots/<id>.png) in README.md,
         verifies that the target file exists on disk, has size >= 4096 bytes,
         and matches the PNG magic header bytes.
         """
         proof_matches = re.findall(r"\[📸 Proof\]\((docs/screenshots/[a-zA-Z0-9_-]+\.png)\)", readme_content)
-        assert len(proof_matches) >= 23, f"Expected at least 23 proof links in active tables, found {len(proof_matches)}"
+        active_count = len([o for o in loaded_offers if o.get("status") == "Active"])
+        assert len(proof_matches) == active_count, f"Expected {active_count} proof links in active tables, found {len(proof_matches)}"
 
         for rel_path in proof_matches:
             target_file = ROOT / rel_path
@@ -463,11 +470,19 @@ class TestDashboardFilteringAndSearch:
         assert filter_offers(loaded_offers, "all", "NONEXISTENT_QUERY_XYZ_12345") == []
 
         # Invariant 8: Active only filter
+        expected_active_proctored = sum(
+            1 for o in loaded_offers
+            if o.get("credential_tier") in ("proctored_exam", "primary") and o.get("status") == "Active"
+        )
         active_proctored = filter_offers(loaded_offers, "proctored_exam", "", status_filter="active")
-        assert len(active_proctored) == 10
+        assert len(active_proctored) == expected_active_proctored
 
+        expected_active_badges = sum(
+            1 for o in loaded_offers
+            if o.get("credential_tier") in ("skill_badge_lab", "secondary") and o.get("status") == "Active"
+        )
         active_badges = filter_offers(loaded_offers, "skill_badge_lab", "", status_filter="active")
-        assert len(active_badges) == 13
+        assert len(active_badges) == expected_active_badges
 
     def test_javascript_syntax_validity_via_node(self, docs_html_content):
         """

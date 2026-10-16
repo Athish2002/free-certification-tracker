@@ -1,6 +1,23 @@
 {
-  "total_candidates": 7,
+  "total_candidates": 8,
   "leads": [
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Registered for DP-750 with voucher and can\u2019t reschedule. Should I take the test still?",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x6of7u/registered_for_dp750_with_voucher_and_cant/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-15T15:16:57+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead",
+      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "vetted_at": "2026-10-16T03:08:21.674877+00:00"
+    },
     {
       "source": "Reddit r/AzureCertification",
       "title": "Does TCS provides Vouchers/Coupons or Reimbursement for external certifications ?",
@@ -16,7 +33,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-15T14:48:11.653439+00:00"
+      "vetted_at": "2026-10-16T03:08:21.675060+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -33,7 +50,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-15T14:48:11.653597+00:00"
+      "vetted_at": "2026-10-16T03:08:21.675190+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -51,7 +68,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-15T14:48:11.653728+00:00"
+      "vetted_at": "2026-10-16T03:08:21.675316+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -68,7 +85,7 @@
       "authenticity_tier": "Verified Official Portal",
       "vetting_status": "Rejected: MAINTENANCE_PAGE: Portal currently down for maintenance (Maintenance Invariant: Portal currently down for maintenance ('routine maintenance'))",
       "rejection_reason": "MAINTENANCE_PAGE: Portal currently down for maintenance (Maintenance Invariant: Portal currently down for maintenance ('routine maintenance'))",
-      "vetted_at": "2026-10-15T14:48:18.730209+00:00"
+      "vetted_at": "2026-10-16T03:08:28.877742+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -86,7 +103,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-15T14:48:18.730502+00:00"
+      "vetted_at": "2026-10-16T03:08:28.878043+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -104,7 +121,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-15T14:48:18.730614+00:00"
+      "vetted_at": "2026-10-16T03:08:28.878186+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -121,10 +138,10 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-15T14:48:18.730691+00:00"
+      "vetted_at": "2026-10-16T03:08:28.878304+00:00"
     }
   ],
-  "last_vetted": "2026-10-15T14:48:18.730758+00:00",
+  "last_vetted": "2026-10-16T03:08:28.878424+00:00",
   "vetted_promoted_count": 0,
-  "vetted_rejected_count": 7
+  "vetted_rejected_count": 8
 }

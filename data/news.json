@@ -3,6 +3,54 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "cisco-the-quantum-security-transitio",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The Quantum Security Transition: A Policy Agenda for Post-Quantum Readiness in Asia Pacific",
+      "summary": "Governments should treat quantum risk as a national resilience challenge, integrating post-quantum cryptography into cybersecurity strategies and procurement to protect critical infrastructure and ensure long-term digital trust.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/gov/the-quantum-security-transition-a-policy-agenda-for-post-quantum-readiness-in-asia-pacific",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "github-staying-evergreen-how-we-auto",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "Staying Evergreen: How we automated secure access and repo hygiene in a shared org",
+      "summary": "Put native GitHub features to work to review outside collaborator access and archive stale repositories. The post Staying Evergreen: How we automated secure access and repo hygiene in a shared org appeared first on The GitHub Blog.",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
+      "id": "github-the-next-developer-interface-i",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "The next developer interface is ambient intelligence",
+      "summary": "AI, agents, voice, and physical controls are shifting software development from operating tools to expressing intent\u2014and helping developers stay focused on building. The post The next developer interface is ambient intelligence appeared fir...",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/news-insights/company-news/the-next-developer-interface-is-ambient-intelligence/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
+      "id": "google-cloud-what-the-gemini-agent-means-fo",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "What the Gemini agent means for startups",
+      "summary": "Small teams, short runway, and constant pressure to ship faster \u2014 it\u2019s the reality we see every day among the founders we work with at Google for Startups. When you are building a company from the ground up, every hour spent on operational ...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/startups/what-the-gemini-agent-means-for-startups/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
       "id": "cisco-cisco-takes-the-court-powerin",
       "company": "Cisco",
       "source": "Cisco Blogs",
