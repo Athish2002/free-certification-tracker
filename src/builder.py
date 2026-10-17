@@ -8,6 +8,7 @@ Compiles data/offers.json and data/news.json into:
 import json
 from pathlib import Path
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 from typing import Dict, Any, List
 
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "offers.json"
@@ -21,8 +22,34 @@ STATUS_BADGES = {
     "Registrations Closed": "🟡 Closed / Waitlist",
     "Expired": "🔴 Expired",
     "Broken Link": "⚠️ Broken Link",
-    "Server Error": "⚠️ Server Error"
+    "Server Error": "⚠️ Server Error",
+    "Review Needed": "🟡 Review Needed"
 }
+
+def format_4_timezones(dt: datetime = None) -> Dict[str, str]:
+    """Formats a datetime across 4 canonical global timezones: UTC, IST, US Eastern (ET), and Central Europe (CET/CEST)."""
+    if dt is None:
+        dt = datetime.now(timezone.utc)
+    elif dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    else:
+        dt = dt.astimezone(timezone.utc)
+
+    utc_str = dt.strftime("%Y-%m-%d %H:%M UTC")
+    utc_time_only = dt.strftime("%H:%M UTC")
+    ist_str = dt.astimezone(ZoneInfo("Asia/Kolkata")).strftime("%H:%M IST")
+    et_str = dt.astimezone(ZoneInfo("America/New_York")).strftime("%H:%M %Z")
+    cet_str = dt.astimezone(ZoneInfo("Europe/Berlin")).strftime("%H:%M %Z")
+
+    return {
+        "utc": utc_str,
+        "utc_short": utc_time_only,
+        "ist": ist_str,
+        "et": et_str,
+        "cet": cet_str,
+        "ticker": f"{utc_time_only} • {ist_str} • {et_str} • {cet_str}",
+        "banner": f"`{utc_str}` ({ist_str} • {et_str} • {cet_str})",
+    }
 
 def load_offers() -> Dict[str, Any]:
     with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -93,7 +120,8 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append(f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** | Official primary cloud engineering updates |")
     lines.append(f"| **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |")
     lines.append(f"| **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |")
-    lines.append(f"| **Last Automated Inspection** | `{last_updated}` | Auto-audited for 404s and 'Closed' notices |")
+    tz_info = format_4_timezones()
+    lines.append(f"| **Last Automated Inspection** | {tz_info['banner']} | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |")
     lines.append("| **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |")
     lines.append("")
     lines.append("---")
@@ -149,8 +177,8 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
         lines.append("")
         lines.append("> Cloud providers regularly launch recurring 100% free certification campaigns (annual developer conferences, seasonal training challenges, and beta programs). Track past campaign timeframes and historical recurrence patterns below to anticipate upcoming waves.")
         lines.append("")
-        lines.append("| Provider | Certification & Exam Code | Type | Value (USD) | Active Promo Period | Recurrence Pattern | Notes / Archival Reason |")
-        lines.append("| :--- | :--- | :--- | :---: | :---: | :--- | :--- |")
+        lines.append("| Provider | Certification & Exam Code | Type | Value (USD) | Active Promo Period | Recurrence Pattern | Proof | Notes / Archival Reason |")
+        lines.append("| :--- | :--- | :--- | :---: | :---: | :--- | :---: | :--- |")
         for o in historical_offers:
             provider = o.get("platform")
             cert = o.get("certification_name")
@@ -160,7 +188,8 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
             period = o.get("time_period", "Concluded")
             recur = o.get("recurrence_pattern", "Annual / Rolling")
             notes = o.get("inspection_notes", "Concluded")
-            lines.append(f"| **{provider}** | **{cert}**{exam} | `{otype}` | {val} | {period} | {recur} | {notes} |")
+            proof_link = f"[📸 Proof](docs/screenshots/{o['id']}.png)"
+            lines.append(f"| **{provider}** | **{cert}**{exam} | `{otype}` | {val} | {period} | {recur} | {proof_link} | {notes} |")
         lines.append("")
         lines.append("</details>")
         lines.append("")
@@ -173,12 +202,13 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
         lines.append("")
         lines.append("> Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.")
         lines.append("")
-        lines.append("| Provider | Certification | Triage Status | Reason / Inspection Note |")
-        lines.append("| :--- | :--- | :---: | :--- |")
+        lines.append("| Provider | Certification | Triage Status | Proof | Reason / Inspection Note |")
+        lines.append("| :--- | :--- | :---: | :---: | :--- |")
         for o in closed_offers:
             status_badge = STATUS_BADGES.get(o.get("status"), o.get("status"))
             reason = o.get("inspection_notes", "Concluded")
-            lines.append(f"| **{o.get('platform')}** | {o.get('certification_name')} | {status_badge} | {reason} |")
+            proof_link = f"[📸 Proof](docs/screenshots/{o['id']}.png)"
+            lines.append(f"| **{o.get('platform')}** | {o.get('certification_name')} | {status_badge} | {proof_link} | {reason} |")
         lines.append("")
         lines.append("</details>")
         lines.append("")
@@ -352,7 +382,8 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
     verified_proofs_count = sum(1 for o in offers if (DOCS_DIR / "screenshots" / f"{o['id']}.png").exists())
 
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
-    last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    tz_info = format_4_timezones()
+    last_updated = tz_info["utc"]
     
     offers_json_str = json.dumps(offers)
     news_json_str = json.dumps(news_items)
@@ -554,12 +585,12 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 </div>
             </div>
 
-            <!-- Right: Controls, Goal Counter, Theme Selector Popover & Repo CTA -->
+            <!-- Right: Controls, 4-Timezone Telemetry, Theme Selector & Repo CTA -->
             <div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0">
-                <!-- Goal Check Counter Pill in Nav (Desktop) -->
-                <div id="navGoalPill" class="hidden sm:flex items-center gap-2 text-xs font-semibold px-2.5 py-1 rounded-lg border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-default);" title="Your Claimed / Checked Certifications">
-                    <span class="w-2 h-2 rounded-full" style="background-color: var(--success-fg);"></span>
-                    <span>Goals: <strong id="navGoalText" class="tabular-nums" style="color: var(--success-fg);">0 / {len(active_offers)}</strong></span>
+                <!-- Synchronized 4-Timezone World Telemetry Pill (Desktop/Tablet) -->
+                <div id="navTimezonePill" class="hidden md:flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Synchronized Global 4-Timezone World Telemetry (UTC • IST • EDT • CEST)">
+                    <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
+                    <span id="navTimezoneText" class="tabular-nums font-mono">{tz_info['ticker']}</span>
                 </div>
 
                 <!-- Dark / Light Contrast Mode Toggle Button -->
@@ -677,19 +708,20 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     </div>
                 </div>
 
-                <!-- Bento 4: Interactive Goal Check Counter & Cadence -->
-                <div class="p-4 sm:p-5 rounded-2xl border primer-card flex flex-col justify-between" id="heroGoalCard">
+                <!-- Bento 4: 4-Timezone Global Telemetry & Cadence -->
+                <div class="p-4 sm:p-5 rounded-2xl border primer-card flex flex-col justify-between" id="heroCadenceCard">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Goal Progress</span>
-                        <span class="text-[10px] font-mono font-bold" id="goalPctChip" style="color: var(--attention-fg);">0% Done</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Audit Cadence</span>
+                        <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded" style="background-color: var(--accent-subtle); color: var(--accent-fg);">4-HOUR CRON</span>
                     </div>
                     <div class="mt-3">
-                        <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--attention-fg);">
-                            <span id="heroGoalCount">0</span> <span class="text-xs font-normal" style="color: var(--fg-muted);">of {len(active_offers)} Claimed</span>
+                        <div class="text-xs sm:text-sm font-extrabold tracking-tight tabular-nums font-mono" style="color: var(--fg-default);">
+                            <span id="heroCadenceUtc">{tz_info['utc_short']}</span> &bull; <span id="heroCadenceIst" style="color: var(--accent-fg);">{tz_info['ist']}</span>
                         </div>
-                        <div class="w-full bg-black/10 dark:bg-white/10 rounded-full h-1.5 mt-2 overflow-hidden">
-                            <div id="goalProgressBar" class="h-full rounded-full transition-all duration-300" style="width: 0%; background-color: var(--attention-fg);"></div>
+                        <div class="text-[11px] font-mono mt-1 tabular-nums" style="color: var(--fg-muted);">
+                            <span id="heroCadenceEt">{tz_info['et']}</span> &bull; <span id="heroCadenceCet">{tz_info['cet']}</span>
                         </div>
+                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">Live Playwright DOM & Visual Screenshot Telemetry</p>
                     </div>
                 </div>
             </div>
@@ -759,11 +791,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <span>Networking</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{net_count}</span>
                     </button>
-                    <!-- Dedicated Check Counter Filter Pill -->
-                    <button onclick="filterCategory('Checked')" id="pillChecked" class="cat-pill min-h-[40px] px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--success-fg);" data-cat="Checked" title="Filter to your Claimed / Checked Certifications">
-                        <span>✓ Claimed</span>
-                        <span id="checkedPillCount" class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">0</span>
-                    </button>
                     <button onclick="filterCategory('History')" class="cat-pill min-h-[40px] px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--accent-fg);" data-cat="History">
                         <span>📜 History</span>
                         <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(historical_offers)}</span>
@@ -829,10 +856,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 <div class="rounded-xl border overflow-hidden shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
                     <div class="hidden sm:grid grid-cols-12 gap-3 px-4 py-3 border-b text-xs font-semibold uppercase tracking-wider" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">
                         <div class="col-span-3">Provider</div>
-                        <div class="col-span-4">Certification & Program</div>
-                        <div class="col-span-2 text-center">Value</div>
-                        <div class="col-span-1 text-center">Goal</div>
-                        <div class="col-span-2 text-right">Action</div>
+                        <div class="col-span-5">Certification & Program</div>
+                        <div class="col-span-1 text-center">Value</div>
+                        <div class="col-span-3 text-right">Verification & Actions</div>
                     </div>
                     <div id="offersTableBody" class="divide-y" style="border-color: var(--border-muted);"></div>
                 </div>
@@ -866,9 +892,12 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                             <div>
                                 <span class="font-bold" style="color: var(--fg-default);">{o.get('platform')}</span> — <span style="color: var(--fg-muted);">{o.get('certification_name')}</span>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{STATUS_BADGES.get(o.get('status'), o.get('status'))}</span>
                                 <span class="text-[11px]" style="color: var(--fg-subtle);">{o.get('inspection_notes', 'Under continuous review')}</span>
+                                <button onclick="openProofModal('{o.get('id')}')" class="px-2 py-0.5 rounded border text-[10px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96]" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
+                                    <span>📸 Proof</span>
+                                </button>
                             </div>
                         </div>''' for o in closed_offers])}
                     </div>
@@ -1114,7 +1143,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             <div class="flex items-center gap-4 flex-wrap justify-center">
                 <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:underline py-1" style="color: var(--accent-fg);">GitHub Repo</a>
                 <a href="https://github.com/Athish2002/free-certification-tracker/issues/new/choose" target="_blank" class="hover:underline py-1" style="color: var(--accent-fg);">Submit Voucher</a>
-                <a href="javascript:void(0)" onclick="clearAllChecked()" class="hover:underline py-1" style="color: var(--fg-muted);">Reset Claimed Goals</a>
+                <a href="https://github.com/Athish2002/free-certification-tracker/actions" target="_blank" class="hover:underline py-1" style="color: var(--fg-muted);">CI Workflows</a>
             </div>
         </div>
     </footer>
@@ -1261,6 +1290,24 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
             if (titleEl) titleEl.textContent = offer.title || offer.certification_name || '';
             if (platformEl) platformEl.textContent = offer.platform || '';
+
+            // 4-Timezone timestamp representation for global verification
+            const rawDate = (offer.visual_proof && offer.visual_proof.captured_at) || offer.verification_date || '';
+            let dateDisplay = rawDate;
+            let multiTzCaptured = rawDate;
+            if (rawDate) {{
+                const dt = new Date(rawDate);
+                if (Number.isFinite(dt.getTime())) {{
+                    const utcStr = dt.toLocaleString('en-US', {{ timeZone: 'UTC', hour12: false, month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }}) + ' UTC';
+                    const istStr = dt.toLocaleString('en-US', {{ timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' IST';
+                    const etStr = dt.toLocaleString('en-US', {{ timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' EDT';
+                    const cetStr = dt.toLocaleString('en-US', {{ timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' CEST';
+                    dateDisplay = `${{utcStr}} (${{istStr}} • ${{etStr}} • ${{cetStr}})`;
+                    multiTzCaptured = `${{utcStr}} • ${{istStr}} • ${{etStr}} • ${{cetStr}}`;
+                }}
+            }}
+            if (dateEl) dateEl.textContent = dateDisplay ? ('Audited: ' + dateDisplay) : '';
+            if (capturedAtEl) capturedAtEl.textContent = multiTzCaptured || 'Verified';
 
             const isProctored = offer.credential_tier === 'proctored_exam' || offer.credential_tier === 'primary';
             const tierLabel = isProctored ? '🎓 Written Proctored Exam' : '🎖️ Skill Badge & Lab';
@@ -1465,10 +1512,15 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 img.classList.remove('hidden');
                 img.src = shotPath;
                 img.onerror = function() {{
-                    img.classList.add('hidden');
-                    if (fallback) {{
-                        fallback.classList.remove('hidden');
-                        if (fallbackPath) fallbackPath.textContent = 'docs/screenshots/' + offer.id + '.png';
+                    const rawFallback = 'https://raw.githubusercontent.com/Athish2002/free-certification-tracker/main/docs/screenshots/' + offer.id + '.png';
+                    if (img.src !== rawFallback) {{
+                        img.src = rawFallback;
+                    }} else {{
+                        img.classList.add('hidden');
+                        if (fallback) {{
+                            fallback.classList.remove('hidden');
+                            if (fallbackPath) fallbackPath.textContent = 'docs/screenshots/' + offer.id + '.png';
+                        }}
                     }}
                 }};
             }}
@@ -1637,54 +1689,31 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
         function toggleThemeDropdown() {{}}
         function closeThemeDropdown() {{}}
 
-        // Checkbox & Goal Counter System (localStorage persisted)
-        function toggleOfferChecked(id, event) {{
-            if (event) event.stopPropagation();
-            const idx = checkedOfferIds.indexOf(id);
-            if (idx >= 0) {{
-                checkedOfferIds.splice(idx, 1);
-                toast('Removed from goals');
-            }} else {{
-                checkedOfferIds.push(id);
-                toast('Marked as Claimed goal!');
-            }}
-            try {{
-                localStorage.setItem('certpulse_checked_offers', JSON.stringify(checkedOfferIds));
-            }} catch(e) {{}}
-            updateGoalCounters();
-            renderCards();
+        // Global Synchronized 4-Timezone World Telemetry (UTC, IST, EDT/EST, CEST/CET)
+        function updateWorldClock() {{
+            const now = new Date();
+            const utcTime = now.toLocaleString('en-US', {{ timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' UTC';
+            const istTime = now.toLocaleString('en-US', {{ timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' IST';
+            const etTime = now.toLocaleString('en-US', {{ timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' EDT';
+            const cetTime = now.toLocaleString('en-US', {{ timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' CEST';
+
+            const navTimeText = document.getElementById('navTimezoneText');
+            if (navTimeText) navTimeText.textContent = `${{utcTime}} • ${{istTime}} • ${{etTime}} • ${{cetTime}}`;
+
+            const heroUtc = document.getElementById('heroCadenceUtc');
+            if (heroUtc) heroUtc.textContent = utcTime;
+            const heroIst = document.getElementById('heroCadenceIst');
+            if (heroIst) heroIst.textContent = istTime;
+            const heroEt = document.getElementById('heroCadenceEt');
+            if (heroEt) heroEt.textContent = etTime;
+            const heroCet = document.getElementById('heroCadenceCet');
+            if (heroCet) heroCet.textContent = cetTime;
         }}
 
-        function clearAllChecked() {{
-            if (confirm('Reset all claimed goals?')) {{
-                checkedOfferIds = [];
-                localStorage.removeItem('certpulse_checked_offers');
-                updateGoalCounters();
-                renderCards();
-                toast('Claimed goals reset');
-            }}
-        }}
-
-        function updateGoalCounters() {{
-            const activeCount = offersData.filter(o => o.status === 'Active').length || 1;
-            const claimedCount = checkedOfferIds.length;
-            const pct = Math.min(100, Math.round((claimedCount / activeCount) * 100));
-
-            const navText = document.getElementById('navGoalText');
-            if (navText) navText.textContent = claimedCount + ' / ' + activeCount;
-
-            const heroCount = document.getElementById('heroGoalCount');
-            if (heroCount) heroCount.textContent = claimedCount;
-
-            const goalPctChip = document.getElementById('goalPctChip');
-            if (goalPctChip) goalPctChip.textContent = pct + '% Done';
-
-            const progressBar = document.getElementById('goalProgressBar');
-            if (progressBar) progressBar.style.width = pct + '%';
-
-            const pillCount = document.getElementById('checkedPillCount');
-            if (pillCount) pillCount.textContent = claimedCount;
-        }}
+        // Backwards compatibility stubs
+        function toggleOfferChecked() {{}}
+        function clearAllChecked() {{}}
+        function updateGoalCounters() {{ updateWorldClock(); }}
 
         // Tab Switching Engine (Vouchers vs Tech Radar vs Where Offers Are Applied)
         function switchMainTab(tab, updateUrl = true) {{
@@ -1840,9 +1869,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     if (!isBadge) return false;
                 }}
 
-                if (currentCategory === 'Checked') {{
-                    if (!checkedOfferIds.includes(o.id)) return false;
-                }} else if (currentCategory === 'History') {{
+                if (currentCategory === 'History') {{
                     if (!o.is_historical_archive && o.status !== 'Expired') return false;
                 }} else if (currentCategory !== 'All') {{
                     const cat = (o.category || '').toLowerCase();
@@ -1892,7 +1919,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         function renderGridView(filtered) {{
             const renderCardHtml = (o) => {{
-                const isClaimed = checkedOfferIds.includes(o.id);
                 const valText = o.value_usd ? '$' + o.value_usd + ' USD' : '100% Free';
                 const statusBadge = o.status === 'Active' 
                     ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 Active</span>'
@@ -1904,9 +1930,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     : '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">🎖️ Skill Badge & Lab</span>';
 
                 const tierBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">' + (o.difficulty_tier || 'Foundational') + '</span>';
-                const checkBtnClass = isClaimed 
-                    ? 'border-emerald-500 bg-emerald-500/10 text-emerald-500 font-bold'
-                    : 'border-slate-400/30 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200';
 
                 const tv = o.truth_verification;
                 let truthBadge = '';
@@ -1932,9 +1955,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                             </div>
                             <div class="flex items-center gap-1.5 flex-shrink-0">
                                 ${{statusBadge}}
-                                <button onclick="toggleOfferChecked('${{o.id}}', event)" class="px-2 py-1 rounded-md text-[10px] border flex items-center gap-1 transition active:scale-[0.95] cursor-pointer ${{checkBtnClass}}" title="Toggle Claimed status">
-                                    <span>${{isClaimed ? '✓ Claimed' : '○ Goal'}}</span>
-                                </button>
                             </div>
                         </div>
 
@@ -2043,7 +2063,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             }}
 
             const renderTableRow = (o) => {{
-                const isClaimed = checkedOfferIds.includes(o.id);
                 const valText = o.value_usd ? '$' + o.value_usd : 'Free';
                 const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
                 const credBadge = isProctored 
@@ -2071,16 +2090,11 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                             <div class="flex items-center gap-1 mt-0.5">${{credBadge}} ${{truthBadge}}</div>
                         </div>
                     </div>
-                    <div class="sm:col-span-4 min-w-0">
+                    <div class="sm:col-span-5 min-w-0">
                         <div class="font-semibold text-xs sm:text-sm truncate" style="color: var(--fg-default);">${{o.certification_name || o.title}}</div>
                         <div class="text-[11px]" style="color: var(--fg-muted);">${{o.category}} • ${{o.difficulty_tier || 'Foundational'}}</div>
                     </div>
                     <div class="sm:col-span-1 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${{valText}}</div>
-                    <div class="sm:col-span-1 sm:text-center">
-                        <button onclick="toggleOfferChecked('${{o.id}}', event)" class="px-2 py-0.5 rounded text-[10px] font-bold border cursor-pointer ${{isClaimed ? 'bg-emerald-500/20 text-emerald-500 border-emerald-500' : 'text-slate-400 border-slate-500/30'}}">
-                            ${{isClaimed ? '✓' : '○'}}
-                        </button>
-                    </div>
                     <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
                         <button onclick="openProofModal('${{o.id}}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
                         <button onclick="openRedemptionFor('${{o.id}}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
@@ -2129,9 +2143,6 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <button onclick="openProofModal('${{o.id}}')" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
                             📸 Proof
-                        </button>
-                        <button onclick="toggleOfferChecked('${{o.id}}', event)" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer">
-                            ${{checkedOfferIds.includes(o.id) ? '✓ Claimed' : '○ Track'}}
                         </button>
                         <a href="${{o.url}}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
                     </div>

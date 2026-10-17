@@ -260,8 +260,8 @@ class TestMarkdownHygieneAndProofLinks:
         and matches the PNG magic header bytes.
         """
         proof_matches = re.findall(r"\[📸 Proof\]\((docs/screenshots/[a-zA-Z0-9_-]+\.png)\)", readme_content)
-        active_count = len([o for o in loaded_offers if o.get("status") == "Active"])
-        assert len(proof_matches) == active_count, f"Expected {active_count} proof links in active tables, found {len(proof_matches)}"
+        total_offers_count = len(loaded_offers)
+        assert len(proof_matches) == total_offers_count, f"Expected {total_offers_count} proof links across all tables, found {len(proof_matches)}"
 
         for rel_path in proof_matches:
             target_file = ROOT / rel_path

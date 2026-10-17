@@ -29,7 +29,7 @@
 | **Verified Tech Dispatches** | **44 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-17 08:25 UTC` | Auto-audited for 404s and 'Closed' notices |
+| **Last Automated Inspection** | `2026-10-17 13:12 UTC` (18:42 IST • 09:12 EDT • 15:12 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -73,21 +73,21 @@
 
 > Cloud providers regularly launch recurring 100% free certification campaigns (annual developer conferences, seasonal training challenges, and beta programs). Track past campaign timeframes and historical recurrence patterns below to anticipate upcoming waves.
 
-| Provider | Certification & Exam Code | Type | Value (USD) | Active Promo Period | Recurrence Pattern | Notes / Archival Reason |
-| :--- | :--- | :--- | :---: | :---: | :--- | :--- |
-| **Microsoft Azure** | **Azure AI Engineer / Fabric Analytics / DevOps Engineer**<br>`AI-102, DP-600, AZ-400, AZ-204, SC-200` | `100% Free Exam Voucher` | $165 | May 21, 2024 - June 24, 2024 | Annual (Every May alongside Microsoft Build Conference) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **Microsoft Azure** | **Azure Solutions Architect / Security Operations Analyst / Power Platform**<br>`AZ-104, AZ-305, SC-200, PL-300, MS-102` | `100% Free Exam Voucher` | $165 | Nov 15, 2023 - Jan 15, 2024 | Annual (Every Nov/Dec alongside Microsoft Ignite) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **Oracle Cloud** | **OCI Generative AI / Cloud Architect Associate / DevOps**<br>`1Z0-1127-24, 1Z0-1085-24, 1Z0-1072-24, 1Z0-1110-24` | `100% Free Exam Attempts (Up to 2)` | $245 | July 1, 2024 - Oct 31, 2024 | Annual (Summer promotional cycle across Q3 every year) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **Cisco** | **Cisco Certified Network Associate / Professional Recertification**<br>`DEVNAE (200-901 / CCNA Recertification)` | `100% Free CE Credits (16 CE)` | $300 | July 15, 2024 - Aug 31, 2024 | Quarterly (Cisco Learning Network Rev Up sprints every 3-4 months) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **Amazon Web Services** | **AWS Certified AI Practitioner**<br>`AIF-C01` | `Early Adopter Discount & Beta Retake Voucher` | $100 | Aug 13, 2024 - Oct 31, 2024 | Event-driven (New AWS certification launch beta periods) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **Google Cloud** | **Google Cloud Certified Associate Cloud Engineer**<br>`ACE` | `100% Free Exam Voucher + Skills Boost Labs` | $125 | April 15, 2024 - June 30, 2024 | Semi-Annual (Google Cloud Next & Autumn Innovators Challenges) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **Databricks** | **Generative AI Fundamentals Accredited Badge**<br>`DATABRICKS-GENAI` | `100% Free Official Credential` | $75 | Jan 1, 2024 - Sept 30, 2024 | Annual (Refreshed annually for new LLM releases) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **GitHub** | **GitHub Foundations / Actions / Advanced Security**<br>`GH-FND, GH-ACT, GH-SEC` | `100% Free Voucher for Virtual Attendees` | $99 | Oct 29, 2024 - Nov 15, 2024 | Annual (GitHub Universe conference every October/November) | Concluded promo cycle (Preserved for recurrence tracking) |
-| **HashiCorp** | **HashiCorp Certified: Terraform Associate**<br>`003` | `100% Free Exam Voucher` | $70 | Q4 2026 Wave | Biannual HashiDays / Community Challenge | Truth Gate Invariant: HashiCorp standard exam fee is $70.50 USD. HashiCorp does not offer evergreen open free vouchers; free seats occur strictly during HashiConf or partner training webinars. Community wave concluded. |
-| **Red Hat** | **Red Hat Certified System Administrator (RHCSA)**<br>`EX200` | `100% Free Exam Voucher` | $400 | May 2024 | Annual Red Hat Summit Promo | Concluded promotion wave (Archived for historical recurrence tracking) |
-| **HashiCorp** | **HashiCorp Certified: Terraform Associate**<br>`002/003` | `100% Free Exam Voucher` | $70 | October 2023 | Annual HashiConf Wave | Concluded promotional wave (Archived for recurrence tracking) |
-| **Palo Alto Networks** | **Palo Alto Networks Certified Network Security Administrator (PCNSA)**<br>`PCNSA` | `100% Free Exam Voucher` | $175 | Dec 2023 | Annual Ignite User Conference | Concluded conference wave (Archived for recurrence tracking) |
-| **Splunk** | **Splunk Core Certified User**<br>`SPLK-1001` | `100% Free Exam Voucher` | $130 | June 2024 | Annual .conf Wave | Concluded .conf promotion wave (Archived for recurrence tracking) |
+| Provider | Certification & Exam Code | Type | Value (USD) | Active Promo Period | Recurrence Pattern | Proof | Notes / Archival Reason |
+| :--- | :--- | :--- | :---: | :---: | :--- | :---: | :--- |
+| **Microsoft Azure** | **Azure AI Engineer / Fabric Analytics / DevOps Engineer**<br>`AI-102, DP-600, AZ-400, AZ-204, SC-200` | `100% Free Exam Voucher` | $165 | May 21, 2024 - June 24, 2024 | Annual (Every May alongside Microsoft Build Conference) | [📸 Proof](docs/screenshots/hist-msft-build-2024.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Microsoft Azure** | **Azure Solutions Architect / Security Operations Analyst / Power Platform**<br>`AZ-104, AZ-305, SC-200, PL-300, MS-102` | `100% Free Exam Voucher` | $165 | Nov 15, 2023 - Jan 15, 2024 | Annual (Every Nov/Dec alongside Microsoft Ignite) | [📸 Proof](docs/screenshots/hist-msft-ignite-2023.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Oracle Cloud** | **OCI Generative AI / Cloud Architect Associate / DevOps**<br>`1Z0-1127-24, 1Z0-1085-24, 1Z0-1072-24, 1Z0-1110-24` | `100% Free Exam Attempts (Up to 2)` | $245 | July 1, 2024 - Oct 31, 2024 | Annual (Summer promotional cycle across Q3 every year) | [📸 Proof](docs/screenshots/hist-oracle-race-cert-2024.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Cisco** | **Cisco Certified Network Associate / Professional Recertification**<br>`DEVNAE (200-901 / CCNA Recertification)` | `100% Free CE Credits (16 CE)` | $300 | July 15, 2024 - Aug 31, 2024 | Quarterly (Cisco Learning Network Rev Up sprints every 3-4 months) | [📸 Proof](docs/screenshots/hist-cisco-rev-up-devnae.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Amazon Web Services** | **AWS Certified AI Practitioner**<br>`AIF-C01` | `Early Adopter Discount & Beta Retake Voucher` | $100 | Aug 13, 2024 - Oct 31, 2024 | Event-driven (New AWS certification launch beta periods) | [📸 Proof](docs/screenshots/hist-aws-ai-practitioner-early.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Google Cloud** | **Google Cloud Certified Associate Cloud Engineer**<br>`ACE` | `100% Free Exam Voucher + Skills Boost Labs` | $125 | April 15, 2024 - June 30, 2024 | Semi-Annual (Google Cloud Next & Autumn Innovators Challenges) | [📸 Proof](docs/screenshots/hist-gcp-ace-challenge.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **Databricks** | **Generative AI Fundamentals Accredited Badge**<br>`DATABRICKS-GENAI` | `100% Free Official Credential` | $75 | Jan 1, 2024 - Sept 30, 2024 | Annual (Refreshed annually for new LLM releases) | [📸 Proof](docs/screenshots/hist-databricks-genai-2024.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **GitHub** | **GitHub Foundations / Actions / Advanced Security**<br>`GH-FND, GH-ACT, GH-SEC` | `100% Free Voucher for Virtual Attendees` | $99 | Oct 29, 2024 - Nov 15, 2024 | Annual (GitHub Universe conference every October/November) | [📸 Proof](docs/screenshots/hist-github-universe-2024.png) | Concluded promo cycle (Preserved for recurrence tracking) |
+| **HashiCorp** | **HashiCorp Certified: Terraform Associate**<br>`003` | `100% Free Exam Voucher` | $70 | Q4 2026 Wave | Biannual HashiDays / Community Challenge | [📸 Proof](docs/screenshots/hashicorp-terraform-associate-community.png) | Truth Gate Invariant: HashiCorp standard exam fee is $70.50 USD. HashiCorp does not offer evergreen open free vouchers; free seats occur strictly during HashiConf or partner training webinars. Community wave concluded. |
+| **Red Hat** | **Red Hat Certified System Administrator (RHCSA)**<br>`EX200` | `100% Free Exam Voucher` | $400 | May 2024 | Annual Red Hat Summit Promo | [📸 Proof](docs/screenshots/hist-redhat-summit-2024.png) | Concluded promotion wave (Archived for historical recurrence tracking) |
+| **HashiCorp** | **HashiCorp Certified: Terraform Associate**<br>`002/003` | `100% Free Exam Voucher` | $70 | October 2023 | Annual HashiConf Wave | [📸 Proof](docs/screenshots/hist-terraform-challenge-2023.png) | Concluded promotional wave (Archived for recurrence tracking) |
+| **Palo Alto Networks** | **Palo Alto Networks Certified Network Security Administrator (PCNSA)**<br>`PCNSA` | `100% Free Exam Voucher` | $175 | Dec 2023 | Annual Ignite User Conference | [📸 Proof](docs/screenshots/hist-paloalto-ignite-2023.png) | Concluded conference wave (Archived for recurrence tracking) |
+| **Splunk** | **Splunk Core Certified User**<br>`SPLK-1001` | `100% Free Exam Voucher` | $130 | June 2024 | Annual .conf Wave | [📸 Proof](docs/screenshots/hist-splunk-conf-2024.png) | Concluded .conf promotion wave (Archived for recurrence tracking) |
 
 </details>
 
@@ -98,16 +98,16 @@
 
 > Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.
 
-| Provider | Certification | Triage Status | Reason / Inspection Note |
-| :--- | :--- | :---: | :--- |
-| **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | Truth Gate Invariant: The Linux Foundation LiFT scholarship application window is strictly annual (April 1 to April 30). The 2026 cycle is officially closed. Next application window opens April 2027. |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
-| **Salesforce** | Salesforce Certified Administrator / App Builder | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | Review Needed | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
-| **GitHub** | GitHub Foundations | Review Needed | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
-| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | ⚠️ Server Error | Truth Gate Invariant: PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, official exams require paid Pearson VUE registration. |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | ⚠️ Broken Link | HTTP 404 Page Not Found |
+| Provider | Certification | Triage Status | Proof | Reason / Inspection Note |
+| :--- | :--- | :---: | :---: | :--- |
+| **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | Truth Gate Invariant: The Linux Foundation LiFT scholarship application window is strictly annual (April 1 to April 30). The 2026 cycle is officially closed. Next application window opens April 2027. |
+| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
+| **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Proof](docs/screenshots/salesforce-trailhead-quests.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
+| **GitHub** | GitHub Foundations | 🟡 Review Needed | [📸 Proof](docs/screenshots/github-student-foundations.png) | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
+| **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | ⚠️ Server Error | [📸 Proof](docs/screenshots/paloalto-pccet-cybersecurity.png) | Truth Gate Invariant: PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, official exams require paid Pearson VUE registration. |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/cncf-dan-kohn-scholarship.png) | HTTP 404 Page Not Found |
 
 </details>
 
@@ -601,4 +601,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-17 08:25 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-17 13:12 UTC`.*
