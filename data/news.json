@@ -3,6 +3,18 @@
   "last_updated": "2026-10-14T19:00:00Z",
   "news": [
     {
+      "id": "google-cloud-what-s-new-with-google-cloud",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "What\u2019s new with Google Cloud",
+      "summary": "Want to know the latest from Google Cloud? Find it here in one handy location. Check back regularly for our newest updates, announcements, resources, events, learning opportunities, and more. Tip: Not sure where to find what you\u2019re looking ...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
       "id": "cisco-accelerating-decision-superior",
       "company": "Cisco",
       "source": "Cisco Blogs",
