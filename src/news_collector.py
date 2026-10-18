@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import List, Dict, Any
 from urllib.parse import urlparse
+from datetime import datetime, timezone
 import httpx
 
 logger = logging.getLogger("certpulse.news")
