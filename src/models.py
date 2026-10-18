@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from src.vlm_engine import VLMSemanticVerdict
+
 # --- 1. Enumeration & Literal Type Aliases ---
 
 CredentialTier = Literal["proctored_exam", "skill_badge_lab"]
@@ -90,14 +92,42 @@ class VisualProof(BaseModel):
         description="True if capture resolved to full-price commercial catalog without waiver",
     )
 
+    # --- Milestone 2 Tier 3 Additions ---
+    vlm_verdict: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Serialized VLMSemanticVerdict payload from Multimodal VLM Semantic Gate",
+    )
+    visual_confidence_score: Optional[float] = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Visual confidence rating between 0.00 and 1.00",
+    )
+    badge_phash_matched: bool = Field(
+        default=False,
+        description="True if official certification badge was perceptually matched",
+    )
+    ocr_text_snippet: Optional[str] = Field(
+        default=None,
+        description="Extracted OCR text snippet from viewport screenshot",
+    )
+
     @property
     def is_verified(self) -> bool:
         """Returns True if screenshot is captured and affirmatively verifies zero-dollar terms."""
+        vlm_ok = True
+        if self.vlm_verdict is not None:
+            vlm_ok = (
+                self.vlm_verdict.get("has_zero_dollar_waiver", True)
+                and not self.vlm_verdict.get("requires_payment_or_copay", False)
+                and self.vlm_verdict.get("registration_status") == "open"
+            )
         return (
             self.status == "verified"
             and self.zero_dollar_confirmed
             and not self.maintenance_detected
             and not self.paid_catalog_detected
+            and vlm_ok
         )
 
 
@@ -120,6 +150,86 @@ class RedemptionGuide(BaseModel):
         if "$0.00" not in v:
             raise ValueError(f"verified_cart_balance must confirm '$0.00', got: {v}")
         return v
+
+
+# --- 3B. Network Provenance & Temporal Longevity Schemas (Tier 1 & Tier 2) ---
+
+class NetworkProvenance(BaseModel):
+    """
+    Tier 1 Network Provenance & Cryptographic Verification Payload.
+    Enforces ASN BGP route origin, TLS X.509 SCT Certificate Transparency,
+    and DNSSEC/CAA domain integrity invariants.
+    """
+    model_config = ConfigDict(extra="ignore", populate_by_name=True)
+
+    asn: Optional[int] = Field(default=None, description="Autonomous System Number (e.g. 8075 for Microsoft)")
+    asn_org: Optional[str] = Field(default=None, description="BGP route origin organization handle")
+    ip_address: Optional[str] = Field(default=None, description="Resolved IPv4/IPv6 host address")
+    is_vendor_infra: bool = Field(default=True, description="True if IP maps to authorized vendor ASN or enterprise CDN")
+    tls_ct_verified: bool = Field(default=True, description="True if certificate carries valid embedded RFC 6962 SCTs")
+    sct_count: int = Field(default=0, ge=0, description="Count of embedded Signed Certificate Timestamps")
+    dnssec_valid: bool = Field(default=False, description="True if DNSSEC AD flag confirms cryptographic trust")
+    caa_authorized: bool = Field(default=True, description="True if certificate issuer is permitted by CAA records")
+    verified_at_utc: str = Field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        description="ISO 8601 UTC timestamp of verification",
+    )
+
+    # Diagnostic telemetry
+    dnssec_verdict: Optional[str] = Field(default="INSECURE_STANDARD")
+    authorized_cas: List[str] = Field(default_factory=list)
+    sct_log_operators: List[str] = Field(default_factory=list)
+    security_flags: List[str] = Field(default_factory=list)
+
+
+class TemporalLongevity(BaseModel):
+    """
+    Tier 2 Temporal Longevity & Promotional Recurrence Payload.
+    Enforces Wayback CDX historical archive durability, Anti-Fly-by-Night
+    domain age scoring (<60 days penalized), and seasonal recurrence classification.
+    """
+    model_config = ConfigDict(extra="ignore", populate_by_name=True)
+
+    first_seen_archive_utc: Optional[str] = Field(
+        default=None,
+        description="ISO 8601 UTC timestamp of earliest recorded Internet Archive snapshot",
+    )
+    domain_age_days: Optional[int] = Field(
+        default=None,
+        description="Calculated domain age in days since earliest archive snapshot",
+    )
+    snapshot_count: int = Field(
+        default=0,
+        ge=0,
+        description="Total count of historical snapshots retrieved",
+    )
+    is_anti_fly_by_night_passed: bool = Field(
+        default=True,
+        description="True if domain age >= 60 days or belongs to whitelisted vendor directory",
+    )
+    is_seasonal_recurrent: bool = Field(
+        default=False,
+        description="True if offer URL shows multi-year recurrence or periodic challenge cadence",
+    )
+    longevity_score: int = Field(
+        default=100,
+        ge=0,
+        le=100,
+        description="Calculated longevity trust score (0-100)",
+    )
+    recurrence_classification: str = Field(
+        default="unknown",
+        description="Classification: annual_window | periodic_challenge_wave | evergreen | event_driven | unknown",
+    )
+    verified_at_utc: str = Field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        description="ISO 8601 UTC timestamp when temporal analysis was performed",
+    )
+    source: str = Field(
+        default="live_cdx",
+        description="Provenance of verdict: live_cdx | cache | vendor_whitelist_fallback | offline_fallback",
+    )
+    warning_flags: List[str] = Field(default_factory=list)
 
 
 # --- 4. Canonical Offer Schema ---
@@ -189,6 +299,10 @@ class Offer(BaseModel):
     is_authentic_vendor: bool = Field(default=True)
     authenticity_score: int = Field(default=90, ge=0, le=100)
     authenticity_details: Optional[Dict[str, Any]] = None
+
+    # Tier 1 Network Provenance & Tier 2 Temporal Longevity (M1)
+    network_provenance: Optional[NetworkProvenance] = None
+    temporal_longevity: Optional[TemporalLongevity] = None
 
     # Online Truth Oracle Verification
     truth_verification: Optional[Dict[str, Any]] = None

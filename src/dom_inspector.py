@@ -25,6 +25,7 @@ from urllib.parse import urlparse
 from typing import Dict, Any, List, Tuple, Optional
 
 from src.authenticity import audit_offer_authenticity
+from src.vlm_engine import evaluate_vlm_semantic_gate, VLMSemanticVerdict
 
 logger = logging.getLogger("certpulse.dom_inspector")
 
@@ -405,19 +406,50 @@ def evaluate_dual_gate(
     has_zero_dollar: bool,
     screenshot_valid: bool,
     auth_score: int = 95,
-    http_status: int = 200
+    http_status: int = 200,
+    vlm_verdict: Optional[Any] = None
 ) -> Tuple[str, str]:
     """
     Evaluates the dual visual ground-truth gate:
     An offer is Active iff G_DOM (affirmative zero-dollar terms, no maintenance, no paid catalog)
-    AND G_Visual (screenshot exists and valid >= 4KB PNG) AND AuthScore >= 80.
+    AND G_Visual (screenshot exists and valid >= 4KB PNG) AND AuthScore >= 80
+    AND VLM Semantic Gate (registration open, zero-dollar waiver, no copay, visual confidence >= 0.60).
     """
-    if dom_status != "Active" or not has_zero_dollar:
+    if dom_status != "Active":
         return dom_status, "DOM failed affirmative check"
+    if not has_zero_dollar:
+        return "Review Needed", "DOM failed affirmative check: missing affirmative zero-dollar waiver"
     if auth_score < 80:
         return "Review Needed", f"Authenticity score below threshold ({auth_score}/100)"
     if not screenshot_valid:
         return "Review Needed", "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
+
+    if vlm_verdict is not None:
+        if isinstance(vlm_verdict, dict):
+            reg_status = vlm_verdict.get("registration_status", "open")
+            req_copay = vlm_verdict.get("requires_payment_or_copay", False)
+            copay_usd = vlm_verdict.get("copay_amount_usd", 0.0)
+            has_waiver = vlm_verdict.get("has_zero_dollar_waiver", True)
+            conf = vlm_verdict.get("visual_confidence_score", 1.0)
+            evidence = vlm_verdict.get("primary_evidence", "")
+        else:
+            reg_status = getattr(vlm_verdict, "registration_status", "open")
+            req_copay = getattr(vlm_verdict, "requires_payment_or_copay", False)
+            copay_usd = getattr(vlm_verdict, "copay_amount_usd", 0.0)
+            has_waiver = getattr(vlm_verdict, "has_zero_dollar_waiver", True)
+            conf = getattr(vlm_verdict, "visual_confidence_score", 1.0)
+            evidence = getattr(vlm_verdict, "primary_evidence", "") or ""
+
+        if reg_status in ["closed", "cohort_full", "waitlist"]:
+            return "Registrations Closed", f"VLM Semantic Gate: {evidence or 'Registration concluded, cohort full, or waitlist active'}"
+        if req_copay:
+            copay_msg = f" (${copay_usd:.2f} USD)" if copay_usd > 0.0 else ""
+            return "Review Needed", f"VLM Semantic Gate: Copay or fee required{copay_msg}"
+        if not has_waiver:
+            return "Review Needed", f"VLM Semantic Gate: {evidence or 'No affirmative zero-dollar waiver'}"
+        if conf < 0.60:
+            return "Review Needed", f"VLM Semantic Gate: Low visual confidence ({conf:.2f} < 0.60)"
+
     return "Active", f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
 
 
@@ -647,6 +679,28 @@ class HeadlessDOMInspector:
                 original_url=url
             )
 
+            # Read screenshot bytes for VLM analysis
+            screenshot_bytes = None
+            if screenshot_ok and screenshot_path:
+                target_file = screenshots_dir / f"{offer_id}.png"
+                if target_file.exists():
+                    try:
+                        screenshot_bytes = target_file.read_bytes()
+                    except Exception:
+                        screenshot_bytes = None
+
+            # Execute Tier 3 Multimodal VLM Semantic Gate
+            vlm_verdict = evaluate_vlm_semantic_gate(
+                offer_id=offer_id,
+                url=final_url or url,
+                dom_text=rendered_text,
+                dom_title=rendered_title,
+                screenshot_path=screenshot_path if screenshot_ok else None,
+                screenshot_bytes=screenshot_bytes,
+                platform=offer.get("platform", "") if offer else "",
+                offer_data=offer
+            )
+
             # Authenticity verification on rendered DOM
             if not is_local_file:
                 auth_result = audit_offer_authenticity(
@@ -683,7 +737,8 @@ class HeadlessDOMInspector:
 
             # Dual Visual Ground-Truth Gate:
             # An offer is Active iff G_DOM (affirmative $0 terms, no maintenance, no paid catalog)
-            # AND G_Visual (screenshot exists and valid >= 4KB PNG) AND AuthScore >= 80.
+            # AND G_Visual (screenshot exists and valid >= 4KB PNG) AND AuthScore >= 80
+            # AND VLM Semantic Gate (registration open, zero dollar waiver, no copay, confidence >= 0.60).
             maintenance_detected = dom_eval.get("maintenance_detected", False)
             paid_catalog_detected = dom_eval.get("paid_catalog_detected", False)
             zero_dollar_confirmed = dom_eval.get("zero_dollar_confirmed", True)
@@ -698,6 +753,22 @@ class HeadlessDOMInspector:
                 elif not screenshot_ok:
                     status = "Review Needed"
                     reason = "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
+                elif vlm_verdict.registration_status in ["closed", "cohort_full"]:
+                    status = "Registrations Closed"
+                    reason = f"VLM Semantic Gate: {vlm_verdict.primary_evidence}"
+                    zero_dollar_confirmed = False
+                elif vlm_verdict.requires_payment_or_copay and vlm_verdict.copay_amount_usd > 0.0:
+                    status = "Review Needed"
+                    reason = f"VLM Semantic Gate: Copay required (${vlm_verdict.copay_amount_usd:.2f} USD)"
+                    paid_catalog_detected = True
+                    zero_dollar_confirmed = False
+                elif not vlm_verdict.has_zero_dollar_waiver:
+                    status = "Review Needed"
+                    reason = f"VLM Semantic Gate: {vlm_verdict.primary_evidence}"
+                    zero_dollar_confirmed = False
+                elif vlm_verdict.visual_confidence_score < 0.60:
+                    status = "Review Needed"
+                    reason = f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
                 else:
                     reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
 
@@ -724,7 +795,11 @@ class HeadlessDOMInspector:
                     "status": proof_status,
                     "zero_dollar_confirmed": zero_dollar_confirmed,
                     "maintenance_detected": maintenance_detected,
-                    "paid_catalog_detected": paid_catalog_detected
+                    "paid_catalog_detected": paid_catalog_detected,
+                    "vlm_verdict": vlm_verdict.model_dump() if vlm_verdict else None,
+                    "visual_confidence_score": vlm_verdict.visual_confidence_score if vlm_verdict else None,
+                    "badge_phash_matched": vlm_verdict.badge_phash_matched if vlm_verdict else False,
+                    "ocr_text_snippet": vlm_verdict.ocr_text_snippet if vlm_verdict else None,
                 }
                 if offer_id:
                     offer["screenshot_path"] = screenshot_path

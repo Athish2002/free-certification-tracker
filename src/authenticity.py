@@ -23,7 +23,7 @@ Capabilities:
 import re
 import ipaddress
 from urllib.parse import urlparse, parse_qs
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Dict, Any, List, Tuple, Optional, Union
 
 # Canonical platform-to-domain mapping
 PLATFORM_DOMAINS: Dict[str, List[str]] = {
@@ -721,10 +721,14 @@ def corroborate_content(
 def audit_offer_authenticity(
     offer: Dict[str, Any],
     body_text: str = "",
-    redirect_chain: Optional[List[str]] = None
+    redirect_chain: Optional[List[str]] = None,
+    network_provenance: Optional[Union[Any, Dict[str, Any]]] = None,
+    temporal_longevity: Optional[Union[Any, Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """
     Executes the multi-layer authenticity verification pipeline for an offer.
+    Integrates Tier 1 Network Provenance (ASN/BGP, TLS CT, DNSSEC) and
+    Tier 2 Temporal Longevity (Wayback CDX, Anti-Fly-by-Night, Recurrence).
     Computes an authenticity score (0-100), security flags, and definitive verdict.
     """
     url = offer.get("url", "")
@@ -783,6 +787,82 @@ def audit_offer_authenticity(
     checks_passed.extend(corr_positives)
     warning_flags.extend(corr_warnings)
 
+    # Layer 5: Network Provenance Integration (Tier 1)
+    prov_obj = network_provenance or offer.get("network_provenance")
+    if prov_obj:
+        if hasattr(prov_obj, "is_vendor_infra"):
+            is_infra = prov_obj.is_vendor_infra
+            asn_val = prov_obj.asn
+            dnssec = prov_obj.dnssec_valid
+            ct_ver = prov_obj.tls_ct_verified
+            sct_cnt = prov_obj.sct_count
+            caa_auth = prov_obj.caa_authorized
+        elif isinstance(prov_obj, dict):
+            is_infra = prov_obj.get("is_vendor_infra", True)
+            asn_val = prov_obj.get("asn")
+            dnssec = prov_obj.get("dnssec_valid", False)
+            ct_ver = prov_obj.get("tls_ct_verified", True)
+            sct_cnt = prov_obj.get("sct_count", 0)
+            caa_auth = prov_obj.get("caa_authorized", True)
+        else:
+            is_infra = True
+            asn_val = None
+            dnssec = False
+            ct_ver = True
+            sct_cnt = 0
+            caa_auth = True
+
+        if is_infra:
+            checks_passed.append(f"ASN_ORIGIN_VERIFIED_AS{asn_val or 'DEFAULT'}")
+            score += 5
+        else:
+            warning_flags.append(f"SUSPICIOUS_NETWORK_ORIGIN_AS{asn_val or 'UNKNOWN'}")
+            score -= 15
+
+        if dnssec:
+            checks_passed.append("DNSSEC_CRYPTOGRAPHICALLY_VALID")
+            score += 5
+
+        if ct_ver:
+            checks_passed.append(f"TLS_CT_VERIFIED ({sct_cnt} SCTs)")
+        else:
+            warning_flags.append("TLS_CT_MISSING_OR_INVALID")
+            score -= 10
+
+        if not caa_auth:
+            warning_flags.append("CAA_ISSUER_UNAUTHORIZED")
+            score -= 10
+
+    # Layer 6: Temporal Longevity Integration (Tier 2)
+    temp_obj = temporal_longevity or offer.get("temporal_longevity")
+    if temp_obj:
+        if hasattr(temp_obj, "is_anti_fly_by_night_passed"):
+            fly_passed = temp_obj.is_anti_fly_by_night_passed
+            seasonal = temp_obj.is_seasonal_recurrent
+            recurr_cls = getattr(temp_obj, "recurrence_classification", "unknown")
+            age = temp_obj.domain_age_days
+        elif isinstance(temp_obj, dict):
+            fly_passed = temp_obj.get("is_anti_fly_by_night_passed", True)
+            seasonal = temp_obj.get("is_seasonal_recurrent", False)
+            recurr_cls = temp_obj.get("recurrence_classification", "unknown")
+            age = temp_obj.get("domain_age_days")
+        else:
+            fly_passed = True
+            seasonal = False
+            recurr_cls = "unknown"
+            age = None
+
+        if not fly_passed:
+            warning_flags.append("FLY_BY_NIGHT_DOMAIN_PENALTY")
+            score -= 40
+        else:
+            if age is not None and age >= 365:
+                checks_passed.append(f"ESTABLISHED_DOMAIN_LONGEVITY ({age} days)")
+
+        if seasonal:
+            checks_passed.append(f"SEASONAL_RECURRENCE_VERIFIED_{recurr_cls.upper()}")
+            score += 5
+
     # Historical Archive special-case: If archived record on authentic domain, guarantee baseline
     if offer.get("is_historical_archive") and domain_ok and ssl_ok:
         score = max(score, 100)
@@ -796,10 +876,15 @@ def audit_offer_authenticity(
         for f in warning_flags
     )
 
+    has_suspicious_flags = any(
+        "FLY_BY_NIGHT" in f or "SUSPICIOUS_NETWORK_ORIGIN" in f
+        for f in warning_flags
+    )
+
     if has_critical_scam_flags:
         verdict = "DECEPTIVE_SCAM"
         is_authentic = False
-    elif not domain_ok or not ssl_ok or not redirect_ok or not corr_ok:
+    elif not domain_ok or not ssl_ok or not redirect_ok or not corr_ok or has_suspicious_flags:
         verdict = "SUSPICIOUS_UNTRUSTED"
         is_authentic = False
     elif final_score >= 80:
@@ -815,7 +900,7 @@ def audit_offer_authenticity(
         f"{'Clean Destination' if redirect_ok else 'Redirect Alert'})"
     )
 
-    return {
+    res = {
         "is_authentic_vendor": is_authentic,
         "authenticity_score": final_score,
         "verdict": verdict,
@@ -826,5 +911,11 @@ def audit_offer_authenticity(
         "corroboration_passed": corr_ok,
         "checks_passed": list(dict.fromkeys(checks_passed)),
         "warning_flags": list(dict.fromkeys(warning_flags)),
-        "summary": summary
+        "summary": summary,
     }
+    if prov_obj:
+        res["network_provenance"] = prov_obj.model_dump() if hasattr(prov_obj, "model_dump") else prov_obj
+    if temp_obj:
+        res["temporal_longevity"] = temp_obj.model_dump() if hasattr(temp_obj, "model_dump") else temp_obj
+    return res
+

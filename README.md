@@ -29,7 +29,7 @@
 | **Verified Tech Dispatches** | **44 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-17 13:12 UTC` (18:42 IST • 09:12 EDT • 15:12 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-18 03:22 UTC` (08:52 IST • 23:22 EDT • 05:22 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -101,8 +101,8 @@
 | Provider | Certification | Triage Status | Proof | Reason / Inspection Note |
 | :--- | :--- | :---: | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
-| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | Truth Gate Invariant: The Linux Foundation LiFT scholarship application window is strictly annual (April 1 to April 30). The 2026 cycle is officially closed. Next application window opens April 2027. |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
+| **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
+| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | Truth Gate Invariant: MongoDB offers 100% free exam vouchers exclusively to verified students through GitHub Student Developer Pack. Standard price for general public is $150 USD. Portal migrated from learn.mongodb.com to university.mongodb.com. |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Proof](docs/screenshots/salesforce-trailhead-quests.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **GitHub** | GitHub Foundations | 🟡 Review Needed | [📸 Proof](docs/screenshots/github-student-foundations.png) | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
@@ -601,4 +601,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-17 13:12 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-18 03:22 UTC`.*

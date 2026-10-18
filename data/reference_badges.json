@@ -1,0 +1,219 @@
+{
+  "microsoft_certified_voucher": {
+    "badge_id": "microsoft_certified_voucher",
+    "provider": "Microsoft Azure",
+    "badge_title": "Microsoft Azure Certification Voucher Portal Header",
+    "dhash": "436eb07179b9c061",
+    "phash": "ca27254a2f25dab9",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "microsoft",
+      "azure",
+      "msft",
+      "az-900",
+      "voucher"
+    ],
+    "metadata": {
+      "source_screenshot": "microsoft-azure-free-microsoft-exam-voucher-wave.png"
+    }
+  },
+  "microsoft_azure_retake": {
+    "badge_id": "microsoft_azure_retake",
+    "provider": "Microsoft Azure",
+    "badge_title": "Microsoft Learn Exam Discount & Retake Portal",
+    "dhash": "cdcd6be3c50d17a4",
+    "phash": "aa8b91b2e4993ec6",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "microsoft",
+      "azure",
+      "retake",
+      "exam_discount"
+    ],
+    "metadata": {
+      "source_screenshot": "microsoft-azure-azure-50-off-free-retake.png"
+    }
+  },
+  "aws_certified_official": {
+    "badge_id": "aws_certified_official",
+    "provider": "Amazon Web Services",
+    "badge_title": "AWS Certified Official Voucher & Exam Portal",
+    "dhash": "9c80477b77207c48",
+    "phash": "9f52501f1f3c602f",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "aws",
+      "amazon",
+      "aws_certified",
+      "cloud_practitioner",
+      "solutions_architect"
+    ],
+    "metadata": {
+      "source_screenshot": "aws-50-discount-voucher.png"
+    }
+  },
+  "aws_educate_badge": {
+    "badge_id": "aws_educate_badge",
+    "provider": "Amazon Web Services",
+    "badge_title": "AWS Educate Official Training Emblem",
+    "dhash": "9880677478236567",
+    "phash": "ce936459376c2927",
+    "category": "skill_badge",
+    "max_tolerance": 10,
+    "aliases": [
+      "aws",
+      "educate",
+      "student_badge"
+    ],
+    "metadata": {
+      "source_screenshot": "aws-educate-badges.png"
+    }
+  },
+  "google_cloud_certified": {
+    "badge_id": "google_cloud_certified",
+    "provider": "Google Cloud",
+    "badge_title": "Google Cloud Associate Cloud Engineer Official Challenge",
+    "dhash": "528d2cb19b645c4c",
+    "phash": "97e017cda99c1e70",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "gcp",
+      "google",
+      "google_cloud",
+      "ace",
+      "pca"
+    ],
+    "metadata": {
+      "source_screenshot": "hist-gcp-ace-challenge.png"
+    }
+  },
+  "gcp_cloud_skills_boost": {
+    "badge_id": "gcp_cloud_skills_boost",
+    "provider": "Google Cloud",
+    "badge_title": "Google Cloud Skills Boost Arcade Official Header",
+    "dhash": "9bd0e8ce15084916",
+    "phash": "c285bdda3d82299b",
+    "category": "skill_badge",
+    "max_tolerance": 10,
+    "aliases": [
+      "gcp",
+      "skills_boost",
+      "arcade"
+    ],
+    "metadata": {
+      "source_screenshot": "gcp-cloud-skills-boost.png"
+    }
+  },
+  "oracle_mylearn_certified": {
+    "badge_id": "oracle_mylearn_certified",
+    "provider": "Oracle Cloud",
+    "badge_title": "Oracle University MyLearn OCI Certification Portal Header",
+    "dhash": "000810080c000000",
+    "phash": "e63319cce6b3194c",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "oracle",
+      "oci",
+      "mylearn",
+      "oracle_certified"
+    ],
+    "metadata": {
+      "source_screenshot": "oracle-oci-free-cert.png"
+    }
+  },
+  "oracle_oci_genai": {
+    "badge_id": "oracle_oci_genai",
+    "provider": "Oracle Cloud",
+    "badge_title": "Oracle Cloud Infrastructure Generative AI Certification Portal",
+    "dhash": "000810080c000000",
+    "phash": "b3664c99b3e64c19",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "oracle",
+      "oci",
+      "genai",
+      "ai_cert"
+    ],
+    "metadata": {
+      "source_screenshot": "oracle-oci-generative-ai-cert.png"
+    }
+  },
+  "cisco_netacad_cyberops": {
+    "badge_id": "cisco_netacad_cyberops",
+    "provider": "Cisco",
+    "badge_title": "Cisco Networking Academy CyberOps Official Portal",
+    "dhash": "d861633771714c49",
+    "phash": "ea6c959391b54d4a",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "cisco",
+      "netacad",
+      "cyberops",
+      "ccna"
+    ],
+    "metadata": {
+      "source_screenshot": "cisco-netacad-cyberops.png"
+    }
+  },
+  "cisco_rev_up_recert": {
+    "badge_id": "cisco_rev_up_recert",
+    "provider": "Cisco",
+    "badge_title": "Cisco Rev Up to Recert Official CE Portal",
+    "dhash": "01898eb8f000b979",
+    "phash": "9261eaca9512e5ee",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "cisco",
+      "rev_up",
+      "recert",
+      "continuing_education"
+    ],
+    "metadata": {
+      "source_screenshot": "cisco-rev-up-recert.png"
+    }
+  },
+  "kubernetes_cka_ckad": {
+    "badge_id": "kubernetes_cka_ckad",
+    "provider": "Linux Foundation / CNCF",
+    "badge_title": "CNCF Dan Kohn Kubernetes Scholarship Official Emblem",
+    "dhash": "5529b6962e661e0e",
+    "phash": "f44e4b5232794c4f",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "kubernetes",
+      "cncf",
+      "cka",
+      "ckad",
+      "linux_foundation"
+    ],
+    "metadata": {
+      "source_screenshot": "cncf-dan-kohn-scholarship.png"
+    }
+  },
+  "linux_foundation_lift": {
+    "badge_id": "linux_foundation_lift",
+    "provider": "Linux Foundation / CNCF",
+    "badge_title": "Linux Foundation LiFT Annual Scholarship Portal",
+    "dhash": "333300200065590e",
+    "phash": "dd4ca8ae4407a6f3",
+    "category": "proctored_exam",
+    "max_tolerance": 10,
+    "aliases": [
+      "linux_foundation",
+      "lift",
+      "scholarship"
+    ],
+    "metadata": {
+      "source_screenshot": "linux-foundation-lift.png"
+    }
+  }
+}
