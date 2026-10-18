@@ -86,7 +86,16 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     verified_proofs_count = sum(1 for o in offers if (DOCS_DIR / "screenshots" / f"{o['id']}.png").exists())
     proof_pct = round((verified_proofs_count / len(offers) * 100)) if offers else 0
-    last_updated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    
+    last_sync_raw = data.get("last_sync") or data.get("last_truth_corroborated") or data.get("last_inspected") or data.get("last_updated")
+    last_sync_dt = None
+    if last_sync_raw:
+        try:
+            last_sync_dt = datetime.fromisoformat(str(last_sync_raw).replace("Z", "+00:00"))
+        except Exception:
+            last_sync_dt = None
+    tz_info = format_4_timezones(last_sync_dt)
+    last_updated = tz_info["utc"]
 
     lines = []
     lines.append("# CertPulse: Autonomous Free Cloud & Tech Certification Tracker")
@@ -120,7 +129,6 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append(f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** | Official primary cloud engineering updates |")
     lines.append(f"| **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |")
     lines.append(f"| **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |")
-    tz_info = format_4_timezones()
     lines.append(f"| **Last Automated Inspection** | {tz_info['banner']} | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |")
     lines.append("| **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |")
     lines.append("")
@@ -299,6 +307,17 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
 
     lines.append("---")
     lines.append("")
+    lines.append("## 🛡️ Multi-Tier Authenticity Verification & Truth Policies")
+    lines.append("")
+    lines.append("CertPulse enforces a strict four-layer authenticity and anti-fraud verification policy to protect candidates from coupon scams, dead links, and misleading claims:")
+    lines.append("")
+    lines.append("1. **Primary Enterprise Infrastructure**: All tracked URLs are restricted exclusively to official vendor domains (`amazon.com`, `microsoft.com`, `google.com`, `oracle.com`, `cisco.com`, `linuxfoundation.org`, `redhat.com`, `github.com`). Link shorteners, affiliate aggregators, and unverified blogs are strictly banned.")
+    lines.append("2. **Dual Visual & Headless DOM Gating**: Headless Playwright Chromium renders full client-side SPAs on scheduled audits, screening for capacity limits, soft-404s, and closed cohort notices while capturing verified viewport screenshots in `docs/screenshots/`.")
+    lines.append("3. **Truth Oracle Policy Corroboration**: All offers are audited against official vendor examination policies. Partial discounts (such as Juniper's 75% voucher) are explicitly flagged with the required $50 Pearson VUE co-pay fee, and student restrictions (GitHub Student Pack) are prominently disclosed.")
+    lines.append("4. **Append-Only Tamper-Evident Receipts**: Every captured screenshot is validated for binary PNG header integrity (`\\x89PNG\\r\\n\\x1a\\n`) and cataloged with ISO 8601 UTC timestamps across four global timezones (UTC, IST, EDT, CEST).")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
     lines.append("## Architecture: How This Repo Updates Itself ($0 Cost)")
     lines.append("")
     lines.append("```mermaid")
@@ -382,8 +401,16 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
     verified_proofs_count = sum(1 for o in offers if (DOCS_DIR / "screenshots" / f"{o['id']}.png").exists())
 
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
-    tz_info = format_4_timezones()
+    last_sync_raw = data.get("last_sync") or data.get("last_truth_corroborated") or data.get("last_inspected") or data.get("last_updated")
+    last_sync_dt = None
+    if last_sync_raw:
+        try:
+            last_sync_dt = datetime.fromisoformat(str(last_sync_raw).replace("Z", "+00:00"))
+        except Exception:
+            last_sync_dt = None
+    tz_info = format_4_timezones(last_sync_dt)
     last_updated = tz_info["utc"]
+    last_sync_iso_js = last_sync_dt.isoformat() if last_sync_dt else datetime.now(timezone.utc).isoformat()
     
     offers_json_str = json.dumps(offers)
     news_json_str = json.dumps(news_items)
@@ -590,7 +617,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 <!-- Synchronized 4-Timezone World Telemetry Pill (Desktop/Tablet) -->
                 <div id="navTimezonePill" class="hidden md:flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Synchronized Global 4-Timezone World Telemetry (UTC • IST • EDT • CEST)">
                     <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
-                    <span id="navTimezoneText" class="tabular-nums font-mono">{tz_info['ticker']}</span>
+                    <span id="navTimezoneText" class="tabular-nums font-mono">Last Synced: {tz_info['ticker']}</span>
                 </div>
 
                 <!-- Dark / Light Contrast Mode Toggle Button -->
@@ -711,7 +738,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 <!-- Bento 4: 4-Timezone Global Telemetry & Cadence -->
                 <div class="p-4 sm:p-5 rounded-2xl border primer-card flex flex-col justify-between" id="heroCadenceCard">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Audit Cadence</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Last Sync (4-TZ)</span>
                         <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded" style="background-color: var(--accent-subtle); color: var(--accent-fg);">4-HOUR CRON</span>
                     </div>
                     <div class="mt-3">
@@ -721,7 +748,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <div class="text-[11px] font-mono mt-1 tabular-nums" style="color: var(--fg-muted);">
                             <span id="heroCadenceEt">{tz_info['et']}</span> &bull; <span id="heroCadenceCet">{tz_info['cet']}</span>
                         </div>
-                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">Live Playwright DOM & Visual Screenshot Telemetry</p>
+                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">Automated Audit Timestamp across UTC, IST, EDT, CEST</p>
                     </div>
                 </div>
             </div>
@@ -1239,6 +1266,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
     <script>
         const offersData = {offers_json_str};
         const newsData = {news_json_str};
+        const LAST_SYNC_ISO = "{last_sync_iso_js}";
 
         let currentMainTab = 'vouchers';
         let currentTier = 'all';
@@ -1691,14 +1719,22 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
 
         // Global Synchronized 4-Timezone World Telemetry (UTC, IST, EDT/EST, CEST/CET)
         function updateWorldClock() {{
-            const now = new Date();
-            const utcTime = now.toLocaleString('en-US', {{ timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' UTC';
-            const istTime = now.toLocaleString('en-US', {{ timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' IST';
-            const etTime = now.toLocaleString('en-US', {{ timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' EDT';
-            const cetTime = now.toLocaleString('en-US', {{ timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' CEST';
+            let syncDate;
+            try {{
+                syncDate = new Date(LAST_SYNC_ISO);
+                if (!Number.isFinite(syncDate.getTime())) {{
+                    syncDate = new Date();
+                }}
+            }} catch (e) {{
+                syncDate = new Date();
+            }}
+            const utcTime = syncDate.toLocaleString('en-US', {{ timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' UTC';
+            const istTime = syncDate.toLocaleString('en-US', {{ timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' IST';
+            const etTime = syncDate.toLocaleString('en-US', {{ timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' EDT';
+            const cetTime = syncDate.toLocaleString('en-US', {{ timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit' }}) + ' CEST';
 
             const navTimeText = document.getElementById('navTimezoneText');
-            if (navTimeText) navTimeText.textContent = `${{utcTime}} • ${{istTime}} • ${{etTime}} • ${{cetTime}}`;
+            if (navTimeText) navTimeText.textContent = `Last Synced: ${{utcTime}} • ${{istTime}} • ${{etTime}} • ${{cetTime}}`;
 
             const heroUtc = document.getElementById('heroCadenceUtc');
             if (heroUtc) heroUtc.textContent = utcTime;

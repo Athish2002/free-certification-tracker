@@ -448,7 +448,7 @@ class TestOfferDataDictBehavior:
         # Invariant: json.load must NOT be monkeypatched into OfferDataDict globally
         assert type(data) is dict
         expected_required = {"$schema", "last_updated", "offers"}
-        allowed_keys = {"$schema", "last_updated", "offers", "last_inspected", "last_truth_corroborated"}
+        allowed_keys = {"$schema", "last_updated", "offers", "last_inspected", "last_truth_corroborated", "last_sync"}
         assert expected_required.issubset(set(data.keys()))
         assert set(data.keys()).issubset(allowed_keys)
         assert list(data) == list(data.keys())

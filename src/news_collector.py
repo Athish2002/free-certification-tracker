@@ -190,6 +190,9 @@ def update_news_feed() -> List[Dict[str, Any]]:
                 new_added += 1
                 logger.info(f"[NEW INTELLIGENCE] [{it['company']}] {it['title'][:50]}...")
                 
+    now_iso = datetime.now(timezone.utc).isoformat()
+    data["last_updated"] = now_iso
+    data["last_sync"] = now_iso
     data["news"] = existing_news
     NEWS_FILE.parent.mkdir(parents=True, exist_ok=True)
     with open(NEWS_FILE, "w", encoding="utf-8") as f:

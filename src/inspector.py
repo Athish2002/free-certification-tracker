@@ -442,8 +442,10 @@ def run_inspection(use_headless: bool = True) -> List[Dict[str, Any]]:
     finally:
         if inspector:
             inspector.close()
-            
-    data["last_inspected"] = datetime.now(timezone.utc).isoformat()
+    now_iso = datetime.now(timezone.utc).isoformat()
+    data["last_inspected"] = now_iso
+    data["last_sync"] = now_iso
+    data["last_updated"] = now_iso
     
     # Atomic Database Save: write to temp file then rename
     temp_file = DATA_FILE.with_suffix(".tmp")

@@ -266,7 +266,10 @@ def run_pipeline(
                 o_data = json.load(f)
             enriched, summary = audit_and_enrich_offers(o_data.get("offers", []), strict_enforcement=True)
             o_data["offers"] = enriched
-            o_data["last_truth_corroborated"] = datetime.now(timezone.utc).isoformat()
+            now_iso = datetime.now(timezone.utc).isoformat()
+            o_data["last_truth_corroborated"] = now_iso
+            o_data["last_sync"] = now_iso
+            o_data["last_updated"] = now_iso
             temp_o = DATA_FILE.with_suffix(".tmp")
             with open(temp_o, "w", encoding="utf-8") as f:
                 json.dump(o_data, f, indent=2)

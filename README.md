@@ -552,6 +552,17 @@
 
 ---
 
+## 🛡️ Multi-Tier Authenticity Verification & Truth Policies
+
+CertPulse enforces a strict four-layer authenticity and anti-fraud verification policy to protect candidates from coupon scams, dead links, and misleading claims:
+
+1. **Primary Enterprise Infrastructure**: All tracked URLs are restricted exclusively to official vendor domains (`amazon.com`, `microsoft.com`, `google.com`, `oracle.com`, `cisco.com`, `linuxfoundation.org`, `redhat.com`, `github.com`). Link shorteners, affiliate aggregators, and unverified blogs are strictly banned.
+2. **Dual Visual & Headless DOM Gating**: Headless Playwright Chromium renders full client-side SPAs on scheduled audits, screening for capacity limits, soft-404s, and closed cohort notices while capturing verified viewport screenshots in `docs/screenshots/`.
+3. **Truth Oracle Policy Corroboration**: All offers are audited against official vendor examination policies. Partial discounts (such as Juniper's 75% voucher) are explicitly flagged with the required $50 Pearson VUE co-pay fee, and student restrictions (GitHub Student Pack) are prominently disclosed.
+4. **Append-Only Tamper-Evident Receipts**: Every captured screenshot is validated for binary PNG header integrity (`\x89PNG\r\n\x1a\n`) and cataloged with ISO 8601 UTC timestamps across four global timezones (UTC, IST, EDT, CEST).
+
+---
+
 ## Architecture: How This Repo Updates Itself ($0 Cost)
 
 ```mermaid

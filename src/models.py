@@ -427,6 +427,7 @@ class OffersDatabase(BaseModel):
     last_updated: Optional[str] = None
     last_inspected: Optional[str] = None
     last_truth_corroborated: Optional[str] = None
+    last_sync: Optional[str] = None
     offers: List[Offer] = Field(default_factory=list)
 
 
