@@ -16,7 +16,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T03:16:41.610389+00:00"
+      "vetted_at": "2026-10-18T03:24:18.223790+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -33,7 +33,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T03:16:41.610464+00:00"
+      "vetted_at": "2026-10-18T03:24:18.223875+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -50,7 +50,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T03:16:41.610509+00:00"
+      "vetted_at": "2026-10-18T03:24:18.223946+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -68,7 +68,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T03:16:41.610549+00:00"
+      "vetted_at": "2026-10-18T03:24:18.224012+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -85,7 +85,7 @@
       "authenticity_tier": "Verified Official Portal",
       "vetting_status": "Rejected: MAINTENANCE_PAGE: Portal currently down for maintenance (Maintenance Invariant: Portal currently down for maintenance ('routine maintenance'))",
       "rejection_reason": "MAINTENANCE_PAGE: Portal currently down for maintenance (Maintenance Invariant: Portal currently down for maintenance ('routine maintenance'))",
-      "vetted_at": "2026-10-18T03:16:49.417705+00:00"
+      "vetted_at": "2026-10-18T03:24:21.758535+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -103,10 +103,10 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T03:16:49.417886+00:00"
+      "vetted_at": "2026-10-18T03:24:21.758652+00:00"
     }
   ],
-  "last_vetted": "2026-10-18T03:16:49.417945+00:00",
+  "last_vetted": "2026-10-18T03:24:21.758718+00:00",
   "vetted_promoted_count": 0,
   "vetted_rejected_count": 6
 }
