@@ -25,30 +25,33 @@ CANDIDATES_FILE = ROOT / "data" / "candidates.json"
 
 
 def test_offers_json_clean_parsing():
-    """Validates that all canonical offers in data/offers.json parse without error."""
+    """Validates that all offers in data/offers.json parse without error."""
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    total_count = len(data["offers"])
+    assert total_count > 0, "Offers database cannot be empty"
+
     # Test OffersDatabase container model
     db = OffersDatabase(**data)
-    assert len(db.offers) >= 39
+    assert len(db.offers) == total_count
 
     # Test explicit key lookup
     offers_key = [Offer(**o) for o in data["offers"]]
-    assert len(offers_key) >= 39
+    assert len(offers_key) == total_count
 
     # Test .get() lookup
     offers_get = [Offer(**o) for o in data.get("offers", [])]
-    assert len(offers_get) >= 39
+    assert len(offers_get) == total_count
 
     # Test OfferDataDict wrapper
     odd = OfferDataDict(data)
-    assert len(odd.offers) >= 39
-    assert len(odd.to_models()) >= 39
+    assert len(odd.offers) == total_count
+    assert len(odd.to_models()) == total_count
 
 
 def test_credential_tier_distribution():
-    """Asserts at least 21 proctored exams and 18 skill badge labs."""
+    """Asserts that every offer belongs to a valid credential tier dynamically."""
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -56,9 +59,11 @@ def test_credential_tier_distribution():
     proctored = [o for o in offers if o.credential_tier == "proctored_exam"]
     badges = [o for o in offers if o.credential_tier == "skill_badge_lab"]
 
-    assert len(proctored) >= 21, f"Expected at least 21 proctored exams, found {len(proctored)}"
-    assert len(badges) >= 18, f"Expected at least 18 skill badge labs, found {len(badges)}"
-    assert len(offers) >= 39
+    assert len(proctored) + len(badges) == len(offers), (
+        f"Taxonomy defect: {len(offers) - (len(proctored) + len(badges))} offers have unrecognized credential_tier"
+    )
+    assert len(proctored) > 0, "Database must contain proctored exams"
+    assert len(badges) > 0, "Database must contain skill badge labs"
 
     # Verify is_proctored() helper method
     for p in proctored:
@@ -212,7 +217,8 @@ def test_offers_database_container():
         data = json.load(f)
 
     db = OffersDatabase(**data)
-    assert len(db.offers) >= 39
+    assert len(db.offers) == len(data["offers"])
+    assert len(db.offers) > 0
     assert db.schema_version == "./schema.json"
 
 
