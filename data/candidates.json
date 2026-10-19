@@ -17,7 +17,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T04:13:32.323984+00:00"
+      "vetted_at": "2026-10-19T04:19:02.712574+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -34,7 +34,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T04:13:32.324074+00:00"
+      "vetted_at": "2026-10-19T04:19:02.712785+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -51,7 +51,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T04:13:32.324125+00:00"
+      "vetted_at": "2026-10-19T04:19:02.712911+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -68,7 +68,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T04:13:32.324163+00:00"
+      "vetted_at": "2026-10-19T04:19:02.712928+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -86,7 +86,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T04:13:32.324199+00:00"
+      "vetted_at": "2026-10-19T04:19:02.712988+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -102,11 +102,11 @@
       "verified_vendor_url": "https://www.pearsonvue.com/us/en/test-takers/free-retake.html",
       "authenticity_tier": "Verified Official Portal",
       "vetting_status": "Rejected: PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance).",
-      "vetted_at": "2026-10-19T04:13:32.324401+00:00",
-      "rejection_reason": "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance)."
+      "rejection_reason": "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance).",
+      "vetted_at": "2026-10-19T04:19:02.713449+00:00"
     }
   ],
-  "last_vetted": "2026-10-19T04:13:32.324441+00:00",
+  "last_vetted": "2026-10-19T04:19:02.713487+00:00",
   "vetted_promoted_count": 0,
   "vetted_rejected_count": 6
 }
