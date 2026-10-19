@@ -1,8 +1,32 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-19T09:50:01.817577+00:00",
-  "last_sync": "2026-10-19T09:50:01.817577+00:00",
+  "last_updated": "2026-10-19T18:34:42.628226+00:00",
+  "last_sync": "2026-10-19T18:34:42.628226+00:00",
   "news": [
+    {
+      "id": "google-cloud-how-to-use-python-udf-logging",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How to Use Python UDF Logging for Pipeline Observability",
+      "summary": "We are announcing a new logging feature that is now available in Python User-Defined Function (UDF) in BigQuery. Developers can now use Python\u2019s standard logging library directly inside BigQuery UDFs to emit structured logs seamlessly into ...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/data-analytics/python-udf-logging-for-pipeline-observability-in-bigquery/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-building-full-virtual-vehicles",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Building full virtual vehicles on Google Cloud: From AAOS to the smallest MCU",
+      "summary": "Imagining traditional gearheads getting their hands on software-defined vehicles is an amusing thought experiment. With their socket wrenches and air compressors at the ready, they might be confused to encounter core functions more likely t...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/manufacturing/building-full-virtual-vehicles-on-google-cloud-from-aaos-to-the-smallest-mcu/",
+      "impact_badge": "Cloud Platform"
+    },
     {
       "id": "google-cloud-what-s-new-with-google-cloud",
       "company": "Google Cloud",

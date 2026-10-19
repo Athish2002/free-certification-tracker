@@ -3,6 +3,23 @@
   "leads": [
     {
       "source": "Reddit r/AzureCertification",
+      "title": "Microsoft Build Agentic AI Solutions with Foundry workshop: Do I need to attend the entire session to get the AI-103 voucher?",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1xa4g0z/microsoft_build_agentic_ai_solutions_with_foundry/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-19T18:14:13+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead",
+      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "vetted_at": "2026-10-19T18:33:17.527614+00:00"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
       "title": "Passed AI-103 - First attempt",
       "url": "https://www.reddit.com/r/AzureCertification/comments/1x9jsx1/passed_ai103_first_attempt/",
       "platform": "Microsoft Azure",
@@ -17,7 +34,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T09:48:40.677289+00:00"
+      "vetted_at": "2026-10-19T18:33:17.527706+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -34,7 +51,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T09:48:40.677397+00:00"
+      "vetted_at": "2026-10-19T18:33:17.527780+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -51,7 +68,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T09:48:40.677469+00:00"
+      "vetted_at": "2026-10-19T18:33:17.527869+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -68,7 +85,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T09:48:40.677531+00:00"
+      "vetted_at": "2026-10-19T18:33:17.527937+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -86,27 +103,10 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-19T09:48:40.677579+00:00"
-    },
-    {
-      "source": "Reddit r/AzureCertification",
-      "title": "Azure 50% off + FREE Retake",
-      "url": "https://www.reddit.com/r/AzureCertification/comments/1x0ysfq/azure_50_off_free_retake/",
-      "platform": "Microsoft Azure",
-      "timestamp": "2026-10-08T18:33:00+00:00",
-      "keywords": [
-        "voucher"
-      ],
-      "match_confidence": "Medium (Multi-Keyword)",
-      "is_authentic_vendor": true,
-      "verified_vendor_url": "https://www.pearsonvue.com/us/en/test-takers/free-retake.html",
-      "authenticity_tier": "Verified Official Portal",
-      "vetting_status": "Rejected: PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance).",
-      "rejection_reason": "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance).",
-      "vetted_at": "2026-10-19T09:48:40.677920+00:00"
+      "vetted_at": "2026-10-19T18:33:17.527995+00:00"
     }
   ],
-  "last_vetted": "2026-10-19T09:48:40.677970+00:00",
+  "last_vetted": "2026-10-19T18:33:17.528035+00:00",
   "vetted_promoted_count": 0,
   "vetted_rejected_count": 6
 }
