@@ -3,6 +3,24 @@
   "leads": [
     {
       "source": "Reddit r/AzureCertification",
+      "title": "Passed AI-103 - First attempt",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x9jsx1/passed_ai103_first_attempt/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-19T01:17:45+00:00",
+      "keywords": [
+        "voucher",
+        "free exam"
+      ],
+      "match_confidence": "Medium (Multi-Keyword)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead",
+      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "vetted_at": "2026-10-19T04:13:32.323984+00:00"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
       "title": "Registered for DP-750 with voucher and can\u2019t reschedule. Should I take the test still?",
       "url": "https://www.reddit.com/r/AzureCertification/comments/1x6of7u/registered_for_dp750_with_voucher_and_cant/",
       "platform": "Microsoft Azure",
@@ -16,7 +34,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T11:17:15.717332+00:00"
+      "vetted_at": "2026-10-19T04:13:32.324074+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -33,7 +51,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T11:17:15.717418+00:00"
+      "vetted_at": "2026-10-19T04:13:32.324125+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -50,7 +68,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T11:17:15.717463+00:00"
+      "vetted_at": "2026-10-19T04:13:32.324163+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -68,7 +86,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T11:17:15.717497+00:00"
+      "vetted_at": "2026-10-19T04:13:32.324199+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -83,30 +101,12 @@
       "is_authentic_vendor": true,
       "verified_vendor_url": "https://www.pearsonvue.com/us/en/test-takers/free-retake.html",
       "authenticity_tier": "Verified Official Portal",
-      "vetting_status": "Rejected: MAINTENANCE_PAGE: Portal currently down for maintenance (Maintenance Invariant: Portal currently down for maintenance ('routine maintenance'))",
-      "rejection_reason": "MAINTENANCE_PAGE: Portal currently down for maintenance (Maintenance Invariant: Portal currently down for maintenance ('routine maintenance'))",
-      "vetted_at": "2026-10-18T11:17:20.219061+00:00"
-    },
-    {
-      "source": "Reddit r/AzureCertification",
-      "title": "Passed AI 901 with 1 day Prep",
-      "url": "https://www.reddit.com/r/AzureCertification/comments/1x042ag/passed_ai_901_with_1_day_prep/",
-      "platform": "Microsoft Azure",
-      "timestamp": "2026-10-07T18:20:16+00:00",
-      "keywords": [
-        "voucher",
-        "challenge"
-      ],
-      "match_confidence": "Medium (Multi-Keyword)",
-      "is_authentic_vendor": false,
-      "verified_vendor_url": "",
-      "authenticity_tier": "Community Lead",
-      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-18T11:17:20.219248+00:00"
+      "vetting_status": "Rejected: PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance).",
+      "vetted_at": "2026-10-19T04:13:32.324401+00:00",
+      "rejection_reason": "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance)."
     }
   ],
-  "last_vetted": "2026-10-18T11:17:20.219302+00:00",
+  "last_vetted": "2026-10-19T04:13:32.324441+00:00",
   "vetted_promoted_count": 0,
   "vetted_rejected_count": 6
 }

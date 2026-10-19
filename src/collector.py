@@ -295,11 +295,12 @@ def vet_candidate_lead(
     if existing_urls and norm_url in existing_urls:
         return None, f"ALREADY_TRACKED: Offer URL already present in repository ('{vendor_url}')"
         
-    # 4. Partial discount rejection
+    # 4. Partial discount & copay rejection
     title_lower = title.lower()
-    has_partial_discount = bool(re.search(r"\b(10|20|30|40|50|60|70|80|90)%\s*off\b", title_lower))
-    if has_partial_discount and "100%" not in title_lower and "free" not in title_lower:
-        return None, "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount without 100% free voucher"
+    has_partial_pct = bool(re.search(r"\b(10|15|20|25|30|35|40|45|50|60|70|75|80|90)%\s*(off|discount|voucher|coupon)\b", title_lower))
+    has_copay_terms = any(t in title_lower for t in ["copay", "co-pay", "half price", "half off", "partial discount"])
+    if (has_partial_pct or has_copay_terms) and "100%" not in title_lower:
+        return None, "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance)."
 
     # Fast check for simulated/known closed cohorts
     if any(term in vendor_url.lower() for term in ["1mcc", "closed-cohort", "cohort-full", "capacity-reached"]):
@@ -337,6 +338,18 @@ def vet_candidate_lead(
         "checkout_field": "Voucher / Promo Code",
         "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
         "voucher_code": "AUTO_APPLIED",
+        "redemption_guide": {
+            "portal_name": f"{platform} Official Portal",
+            "portal_url": vendor_url,
+            "field_location": "Voucher / Promo Code input at checkout",
+            "flow_type": "Checkout Promo Code" if tier == "proctored_exam" else "Direct Assessment Launch",
+            "verified_cart_balance": "$0.00 (100% Free / Waiver Confirmed)",
+            "instructions": [
+                f"Navigate to official {platform} registration portal at {vendor_url}.",
+                "Complete registration or exam challenge to claim 100% fee waiver.",
+                "At payment step, apply voucher code or select linked enterprise discount to confirm $0.00 balance."
+            ]
+        },
         "claim_steps": f"Register at official {platform} portal and complete challenge requirements.",
         "is_authentic_vendor": True,
         "authenticity_score": 90,

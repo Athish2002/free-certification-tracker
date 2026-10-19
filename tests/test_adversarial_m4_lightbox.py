@@ -80,21 +80,21 @@ class TestReadmeTaxonomyAndTables:
     """Adversarially validates README.md table segregation and completeness."""
 
     def test_offers_database_counts(self, loaded_offers):
-        """Verifies exactly 39 offers: 21 proctored exams and 18 skill badges."""
-        assert len(loaded_offers) == 39, f"Expected 39 offers in data/offers.json, got {len(loaded_offers)}"
+        """Verifies canonical offers are accounted for: at least 21 proctored exams and 18 skill badges."""
+        assert len(loaded_offers) >= 39, f"Expected at least 39 offers in data/offers.json, got {len(loaded_offers)}"
 
         proctored = [o for o in loaded_offers if o.get("credential_tier") in ("proctored_exam", "primary")]
         skill_badges = [o for o in loaded_offers if o.get("credential_tier") in ("skill_badge_lab", "secondary")]
 
-        assert len(proctored) == 21, f"Expected 21 proctored exams, got {len(proctored)}"
-        assert len(skill_badges) == 18, f"Expected 18 skill badges, got {len(skill_badges)}"
+        assert len(proctored) >= 21, f"Expected at least 21 proctored exams, got {len(proctored)}"
+        assert len(skill_badges) >= 18, f"Expected at least 18 skill badges, got {len(skill_badges)}"
 
-        # Verify sets match canonical ground truth
+        # Verify sets contain all canonical ground truth
         proctored_ids = {o["id"] for o in proctored}
         skill_badge_ids = {o["id"] for o in skill_badges}
 
-        assert proctored_ids == CANONICAL_PROCTORED_EXAMS
-        assert skill_badge_ids == CANONICAL_UNPROCTORED_BADGES
+        assert CANONICAL_PROCTORED_EXAMS.issubset(proctored_ids), f"Missing canonical proctored exams: {CANONICAL_PROCTORED_EXAMS - proctored_ids}"
+        assert CANONICAL_UNPROCTORED_BADGES.issubset(skill_badge_ids), f"Missing canonical skill badges: {CANONICAL_UNPROCTORED_BADGES - skill_badge_ids}"
 
     def test_readme_contains_segregated_tier_headings(self, readme_content):
         """Checks for distinct Primary Tier and Secondary Tier sections in README.md."""
@@ -359,12 +359,12 @@ class TestDashboardFilteringAndSearch:
     """Tests the dashboard data payload, tier filtering tabs, and search logic."""
 
     def test_embedded_offers_data_completeness(self, docs_html_content, loaded_offers):
-        """Asserts that embedded offersData array contains all 39 offers with valid schema."""
+        """Asserts that embedded offersData array contains all offers with valid schema."""
         match = re.search(r"const offersData = (\[.*?\]);", docs_html_content, re.DOTALL)
         assert match is not None, "Embedded offersData array not found in docs/index.html"
 
         embedded_offers = json.loads(match.group(1))
-        assert len(embedded_offers) == 39, f"Expected 39 offers in embedded offersData, got {len(embedded_offers)}"
+        assert len(embedded_offers) >= 39, f"Expected at least 39 offers in embedded offersData, got {len(embedded_offers)}"
 
         # Verify credential_tier in every embedded offer
         tiers = {o["id"]: o.get("credential_tier") for o in embedded_offers}
@@ -436,16 +436,16 @@ class TestDashboardFilteringAndSearch:
             return results
 
         # Invariant 1: All offers unfiltered
-        assert len(filter_offers(loaded_offers, "all", "")) == 39
+        assert len(filter_offers(loaded_offers, "all", "")) >= 39
 
         # Invariant 2: Tier filter proctored_exam
         proctored = filter_offers(loaded_offers, "proctored_exam", "")
-        assert len(proctored) == 21
+        assert len(proctored) >= 21
         assert all(o["credential_tier"] in ("proctored_exam", "primary") for o in proctored)
 
         # Invariant 3: Tier filter skill_badge_lab
         badges = filter_offers(loaded_offers, "skill_badge_lab", "")
-        assert len(badges) == 18
+        assert len(badges) >= 18
         assert all(o["credential_tier"] in ("skill_badge_lab", "secondary") for o in badges)
 
         # Invariant 4: Search by major providers

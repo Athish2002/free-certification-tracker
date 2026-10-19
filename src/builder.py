@@ -278,7 +278,7 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     for o in active_offers:
         provider = o.get("platform")
         cert = o.get("certification_name")
-        guide = o.get("redemption_guide", {})
+        guide = o.get("redemption_guide") or {}
         portal_name = guide.get("portal_name", o.get("platform"))
         portal_url = guide.get("portal_url", o.get("url"))
         field_loc = guide.get("field_location", o.get("checkout_field", "Promo / Voucher Code input"))
@@ -290,7 +290,7 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
     lines.append(f"<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All {len(active_offers)} Opportunities)</b> — <i>Click to expand</i></summary>")
     lines.append("")
     for o in active_offers:
-        guide = o.get("redemption_guide", {})
+        guide = o.get("redemption_guide") or {}
         code = o.get("voucher_code", "AUTO_APPLIED")
         lines.append(f"#### {o.get('title')}")
         lines.append(f"- **Voucher / Promo Code:** `{code}`")
@@ -299,7 +299,10 @@ def generate_readme(data: Dict[str, Any], news_data: Dict[str, Any] = None) -> s
         lines.append(f"- **Application Flow Type:** `{guide.get('flow_type', o.get('application_flow_type'))}`")
         lines.append(f"- **Verified Cart Balance:** **{guide.get('verified_cart_balance', '$0.00')}**")
         lines.append("- **Checkout Steps:**")
-        for step in guide.get("instructions", [o.get("claim_steps", "")]):
+        instructions = guide.get("instructions")
+        if not instructions or not isinstance(instructions, list):
+            instructions = [o.get("claim_steps", "Complete registration at official vendor portal.")]
+        for step in instructions:
             lines.append(f"  1. {step}")
         lines.append("")
     lines.append("</details>")
