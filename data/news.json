@@ -1,8 +1,44 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-19T18:34:42.628226+00:00",
-  "last_sync": "2026-10-19T18:34:42.628226+00:00",
+  "last_updated": "2026-10-19T23:30:25.347116+00:00",
+  "last_sync": "2026-10-19T23:30:25.347116+00:00",
   "news": [
+    {
+      "id": "cisco-the-data-center-networking-mod",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The Data Center Networking Modernization Gap",
+      "summary": "Is your customers\u2019 infrastructure ready for the AI era? Don\u2019t let technical debt stall their growth. Explore how Cisco Nexus One and our new AI-powered Modernization Playbook help you lead data center transformations with precision and spee...",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/partner/the-data-center-networking-modernization-gap",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-rebuilding-pubhub-how-ai-assi",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Rebuilding PubHub: How AI-assisted development shipped a mandatory rewrite 3.5 months early \u2013 Part 1",
+      "summary": "A security mandate forced a PubHub rewrite. AI-assisted development helped 12 engineers deliver nine months of work in about five and a half. Here is the sequence that worked.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/cisco-devnet/ai-assisted-development-rebuilding-pubhub-part-1",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "github-how-to-continue-a-github-copil",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "How to continue a GitHub Copilot app session in VS Code",
+      "summary": "Learn how to move an agent session from the GitHub Copilot app into VS Code without losing the conversation, code changes, or working context. The post How to continue a GitHub Copilot app session in VS Code appeared first on The GitHub Blo...",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
+      "impact_badge": "Developer Tooling"
+    },
     {
       "id": "google-cloud-how-to-use-python-udf-logging",
       "company": "Google Cloud",
