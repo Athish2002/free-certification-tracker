@@ -62,7 +62,7 @@ TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = {
         "verdict_notes": "Oracle University provides 100% free digital learning paths and embedded free proctored online exam attempts for OCI Foundations directly through Oracle MyLearn SSO.",
         "enforce_status": "Active",
         "zero_dollar_confirmed": True,
-        "canonical_direct_url": "https://mylearn.oracle.com/ou/learning-path/become-an-oci-foundations-associate/122100",
+        "canonical_direct_url": "https://www.oracle.com/education/certification/",
     },
     "oracle-oci-generative-ai-cert": {
         "provider": "Oracle Cloud",
@@ -75,7 +75,7 @@ TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = {
         "verdict_notes": "Oracle University offers free digital learning paths and free proctored exam attempts for OCI Generative AI & Agentic AI Foundations Associate on Oracle MyLearn.",
         "enforce_status": "Active",
         "zero_dollar_confirmed": True,
-        "canonical_direct_url": "https://mylearn.oracle.com/ou/course/oracle-cloud-infrastructure-generative-ai-professional/133618/",
+        "canonical_direct_url": "https://www.oracle.com/artificial-intelligence/generative-ai/",
     },
     "linux-foundation-lift": {
         "provider": "Linux Foundation / CNCF",

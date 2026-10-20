@@ -39,10 +39,10 @@
 
 | Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Truth Source | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Foundational` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/) |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Foundational` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/education/certification/) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | `Associate` | $200 | 🟢 Active | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [Juniper Open Learning Voucher Policy](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | [**Claim Voucher**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/) |
-| **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Foundational` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://github.com/education) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/artificial-intelligence/generative-ai/) |
+| **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Foundational` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
 
 ---
 
@@ -59,12 +59,12 @@
 | **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/qualys-certified-specialist.png) | [Qualys Training Official Portal](https://www.qualys.com/training) | [**Launch Lab**](https://www.qualys.com/training) |
 | **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | $75 | 🟢 Active | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | Cloud Computing | `Foundational` | $50 | 🟢 Active | [📸 Proof](docs/screenshots/aws-educate-badges.png) | [AWS Educate Program](https://aws.amazon.com/education/awseducate/) | [**Launch Lab**](https://aws.amazon.com/education/awseducate/) |
-| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | Cloud & DevOps | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/redhat-skills-assessment-rhel.png) | [Red Hat Developer Program](https://developers.redhat.com/) | [**Launch Lab**](https://developers.redhat.com/) |
-| **GitLab** | GitLab Certified Associate | Cloud & DevOps | `Associate` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/gitlab-certified-associate.png) | [GitLab University](https://university.gitlab.com/) | [**Launch Lab**](https://university.gitlab.com/) |
-| **Splunk** | Splunk Core Observability & Defense Fundamentals | Security | `Foundational` | $130 | 🟢 Active | [📸 Proof](docs/screenshots/splunk-certified-defense-analyst.png) | [Splunk Lantern & Training](https://lantern.splunk.com/) | [**Launch Lab**](https://lantern.splunk.com/) |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/) | [**Launch Lab**](https://skillsbuild.org/) |
+| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | Cloud & DevOps | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/redhat-skills-assessment-rhel.png) | [Red Hat Developer Program](https://developers.redhat.com/) | [**Launch Lab**](https://www.redhat.com/en/services/skills-assessment) |
+| **GitLab** | GitLab Certified Associate | Cloud & DevOps | `Associate` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/gitlab-certified-associate.png) | [GitLab University](https://university.gitlab.com/) | [**Launch Lab**](https://university.gitlab.com/pages/certifications) |
+| **Splunk** | Splunk Core Observability & Defense Fundamentals | Security | `Foundational` | $130 | 🟢 Active | [📸 Proof](docs/screenshots/splunk-certified-defense-analyst.png) | [Splunk Lantern & Training](https://lantern.splunk.com/) | [**Launch Lab**](https://www.splunk.com/en_us/training/splunk-fundamentals.html) |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/) | [**Launch Lab**](https://skillsbuild.org/learning-catalog) |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Databricks Academy](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.netacad.com/) | [**Launch Lab**](https://www.netacad.com/) |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.netacad.com/) | [**Launch Lab**](https://www.netacad.com/courses/introduction-to-cybersecurity) |
 
 ---
 
@@ -185,7 +185,7 @@
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.
-- **Official Link:** [https://mylearn.oracle.com/](https://mylearn.oracle.com/)
+- **Official Link:** [https://www.oracle.com/education/certification/](https://www.oracle.com/education/certification/)
 
 #### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
 - **Provider:** Cisco
@@ -255,28 +255,28 @@
 - **Value:** $150 USD
 - **Eligibility:** Global (Free Red Hat Developer / Learn Account)
 - **Steps to Claim:** Create a free Red Hat Developer account. Access the free Red Hat Learning Subscription courses and pass the technical skill assessments on Red Hat Learn to earn official Credly digital badges and certificates.
-- **Official Link:** [https://developers.redhat.com/](https://developers.redhat.com/)
+- **Official Link:** [https://www.redhat.com/en/services/skills-assessment](https://www.redhat.com/en/services/skills-assessment)
 
 #### GitLab University: GitLab Certified Associate & CI/CD Specialist
 - **Provider:** GitLab
 - **Value:** $99 USD
 - **Eligibility:** Open to all developers and GitLab community members
 - **Steps to Claim:** Sign up on GitLab University. Complete the self-paced Git & GitLab CI/CD fundamentals modules and pass the knowledge verification quiz to receive the official GitLab badge.
-- **Official Link:** [https://university.gitlab.com/](https://university.gitlab.com/)
+- **Official Link:** [https://university.gitlab.com/pages/certifications](https://university.gitlab.com/pages/certifications)
 
 #### Splunk Lantern: Core Cybersecurity Defense & Observability Specialist
 - **Provider:** Splunk
 - **Value:** $130 USD
 - **Eligibility:** Global (Free Splunk.com account)
 - **Steps to Claim:** Create a free Splunk account. Access Splunk Lantern and Splunk Education free foundational courses. Pass the final exam track to receive accredited digital credentials.
-- **Official Link:** [https://lantern.splunk.com/](https://lantern.splunk.com/)
+- **Official Link:** [https://www.splunk.com/en_us/training/splunk-fundamentals.html](https://www.splunk.com/en_us/training/splunk-fundamentals.html)
 
 #### IBM SkillsBuild: Enterprise Cybersecurity & AI Practitioner Certifications
 - **Provider:** IBM
 - **Value:** $150 USD
 - **Eligibility:** Global (Open to all students, jobseekers, and engineers)
 - **Steps to Claim:** Register on IBM SkillsBuild. Enroll in the Cybersecurity or AI Practitioner track, complete interactive labs, and take the proctored exit assessment to earn verified IBM digital credentials issued on Credly.
-- **Official Link:** [https://skillsbuild.org/](https://skillsbuild.org/)
+- **Official Link:** [https://skillsbuild.org/learning-catalog](https://skillsbuild.org/learning-catalog)
 
 #### Databricks Academy: Lakehouse Fundamentals & Generative AI Accreditation
 - **Provider:** Databricks
@@ -290,21 +290,21 @@
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
-- **Official Link:** [https://mylearn.oracle.com/](https://mylearn.oracle.com/)
+- **Official Link:** [https://www.oracle.com/artificial-intelligence/generative-ai/](https://www.oracle.com/artificial-intelligence/generative-ai/)
 
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Provider:** Cisco
 - **Value:** $125 USD
 - **Eligibility:** Global (Free Cisco NetAcad / Skills for All account)
 - **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
-- **Official Link:** [https://www.netacad.com/](https://www.netacad.com/)
+- **Official Link:** [https://www.netacad.com/courses/introduction-to-cybersecurity](https://www.netacad.com/courses/introduction-to-cybersecurity)
 
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Provider:** GitHub
 - **Value:** $99 USD
 - **Eligibility:** Verified Students (GitHub Student Developer Pack)
 - **Steps to Claim:** Verify status via GitHub Student Developer Pack or complete the GitHub Foundations challenge track on Microsoft Learn to receive a 100% off voucher for the PSI-delivered exam.
-- **Official Link:** [https://github.com/education](https://github.com/education)
+- **Official Link:** [https://education.github.com/pack](https://education.github.com/pack)
 
 </details>
 

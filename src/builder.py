@@ -1507,7 +1507,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
             if (tv) {{
                 if (truthCard) truthCard.classList.remove('hidden');
                 if (policyTypeEl) {{
-                    policyTypeEl.textContent = (tv.policy_type || 'VERIFIED').replace(/_/g, ' ').toUpperCase();
+                    policyTypeEl.textContent = (tv.policy_type || 'VERIFIED').replace(/_/g, ' ').replace(/\b100pct\b/gi, '100%').toUpperCase();
                     if (tv.policy_type === 'verified_100pct_free') {{
                         policyTypeEl.className = 'px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30';
                     }} else if (tv.policy_type === 'partial_discount_copay' || tv.policy_type === 'annual_window_closed') {{
@@ -1531,8 +1531,9 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                 truthCard.classList.add('hidden');
             }}
 
-            if (portalLink) portalLink.href = offer.url || '#';
-            if (directLink) directLink.href = offer.url || '#';
+            const targetLaunchUrl = offer.direct_verified_url || offer.verified_vendor_url || offer.url || '#';
+            if (portalLink) portalLink.href = targetLaunchUrl;
+            if (directLink) directLink.href = targetLaunchUrl;
 
             const shotPath = offer.screenshot_path 
                 ? (offer.screenshot_path.startsWith('docs/') ? './' + offer.screenshot_path.slice(5) : './' + offer.screenshot_path)
@@ -2026,7 +2027,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                                 <span>📸 Proof</span>
                             </button>
                         </div>
-                        <a href="${{o.url}}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
+                        <a href="${{o.direct_verified_url || o.verified_vendor_url || o.url}}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
                             <span>Claim Free</span>
                             <span>→</span>
                         </a>
@@ -2137,7 +2138,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                     <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
                         <button onclick="openProofModal('${{o.id}}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
                         <button onclick="openRedemptionFor('${{o.id}}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
-                        <a href="${{o.url}}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
+                        <a href="${{o.direct_verified_url || o.verified_vendor_url || o.url}}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
                     </div>
                 </div>`;
             }};
@@ -2183,7 +2184,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                         <button onclick="openProofModal('${{o.id}}')" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
                             📸 Proof
                         </button>
-                        <a href="${{o.url}}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
+                        <a href="${{o.direct_verified_url || o.verified_vendor_url || o.url}}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
                     </div>
                 </div>`).join('')}}
             </div>`;
@@ -2225,7 +2226,7 @@ def generate_web_dashboard(data: Dict[str, Any], news_data: Dict[str, Any] = Non
                                 <span class="text-[10px] font-mono">${{o.difficulty_tier || 'Foundational'}}</span>
                                 <div class="flex items-center gap-2">
                                     <button onclick="openProofModal('${{o.id}}')" class="text-[11px] font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
-                                    <a href="${{o.url}}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
+                                    <a href="${{o.direct_verified_url || o.verified_vendor_url || o.url}}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
                                 </div>
                             </div>
                         </div>`).join('')}}

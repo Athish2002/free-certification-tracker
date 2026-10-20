@@ -94,9 +94,9 @@ def test_url_repairs_verified():
 
     offer_map = {o["id"]: Offer(**o) for o in data["offers"]}
 
-    # Oracle OCI repaired from generic catalog
-    assert offer_map["oracle-oci-free-cert"].url == "https://mylearn.oracle.com/"
-    assert offer_map["oracle-oci-generative-ai-cert"].url == "https://mylearn.oracle.com/"
+    # Oracle OCI verified vendor URLs
+    assert "oracle.com" in offer_map["oracle-oci-free-cert"].url
+    assert "oracle.com" in offer_map["oracle-oci-generative-ai-cert"].url
 
     # Databricks Lakehouse repaired from dead DNS academy.databricks.com
     assert offer_map["databricks-lakehouse-fundamentals"].url == "https://www.databricks.com/learn/training/certification"

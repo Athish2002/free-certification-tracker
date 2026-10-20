@@ -519,10 +519,29 @@ class HeadlessDOMInspector:
 
         temp_path = target_path.with_suffix(".tmp.png")
         try:
+            # Check for SPA hydration: wait for content rendering if body text is sparse
+            try:
+                text_len = len(page.evaluate("() => document.body ? document.body.innerText.trim() : ''"))
+                if text_len < 100:
+                    page.wait_for_timeout(2000)
+            except Exception:
+                pass
+
             page.screenshot(path=str(temp_path), full_page=False)
             if temp_path.exists() and temp_path.stat().st_size >= 4096:
                 header = temp_path.read_bytes()[:8]
                 if header == b"\x89PNG\r\n\x1a\n":
+                    new_size = temp_path.stat().st_size
+                    # Anti-spinner protection: never overwrite an existing rich screenshot (>= 30KB)
+                    # with a tiny blank/loading spinner capture (< 18KB)
+                    if target_path.exists() and target_path.stat().st_size >= 30000 and new_size < 18000:
+                        logger.info(f"Preserving existing substantive screenshot for {offer_id} ({target_path.stat().st_size} bytes vs {new_size} bytes)")
+                        try:
+                            temp_path.unlink()
+                        except Exception:
+                            pass
+                        return True, rel_path
+
                     temp_path.replace(target_path)
                     return True, rel_path
             if temp_path.exists():
@@ -612,16 +631,17 @@ class HeadlessDOMInspector:
 
             page.route("**/*", handle_route)
 
-            # Navigate to URL
-            redirect_chain = [url]
+            # Navigate to direct actionable URL if present
+            nav_target = offer.get("direct_verified_url") or offer.get("verified_vendor_url") or url
+            redirect_chain = [nav_target]
             rendered_title = ""
             rendered_text = ""
-            final_url = url
+            final_url = nav_target
             http_status = 200
 
             if not is_local_file:
                 try:
-                    response = page.goto(url, wait_until="domcontentloaded", timeout=self.timeout_ms)
+                    response = page.goto(nav_target, wait_until="domcontentloaded", timeout=self.timeout_ms)
                     http_status = response.status if response else 200
                     final_url = page.url
                     if final_url != url:

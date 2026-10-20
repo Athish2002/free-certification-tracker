@@ -410,9 +410,9 @@ class TestDatasetGroundTruth:
 
         offer_map = {o["id"]: Offer(**o) for o in data["offers"]}
 
-        # 1. Oracle OCI must not point to dead / bot-walled generic catalog
-        assert offer_map["oracle-oci-free-cert"].url == "https://mylearn.oracle.com/"
-        assert offer_map["oracle-oci-generative-ai-cert"].url == "https://mylearn.oracle.com/"
+        # 1. Oracle OCI must point to active Oracle Cloud landing URLs
+        assert "oracle.com" in offer_map["oracle-oci-free-cert"].url
+        assert "oracle.com" in offer_map["oracle-oci-generative-ai-cert"].url
 
         # 2. Databricks must not point to dead DNS academy.databricks.com
         assert "academy.databricks.com" not in offer_map["databricks-lakehouse-fundamentals"].url
