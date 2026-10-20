@@ -234,6 +234,56 @@ AFFIRMATIVE_OFFER_SIGNALS = [
     "complimentary", "100%", "level up", "applied skills", "$0.00"
 ]
 
+# Patterns indicating corporate enterprise marketing, sales-pitch, or lead-capture landing pages
+MARKETING_LEAD_PATTERNS = [
+    "speak to an ai expert",
+    "speak to an expert",
+    "talk to an expert",
+    "speak to our experts",
+    "speak to sales",
+    "talk to sales",
+    "contact sales",
+    "connect with sales",
+    "contact an expert",
+    "request a demo",
+    "request demo",
+    "schedule a demo",
+    "download whitepaper",
+    "download datasheet",
+    "idc marketscape",
+    "gartner magic quadrant",
+    "forrester wave",
+    "see what analysts are saying",
+    "contact us for enterprise pricing",
+    "book a sales meeting"
+]
+
+# Signals indicating genuine actionable educational or certification fulfillment
+ACTIONABLE_FULFILLMENT_SIGNALS = [
+    "enroll",
+    "enroll in path",
+    "enroll for free",
+    "start course",
+    "start learning",
+    "schedule exam",
+    "schedule free exam",
+    "book exam",
+    "take assessment",
+    "start assessment",
+    "claim voucher",
+    "apply voucher",
+    "register for exam",
+    "start lab",
+    "launch lab",
+    "take exam",
+    "begin course",
+    "view learning path",
+    "mylearn",
+    "course curriculum",
+    "learning path",
+    "exam details"
+]
+
 # Chromium launch arguments optimized for sandboxed headless execution
 PLAYWRIGHT_LAUNCH_ARGS = [
     "--no-sandbox",
@@ -258,7 +308,8 @@ def inspect_rendered_dom(
     rendered_text: str,
     rendered_title: str = "",
     final_url: str = "",
-    original_url: str = ""
+    original_url: str = "",
+    interactive_elements: Optional[List[str]] = None
 ) -> Dict[str, Any]:
     """
     Analyzes dynamically rendered DOM text, page title, and URL navigation
@@ -376,7 +427,26 @@ def inspect_rendered_dom(
                 result["category"] = "silent_reroute"
                 return result
 
-    # 5b. Paid Catalog & Standard Fee Barrier Invariant (Evaluated before generic affirmative signals)
+    # 5b. Marketing Funnel & Sales Lead Trap Invariant
+    has_marketing_lead = any(pat in combined_content for pat in MARKETING_LEAD_PATTERNS)
+    if has_marketing_lead:
+        has_actionable = any(sig in combined_content for sig in ACTIONABLE_FULFILLMENT_SIGNALS)
+        if interactive_elements:
+            has_actionable = has_actionable or any(
+                any(sig in el for sig in ACTIONABLE_FULFILLMENT_SIGNALS) for el in interactive_elements
+            )
+        if not has_actionable:
+            matched_pat = next(pat for pat in MARKETING_LEAD_PATTERNS if pat in combined_content)
+            result["status"] = "Review Needed"
+            result["reason"] = f"Marketing Funnel Invariant: Page is a corporate marketing/sales lead portal ('{matched_pat}') without actionable course enrollment or exam scheduling CTAs"
+            result["is_marketing_lead"] = True
+            result["marketing_lead_detected"] = True
+            result["zero_dollar_confirmed"] = False
+            result["matched_phrase"] = matched_pat
+            result["category"] = "marketing_lead"
+            return result
+
+    # 5c. Paid Catalog & Standard Fee Barrier Invariant (Evaluated before generic affirmative signals)
     has_paid_terms = any(re.search(pat, combined_content) for pat in PAID_CATALOG_PATTERNS)
     has_confirmed_zero = any(sig in combined_content for sig in CONFIRMED_ZERO_DOLLAR_CART)
     if has_paid_terms and not has_confirmed_zero:
@@ -691,12 +761,27 @@ class HeadlessDOMInspector:
             if offer_id:
                 screenshot_ok, screenshot_path = self.capture_screenshot(page, offer_id)
 
+            # Extract interactive elements for semantic CTA inspection
+            interactive_ctas = []
+            try:
+                interactive_ctas = page.evaluate("""() => {
+                    const ctas = [];
+                    document.querySelectorAll('button, a, [role="button"], input[type="submit"]').forEach(el => {
+                        const txt = (el.innerText || el.textContent || el.value || '').trim().toLowerCase();
+                        if (txt.length > 2 && txt.length < 80) ctas.push(txt);
+                    });
+                    return ctas;
+                }""")
+            except Exception:
+                interactive_ctas = []
+
             # Analyze rendered DOM
             dom_eval = inspect_rendered_dom(
                 rendered_text=rendered_text,
                 rendered_title=rendered_title,
                 final_url=final_url,
-                original_url=url
+                original_url=url,
+                interactive_elements=interactive_ctas
             )
 
             # Read screenshot bytes for VLM analysis

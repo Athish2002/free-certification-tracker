@@ -1567,3 +1567,39 @@ def test_tier4_self_healing_recovery_flow():
 
 
 
+
+
+def test_marketing_lead_funnel_rejection():
+    """
+    Asserts that corporate marketing/sales lead funnels (e.g. 'Speak to an AI expert',
+    'IDC MarketScape', 'Talk to sales') are rejected from being marked Active
+    unless they provide actionable course enrollment or exam scheduling CTAs.
+    """
+    from src.dom_inspector import inspect_rendered_dom
+
+    # 1. Marketing sales page without actionable fulfillment -> Must be rejected
+    marketing_lead_text = '''
+    Generative AI Capabilities
+    Enter a new era of productivity with generative AI capabilities built for business.
+    Speak to an AI expert
+    See the latest LLMs
+    Oracle named a Leader in the IDC MarketScape: Worldwide Agentic AI Platforms 2026 Vendor Assessment
+    Read the excerpt
+    Try Free Cloud Tier with $300 in free cloud credits
+    '''
+    res = inspect_rendered_dom(marketing_lead_text, rendered_title='Generative AI Capabilities | Oracle')
+    assert res['status'] == 'Review Needed'
+    assert 'Marketing Funnel Invariant' in res['reason']
+    assert res['zero_dollar_confirmed'] is False
+
+    # 2. Authentic educational portal with enrollment CTA -> Must pass
+    actionable_portal_text = '''
+    Become an OCI Generative AI Professional
+    Enroll in Path
+    Course Modules: Large Language Models, Retrieval-Augmented Generation, OCI AI Stack
+    Certification Exam: Oracle Cloud Infrastructure 2026 Generative AI Professional (1Z0-1127)
+    Schedule Free Exam - 100% discount waiver applied ($0.00)
+    '''
+    active_res = inspect_rendered_dom(actionable_portal_text, rendered_title='Oracle MyLearn - Become an OCI Generative AI Professional')
+    assert active_res['status'] == 'Active'
+    assert active_res['zero_dollar_confirmed'] is True
