@@ -29,7 +29,7 @@
 | **Verified Tech Dispatches** | **49 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-20 07:05 UTC` (12:35 IST • 03:05 EDT • 09:05 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-20 08:02 UTC` (13:32 IST • 04:02 EDT • 10:02 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -104,7 +104,7 @@
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
 | **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | HTTP 404 Page Not Found |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Proof](docs/screenshots/salesforce-trailhead-quests.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | Truth Gate Invariant: Free digital cybersecurity fundamentals training and digital badges via Fortinet Training Institute. |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | Marketing funnel detected: found 1 sales-pitch/lead triggers (contact sales) without actionable course CTAs. |
 | **GitHub** | GitHub Foundations | 🟡 Review Needed | [📸 Proof](docs/screenshots/github-student-foundations.png) | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | ⚠️ Server Error | [📸 Proof](docs/screenshots/paloalto-pccet-cybersecurity.png) | Truth Gate Invariant: PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, official exams require paid Pearson VUE registration. |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/cncf-dan-kohn-scholarship.png) | Truth Gate Invariant: CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines. URL migrated to cncf.io/scholarships. |
@@ -617,4 +617,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-20 07:05 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-20 08:02 UTC`.*
