@@ -1,8 +1,32 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-20T19:57:19.756160+00:00",
-  "last_sync": "2026-10-20T19:57:19.756160+00:00",
+  "last_updated": "2026-10-20T23:05:05.023473+00:00",
+  "last_sync": "2026-10-20T23:05:05.023473+00:00",
   "news": [
+    {
+      "id": "cisco-connecting-people-to-humanitar",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Connecting people to humanitarian assistance with responsible AI",
+      "summary": "Can responsible AI help connect people with food, shelter, and services in a crisis? Learn how Cisco partner the IRC is using AI as a tool and a teammate to get people fast, reliable answers about humanitarian assistance.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/our-corporate-purpose/connecting-people-to-humanitarian-assistance-with-responsible-ai",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-building-trust-into-enterprise",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Building Trust into Enterprise AI Agents: Cisco AI Defense and Workday Agent Passport",
+      "summary": "Workday Agent Passport, now in Early Access, gives customers a signed, auditable record of what has been verified about an agent, who verified it, and to what standard. Cisco AI Defense\u200b\u200b,\u200b Agent Passport\u200b\u2019s launch assessor, provides\u200b\u200b....",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/ai/building-trust-into-enterprise-ai-agents-cisco-ai-defense-and-workday-agent-passport",
+      "impact_badge": "Enterprise Networking"
+    },
     {
       "id": "cisco-the-receipt-not-the-demo-fou",
       "company": "Cisco",
