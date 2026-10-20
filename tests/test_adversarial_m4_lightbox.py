@@ -453,24 +453,24 @@ class TestDashboardFilteringAndSearch:
         assert all(o["credential_tier"] in ("skill_badge_lab", "secondary") for o in badges)
 
         # Invariant 4: Search by major providers dynamically matches matches in dataset
-        expected_oracle = len([o for o in loaded_offers if "oracle" in (o.get("platform", "") + " " + o.get("title", "") + " " + o.get("certification_name", "")).lower()])
+        expected_oracle = len([o for o in loaded_offers if "oracle" in (str(o.get("platform") or "") + " " + str(o.get("title") or "") + " " + str(o.get("certification_name") or "")).lower()])
         oracle_offers = filter_offers(loaded_offers, "all", "Oracle")
         assert len(oracle_offers) == expected_oracle
 
-        expected_aws = len([o for o in loaded_offers if "aws" in (o.get("platform", "") + " " + o.get("title", "") + " " + o.get("certification_name", "")).lower()])
+        expected_aws = len([o for o in loaded_offers if "aws" in (str(o.get("platform") or "") + " " + str(o.get("title") or "") + " " + str(o.get("certification_name") or "")).lower()])
         aws_offers = filter_offers(loaded_offers, "all", "AWS")
         assert len(aws_offers) == expected_aws
 
-        expected_msft = len([o for o in loaded_offers if "microsoft" in (o.get("platform", "") + " " + o.get("title", "") + " " + o.get("certification_name", "")).lower()])
+        expected_msft = len([o for o in loaded_offers if "microsoft" in (str(o.get("platform") or "") + " " + str(o.get("title") or "") + " " + str(o.get("certification_name") or "")).lower()])
         msft_offers = filter_offers(loaded_offers, "all", "Microsoft")
         assert len(msft_offers) == expected_msft
 
         # Invariant 5: Search for specific cert dynamically matches
-        expected_cka = len([o for o in loaded_offers if "cka" in (o.get("title", "") + " " + o.get("certification_name", "") + " " + o.get("exam_code", "")).lower()])
+        expected_cka = len([o for o in loaded_offers if "cka" in (str(o.get("title") or "") + " " + str(o.get("certification_name") or "") + " " + str(o.get("exam_code") or "")).lower()])
         cka = filter_offers(loaded_offers, "all", "CKA")
         assert len(cka) == expected_cka
         if expected_cka > 0:
-            assert any("Kubernetes" in (o.get("title", "") + " " + o.get("certification_name", "")) for o in cka)
+            assert any("Kubernetes" in (str(o.get("title") or "") + " " + str(o.get("certification_name") or "")) for o in cka)
 
         # Invariant 6: Search with whitespace trimming and case insensitivity
         assert len(filter_offers(loaded_offers, "all", "  kUbErNeTeS  ")) == len(filter_offers(loaded_offers, "all", "kubernetes"))

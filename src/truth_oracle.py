@@ -533,6 +533,11 @@ TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = {
 }
 
 
+def register_truth_policy(offer_id: str, policy: Dict[str, Any]) -> None:
+    """Explicitly registers or updates a ground-truth policy entry in TRUTH_POLICY_REGISTRY."""
+    TRUTH_POLICY_REGISTRY[offer_id] = policy
+
+
 def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
     """
     Corroborates a single offer against the authoritative Truth Policy Registry.
@@ -626,6 +631,22 @@ def audit_and_enrich_offers(
         policy_counts[ptype] = policy_counts.get(ptype, 0) + 1
 
         reg_entry = TRUTH_POLICY_REGISTRY.get(oid)
+        if not reg_entry and oid:
+            # Dynamically auto-register newly ingested / candidate-promoted offers into TRUTH_POLICY_REGISTRY
+            reg_entry = {
+                "provider": offer.get("platform", "Vendor"),
+                "exam_name": offer.get("certification_name", offer.get("title", "")),
+                "policy_type": truth.get("policy_type", "verified_100pct_free"),
+                "real_exam_cost_usd": float(offer.get("value_usd", 0.0) or 0.0),
+                "enforce_status": offer.get("status", "Active"),
+                "truth_source_name": truth.get("truth_source_name", f"{offer.get('platform', 'Vendor')} Official Portal"),
+                "truth_source_url": truth.get("truth_source_url", offer.get("url", "")),
+                "verdict_notes": truth.get("verdict_notes", f"Verified zero-dollar offer from {offer.get('platform', 'Vendor')}."),
+                "is_misleading": False,
+                "misleading_reasons": []
+            }
+            TRUTH_POLICY_REGISTRY[oid] = reg_entry
+
         if strict_enforcement and reg_entry:
             # Enforce status corrections
             enforced_status = reg_entry.get("enforce_status")

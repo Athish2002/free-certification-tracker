@@ -1,8 +1,32 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-20T08:36:01.383462+00:00",
-  "last_sync": "2026-10-20T08:36:01.383462+00:00",
+  "last_updated": "2026-10-20T13:51:49.349711+00:00",
+  "last_sync": "2026-10-20T13:51:49.349711+00:00",
   "news": [
+    {
+      "id": "cisco-on-my-first-day-at-cisco-i-as",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "On My First Day at Cisco, I Asked My Manager Where My Manager Was",
+      "summary": "Madhan B., a Technical Systems Engineer, had first-day nerves, like everyone, but discovered that at Cisco you don't need to be perfect to belong.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/wearecisco/on-my-first-day-at-cisco-i-asked-my-manager-where-my-manager-was",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-state-of-observability-2026-re",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "State of Observability 2026 Reveals How Leaders Are Restoring Predictability to the Agentic Era",
+      "summary": "Agentic AI has made modern systems unpredictable by design, but Splunk's latest research reveals how leaders use observability to restore control and drive measurable business value.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era",
+      "impact_badge": "Enterprise Networking"
+    },
     {
       "id": "cisco-the-data-center-networking-mod",
       "company": "Cisco",

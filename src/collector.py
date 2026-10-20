@@ -302,6 +302,37 @@ def vet_candidate_lead(
     if (has_partial_pct or has_copay_terms) and "100%" not in title_lower:
         return None, "PARTIAL_DISCOUNT_ONLY: Lead specifies partial discount or copay (CertPulse exclusively tracks 100% free exam vouchers with $0.00 cart balance)."
 
+    # 4.5. Non-Offer Community Discussion & Troubleshooting Rejection Gate
+    title_clean = title.strip().lower()
+    is_question = title_clean.endswith("?") or any(title_clean.startswith(q) for q in [
+        "how to", "how do i", "how can i", "why", "where can i", "where do i",
+        "is it", "should i", "can i", "anyone", "does anyone", "can someone",
+        "question about", "advice", "thoughts on"
+    ])
+    
+    FORUM_TROUBLESHOOTING_TOKENS = [
+        "can't", "cannot", "can’t", "upgrade my account", "account activation",
+        "reschedule", "payment failed", "card declined", "billed", "stuck on",
+        "issue with", "problem with", "error message", "failed the exam",
+        "passed the exam", "lost my voucher", "waiting for my", "haven't received",
+        "did not receive", "voucher request", "anyone have a voucher",
+        "free voucher please", "looking for voucher", "tight budget"
+    ]
+    has_troubleshooting = any(tok in title_clean for tok in FORUM_TROUBLESHOOTING_TOKENS)
+    
+    if is_question or has_troubleshooting:
+        return None, f"NON_OFFER_DISCUSSION: Title is a community query, troubleshooting post, or non-announcement discussion ('{title[:60]}')"
+
+    # 4.6. Affirmative Certification Credential Signal Requirement
+    CERTIFICATION_SIGNALS = [
+        "cert", "exam", "voucher", "scholarship", "challenge", "waiver",
+        "accreditation", "badge", "skills boost", "foundations",
+        "associate", "professional", "specialist", "applied skills",
+        "learning path", "course", "training", "level up", "levelup"
+    ]
+    if not any(sig in title_clean for sig in CERTIFICATION_SIGNALS):
+        return None, f"IRRELEVANT_TOPIC: Title does not mention certifications, exams, vouchers, or skill credentials ('{title[:60]}')"
+
     # Fast check for simulated/known closed cohorts
     if any(term in vendor_url.lower() for term in ["1mcc", "closed-cohort", "cohort-full", "capacity-reached"]):
         return None, "REGISTRATIONS_CLOSED: Cohort capacity limit reached / registrations closed"
@@ -396,6 +427,12 @@ def vet_candidate_lead(
         return None, f"REGISTRATIONS_CLOSED: {reason}"
     if insp_status != "Active" or not zero_dollar:
         return None, f"UNVERIFIED: Dual gate failed ({reason})"
+        
+    # Check synthetic cart emulator assertion
+    from src.cart_emulator import assert_cart_balance
+    cart_verdict = assert_cart_balance(stub)
+    if not cart_verdict.is_zero_dollar or cart_verdict.is_copay_required:
+        return None, f"COPAY_REQUIRED: Cart balance did not assert to $0.00 ({cart_verdict.reason})"
         
     # Check screenshot file exists and is valid PNG >= 1KB
     screenshots_dir = Path(__file__).resolve().parent.parent / "docs" / "screenshots"

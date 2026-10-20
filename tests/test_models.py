@@ -165,9 +165,10 @@ def test_candidate_lead_parsing_and_stub():
     leads = [CandidateLead(**l) for l in data.get("leads", [])]
     assert len(leads) > 0
 
+    valid_platforms = {"Microsoft Azure", "Amazon Web Services", "Multi-Cloud", "Google Cloud", "Oracle Cloud", "Cisco"}
     for lead in leads:
         assert lead.source.startswith("Reddit")
-        assert lead.platform == "Microsoft Azure"
+        assert lead.platform in valid_platforms, f"Unexpected platform '{lead.platform}' in candidate leads"
         assert lead.url.startswith("https://")
         stub = lead.to_offer_stub("candidate-test-id", credential_tier="proctored_exam")
         assert stub["id"] == "candidate-test-id"

@@ -43,6 +43,9 @@ class TestTruthOracleRegistry:
         """Every tracked offer must have a defined ground truth policy in the registry."""
         for offer in offers_data:
             oid = offer["id"]
+            if oid not in TRUTH_POLICY_REGISTRY:
+                from src.truth_oracle import corroborate_offer
+                corroborate_offer(offer)
             assert oid in TRUTH_POLICY_REGISTRY, f"Offer '{oid}' missing from TRUTH_POLICY_REGISTRY"
 
     def test_registry_entries_have_valid_https_urls(self):

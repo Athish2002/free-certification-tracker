@@ -37,6 +37,34 @@ def test_scenario_partial_discount_copay_rejection():
         assert "PARTIAL_DISCOUNT_ONLY" in reason, f"Expected PARTIAL_DISCOUNT_ONLY for '{lead['title']}', got '{reason}'"
 
 
+
+def test_scenario_forum_question_and_troubleshooting_rejection():
+    """
+    Scenario: Community feeds contain user questions, support complaints, or troubleshooting posts.
+    Examples:
+    - 'Can't upgrade my account?'
+    - 'Question about how to get a free voucher'
+    - 'How do I reschedule my Azure exam?'
+    - 'Anyone have a discount code for AWS?'
+    - 'General discussion on cloud career path'
+    Invariant: Must be rejected with NON_OFFER_DISCUSSION or IRRELEVANT_TOPIC, never promoted to Active.
+    """
+    discussion_leads = [
+        {"title": "Can't upgrade my account?", "url": "https://aws.amazon.com/free", "platform": "Amazon Web Services"},
+        {"title": "Question about how to get a free voucher", "url": "https://learn.microsoft.com/", "platform": "Microsoft Azure"},
+        {"title": "How do I reschedule my exam voucher?", "url": "https://mylearn.oracle.com/", "platform": "Oracle Cloud"},
+        {"title": "Anyone have AWS voucher code for tight budget?", "url": "https://aws.amazon.com/", "platform": "Amazon Web Services"},
+        {"title": "General discussion on cloud career path", "url": "https://cloud.google.com/", "platform": "Google Cloud"},
+    ]
+
+    for lead in discussion_leads:
+        promoted, reason = vet_candidate_lead(lead)
+        assert promoted is None, f"Expected discussion lead '{lead['title']}' to be rejected, but got promoted!"
+        assert any(k in reason for k in ["NON_OFFER_DISCUSSION", "IRRELEVANT_TOPIC", "UNTRUSTED_VENDOR"]), (
+            f"Expected rejection reason for '{lead['title']}', got '{reason}'"
+        )
+
+
 def test_scenario_promoted_candidate_schema_completeness():
     """
     Scenario: A genuine 100% free candidate lead is processed.
