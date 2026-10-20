@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **51 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **53 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-20 13:51 UTC` (19:21 IST • 09:51 EDT • 15:51 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-20 14:08 UTC` (19:38 IST • 10:08 EDT • 16:08 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,15 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **51 Reports** |
+| **Verified Tech Dispatches** | **53 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (51 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (53 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Announcing llm-d 1.0: Open distributed inference for agents on Google Cloud TPUs and GPUs](https://cloud.google.com/blog/topics/ai-infrastructure/llm-d-1-0-an-open-source-stack-for-distributed-inference/)**<br>Today at the PyTorch Conference, we released llm-d 1.0, an open-source, Kubernetes-native stack for distributed LLM inference. Co-founded by Google with Red Hat, IBM and others, we worked with a community of more than 500 contributors over ... | [Google Cloud Blog](https://cloud.google.com/blog/topics/ai-infrastructure/llm-d-1-0-an-open-source-stack-for-distributed-inference/)<br>`cloud.google.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[TorchTPU is now open source: Run native PyTorch on TPUs](https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/)**<br>Today at PyTorch Conference 2026, we announced a range of new products and integrations designed to help you run PyTorch effectively on Google Cloud or in your own infrastructure. Notably, TorchTPU, our native PyTorch stack for Google TPUs,... | [Google Cloud Blog](https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/)<br>`cloud.google.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[On My First Day at Cisco, I Asked My Manager Where My Manager Was](https://blogs.cisco.com/wearecisco/on-my-first-day-at-cisco-i-asked-my-manager-where-my-manager-was)**<br>Madhan B., a Technical Systems Engineer, had first-day nerves, like everyone, but discovered that at Cisco you don't need to be perfect to belong. | [Cisco Blogs](https://blogs.cisco.com/wearecisco/on-my-first-day-at-cisco-i-asked-my-manager-where-my-manager-was)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[State of Observability 2026 Reveals How Leaders Are Restoring Predictability to the Agentic Era](https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era)**<br>Agentic AI has made modern systems unpredictable by design, but Splunk's latest research reveals how leaders use observability to restore control and drive measurable business value. | [Cisco Blogs](https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[The Data Center Networking Modernization Gap](https://blogs.cisco.com/partner/the-data-center-networking-modernization-gap)**<br>Is your customers’ infrastructure ready for the AI era? Don’t let technical debt stall their growth. Explore how Cisco Nexus One and our new AI-powered Modernization Playbook help you lead data center transformations with precision and spee... | [Cisco Blogs](https://blogs.cisco.com/partner/the-data-center-networking-modernization-gap)<br>`blogs.cisco.com` |
@@ -619,4 +621,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-20 13:51 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-20 14:08 UTC`.*

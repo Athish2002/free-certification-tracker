@@ -1,8 +1,32 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-20T13:51:49.349711+00:00",
-  "last_sync": "2026-10-20T13:51:49.349711+00:00",
+  "last_updated": "2026-10-20T14:08:42.189817+00:00",
+  "last_sync": "2026-10-20T14:08:42.189817+00:00",
   "news": [
+    {
+      "id": "google-cloud-announcing-llm-d-1-0-open-dis",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Announcing llm-d 1.0: Open distributed inference for agents on Google Cloud TPUs and GPUs",
+      "summary": "Today at the PyTorch Conference, we released llm-d 1.0, an open-source, Kubernetes-native stack for distributed LLM inference. Co-founded by Google with Red Hat, IBM and others, we worked with a community of more than 500 contributors over ...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/ai-infrastructure/llm-d-1-0-an-open-source-stack-for-distributed-inference/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-torchtpu-is-now-open-source-r",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "TorchTPU is now open source: Run native PyTorch on TPUs",
+      "summary": "Today at PyTorch Conference 2026, we announced a range of new products and integrations designed to help you run PyTorch effectively on Google Cloud or in your own infrastructure. Notably, TorchTPU, our native PyTorch stack for Google TPUs,...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/",
+      "impact_badge": "Cloud Platform"
+    },
     {
       "id": "cisco-on-my-first-day-at-cisco-i-as",
       "company": "Cisco",
