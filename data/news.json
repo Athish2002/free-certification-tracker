@@ -1,8 +1,68 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-20T14:08:42.189817+00:00",
-  "last_sync": "2026-10-20T14:08:42.189817+00:00",
+  "last_updated": "2026-10-20T19:57:19.756160+00:00",
+  "last_sync": "2026-10-20T19:57:19.756160+00:00",
   "news": [
+    {
+      "id": "cisco-the-receipt-not-the-demo-fou",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The receipt, not the demo: Four questions that earn AI agent trust",
+      "summary": "A good demo proves nothing. Four questions about policy, approvals, and audit logs show whether an AI agent has earned the right to touch production.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/cisco-devnet/cadreai-ai-agent-trust-production",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-meet-the-finalists-2026-cisco",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Meet the Finalists: 2026 Cisco Costumer Achievement Awards, APJC",
+      "summary": "Meet the 27 finalists for the 2026 Cisco Customer Achievement Awards in APJC across nine categories, including new AI Visionary and Sustainability honors.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/insidervoices/meet-the-finalists-2026-cisco-costumer-achievement-awards-apjc",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "github-how-3-java-champions-are-using",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "How 3 Java Champions are using GitHub Copilot for increased productivity",
+      "summary": "Three Java Champions share how they use GitHub Copilot to solve problems, accelerate development, and keep humans responsible for the results. The post How 3 Java Champions are using GitHub Copilot for increased productivity appeared first ...",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
+      "id": "google-cloud-claude-opus-5-5-and-claude-son",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Claude Opus 5.5 and Claude Sonnet 5.5 are now available in Google Antigravity",
+      "summary": "Whether you are iterating on a quick bug fix or planning a complex migration, different tasks call for different models.In keeping with Google Cloud's commitment to an open ecosystem and to give developers the right model for every job, Cla...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/claude-opus-55-and-claude-sonnet-55-available-in-antigravity/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-managed-rag-search-inside-the",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Managed RAG search inside the sovereign perimeter: Gemini on GDC enterprise search",
+      "summary": "National security agencies and other sovereign and highly regulated organizations handle incredibly sensitive data such as classified reports, field manuals, and sensitive multi-modal datasets. Search and multimodal intelligence that\u2019s avai...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/",
+      "impact_badge": "Cloud Platform"
+    },
     {
       "id": "google-cloud-announcing-llm-d-1-0-open-dis",
       "company": "Google Cloud",
