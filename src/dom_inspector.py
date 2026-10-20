@@ -26,6 +26,9 @@ from typing import Dict, Any, List, Tuple, Optional
 
 from src.authenticity import audit_offer_authenticity
 from src.vlm_engine import evaluate_vlm_semantic_gate, VLMSemanticVerdict
+from src.accessibility_scanner import scan_accessibility_elements, ActionabilityReport
+from src.cart_emulator import assert_cart_balance, CartAssertionVerdict
+from src.audit_ledger import record_audit_entry
 
 logger = logging.getLogger("certpulse.dom_inspector")
 
@@ -775,6 +778,16 @@ class HeadlessDOMInspector:
             except Exception:
                 interactive_ctas = []
 
+            # Run Semantic Accessibility Scanner
+            actionability_report = scan_accessibility_elements(
+                interactive_elements=interactive_ctas,
+                page_text=rendered_text,
+                page_title=rendered_title
+            )
+
+            # Run Synthetic Cart Balance Assertion
+            cart_verdict = assert_cart_balance(offer)
+
             # Analyze rendered DOM
             dom_eval = inspect_rendered_dom(
                 rendered_text=rendered_text,
@@ -848,6 +861,18 @@ class HeadlessDOMInspector:
             paid_catalog_detected = dom_eval.get("paid_catalog_detected", False)
             zero_dollar_confirmed = dom_eval.get("zero_dollar_confirmed", True)
 
+            # Actionability & Cart Balance Invariant Gates
+            if status == "Active" and actionability_report.verdict == "MARKETING_LEAD_FUNNEL":
+                status = "Review Needed"
+                reason = actionability_report.reason
+                zero_dollar_confirmed = False
+
+            if status == "Active" and cart_verdict.is_copay_required and cart_verdict.copay_amount_usd > 0.0:
+                status = "Review Needed"
+                reason = f"Cart Assertion: Copay Required (${cart_verdict.copay_amount_usd:.2f}) - {cart_verdict.reason}"
+                paid_catalog_detected = True
+                zero_dollar_confirmed = False
+
             if status == "Active":
                 if not auth_result.get("is_authentic_vendor", True) or auth_score < 80:
                     status = "Review Needed"
@@ -908,6 +933,21 @@ class HeadlessDOMInspector:
                 }
                 if offer_id:
                     offer["screenshot_path"] = screenshot_path
+
+            # Record Cryptographic Audit Receipt
+            if offer_id:
+                try:
+                    record_audit_entry(
+                        offer_id=offer_id,
+                        url=final_url,
+                        dom_text=rendered_text,
+                        screenshot_path=screenshot_path if screenshot_ok else None,
+                        status=status,
+                        actionability_verdict=actionability_report.verdict,
+                        cart_balance_verified=cart_verdict.cart_balance_str
+                    )
+                except Exception as audit_err:
+                    logger.debug(f"Audit log recording error for {offer_id}: {audit_err}")
 
             return status, reason, final_url, auth_result
 

@@ -1603,3 +1603,108 @@ def test_marketing_lead_funnel_rejection():
     active_res = inspect_rendered_dom(actionable_portal_text, rendered_title='Oracle MyLearn - Become an OCI Generative AI Professional')
     assert active_res['status'] == 'Active'
     assert active_res['zero_dollar_confirmed'] is True
+
+
+def test_semantic_accessibility_scanner_invariants():
+    """
+    Asserts that scan_accessibility_elements correctly discriminates between
+    actionable fulfillment portals and corporate marketing sales funnels.
+    """
+    from src.accessibility_scanner import scan_accessibility_elements
+
+    # Case 1: Corporate sales lead trap
+    fluff_elements = ["Speak to an AI expert", "Download whitepaper", "See latest LLMs"]
+    fluff_report = scan_accessibility_elements(
+        interactive_elements=fluff_elements,
+        page_text="IDC MarketScape leader in agentic AI. Connect with sales.",
+        page_title="Generative AI Capabilities"
+    )
+    assert fluff_report.verdict == "MARKETING_LEAD_FUNNEL"
+    assert fluff_report.is_actionable is False
+    assert fluff_report.marketing_fluff_score > fluff_report.fulfillment_score
+
+    # Case 2: Authentic course/exam portal
+    actionable_elements = ["Enroll in Path", "Schedule Free Exam", "Start Learning"]
+    actionable_report = scan_accessibility_elements(
+        interactive_elements=actionable_elements,
+        page_text="Oracle Cloud Infrastructure 2026 Generative AI Professional (1Z0-1127). 100% waiver applied.",
+        page_title="Oracle MyLearn - OCI Generative AI Professional"
+    )
+    assert actionable_report.verdict == "ACTIONABLE_FULFILLMENT_PORTAL"
+    assert actionable_report.is_actionable is True
+    assert actionable_report.fulfillment_score >= 60
+
+
+def test_synthetic_cart_balance_assertion_invariants():
+    """
+    Asserts that assert_cart_balance mathematically proves $0.00 cart totals
+    and flags required copays (e.g. Juniper Pearson VUE $50 fee).
+    """
+    from src.cart_emulator import assert_cart_balance
+
+    # Case 1: 100% free waiver offer
+    free_offer = {
+        "id": "oracle-oci-generative-ai-cert",
+        "title": "Oracle OCI Generative AI Professional",
+        "value_usd": 245,
+        "application_flow_type": "Automated Account Link Waiver",
+        "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
+        "voucher_code": "ORACLE_GENAI_WAVE_FREE_ATTEMPT"
+    }
+    free_res = assert_cart_balance(free_offer)
+    assert free_res.is_zero_dollar is True
+    assert free_res.is_copay_required is False
+    assert free_res.copay_amount_usd == 0.0
+    assert "$0.00" in free_res.cart_balance_str
+
+    # Case 2: Known copay policy offer (Juniper 75% waiver with $50 Pearson VUE fee)
+    copay_offer = {
+        "id": "juniper-open-learning",
+        "title": "Juniper Open Learning JNCIA",
+        "value_usd": 200,
+        "application_flow_type": "Checkout Promo Code",
+        "cart_balance_verified": "$50.00 (75% Discount / $50 Fee)"
+    }
+    copay_res = assert_cart_balance(copay_offer)
+    assert copay_res.is_zero_dollar is False
+    assert copay_res.is_copay_required is True
+    assert copay_res.copay_amount_usd == 50.0
+    assert "Copay" in copay_res.cart_balance_str
+
+
+def test_cryptographic_audit_ledger_invariants(tmp_path):
+    """
+    Asserts that record_audit_entry appends tamper-evident SHA-256 receipts
+    and verify_ledger_integrity validates 100% cryptographic soundness.
+    """
+    from src.audit_ledger import record_audit_entry, read_audit_entries, verify_ledger_integrity
+
+    ledger_file = tmp_path / "test_audit.jsonl"
+    dummy_dom = "<html><body><h1>Oracle MyLearn</h1><p>Enroll for Free</p></body></html>"
+
+    # Record receipt
+    receipt = record_audit_entry(
+        offer_id="test-crypt-offer",
+        url="https://mylearn.oracle.com/test",
+        dom_text=dummy_dom,
+        screenshot_path=None,
+        status="Active",
+        actionability_verdict="ACTIONABLE_FULFILLMENT_PORTAL",
+        cart_balance_verified="$0.00",
+        ledger_path=ledger_file
+    )
+
+    assert receipt.offer_id == "test-crypt-offer"
+    assert len(receipt.sha256_dom) == 64
+    assert receipt.status_assigned == "Active"
+
+    # Read back entries
+    entries = read_audit_entries(limit=10, ledger_path=ledger_file)
+    assert len(entries) == 1
+    assert entries[0].sha256_dom == receipt.sha256_dom
+
+    # Verify ledger integrity
+    audit_summary = verify_ledger_integrity(ledger_path=ledger_file)
+    assert audit_summary["total_receipts"] == 1
+    assert audit_summary["valid_dom_hashes"] == 1
+    assert audit_summary["integrity_rate"] == 1.0
