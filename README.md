@@ -39,9 +39,9 @@
 
 | Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Truth Source | Claim Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Foundational` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/education/certification/) |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Foundational` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | `Associate` | $200 | 🟢 Active | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [Juniper Open Learning Voucher Policy](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | [**Claim Voucher**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/artificial-intelligence/generative-ai/) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227) |
 | **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Foundational` | $99 | 🟢 Active | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
 
 ---
@@ -185,7 +185,7 @@
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.
-- **Official Link:** [https://www.oracle.com/education/certification/](https://www.oracle.com/education/certification/)
+- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177)
 
 #### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
 - **Provider:** Cisco
@@ -290,7 +290,7 @@
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
-- **Official Link:** [https://www.oracle.com/artificial-intelligence/generative-ai/](https://www.oracle.com/artificial-intelligence/generative-ai/)
+- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227)
 
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Provider:** Cisco
@@ -315,7 +315,7 @@
 
 | Provider | Certification | Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | `Oracle University MyLearn -> 'Schedule Free Exam' button` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Continuing Education (Recertification) | [Cisco Continuing Education Portal](https://ce.cisco.com/) | `CE Portal Dashboard -> 'Submit Items' -> Claim CE Credits` | `Continuing Education Claim` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | [Microsoft Learn Credentials Portal](https://learn.microsoft.com/en-us/credentials/applied-skills/) | `Microsoft Learn Credential Page -> 'Take Assessment Lab' launch container` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/) | `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
@@ -330,7 +330,7 @@
 | **Splunk** | Splunk Core Observability & Defense Fundamentals | [Splunk Lantern and Education Portal](https://lantern.splunk.com/) | `Lantern Training Portal -> 'Start Guided Scenario' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/) | `Student Learning Dashboard -> 'Complete Credential Track' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/training/certification) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | `Oracle MyLearn Course Page -> 'Schedule Free Exam' button` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
@@ -339,8 +339,8 @@
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Voucher / Promo Code:** `ORACLE_MYLEARN_SSO_WAIVER`
-- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/)
-- **Checkout Field Location:** `Oracle University MyLearn -> 'Schedule Free Exam' button`
+- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177)
+- **Checkout Field Location:** `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam`
 - **Application Flow Type:** `Automated Account Link Waiver`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
 - **Checkout Steps:**
@@ -519,8 +519,8 @@
 
 #### Oracle University: Free OCI Generative AI Professional Certification
 - **Voucher / Promo Code:** `ORACLE_GENAI_WAVE_FREE_ATTEMPT`
-- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/)
-- **Checkout Field Location:** `Oracle MyLearn Course Page -> 'Schedule Free Exam' button`
+- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227)
+- **Checkout Field Location:** `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam`
 - **Application Flow Type:** `Automated Account Link Waiver`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
 - **Checkout Steps:**
