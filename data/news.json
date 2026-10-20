@@ -1,7 +1,7 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-20T08:02:09.575378+00:00",
-  "last_sync": "2026-10-20T08:02:09.575378+00:00",
+  "last_updated": "2026-10-20T08:36:01.383462+00:00",
+  "last_sync": "2026-10-20T08:36:01.383462+00:00",
   "news": [
     {
       "id": "cisco-the-data-center-networking-mod",
