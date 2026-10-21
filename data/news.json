@@ -1,8 +1,68 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-21T09:19:45.017618+00:00",
-  "last_sync": "2026-10-21T09:19:45.017618+00:00",
+  "last_updated": "2026-10-21T16:55:33.368645+00:00",
+  "last_sync": "2026-10-21T16:55:33.368645+00:00",
   "news": [
+    {
+      "id": "cisco-cisco-and-fortanix-help-make-c",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Cisco and Fortanix help make confidential AI verifiable from data to Kubernetes",
+      "summary": "Fortanix Confidential AI now supports CNCF Confidential Containers. Discover how Cisco, Fortanix, and VAST Data help enterprises run secure frontier AI, ensuring sensitive models and data remain protected and verifiable while in use.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/datacenter/cisco-and-fortanix-help-make-confidential-ai-verifiable-from-data-to-kubernetes",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-three-languages-one-binary-b",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Three languages, one binary: Building a VMware Nutanix inventory with Claude",
+      "summary": "Two UIs, two CSV shapes, and a spreadsheet I kept rebuilding. Claude helped turn throwaway scripts into one Go binary that inventories VMware and Nutanix in a single run.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/cisco-devnet/vmware-nutanix-inventory-go-claude",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "github-the-bridge-to-agent-scale-git",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "The bridge to agent-scale Git infrastructure",
+      "summary": "We moved a copy of 99.99999% of GitHub's repositories to Azure. Here's how per-reference quorums will bring over the rest, and how object storage lets reads scale independently. The post The bridge to agent-scale Git infrastructure appeared...",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
+      "id": "google-cloud-zenteiq-scales-batch-inference",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "ZenteiQ scales batch inference 4x with GKE Inference Gateway powered by llm-d",
+      "summary": "Today we hear from ZenteiQ, an artificial intelligence startup spun out of the Indian Institute of Science (IISc) and selected under the IndiaAI Mission to build sovereign scientific foundation models from the ground up. To pre-train models...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/",
+      "impact_badge": "Cloud Platform"
+    },
+    {
+      "id": "google-cloud-bigquery-objectref-now-ga-bui",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "BigQuery ObjectRef now GA: Build multimodal data platforms for conversational analytics entirely in SQL",
+      "summary": "For data science, data engineering, and machine learning teams, unlocking the value of unstructured data, such as images, videos, audio, and documents, has historically meant managing siloed data pipelines for structured and unstructured da...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/data-analytics/analyze-unstructured-data-in-bigquery-with-objectref/",
+      "impact_badge": "Cloud Platform"
+    },
     {
       "id": "cisco-hardened-by-design-applying-t",
       "company": "Cisco",
