@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **60 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **61 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-20 23:05 UTC` (04:35 IST • 19:05 EDT • 01:05 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-21 04:00 UTC` (09:30 IST • 00:00 EDT • 06:00 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,14 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **60 Reports** |
+| **Verified Tech Dispatches** | **61 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (60 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (61 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Hardened by Design: Applying the NSA’s OT Guidance with Cisco Security & Splunk](https://blogs.cisco.com/industries/hardened-by-design-applying-the-nsas-ot-guidance-with-cisco-security-splunk)**<br>Apply the NSA’s new Zero Trust guidance to your OT environments. Learn how Cisco Cyber Vision and Splunk provide the visibility and telemetry needed to secure critical infrastructure without disrupting operations. | [Cisco Blogs](https://blogs.cisco.com/industries/hardened-by-design-applying-the-nsas-ot-guidance-with-cisco-security-splunk)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Connecting people to humanitarian assistance with responsible AI](https://blogs.cisco.com/our-corporate-purpose/connecting-people-to-humanitarian-assistance-with-responsible-ai)**<br>Can responsible AI help connect people with food, shelter, and services in a crisis? Learn how Cisco partner the IRC is using AI as a tool and a teammate to get people fast, reliable answers about humanitarian assistance. | [Cisco Blogs](https://blogs.cisco.com/our-corporate-purpose/connecting-people-to-humanitarian-assistance-with-responsible-ai)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Building Trust into Enterprise AI Agents: Cisco AI Defense and Workday Agent Passport](https://blogs.cisco.com/ai/building-trust-into-enterprise-ai-agents-cisco-ai-defense-and-workday-agent-passport)**<br>Workday Agent Passport, now in Early Access, gives customers a signed, auditable record of what has been verified about an agent, who verified it, and to what standard. Cisco AI Defense​​,​ Agent Passport​’s launch assessor, provides​​.... | [Cisco Blogs](https://blogs.cisco.com/ai/building-trust-into-enterprise-ai-agents-cisco-ai-defense-and-workday-agent-passport)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[The receipt, not the demo: Four questions that earn AI agent trust](https://blogs.cisco.com/cisco-devnet/cadreai-ai-agent-trust-production)**<br>A good demo proves nothing. Four questions about policy, approvals, and audit logs show whether an AI agent has earned the right to touch production. | [Cisco Blogs](https://blogs.cisco.com/cisco-devnet/cadreai-ai-agent-trust-production)<br>`blogs.cisco.com` |
@@ -628,4 +629,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-20 23:05 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-21 04:00 UTC`.*
