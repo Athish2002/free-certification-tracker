@@ -1,7 +1,7 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-21T04:00:37.248043+00:00",
-  "last_sync": "2026-10-21T04:00:37.248043+00:00",
+  "last_updated": "2026-10-21T09:19:45.017618+00:00",
+  "last_sync": "2026-10-21T09:19:45.017618+00:00",
   "news": [
     {
       "id": "cisco-hardened-by-design-applying-t",
