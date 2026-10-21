@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **66 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **68 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-21 16:55 UTC` (22:25 IST • 12:55 EDT • 18:55 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-21 23:07 UTC` (04:37 IST • 19:07 EDT • 01:07 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,15 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **66 Reports** |
+| **Verified Tech Dispatches** | **68 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (66 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (68 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[A Blank Slate in Buffalo: How the Bills Built the NFL’s First Complete Wi-Fi 7 Stadium](https://blogs.cisco.com/industries/a-blank-slate-in-buffalo-how-the-bills-built-the-nfls-first-complete-wi-fi-7-stadium)**<br>Shaun Handley, Director of Stadium Technology for the Buffalo Bills, on building Highmark Stadium’s network and security from a blank slate. | [Cisco Blogs](https://blogs.cisco.com/industries/a-blank-slate-in-buffalo-how-the-bills-built-the-nfls-first-complete-wi-fi-7-stadium)<br>`blogs.cisco.com` |
+| `2024-08-01` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Automate medical coding with Step Functions and Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/architecture/automate-medical-coding-with-step-functions-and-amazon-bedrock-agentcore/)**<br>Learn how to combine deterministic orchestration with bounded agentic reasoning using AWS Step Functions and the Amazon Bedrock AgentCore harness. This medical coding workflow escalates cheapest-first: a safety block-list, then exact matchi... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/automate-medical-coding-with-step-functions-and-amazon-bedrock-agentcore/)<br>`aws.amazon.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco and Fortanix help make confidential AI verifiable from data to Kubernetes](https://blogs.cisco.com/datacenter/cisco-and-fortanix-help-make-confidential-ai-verifiable-from-data-to-kubernetes)**<br>Fortanix Confidential AI now supports CNCF Confidential Containers. Discover how Cisco, Fortanix, and VAST Data help enterprises run secure frontier AI, ensuring sensitive models and data remain protected and verifiable while in use. | [Cisco Blogs](https://blogs.cisco.com/datacenter/cisco-and-fortanix-help-make-confidential-ai-verifiable-from-data-to-kubernetes)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Three languages, one binary: Building a VMware Nutanix inventory with Claude](https://blogs.cisco.com/cisco-devnet/vmware-nutanix-inventory-go-claude)**<br>Two UIs, two CSV shapes, and a spreadsheet I kept rebuilding. Claude helped turn throwaway scripts into one Go binary that inventories VMware and Nutanix in a single run. | [Cisco Blogs](https://blogs.cisco.com/cisco-devnet/vmware-nutanix-inventory-go-claude)<br>`blogs.cisco.com` |
 | `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[The bridge to agent-scale Git infrastructure](https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/)**<br>We moved a copy of 99.99999% of GitHub's repositories to Azure. Here's how per-reference quorums will bring over the rest, and how object storage lets reads scale independently. The post The bridge to agent-scale Git infrastructure appeared... | [GitHub Engineering Blog](https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/)<br>`github.blog` |
@@ -634,4 +636,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-21 16:55 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-21 23:07 UTC`.*

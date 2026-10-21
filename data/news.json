@@ -1,8 +1,32 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-21T16:55:33.368645+00:00",
-  "last_sync": "2026-10-21T16:55:33.368645+00:00",
+  "last_updated": "2026-10-21T23:07:59.359606+00:00",
+  "last_sync": "2026-10-21T23:07:59.359606+00:00",
   "news": [
+    {
+      "id": "cisco-a-blank-slate-in-buffalo-how",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "A Blank Slate in Buffalo: How the Bills Built the NFL\u2019s First Complete Wi-Fi 7 Stadium",
+      "summary": "Shaun Handley, Director of Stadium Technology for the Buffalo Bills, on building Highmark Stadium\u2019s network and security from a blank slate.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/industries/a-blank-slate-in-buffalo-how-the-bills-built-the-nfls-first-complete-wi-fi-7-stadium",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "amazon-web-services-automate-medical-coding-with-s",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Automate medical coding with Step Functions and Amazon Bedrock AgentCore",
+      "summary": "Learn how to combine deterministic orchestration with bounded agentic reasoning using AWS Step Functions and the Amazon Bedrock AgentCore harness. This medical coding workflow escalates cheapest-first: a safety block-list, then exact matchi...",
+      "published_date": "2024-08-01",
+      "url": "https://aws.amazon.com/blogs/architecture/automate-medical-coding-with-step-functions-and-amazon-bedrock-agentcore/",
+      "impact_badge": "Architecture RFC"
+    },
     {
       "id": "cisco-cisco-and-fortanix-help-make-c",
       "company": "Cisco",
