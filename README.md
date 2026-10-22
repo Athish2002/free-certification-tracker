@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **72 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **75 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-22 16:56 UTC` (22:26 IST • 12:56 EDT • 18:56 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-22 23:10 UTC` (04:40 IST • 19:10 EDT • 01:10 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -102,7 +102,7 @@
 | :--- | :--- | :---: | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | Truth Gate Invariant: MongoDB offers 100% free exam vouchers exclusively to verified students through GitHub Student Developer Pack. Standard price for general public is $150 USD. Portal migrated from learn.mongodb.com to university.mongodb.com. |
+| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | HTTP 404 Page Not Found |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Proof](docs/screenshots/salesforce-trailhead-quests.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | Marketing funnel detected: found 1 sales-pitch/lead triggers (contact sales) without actionable course CTAs. |
 | **GitHub** | GitHub Foundations | 🟡 Review Needed | [📸 Proof](docs/screenshots/github-student-foundations.png) | Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms |
@@ -116,13 +116,16 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **72 Reports** |
+| **Verified Tech Dispatches** | **75 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (72 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (75 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Using AI to re-architect the Cisco DevNet sandbox environment – Part 1](https://blogs.cisco.com/cisco-devnet/ai-network-design-devnet-sandbox-part-1)**<br>An AI agent reviewed our sandbox network design, caught routers hanging off the spines, and asked one question that turned a Clos fabric into a two-tier vPC design. | [Cisco Blogs](https://blogs.cisco.com/cisco-devnet/ai-network-design-devnet-sandbox-part-1)<br>`blogs.cisco.com` |
+| `2024-08-01` | **GitHub** | Tech Development | `Developer Tooling` | **[How bug bounty sharpens one researcher’s security skills](https://github.blog/security/how-bug-bounty-sharpens-one-researchers-security-skills/)**<br>As Cybersecurity Awareness Month continues, the GitHub Bug Bounty team spotlights @r31n, diving into their research approach, favorite bug classes, and advice for aspiring hackers. The post How bug bounty sharpens one researcher’s security ... | [GitHub Engineering Blog](https://github.blog/security/how-bug-bounty-sharpens-one-researchers-security-skills/)<br>`github.blog` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Expanding Claude availability and deployment choice on Google Cloud](https://cloud.google.com/blog/products/ai-machine-learning/expanding-claude-availability-on-google-cloud/)**<br>Every organization has unique requirements for building and scaling generative AI. At Google Cloud, we are committed to giving developers model choice and architectural flexibility to run workloads however they need. Today, we’re announcing... | [Google Cloud Blog](https://cloud.google.com/blog/products/ai-machine-learning/expanding-claude-availability-on-google-cloud/)<br>`cloud.google.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Are You Post-Quantum Ready? Build Quantum Readiness Into Today’s Infrastructure Strategy](https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure)**<br>PQC is a top priority today. The strategy organizations set now across infrastructure, products, and partnerships will determine their long-term resilience. | [Cisco Blogs](https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Unified Defense from Endpoint to Cloud: Real-Time Protection with Cisco Security, Splunk, and SentinelOne](https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud)**<br>Discover how Cisco and SentinelOne work together across Splunk, Duo, Firepower and now ISE — turning endpoint detection into automated network access decisions. | [Cisco Blogs](https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Inside Agent Compute Engine: Building the compute foundation for the agentic era](https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/)**<br>Every decade or so, a shift in software forces us to rethink computer architecture from first principles. After the first boom of web-scale traffic, Google pioneered warehouse-scale computing and Linux containers on Borg. This reshaped how ... | [Google Cloud Blog](https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/)<br>`cloud.google.com` |
@@ -640,4 +643,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-22 16:56 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-22 23:10 UTC`.*

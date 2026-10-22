@@ -1,8 +1,44 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-22T16:56:14.603630+00:00",
-  "last_sync": "2026-10-22T16:56:14.603630+00:00",
+  "last_updated": "2026-10-22T23:10:57.452648+00:00",
+  "last_sync": "2026-10-22T23:10:57.452648+00:00",
   "news": [
+    {
+      "id": "cisco-using-ai-to-re-architect-the-c",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Using AI to re-architect the Cisco DevNet sandbox environment \u2013 Part 1",
+      "summary": "An AI agent reviewed our sandbox network design, caught routers hanging off the spines, and asked one question that turned a Clos fabric into a two-tier vPC design.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/cisco-devnet/ai-network-design-devnet-sandbox-part-1",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "github-how-bug-bounty-sharpens-one-re",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "How bug bounty sharpens one researcher\u2019s security skills",
+      "summary": "As Cybersecurity Awareness Month continues, the GitHub Bug Bounty team spotlights @r31n, diving into their research approach, favorite bug classes, and advice for aspiring hackers. The post How bug bounty sharpens one researcher\u2019s security ...",
+      "published_date": "2024-08-01",
+      "url": "https://github.blog/security/how-bug-bounty-sharpens-one-researchers-security-skills/",
+      "impact_badge": "Developer Tooling"
+    },
+    {
+      "id": "google-cloud-expanding-claude-availability",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Expanding Claude availability and deployment choice on Google Cloud",
+      "summary": "Every organization has unique requirements for building and scaling generative AI. At Google Cloud, we are committed to giving developers model choice and architectural flexibility to run workloads however they need. Today, we\u2019re announcing...",
+      "published_date": "2024-08-01",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/expanding-claude-availability-on-google-cloud/",
+      "impact_badge": "Cloud Platform"
+    },
     {
       "id": "cisco-are-you-post-quantum-ready-bu",
       "company": "Cisco",
