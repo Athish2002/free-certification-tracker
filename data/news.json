@@ -1,8 +1,34 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-23T20:00:32.966387+00:00",
-  "last_sync": "2026-10-23T20:00:32.966387+00:00",
+  "last_updated": "2026-10-23T23:00:51.842987+00:00",
+  "last_sync": "2026-10-23T23:00:51.842987+00:00",
   "news": [
+    {
+      "id": "red-hat-red-hat-opens-singapore-ai-cen",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat Opens Singapore AI Centre of Excellence as Strategic AI Innovation Hub for Asia Pacific",
+      "summary": "Red Hat, the world’s leading provider of open source solutions, today introduced Red Hat’s APAC AI Centre of Excellence (CoE) in Singapore. Supported by the Singapore Economic Development Board (EDB), the Centre will help organisations evol...",
+      "published_date": "2026-10-22",
+      "date": "2026-10-22",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-opens-singapore-ai-centre-excellence-strategic-ai-innovation-hub-asia-pacific",
+      "impact_badge": "Linux & Enterprise"
+    },
+    {
+      "id": "cisco-introducing-agentic-evaluation",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Introducing Agentic Evaluation in FAITH",
+      "summary": "As AI agents become more capable and their use expands across cybersecurity and other domains, the need for effective evaluation grows. An agent investigating a codebase makes a sequence of decisions: where to look, which tools to use, how ...",
+      "published_date": "2026-10-23",
+      "date": "2026-10-23",
+      "url": "https://blogs.cisco.com/ai/introducing-agentic-evaluation-in-faith",
+      "impact_badge": "Enterprise Networking"
+    },
     {
       "id": "cisco-how-cisco-iq-powers-continuous",
       "company": "Cisco",
@@ -1057,5 +1083,5 @@
       "date": "2024-06-05"
     }
   ],
-  "total_items": 81
+  "total_items": 83
 }
