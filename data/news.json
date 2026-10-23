@@ -1,8 +1,20 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-23T04:04:41.701380+00:00",
-  "last_sync": "2026-10-23T04:04:41.701380+00:00",
+  "last_updated": "2026-10-23T13:15:34.668654+00:00",
+  "last_sync": "2026-10-23T13:15:34.668654+00:00",
   "news": [
+    {
+      "id": "cisco-the-road-to-zero-scaling-safe",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The Road to Zero: Scaling Safety Through Intelligent Infrastructure",
+      "summary": "Urban roadways are facing unprecedented complexity, forcing Departments of Transportation to balance the need for advanced V2X technology with the absolute requirement for rigorous cybersecurity.",
+      "published_date": "2024-08-01",
+      "url": "https://blogs.cisco.com/industrial-iot/the-road-to-zero-scaling-safety-through-intelligent-infrastructure",
+      "impact_badge": "Enterprise Networking"
+    },
     {
       "id": "cisco-using-ai-to-re-architect-the-c",
       "company": "Cisco",
