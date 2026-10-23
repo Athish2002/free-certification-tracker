@@ -1,7 +1,7 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-22T23:10:57.452648+00:00",
-  "last_sync": "2026-10-22T23:10:57.452648+00:00",
+  "last_updated": "2026-10-23T04:04:41.701380+00:00",
+  "last_sync": "2026-10-23T04:04:41.701380+00:00",
   "news": [
     {
       "id": "cisco-using-ai-to-re-architect-the-c",
