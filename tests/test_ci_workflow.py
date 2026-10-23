@@ -116,6 +116,7 @@ class TestCITestJobMatrix:
         assert dep_steps, "No pip install step found in test job"
         combined_runs = "\n".join(s["run"] for s in dep_steps)
         assert "pytest-xdist" in combined_runs, "pytest-xdist not installed in test job"
+        assert "pytest-asyncio" in combined_runs, "pytest-asyncio not installed in test job"
         assert "requirements.txt" in combined_runs, "requirements.txt not installed in test job"
 
     def test_test_job_parallel_pytest_execution(self, workflow_yaml: Dict[str, Any]):

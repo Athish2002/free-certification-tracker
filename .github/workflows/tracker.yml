@@ -41,7 +41,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pytest pytest-xdist
+          pip install -r requirements.txt pytest pytest-xdist pytest-asyncio
           python -m playwright install --with-deps chromium || true
 
       - name: Parallelized Test Discovery
@@ -71,7 +71,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pytest pytest-xdist
+          pip install -r requirements.txt pytest pytest-xdist pytest-asyncio
           python -m playwright install --with-deps chromium || true
 
       - name: Run CertPulse Pipeline
