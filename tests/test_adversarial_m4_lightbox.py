@@ -63,13 +63,29 @@ def loaded_offers() -> List[Dict[str, Any]]:
 @pytest.fixture(scope="module")
 def readme_content() -> str:
     assert README_FILE.exists(), f"Missing README.md at {README_FILE}"
-    return README_FILE.read_text(encoding="utf-8")
+    content = README_FILE.read_text(encoding="utf-8")
+    if not content.strip() or "## 🎓 Primary Tier" not in content:
+        import time
+        for _ in range(5):
+            time.sleep(0.1)
+            content = README_FILE.read_text(encoding="utf-8")
+            if content.strip() and "## 🎓 Primary Tier" in content:
+                break
+    return content
 
 
 @pytest.fixture(scope="module")
 def docs_html_content() -> str:
     assert DOCS_HTML.exists(), f"Missing docs/index.html at {DOCS_HTML}"
-    return DOCS_HTML.read_text(encoding="utf-8")
+    content = DOCS_HTML.read_text(encoding="utf-8")
+    if not content.strip() or "<!DOCTYPE html>" not in content:
+        import time
+        for _ in range(5):
+            time.sleep(0.1)
+            content = DOCS_HTML.read_text(encoding="utf-8")
+            if content.strip() and "<!DOCTYPE html>" in content:
+                break
+    return content
 
 
 # ==============================================================================

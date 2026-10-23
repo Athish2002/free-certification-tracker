@@ -7,6 +7,9 @@ Deconstructs monolithic builder into focused modules:
 - html_builder: Semantic HTML5 canvas and responsive view shell
 """
 
+import os
+import time
+import tempfile
 from typing import Dict, Any, Optional
 from pathlib import Path
 
@@ -36,6 +39,54 @@ from src.builders.readme_builder import (
 from src.builders.html_builder import generate_web_dashboard
 
 
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Atomically writes text using NamedTemporaryFile and os.replace with Windows lock retry."""
+    path = Path(path).resolve()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_file = tempfile.NamedTemporaryFile(
+        mode="w",
+        delete=False,
+        dir=str(path.parent),
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+        encoding="utf-8",
+    )
+    temp_path = Path(temp_file.name)
+    try:
+        temp_file.write(content)
+        temp_file.flush()
+        temp_file.close()
+
+        # On Windows, concurrent pytest processes holding read handles can cause transient WinError 5/32
+        for attempt in range(10):
+            try:
+                os.replace(temp_path, path)
+                break
+            except (PermissionError, OSError) as e:
+                if attempt == 9:
+                    # Fallback to direct write if target remains locked
+                    try:
+                        path.write_text(content, encoding="utf-8")
+                        if temp_path.exists():
+                            temp_path.unlink(missing_ok=True)
+                        break
+                    except Exception:
+                        raise e
+                time.sleep(0.05)
+    except Exception:
+        if not temp_file.closed:
+            try:
+                temp_file.close()
+            except Exception:
+                pass
+        if temp_path.exists():
+            try:
+                temp_path.unlink()
+            except Exception:
+                pass
+        raise
+
+
 def build_all(
     readme_path: Optional[Path] = None,
     html_path: Optional[Path] = None,
@@ -52,16 +103,14 @@ def build_all(
     data = load_offers()
     news = load_news()
 
-    # 1. Write README.md
+    # 1. Write README.md atomically
     readme_content = generate_readme(data, news)
-    target_readme.parent.mkdir(parents=True, exist_ok=True)
-    target_readme.write_text(readme_content, encoding="utf-8")
+    _atomic_write_text(target_readme, readme_content)
     print(f"[OK] Successfully built {target_readme}")
 
-    # 2. Write docs/index.html
+    # 2. Write docs/index.html atomically
     html_content = generate_web_dashboard(data, news)
-    target_html.parent.mkdir(parents=True, exist_ok=True)
-    target_html.write_text(html_content, encoding="utf-8")
+    _atomic_write_text(target_html, html_content)
     print(f"[OK] Successfully built {target_html}")
 
     # 3. Clean up legacy archetype_studio.html if present
@@ -98,5 +147,4 @@ __all__ = [
     "generate_theme_dropdown_options",
     "get_theme_by_id",
     "get_theme_json",
-    "generate_client_bundle",
 ]
