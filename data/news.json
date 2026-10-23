@@ -1,7 +1,7 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-23T18:04:05.330383+00:00",
-  "last_sync": "2026-10-23T18:04:05.330383+00:00",
+  "last_updated": "2026-10-23T20:00:32.966387+00:00",
+  "last_sync": "2026-10-23T20:00:32.966387+00:00",
   "news": [
     {
       "id": "cisco-how-cisco-iq-powers-continuous",
