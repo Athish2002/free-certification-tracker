@@ -17,9 +17,12 @@ Capabilities:
 
 from __future__ import annotations
 
+import json
 import logging
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Tuple, Optional
+from pathlib import Path
+from typing import Dict, Any, List, Tuple, Optional, Union
+from urllib.parse import urlparse
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("certpulse.truth_oracle")
@@ -36,8 +39,8 @@ POLICY_FREE_UNPROCTORED_BADGE = "free_unproctored_badge"
 POLICY_RETIRED_CREDENTIAL = "retired_credential"
 POLICY_EVENT_TIED_SCHOLARSHIP = "event_tied_scholarship"
 
-# Ground Truth Policy Registry for all tracked offers
-TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = {
+# Authoritative Curated Policy Overrides for tracked offers
+CURATED_POLICY_OVERRIDES: Dict[str, Dict[str, Any]] = {
     # Tier 1: Proctored Exams
     "isc2-one-million-cc": {
         "provider": "ISC2",
@@ -533,6 +536,233 @@ TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = {
 }
 
 
+def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Derives truth policy dictionary dynamically from offer metadata.
+    Extracts official URL, terms URL, domain, authority rules, category,
+    and expected verification patterns.
+    """
+    oid = offer.get("id", "")
+    provider = offer.get("company") or offer.get("platform", "Vendor")
+    exam_name = offer.get("certification_name") or offer.get("title", "")
+    category = offer.get("category", "General")
+    status = offer.get("status", "Active")
+    credential_tier = offer.get("credential_tier", "unproctored_badge")
+    is_proctored = offer.get("is_proctored", credential_tier == "proctored_exam")
+
+    official_url = (
+        offer.get("official_url")
+        or offer.get("direct_verified_url")
+        or offer.get("verified_vendor_url")
+        or offer.get("url", "")
+    )
+    terms_url = offer.get("terms_url") or offer.get("url", "")
+    parsed_official = urlparse(official_url)
+    domain = parsed_official.netloc.lower()
+    if not domain and terms_url:
+        domain = urlparse(terms_url).netloc.lower()
+
+    # Extract authority rules
+    auth_details = offer.get("authenticity_details") or {}
+    authority_rules = {
+        "domain": domain,
+        "official_url": official_url,
+        "terms_url": terms_url,
+        "requires_https": True,
+        "domain_verified": bool(offer.get("is_authentic_vendor", auth_details.get("domain_verified", True))),
+        "trust_tier": auth_details.get("trust_tier", "Official Vendor Portal"),
+        "allowed_domains": [domain] if domain else [],
+    }
+
+    # Extract expected verification patterns
+    visual_proof = offer.get("visual_proof") or {}
+    redemption_guide = offer.get("redemption_guide") or {}
+    expected_verification_patterns = {
+        "status": status,
+        "zero_dollar_expected": bool(visual_proof.get("zero_dollar_confirmed", True)),
+        "proctoring_type": offer.get("proctoring_type", "unproctored"),
+        "credential_tier": credential_tier,
+        "cart_balance_pattern": offer.get("cart_balance_verified", redemption_guide.get("verified_cart_balance", "$0.00")),
+        "eligibility": offer.get("eligibility", "Global"),
+    }
+
+    # Check if curated override exists for specific nuances
+    override = CURATED_POLICY_OVERRIDES.get(oid, {})
+
+    # Determine base policy type
+    tv = offer.get("truth_verification") or {}
+    if override.get("policy_type"):
+        policy_type = override["policy_type"]
+    elif tv.get("policy_type"):
+        policy_type = tv["policy_type"]
+    elif offer.get("is_historical_archive") or oid.startswith("hist-"):
+        policy_type = POLICY_HISTORICAL_EVENT_WAVE
+    elif status == "Registrations Closed" or "annual" in str(offer.get("seasonality", "")).lower():
+        policy_type = POLICY_ANNUAL_WINDOW_CLOSED
+    elif "co-pay" in str(offer.get("cart_balance_verified", "")).lower() or "copay" in str(offer.get("cart_balance_verified", "")).lower():
+        policy_type = POLICY_PARTIAL_DISCOUNT_COPAY
+    elif "student" in str(offer.get("eligibility", "")).lower() or "student" in oid.lower():
+        policy_type = POLICY_STUDENT_VERIFIED_ONLY
+    elif "quest" in oid.lower() or "sweepstakes" in str(offer.get("offer_type", "")).lower():
+        policy_type = POLICY_PROMOTIONAL_SWEEPSTAKES
+    elif "scholarship" in oid.lower():
+        policy_type = POLICY_EVENT_TIED_SCHOLARSHIP
+    elif "recert" in oid.lower():
+        policy_type = POLICY_CE_RECERTIFICATION_CREDITS
+    elif is_proctored:
+        policy_type = POLICY_VERIFIED_100PCT_FREE
+    elif credential_tier in ("skill_badge_lab", "unproctored_lab") or offer.get("proctoring_type") in ("skill_badge_lab", "unproctored_lab"):
+        policy_type = "skill_badge_lab"
+    else:
+        policy_type = POLICY_FREE_UNPROCTORED_BADGE
+
+    # Delivery partner and verification keywords
+    required_keywords = []
+    if is_proctored or credential_tier == "proctored_exam":
+        required_keywords.extend(["pearson vue", "pearson", "exam", provider.lower()])
+        if offer.get("proctoring_type"):
+            required_keywords.append(str(offer.get("proctoring_type")).lower())
+    else:
+        required_keywords.extend(["badge", "learning", "completion", provider.lower()])
+
+    # Real exam cost
+    if "real_exam_cost_usd" in override:
+        real_cost = float(override["real_exam_cost_usd"])
+    elif "real_exam_cost_usd" in tv:
+        real_cost = float(tv["real_exam_cost_usd"])
+    elif policy_type == POLICY_HISTORICAL_EVENT_WAVE:
+        real_cost = float(offer.get("value_usd") or 0.0)
+    elif policy_type == POLICY_PARTIAL_DISCOUNT_COPAY:
+        real_cost = 50.0
+    else:
+        real_cost = 0.0
+
+    # Verified discount percentage
+    if "verified_discount_pct" in override:
+        discount_pct = int(override["verified_discount_pct"])
+    elif "verified_discount_pct" in tv:
+        discount_pct = int(tv["verified_discount_pct"])
+    elif policy_type == POLICY_PARTIAL_DISCOUNT_COPAY:
+        discount_pct = 75
+    elif policy_type == POLICY_HISTORICAL_EVENT_WAVE and real_cost > 0:
+        discount_pct = 0
+    else:
+        discount_pct = 100
+
+    # Truth source name & URL
+    truth_source_name = (
+        override.get("truth_source_name")
+        or tv.get("truth_source_name")
+        or f"{provider} Official Policy & Credentials Portal"
+    )
+    truth_source_url = (
+        override.get("truth_source_url")
+        or tv.get("truth_source_url")
+        or (official_url if official_url.startswith("https://") else (f"https://{domain}" if domain else "https://certpulse.org/truth"))
+    )
+
+    # Verdict notes
+    verdict_notes = (
+        override.get("verdict_notes")
+        or tv.get("verdict_notes")
+        or f"Authoritative certification policy dynamically derived from {provider} catalog."
+    )
+
+    enforce_status = override.get("enforce_status", status)
+    zero_dollar_confirmed = override.get(
+        "zero_dollar_confirmed",
+        policy_type in [POLICY_VERIFIED_100PCT_FREE, POLICY_FREE_UNPROCTORED_BADGE]
+    )
+
+    policy: Dict[str, Any] = {
+        "provider": provider,
+        "exam_name": exam_name,
+        "policy_type": policy_type,
+        "real_exam_cost_usd": real_cost,
+        "verified_discount_pct": discount_pct,
+        "truth_source_name": truth_source_name,
+        "truth_source_url": truth_source_url,
+        "verdict_notes": verdict_notes,
+        "enforce_status": enforce_status,
+        "zero_dollar_confirmed": zero_dollar_confirmed,
+        "category": category,
+        "official_url": official_url,
+        "terms_url": terms_url,
+        "domain": domain,
+        "authority_rules": authority_rules,
+        "expected_verification_patterns": expected_verification_patterns,
+        "required_keywords": required_keywords,
+    }
+
+    # Propagate special override keys if present
+    for k in ["cart_balance_clarification", "eligibility_clarification", "canonical_direct_url", "is_historical_archive"]:
+        if k in override:
+            policy[k] = override[k]
+        elif k in offer:
+            policy[k] = offer[k]
+
+    return policy
+
+
+def build_dynamic_policy_registry(offers_file: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
+    """
+    Dynamically constructs the Truth Policy Registry from data/offers.json,
+    corroborating against authoritative metadata and curated ground truth overrides.
+    """
+    registry: Dict[str, Dict[str, Any]] = {}
+
+    # 1. Determine offers file path
+    target_path = Path(offers_file) if offers_file else Path(__file__).resolve().parent.parent / "data" / "offers.json"
+
+    # 2. Load offers and dynamically derive policies
+    if target_path.exists():
+        try:
+            with open(target_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            offers = data.get("offers", [])
+            for offer in offers:
+                oid = offer.get("id")
+                if oid:
+                    registry[oid] = derive_truth_policy(offer)
+        except Exception as e:
+            logger.warning(f"Failed to load offers from {target_path} for dynamic policy registry: {e}")
+
+    # 3. Add any curated overrides not in offers.json as fallbacks
+    for oid, override in CURATED_POLICY_OVERRIDES.items():
+        if oid not in registry:
+            registry[oid] = dict(override)
+
+    return registry
+
+
+# Backward compatibility: dynamically initialize registry upon module load
+TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = build_dynamic_policy_registry()
+
+
+def get_truth_policy(offer_id: str, offer: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    """
+    Retrieves truth policy from dynamic registry, falling back to dynamic derivation.
+    """
+    if offer_id in TRUTH_POLICY_REGISTRY:
+        return TRUTH_POLICY_REGISTRY[offer_id]
+    if offer:
+        policy = derive_truth_policy(offer)
+        TRUTH_POLICY_REGISTRY[offer_id] = policy
+        return policy
+    if offer_id in CURATED_POLICY_OVERRIDES:
+        return dict(CURATED_POLICY_OVERRIDES[offer_id])
+    return {
+        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
+        "real_exam_cost_usd": 0.0,
+        "verified_discount_pct": 100,
+        "truth_source_name": "Primary Vendor Portal",
+        "truth_source_url": "https://certpulse.org/truth",
+        "verdict_notes": "Pending dynamic policy derivation.",
+        "enforce_status": "Active",
+        "zero_dollar_confirmed": False,
+    }
+
+
 def register_truth_policy(offer_id: str, policy: Dict[str, Any]) -> None:
     """Explicitly registers or updates a ground-truth policy entry in TRUTH_POLICY_REGISTRY."""
     TRUTH_POLICY_REGISTRY[offer_id] = policy
@@ -633,18 +863,7 @@ def audit_and_enrich_offers(
         reg_entry = TRUTH_POLICY_REGISTRY.get(oid)
         if not reg_entry and oid:
             # Dynamically auto-register newly ingested / candidate-promoted offers into TRUTH_POLICY_REGISTRY
-            reg_entry = {
-                "provider": offer.get("platform", "Vendor"),
-                "exam_name": offer.get("certification_name", offer.get("title", "")),
-                "policy_type": truth.get("policy_type", "verified_100pct_free"),
-                "real_exam_cost_usd": float(offer.get("value_usd", 0.0) or 0.0),
-                "enforce_status": offer.get("status", "Active"),
-                "truth_source_name": truth.get("truth_source_name", f"{offer.get('platform', 'Vendor')} Official Portal"),
-                "truth_source_url": truth.get("truth_source_url", offer.get("url", "")),
-                "verdict_notes": truth.get("verdict_notes", f"Verified zero-dollar offer from {offer.get('platform', 'Vendor')}."),
-                "is_misleading": False,
-                "misleading_reasons": []
-            }
+            reg_entry = derive_truth_policy(offer)
             TRUTH_POLICY_REGISTRY[oid] = reg_entry
 
         if strict_enforcement and reg_entry:

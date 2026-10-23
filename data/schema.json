@@ -1,0 +1,316 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CertPulse Offers Database Schema",
+  "description": "Formal JSON Schema validating CertPulse certification voucher programs and track records.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "last_updated",
+    "offers"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URI reference to this schema definition"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO 8601 UTC timestamp of the most recent database modification"
+    },
+    "total_offers": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total count of offers tracked in the database"
+    },
+    "last_inspected": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_truth_corroborated": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "last_sync": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "offers": {
+      "type": "array",
+      "description": "List of tracked certification offers",
+      "items": {
+        "$ref": "#/definitions/offer"
+      }
+    }
+  },
+  "definitions": {
+    "offer": {
+      "type": "object",
+      "description": "A single certification offer program with authenticity verification and lifecycle metadata",
+      "required": [
+        "id",
+        "title",
+        "platform",
+        "category",
+        "credential_tier",
+        "status",
+        "url",
+        "authenticity_score",
+        "authenticity_details",
+        "expiry_date"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$",
+          "minLength": 3,
+          "maxLength": 64
+        },
+        "title": {
+          "type": "string",
+          "minLength": 3
+        },
+        "company": {
+          "type": "string",
+          "minLength": 2
+        },
+        "category": {
+          "type": "string",
+          "minLength": 2
+        },
+        "tier": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Registrations Closed",
+            "Expired",
+            "Broken Link",
+            "Review Needed",
+            "Server Error",
+            "Network Warning"
+          ]
+        },
+        "official_url": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "terms_url": {
+          "type": "string"
+        },
+        "terms": {
+          "type": "string"
+        },
+        "last_verified": {
+          "type": "string"
+        },
+        "is_proctored": {
+          "type": "boolean"
+        },
+        "badge_eligible": {
+          "type": "boolean"
+        },
+        "authenticity_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "is_historical_archive": {
+          "type": "boolean"
+        },
+        "verification_state": {
+          "type": "string"
+        },
+        "authenticity_details": {
+          "type": "object"
+        },
+        "expiry_date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "platform": {
+          "type": "string"
+        },
+        "certification_name": {
+          "type": "string"
+        },
+        "credential_tier": {
+          "type": "string",
+          "enum": [
+            "proctored_exam",
+            "skill_badge_lab"
+          ]
+        },
+        "proctoring_type": {
+          "type": "string",
+          "enum": [
+            "pearson_vue",
+            "kryterion",
+            "webassessor",
+            "psi",
+            "unproctored_lab",
+            "online_quiz"
+          ]
+        },
+        "accredited_body": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verified_vendor_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "direct_verified_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seasonality": {
+          "type": "string",
+          "enum": [
+            "evergreen",
+            "periodic_challenge_wave",
+            "annual_window",
+            "student_restricted_evergreen",
+            "monthly_sweepstakes",
+            "event_driven"
+          ]
+        },
+        "value_usd": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "difficulty_tier": {
+          "type": "string",
+          "enum": [
+            "Foundational",
+            "Associate",
+            "Professional"
+          ]
+        },
+        "eligibility": {
+          "type": "string"
+        },
+        "time_period": {
+          "type": "string"
+        },
+        "recurrence_pattern": {
+          "type": "string"
+        },
+        "application_flow_type": {
+          "type": "string"
+        },
+        "redemption_portal": {
+          "type": "string"
+        },
+        "checkout_field": {
+          "type": "string"
+        },
+        "cart_balance_verified": {
+          "type": "string"
+        },
+        "voucher_code": {
+          "type": "string"
+        },
+        "redemption_guide": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "claim_steps": {
+          "type": "string"
+        },
+        "is_authentic_vendor": {
+          "type": "boolean"
+        },
+        "network_provenance": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "temporal_longevity": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "truth_verification": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "visual_proof": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "screenshot_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verification_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "inspection_notes": {
+          "type": "string"
+        },
+        "inspection_method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "offer_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exam_code": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "concluded_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "self_healing_event": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -19,7 +19,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    name: Test Matrix (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest pytest-xdist
+          python -m playwright install --with-deps chromium || true
+
+      - name: Parallelized Test Discovery
+        run: |
+          pytest tests/ -n auto --dist loadscope -v
+
+      - name: Run E2E Test Suite
+        run: |
+          python tests/e2e/runner.py
+
   update-and-deploy:
+    name: Live Pipeline Execution & Data Update
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -36,7 +71,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt pytest
+          pip install -r requirements.txt pytest pytest-xdist
           python -m playwright install --with-deps chromium || true
 
       - name: Run CertPulse Pipeline
@@ -45,7 +80,7 @@ jobs:
 
       - name: Run End-to-End Invariant Verification
         run: |
-          python -m pytest tests/test_invariants.py tests/test_truth_oracle.py tests/test_models.py tests/test_adversarial_m1_taxonomy.py tests/test_adversarial_m4_lightbox.py tests/test_dynamic_pipeline_scenarios.py -v
+          python tests/e2e/runner.py
 
       - name: Commit and Push Changes If Updated
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -62,6 +97,7 @@ jobs:
           path: "docs/"
 
   deploy-pages:
+    name: Deploy to GitHub Pages
     needs: update-and-deploy
     runs-on: ubuntu-latest
     environment:

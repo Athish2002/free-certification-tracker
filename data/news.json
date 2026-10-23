@@ -1,8 +1,47 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-23T13:15:34.668654+00:00",
-  "last_sync": "2026-10-23T13:15:34.668654+00:00",
+  "last_updated": "2026-10-23T17:21:33.197446+00:00",
+  "last_sync": "2026-10-23T17:21:33.197446+00:00",
   "news": [
+    {
+      "id": "red-hat-red-hat-recognizes-clp-power-h",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat Recognizes CLP Power Hong Kong and Fubon Bank (Hong Kong) for Unlocking New Possibilities with Open Source at the Red Hat APAC Innovation Awards 2026 for Hong Kong",
+      "summary": "Red Hat, the world\u2019s leading provider of open source solutions, today announced the winners of the Red Hat APAC Innovation Awards 2026 for Hong Kong. This year, Red Hat recognizes CLP Power Hong Kong Limited and Fubon Bank (Hong Kong) for t...",
+      "published_date": "2026-10-20",
+      "date": "2026-10-20",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-recognizes-clp-power-hong-kong-and-fubon-bank-hong-kong-unlocking-new-possibilities-open-source-red-hat-apac-innovation-awards-2026-hong-kong",
+      "impact_badge": "Linux & Enterprise"
+    },
+    {
+      "id": "red-hat-red-hat-ai-factory-with-nvidia",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat AI Factory with NVIDIA Accelerates Agentic AI Security Capabilities Across the Open Hybrid Cloud",
+      "summary": "Red Hat, the world's leading provider of open source solutions, today announced expanded updates in its ongoing collaboration with NVIDIA to accelerate security-focused, enterprise-grade agentic AI across the open hybrid cloud using Red Hat...",
+      "published_date": "2026-10-21",
+      "date": "2026-10-21",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-ai-factory-nvidia-accelerates-agentic-ai-security-capabilities-across-open-hybrid-cloud",
+      "impact_badge": "Linux & Enterprise"
+    },
+    {
+      "id": "hashicorp-banking-at-machine-speed-secu",
+      "company": "HashiCorp",
+      "source": "HashiCorp Blog",
+      "source_domain": "hashicorp.com",
+      "category": "Infrastructure & DevOps",
+      "title": "Banking at machine speed: Securing access across cloud, AI, and hybrid environments",
+      "summary": "How can financial institutions manage access across cloud, AI, and hybrid environments while supporting compliance, auditability, and operational resilience?...",
+      "published_date": "2026-10-09",
+      "date": "2026-10-09",
+      "url": "https://www.hashicorp.com/blog/banking-at-machine-speed-securing-access-across-cloud-ai-and-hybrid-environments",
+      "impact_badge": "Infrastructure as Code"
+    },
     {
       "id": "cisco-the-road-to-zero-scaling-safe",
       "company": "Cisco",
@@ -11,8 +50,22 @@
       "category": "Tech Development",
       "title": "The Road to Zero: Scaling Safety Through Intelligent Infrastructure",
       "summary": "Urban roadways are facing unprecedented complexity, forcing Departments of Transportation to balance the need for advanced V2X technology with the absolute requirement for rigorous cybersecurity.",
-      "published_date": "2024-08-01",
+      "published_date": "2026-10-23",
+      "date": "2026-10-23",
       "url": "https://blogs.cisco.com/industrial-iot/the-road-to-zero-scaling-safety-through-intelligent-infrastructure",
+      "impact_badge": "Enterprise Networking"
+    },
+    {
+      "id": "cisco-scan-code-for-vulnerabilities",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Scan Code for Vulnerabilities with Cisco Antares in DevNet Learning Labs",
+      "summary": "Two GPU-backed Antares Learning Labs are live. Use a small open-weight model to narrow a repo to the files that may hold a CWE, then see how DevNet shares one GPU across learners.",
+      "published_date": "2026-10-23",
+      "date": "2026-10-23",
+      "url": "https://blogs.cisco.com/cisco-devnet/antares-gpu-learning-labs",
       "impact_badge": "Enterprise Networking"
     },
     {
@@ -25,7 +78,8 @@
       "summary": "An AI agent reviewed our sandbox network design, caught routers hanging off the spines, and asked one question that turned a Clos fabric into a two-tier vPC design.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/ai-network-design-devnet-sandbox-part-1",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-how-bug-bounty-sharpens-one-re",
@@ -37,7 +91,8 @@
       "summary": "As Cybersecurity Awareness Month continues, the GitHub Bug Bounty team spotlights @r31n, diving into their research approach, favorite bug classes, and advice for aspiring hackers. The post How bug bounty sharpens one researcher\u2019s security ...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/security/how-bug-bounty-sharpens-one-researchers-security-skills/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-expanding-claude-availability",
@@ -49,7 +104,8 @@
       "summary": "Every organization has unique requirements for building and scaling generative AI. At Google Cloud, we are committed to giving developers model choice and architectural flexibility to run workloads however they need. Today, we\u2019re announcing...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/expanding-claude-availability-on-google-cloud/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-are-you-post-quantum-ready-bu",
@@ -61,7 +117,8 @@
       "summary": "PQC is a top priority today. The strategy organizations set now across infrastructure, products, and partnerships will determine their long-term resilience.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-unified-defense-from-endpoint",
@@ -73,7 +130,8 @@
       "summary": "Discover how Cisco and SentinelOne work together across Splunk, Duo, Firepower and now ISE \u2014 turning endpoint detection into automated network access decisions.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-inside-agent-compute-engine-b",
@@ -85,7 +143,8 @@
       "summary": "Every decade or so, a shift in software forces us to rethink computer architecture from first principles. After the first boom of web-scale traffic, Google pioneered warehouse-scale computing and Linux containers on Borg. This reshaped how ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-introducing-new-self-learning",
@@ -97,7 +156,8 @@
       "summary": "Today, we\u2019re launching self-learning context enrichment (preview) and a reimagined Knowledge Studio experience (preview) in Knowledge Catalog, Google Cloud\u2019s context engine for agents. Building on Knowledge Catalog's existing Gemini-powered...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-a-blank-slate-in-buffalo-how",
@@ -109,7 +169,8 @@
       "summary": "Shaun Handley, Director of Stadium Technology for the Buffalo Bills, on building Highmark Stadium\u2019s network and security from a blank slate.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/a-blank-slate-in-buffalo-how-the-bills-built-the-nfls-first-complete-wi-fi-7-stadium",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "amazon-web-services-automate-medical-coding-with-s",
@@ -121,7 +182,8 @@
       "summary": "Learn how to combine deterministic orchestration with bounded agentic reasoning using AWS Step Functions and the Amazon Bedrock AgentCore harness. This medical coding workflow escalates cheapest-first: a safety block-list, then exact matchi...",
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/automate-medical-coding-with-step-functions-and-amazon-bedrock-agentcore/",
-      "impact_badge": "Architecture RFC"
+      "impact_badge": "Architecture RFC",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-cisco-and-fortanix-help-make-c",
@@ -133,7 +195,8 @@
       "summary": "Fortanix Confidential AI now supports CNCF Confidential Containers. Discover how Cisco, Fortanix, and VAST Data help enterprises run secure frontier AI, ensuring sensitive models and data remain protected and verifiable while in use.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/datacenter/cisco-and-fortanix-help-make-confidential-ai-verifiable-from-data-to-kubernetes",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-three-languages-one-binary-b",
@@ -145,7 +208,8 @@
       "summary": "Two UIs, two CSV shapes, and a spreadsheet I kept rebuilding. Claude helped turn throwaway scripts into one Go binary that inventories VMware and Nutanix in a single run.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/vmware-nutanix-inventory-go-claude",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-the-bridge-to-agent-scale-git",
@@ -157,7 +221,8 @@
       "summary": "We moved a copy of 99.99999% of GitHub's repositories to Azure. Here's how per-reference quorums will bring over the rest, and how object storage lets reads scale independently. The post The bridge to agent-scale Git infrastructure appeared...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-zenteiq-scales-batch-inference",
@@ -169,7 +234,8 @@
       "summary": "Today we hear from ZenteiQ, an artificial intelligence startup spun out of the Indian Institute of Science (IISc) and selected under the IndiaAI Mission to build sovereign scientific foundation models from the ground up. To pre-train models...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-bigquery-objectref-now-ga-bui",
@@ -181,7 +247,8 @@
       "summary": "For data science, data engineering, and machine learning teams, unlocking the value of unstructured data, such as images, videos, audio, and documents, has historically meant managing siloed data pipelines for structured and unstructured da...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/analyze-unstructured-data-in-bigquery-with-objectref/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-hardened-by-design-applying-t",
@@ -193,7 +260,8 @@
       "summary": "Apply the NSA\u2019s new Zero Trust guidance to your OT environments. Learn how Cisco Cyber Vision and Splunk provide the visibility and telemetry needed to secure critical infrastructure without disrupting operations.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/hardened-by-design-applying-the-nsas-ot-guidance-with-cisco-security-splunk",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-connecting-people-to-humanitar",
@@ -205,7 +273,8 @@
       "summary": "Can responsible AI help connect people with food, shelter, and services in a crisis? Learn how Cisco partner the IRC is using AI as a tool and a teammate to get people fast, reliable answers about humanitarian assistance.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/our-corporate-purpose/connecting-people-to-humanitarian-assistance-with-responsible-ai",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-building-trust-into-enterprise",
@@ -217,7 +286,8 @@
       "summary": "Workday Agent Passport, now in Early Access, gives customers a signed, auditable record of what has been verified about an agent, who verified it, and to what standard. Cisco AI Defense\u200b\u200b,\u200b Agent Passport\u200b\u2019s launch assessor, provides\u200b\u200b....",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/building-trust-into-enterprise-ai-agents-cisco-ai-defense-and-workday-agent-passport",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-the-receipt-not-the-demo-fou",
@@ -229,7 +299,8 @@
       "summary": "A good demo proves nothing. Four questions about policy, approvals, and audit logs show whether an AI agent has earned the right to touch production.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/cadreai-ai-agent-trust-production",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-meet-the-finalists-2026-cisco",
@@ -241,7 +312,8 @@
       "summary": "Meet the 27 finalists for the 2026 Cisco Customer Achievement Awards in APJC across nine categories, including new AI Visionary and Sustainability honors.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/insidervoices/meet-the-finalists-2026-cisco-costumer-achievement-awards-apjc",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-how-3-java-champions-are-using",
@@ -253,7 +325,8 @@
       "summary": "Three Java Champions share how they use GitHub Copilot to solve problems, accelerate development, and keep humans responsible for the results. The post How 3 Java Champions are using GitHub Copilot for increased productivity appeared first ...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-claude-opus-5-5-and-claude-son",
@@ -265,7 +338,8 @@
       "summary": "Whether you are iterating on a quick bug fix or planning a complex migration, different tasks call for different models.In keeping with Google Cloud's commitment to an open ecosystem and to give developers the right model for every job, Cla...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/claude-opus-55-and-claude-sonnet-55-available-in-antigravity/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-managed-rag-search-inside-the",
@@ -277,7 +351,8 @@
       "summary": "National security agencies and other sovereign and highly regulated organizations handle incredibly sensitive data such as classified reports, field manuals, and sensitive multi-modal datasets. Search and multimodal intelligence that\u2019s avai...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-announcing-llm-d-1-0-open-dis",
@@ -289,7 +364,8 @@
       "summary": "Today at the PyTorch Conference, we released llm-d 1.0, an open-source, Kubernetes-native stack for distributed LLM inference. Co-founded by Google with Red Hat, IBM and others, we worked with a community of more than 500 contributors over ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/llm-d-1-0-an-open-source-stack-for-distributed-inference/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-torchtpu-is-now-open-source-r",
@@ -301,7 +377,8 @@
       "summary": "Today at PyTorch Conference 2026, we announced a range of new products and integrations designed to help you run PyTorch effectively on Google Cloud or in your own infrastructure. Notably, TorchTPU, our native PyTorch stack for Google TPUs,...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-on-my-first-day-at-cisco-i-as",
@@ -313,7 +390,8 @@
       "summary": "Madhan B., a Technical Systems Engineer, had first-day nerves, like everyone, but discovered that at Cisco you don't need to be perfect to belong.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/wearecisco/on-my-first-day-at-cisco-i-asked-my-manager-where-my-manager-was",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-state-of-observability-2026-re",
@@ -325,7 +403,8 @@
       "summary": "Agentic AI has made modern systems unpredictable by design, but Splunk's latest research reveals how leaders use observability to restore control and drive measurable business value.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-the-data-center-networking-mod",
@@ -337,7 +416,8 @@
       "summary": "Is your customers\u2019 infrastructure ready for the AI era? Don\u2019t let technical debt stall their growth. Explore how Cisco Nexus One and our new AI-powered Modernization Playbook help you lead data center transformations with precision and spee...",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/partner/the-data-center-networking-modernization-gap",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-rebuilding-pubhub-how-ai-assi",
@@ -349,7 +429,8 @@
       "summary": "A security mandate forced a PubHub rewrite. AI-assisted development helped 12 engineers deliver nine months of work in about five and a half. Here is the sequence that worked.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/ai-assisted-development-rebuilding-pubhub-part-1",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-how-to-continue-a-github-copil",
@@ -361,7 +442,8 @@
       "summary": "Learn how to move an agent session from the GitHub Copilot app into VS Code without losing the conversation, code changes, or working context. The post How to continue a GitHub Copilot app session in VS Code appeared first on The GitHub Blo...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-how-to-use-python-udf-logging",
@@ -373,7 +455,8 @@
       "summary": "We are announcing a new logging feature that is now available in Python User-Defined Function (UDF) in BigQuery. Developers can now use Python\u2019s standard logging library directly inside BigQuery UDFs to emit structured logs seamlessly into ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/python-udf-logging-for-pipeline-observability-in-bigquery/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-building-full-virtual-vehicles",
@@ -385,7 +468,8 @@
       "summary": "Imagining traditional gearheads getting their hands on software-defined vehicles is an amusing thought experiment. With their socket wrenches and air compressors at the ready, they might be confused to encounter core functions more likely t...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/manufacturing/building-full-virtual-vehicles-on-google-cloud-from-aaos-to-the-smallest-mcu/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-what-s-new-with-google-cloud",
@@ -397,7 +481,8 @@
       "summary": "Want to know the latest from Google Cloud? Find it here in one handy location. Check back regularly for our newest updates, announcements, resources, events, learning opportunities, and more. Tip: Not sure where to find what you\u2019re looking ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-accelerating-decision-superior",
@@ -409,7 +494,8 @@
       "summary": "Join Cisco at AFCEA TechNet Indo-Pacific 2026 (Booth 401) to explore how our AI-powered defense and zero-trust solutions secure the tactical edge, accelerate allied interoperability, and advance mission readiness.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/accelerating-decision-superiority-discover-ciscos-solutions-at-afcea-technet-indo-pacific-2026",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-architecting-autonomy-a-desig",
@@ -421,7 +507,8 @@
       "summary": "In production systems today, most AI agents operate as lightweight dispatchers. They parse a prompt, make an API call, retrieve a record, and hand back control. Their execution is fast, stateless and cheap. Biotechnology does not work this ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/healthcare-life-sciences/architecting-scalable-agentic-biotech-workloads/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-day-0-support-for-reflection-s",
@@ -433,7 +520,8 @@
       "summary": "Today, Reflection released Beam, its first open-weight model built to give developers, researchers, and enterprises open control and customization for frontier software engineering and long-horizon agentic tasks. Released under a permissive...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/day-0-support-with-5x-perf-for-reflection-beam-on-google-cloud/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-announcing-wiz-runtime-sensor",
@@ -445,7 +533,8 @@
       "summary": "Everything is moving faster in the age of AI, and that includes security threats. What used to take attackers weeks to exploit can now happen in just a few minutes. Standard vulnerability scans that run on artifacts at rest can catch basic ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/identity-security/wiz-sensor-for-gke-turnkey-threat-detection-for-kubernetes/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-the-save-method-learn-the-fun",
@@ -457,7 +546,8 @@
       "summary": "Google Cloud Consulting works with organizations every day to build generative media that\u2019s trustworthy, brand-aligned, and stands out. Instead of relying on clever or complicated prompting, we\u2019ve identified four recurring basics to generat...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/consulting/fundamentals-to-engineer-trustworthy-gen-media/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-gke-cpu",
@@ -469,7 +559,8 @@
       "summary": "\u203b\u3053\u306e\u6295\u7a3f\u306f\u7c73\u56fd\u6642\u9593 2026 \u5e74 10 \u6708 3 \u65e5\u306b\u3001Google Cloud blog \u306b\u6295\u7a3f\u3055\u308c\u305f\u3082\u306e\u306e\u6284\u8a33\u3067\u3059\u3002 \u30c8\u30e9\u30d5\u30a3\u30c3\u30af\u306e\u6025\u5897\u306b\u5bfe\u5fdc\u3057\u3066\u30de\u30a4\u30af\u30ed\u30b5\u30fc\u30d3\u30b9\u3092\u8d77\u52d5\u3059\u308b\u5834\u5408\u3067\u3082\u3001\u65b0\u3057\u3044\u30bd\u30d5\u30c8\u30a6\u30a7\u30a2 \u30ea\u30ea\u30fc\u30b9\u3092\u30c7\u30d7\u30ed\u30a4\u3059\u308b\u5834\u5408\u3067\u3082\u3001\u30a2\u30d7\u30ea\u30b1\u30fc\u30b7\u30e7\u30f3 \u30ec\u30d7\u30ea\u30ab\u3092\u30b9\u30b1\u30fc\u30eb\u30a2\u30c3\u30d7\u3059\u308b\u5834\u5408\u3067\u3082\u3001Google Kubernetes Engine\uff08GKE\uff09\u3067\u5b9f\u884c\u3055\u308c\u308b\u30a2\u30d7\u30ea\u30b1\u30fc\u30b7\u30e7\u30f3\u306e\u9ad8\u901f\u3067\u5fdc\u7b54\u6027\u306e\u9ad8\u3044\u30e6\u30fc\u30b6\u30fc \u30a8\u30af\u30b9\u30da\u30ea\u30a8\u30f3\u30b9\u3092\u7dad\u6301\u3059\u308b\u306b\u306f\u3001Pod \u306e\u8d77\u52d5\u6642\u9593\u304c\u91cd\u8981\u3067\u3059 \u3057\u304b\u3057\u3001...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/ja/products/containers-kubernetes/gke-cpu-startup-boost-faster-pod-starts-lower-costs/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-the-quantum-security-transitio",
@@ -481,7 +572,8 @@
       "summary": "Governments should treat quantum risk as a national resilience challenge, integrating post-quantum cryptography into cybersecurity strategies and procurement to protect critical infrastructure and ensure long-term digital trust.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/gov/the-quantum-security-transition-a-policy-agenda-for-post-quantum-readiness-in-asia-pacific",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-staying-evergreen-how-we-auto",
@@ -493,7 +585,8 @@
       "summary": "Put native GitHub features to work to review outside collaborator access and archive stale repositories. The post Staying Evergreen: How we automated secure access and repo hygiene in a shared org appeared first on The GitHub Blog.",
       "published_date": "2024-08-01",
       "url": "https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "github-the-next-developer-interface-i",
@@ -505,7 +598,8 @@
       "summary": "AI, agents, voice, and physical controls are shifting software development from operating tools to expressing intent\u2014and helping developers stay focused on building. The post The next developer interface is ambient intelligence appeared fir...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/news-insights/company-news/the-next-developer-interface-is-ambient-intelligence/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-what-the-gemini-agent-means-fo",
@@ -517,7 +611,8 @@
       "summary": "Small teams, short runway, and constant pressure to ship faster \u2014 it\u2019s the reality we see every day among the founders we work with at Google for Startups. When you are building a company from the ground up, every hour spent on operational ...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/startups/what-the-gemini-agent-means-for-startups/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-cisco-takes-the-court-powerin",
@@ -529,7 +624,8 @@
       "summary": "As the 2026-2027 NBA season begins, Cisco is partnering with the Hawks, Cavaliers, and Brooklyn Sports &#038; Entertainment to build the secure, AI-ready digital infrastructure needed to power the future of live sports venues.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/cisco-takes-the-court-powering-a-more-connected-future-across-the-nba",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-bringing-the-borderless-lakeho",
@@ -541,7 +637,8 @@
       "summary": "As enterprises shift their AI usage from experimental chatbots to autonomous agents, teams are hitting a critical bottleneck: accessing and reasoning over data scattered across multiple clouds, SaaS platforms, and on-premises systems. To tu...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/borderless-lakehouse-integrates-with-gemini/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-temporal-serverless-workers-on",
@@ -553,7 +650,8 @@
       "summary": "The open-source Temporal execution platform is rapidly becoming a foundational layer of modern software infrastructure \u2014 especially for orchestration in distributed systems and AI agent workloads. However, deploying and scaling workers in T...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/serverless/temporal-serverless-workers-on-cloud-run-worker-pools/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "amazon-web-services-how-dynata-scaled-ai-across-th",
@@ -565,7 +663,8 @@
       "summary": "Dynata reimagined its development lifecycle with AI, moving from AI-assisted coding to the AI-Driven Development Lifecycle (AI-DLC) methodology with Kiro IDE. Learn how the company reduced the development phase of full-stack features from t...",
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/how-dynata-scaled-ai-across-the-development-lifecycle-with-ai-dlc-and-kiro-ide/",
-      "impact_badge": "Architecture RFC"
+      "impact_badge": "Architecture RFC",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-segment-routing-fundamentals",
@@ -577,7 +676,8 @@
       "summary": "Explore the fundamentals of Segment Routing in this technical deep dive. Learn how SR MPLS and SRv6 work, the benefits of stateless traffic engineering, and why TI-LFA is essential for modern, resilient network data planes.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-from-2-500-requests-to-24-reb",
@@ -589,7 +689,8 @@
       "summary": "Our new repo star history API now provides trends without returning individual identities or requiring unbounded database work. These are the engineering tradeoffs we made. The post From 2,500 requests to 24: Rebuilding star history without...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "github-github-availability-report-se",
@@ -601,7 +702,8 @@
       "summary": "In September, we experienced two incidents that resulted in degraded performance across GitHub services. The post GitHub availability report: September 2026 appeared first on The GitHub Blog.",
       "published_date": "2024-08-01",
       "url": "https://github.blog/news-insights/company-news/github-availability-report-september-2026/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-the-ai-security-paradox-how",
@@ -613,7 +715,8 @@
       "summary": "AI adoption inside the enterprise is no longer waiting for governance to catch up. Employees are already using generative AI to write code, summarize documents, analyze data, draft communications, and automate routine work, often through to...",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-agents-at-the-edge-extending",
@@ -625,7 +728,8 @@
       "summary": "AI agents are moving beyond screens and servers into the physical world -- controlling robots, drones, factory equipment, and building systems. DefenseClaw now includes an Edge Connector that brings AI agent security to these constrained de...",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-cloud-ciso-perspectives-new-g",
@@ -637,7 +741,8 @@
       "summary": "Welcome to the first Cloud CISO Perspectives for October 2026. Today, Stephanie Kiel explains the latest on our approach to post-quantum cryptography, and shares a new tool to help CISOs and executives prepare their organizations for PQC.As...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-predictable-ai-spend-in-bigque",
@@ -649,7 +754,8 @@
       "summary": "The generative AI functions in BigQuery (AI.GENERATE, AI.IF, AI.CLASSIFY, AI.SCORE, and more) bring large language models (LLMs) directly into your SQL, so a single query can classify millions of support tickets or score each product review...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/using-bigquerys-generative-ai-cost-management-features/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "amazon-web-services-multi-region-disaster-recovery",
@@ -661,7 +767,8 @@
       "summary": "Learn how to build multi-region disaster recovery for Amazon API Gateway WebSocket APIs. This design pattern combines Amazon Route 53 DNS failover, Amazon DynamoDB Global Tables, a canary health probe, and client-side reconnection logic to ...",
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/",
-      "impact_badge": "Architecture RFC"
+      "impact_badge": "Architecture RFC",
+      "date": "2024-08-01"
     },
     {
       "id": "amazon-web-services-how-uts-established-a-modern-c",
@@ -673,7 +780,8 @@
       "summary": "The University of Technology Sydney built a modern curriculum data services foundation on AWS that treats curriculum data as a governed, reusable product, available through APIs, graph traversal, semantic search, and event delivery, while l...",
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/",
-      "impact_badge": "Architecture RFC"
+      "impact_badge": "Architecture RFC",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-always-on-assurance-how-cisco",
@@ -685,7 +793,8 @@
       "summary": "Learn how Cisco\u2019s Secure Development Lifecycle (CSDL) is evolving to support AI-driven development, ensuring secure and resilient software at speed.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/security/always-on-assurance",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "cisco-beyond-ai-cost-visibility-des",
@@ -697,7 +806,8 @@
       "summary": "Managing AI spend at scale demands more than just usage counts. Learn how mapping tokenomics to organizational hierarchies empowers engineers, managers, and finance to balance innovation with financial discipline.",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-on-cisco/beyond-ai-cost-visibility-designing-tokenomics-for-real-users",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "date": "2024-08-01"
     },
     {
       "id": "github-github-copilot-app-for-beginne",
@@ -709,7 +819,8 @@
       "summary": "Learn how to add custom instructions and skills to your repository, use custom agents, and connect MCP servers like Playwright. The post GitHub Copilot app for Beginners: How to teach Copilot about your codebase appeared first on The GitHub...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "github-github-s-model-for-secret-dete",
@@ -721,7 +832,8 @@
       "summary": "GitHub\u2019s context-aware secret classifier improves detection quality, raises weighted acceptance by 11.5%, and reduces median scan execution time by 86%. The post GitHub\u2019s model for secret detection: Finding more secrets with less noise appe...",
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/githubs-model-for-secret-detection-finding-more-secrets-with-less-noise/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-gemini-4-argon-available-on-go",
@@ -733,7 +845,8 @@
       "summary": "Last week we announced that Gemini Enterprise has evolved to make it even simpler to get work done, and introduced the Gemini agent, your new universal agent for work. It's always on and ready to answer your questions. It will write code, c...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/gemini-4-argon-available-on-google-cloud/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "google-cloud-cross-cloud-conversational-ana",
@@ -745,7 +858,8 @@
       "summary": "The reality for most organizations is that data lives everywhere. As engineering teams expand and adopt specialized platforms for their workloads, enterprise data naturally disperses across multiple clouds and operational systems. When anal...",
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/cross-cloud-conversational-analytics-with-borderless-lakehouse/",
-      "impact_badge": "Cloud Platform"
+      "impact_badge": "Cloud Platform",
+      "date": "2024-08-01"
     },
     {
       "id": "amazon-web-services-stopping-business-email-compro",
@@ -757,7 +871,8 @@
       "summary": "Learn how VIPRE Security built an AI-powered email security solution on AWS to stop business email compromise. VIPRE Integrated Email Security uses machine learning and a serverless architecture on Amazon ECS, Amazon SQS, and Amazon S3 to d...",
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/stopping-business-email-compromise-with-ai-driven-email-security-how-vipre-protects-modern-enterprises-on-aws/",
-      "impact_badge": "Architecture RFC"
+      "impact_badge": "Architecture RFC",
+      "date": "2024-08-01"
     },
     {
       "id": "amazon-web-services-scope-workloads-and-share-resi",
@@ -769,7 +884,8 @@
       "summary": "The next generation of AWS Resilience Hub adds three capabilities to keep workload scope and resilience requirements aligned with your running environment: Amazon EKS label support for service input sources, generative AI-powered Dependency...",
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/scope-workloads-and-share-resilience-policies-with-aws-resilience-hub/",
-      "impact_badge": "Architecture RFC"
+      "impact_badge": "Architecture RFC",
+      "date": "2024-08-01"
     },
     {
       "id": "aws-graviton4-general-availability",
@@ -781,7 +897,8 @@
       "summary": "Amazon Web Services announced the general availability of Graviton4-based R8g instances, delivering up to 30% better compute performance and 75% more memory bandwidth than Graviton3.",
       "published_date": "2024-07-10",
       "url": "https://aws.amazon.com/blogs/aws/new-amazon-ec2-r8g-instances-powered-by-aws-graviton4-processors/",
-      "impact_badge": "Silicon Innovation"
+      "impact_badge": "Silicon Innovation",
+      "date": "2024-07-10"
     },
     {
       "id": "msft-azure-phi3-small-language-models",
@@ -793,7 +910,8 @@
       "summary": "Microsoft Research introduced the Phi-3 family of open, small language models trained on synthetic textbooks and filtered web data, matching Llama-3 performance at 3.8B parameters.",
       "published_date": "2024-04-23",
       "url": "https://www.microsoft.com/en-us/research/blog/phi-3-technical-report/",
-      "impact_badge": "Model Architecture"
+      "impact_badge": "Model Architecture",
+      "date": "2024-04-23"
     },
     {
       "id": "gcp-tpu-v5p-hypercomputer",
@@ -805,7 +923,8 @@
       "summary": "Google Cloud detailed its AI Hypercomputer architecture, integrating Cloud TPU v5p accelerators with Jupiter network fabrics to scale training clusters up to 8,960 chips with 4x FLOPs per pod.",
       "published_date": "2024-05-14",
       "url": "https://cloud.google.com/blog/products/compute/introducing-cloud-tpu-v5p",
-      "impact_badge": "AI Systems"
+      "impact_badge": "AI Systems",
+      "date": "2024-05-14"
     },
     {
       "id": "oracle-oci-cloud-growth-q1",
@@ -817,7 +936,8 @@
       "summary": "Oracle Corporation reported 45% year-over-year revenue growth in OCI IaaS to $2.2B, driven by multi-cloud contract expansions with AWS and Microsoft Azure for Oracle Database@Cloud.",
       "published_date": "2024-09-09",
       "url": "https://blogs.oracle.com/cloud-infrastructure/post/oracle-database-at-aws",
-      "impact_badge": "Cloud Financials"
+      "impact_badge": "Cloud Financials",
+      "date": "2024-09-09"
     },
     {
       "id": "github-copilot-workspace-code-review",
@@ -829,7 +949,8 @@
       "summary": "GitHub Next unveiled GitHub Copilot Workspace, enabling autonomous multi-file code plan generation, integrated test runs, and semantic PR reviews directly in browser sessions.",
       "published_date": "2024-04-29",
       "url": "https://github.blog/news-insights/product-news/github-copilot-workspace/",
-      "impact_badge": "Developer Tooling"
+      "impact_badge": "Developer Tooling",
+      "date": "2024-04-29"
     },
     {
       "id": "cisco-silicon-one-quantum-entanglement",
@@ -841,7 +962,8 @@
       "summary": "Cisco Research published quantum networking testbed results demonstrating high-fidelity photon entanglement routing over standard optical fiber alongside terabit IP traffic.",
       "published_date": "2024-06-18",
       "url": "https://blogs.cisco.com/tag/cisco-research",
-      "impact_badge": "Quantum Research"
+      "impact_badge": "Quantum Research",
+      "date": "2024-06-18"
     },
     {
       "id": "cncf-kubernetes-v131-elli",
@@ -853,7 +975,8 @@
       "summary": "The CNCF and Kubernetes community published release 1.31, promoting AppArmor support to GA, stabilizing memory cgroup v2 metrics, and introducing dynamic resource allocation parameters.",
       "published_date": "2024-08-13",
       "url": "https://www.linuxfoundation.org/news",
-      "impact_badge": "Open Source Core"
+      "impact_badge": "Open Source Core",
+      "date": "2024-08-13"
     },
     {
       "id": "databricks-dbrx-foundation-model",
@@ -865,7 +988,8 @@
       "summary": "Databricks Mosaic AI released DBRX, a 132B parameter MoE architecture (36B active) trained on 12T tokens with fine-grained 16-expert routing, outperforming GPT-3.5 on code evaluation.",
       "published_date": "2024-03-27",
       "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
-      "impact_badge": "MoE Architecture"
+      "impact_badge": "MoE Architecture",
+      "date": "2024-03-27"
     },
     {
       "id": "snowflake-apache-iceberg-ga",
@@ -877,7 +1001,8 @@
       "summary": "Snowflake announced the general availability of Apache Iceberg Tables, allowing customers to keep data in customer-managed external S3/ADLS/GCS buckets with full governance.",
       "published_date": "2024-06-04",
       "url": "https://www.snowflake.com/blog/",
-      "impact_badge": "Open Data Lake"
+      "impact_badge": "Open Data Lake",
+      "date": "2024-06-04"
     },
     {
       "id": "msft-cloud-earnings-q4",
@@ -889,7 +1014,8 @@
       "summary": "Microsoft reported fiscal year-end results with Microsoft Cloud revenue reaching $137.4B (+23% YoY), driven by Azure infrastructure scaling and enterprise generative AI seat expansions.",
       "published_date": "2024-07-30",
       "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-24-Q4/press-release-webcast",
-      "impact_badge": "Earnings Report"
+      "impact_badge": "Earnings Report",
+      "date": "2024-07-30"
     },
     {
       "id": "aws-liquid-cooling-ai-clusters",
@@ -901,7 +1027,8 @@
       "summary": "AWS revealed engineering details of its next-gen direct-to-chip liquid cooling deployments for Trainium2 server racks, reducing PUE to 1.15 in high-density accelerator facilities.",
       "published_date": "2024-08-20",
       "url": "https://aws.amazon.com/blogs/architecture/",
-      "impact_badge": "Data Center Thermal"
+      "impact_badge": "Data Center Thermal",
+      "date": "2024-08-20"
     },
     {
       "id": "cisco-splunk-appdynamics-telemetry",
@@ -913,7 +1040,9 @@
       "summary": "Cisco announced native interoperability between Cisco ThousandEyes, AppDynamics, and Splunk, delivering a unified OpenTelemetry data layer across multi-cloud network edges.",
       "published_date": "2024-06-05",
       "url": "https://blogs.cisco.com/news",
-      "impact_badge": "Observability Pipeline"
+      "impact_badge": "Observability Pipeline",
+      "date": "2024-06-05"
     }
-  ]
+  ],
+  "total_items": 81
 }

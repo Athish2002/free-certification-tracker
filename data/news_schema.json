@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CertPulse News Radar Schema",
+  "description": "Formal JSON Schema validating CertPulse cloud and engineering intelligence radar feed items.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "last_updated",
+    "total_items",
+    "news"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "URI reference to this schema definition"
+    },
+    "last_updated": {
+      "type": "string",
+      "description": "ISO 8601 UTC timestamp of the most recent news update"
+    },
+    "total_items": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total count of news articles in this database"
+    },
+    "last_sync": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "news": {
+      "type": "array",
+      "description": "List of curated vendor news intelligence articles",
+      "items": {
+        "$ref": "#/definitions/news_item"
+      }
+    }
+  },
+  "definitions": {
+    "news_item": {
+      "type": "object",
+      "description": "A single engineering news dispatch",
+      "required": [
+        "id",
+        "company",
+        "source",
+        "category",
+        "title",
+        "summary",
+        "published_date",
+        "date",
+        "url",
+        "impact_badge"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "company": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_domain": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string"
+        },
+        "published_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}",
+          "description": "ISO-8601 publication date string"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}",
+          "description": "ISO-8601 date string recognized by web dashboard"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "impact_badge": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

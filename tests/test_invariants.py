@@ -47,7 +47,9 @@ APPROVED_NEWS_DOMAINS = {
     "github.blog",
     "linuxfoundation.org",
     "databricks.com",
-    "snowflake.com"
+    "snowflake.com",
+    "hashicorp.com",
+    "redhat.com"
 }
 
 BANNED_CLICKBAIT_PATTERNS = [

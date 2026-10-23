@@ -10,7 +10,7 @@ import json
 import logging
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional, Union
 from urllib.parse import urlparse
 from datetime import datetime, timezone
 import httpx
@@ -23,37 +23,98 @@ NEWS_FILE = DATA_DIR / "news.json"
 VERIFIED_FEEDS = [
     {
         "company": "Amazon Web Services",
+        "vendor": "Amazon Web Services",
         "source": "AWS Architecture Blog",
         "category": "Infrastructure & Silicon",
         "feed_url": "https://aws.amazon.com/blogs/architecture/feed/",
         "allowed_domain": "aws.amazon.com",
+        "source_domain": "aws.amazon.com",
         "impact_badge": "Architecture RFC"
     },
     {
         "company": "Google Cloud",
+        "vendor": "Google Cloud",
         "source": "Google Cloud Blog",
         "category": "Infrastructure & Silicon",
         "feed_url": "https://cloudblog.withgoogle.com/rss/",
         "allowed_domain": "cloud.google.com",
+        "source_domain": "cloud.google.com",
         "impact_badge": "Cloud Platform"
     },
     {
         "company": "GitHub",
+        "vendor": "GitHub",
         "source": "GitHub Engineering Blog",
         "category": "Tech Development",
         "feed_url": "https://github.blog/feed/",
         "allowed_domain": "github.blog",
+        "source_domain": "github.blog",
         "impact_badge": "Developer Tooling"
     },
     {
         "company": "Cisco",
+        "vendor": "Cisco",
         "source": "Cisco Blogs",
         "category": "Tech Development",
         "feed_url": "https://blogs.cisco.com/feed",
         "allowed_domain": "blogs.cisco.com",
+        "source_domain": "blogs.cisco.com",
         "impact_badge": "Enterprise Networking"
+    },
+    {
+        "company": "Microsoft",
+        "vendor": "Microsoft Azure",
+        "source": "Azure Blog",
+        "category": "Cloud & AI",
+        "feed_url": "https://azurecomcdn.azureedge.net/en-us/blog/feed/",
+        "allowed_domain": "microsoft.com",
+        "source_domain": "microsoft.com",
+        "impact_badge": "Cloud & AI Architecture"
+    },
+    {
+        "company": "HashiCorp",
+        "vendor": "HashiCorp",
+        "source": "HashiCorp Blog",
+        "category": "Infrastructure & DevOps",
+        "feed_url": "https://www.hashicorp.com/blog/feed.xml",
+        "allowed_domain": "hashicorp.com",
+        "source_domain": "hashicorp.com",
+        "impact_badge": "Infrastructure as Code"
+    },
+    {
+        "company": "Databricks",
+        "vendor": "Databricks",
+        "source": "Databricks Blog",
+        "category": "Data & AI",
+        "feed_url": "https://www.databricks.com/feed.xml",
+        "allowed_domain": "databricks.com",
+        "source_domain": "databricks.com",
+        "impact_badge": "Lakehouse & AI"
+    },
+    {
+        "company": "Snowflake",
+        "vendor": "Snowflake",
+        "source": "Snowflake Blog",
+        "category": "Data Cloud",
+        "feed_url": "https://www.snowflake.com/blog/feed/",
+        "allowed_domain": "snowflake.com",
+        "source_domain": "snowflake.com",
+        "impact_badge": "Data Cloud Architecture"
+    },
+    {
+        "company": "Red Hat",
+        "vendor": "Red Hat",
+        "source": "Red Hat Press Releases",
+        "category": "Linux & Enterprise",
+        "feed_url": "https://www.redhat.com/en/rss/press-releases",
+        "allowed_domain": "redhat.com",
+        "source_domain": "redhat.com",
+        "impact_badge": "Linux & Enterprise"
     }
 ]
+
+# Alias for backward compatibility and test runner discovery
+PRIMARY_FEEDS = VERIFIED_FEEDS
 
 BANNED_CLICKBAIT_PATTERNS = [
     r"\bshocking\b", r"\binsane\b", r"\byou won't believe\b",
@@ -69,7 +130,28 @@ def is_clean_headline(title: str) -> bool:
             return False
     return True
 
-def fetch_feed_entries(feed_info: Dict[str, str], max_items: int = 3) -> List[Dict[str, Any]]:
+def parse_feed_date(pub_date: str) -> str:
+    """Parses various RSS/Atom date formats into canonical ISO-8601 YYYY-MM-DD string."""
+    if not pub_date:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    pub_date = pub_date.strip()
+    date_match = re.search(r"(\d{4}-\d{2}-\d{2})", pub_date)
+    if date_match:
+        return date_match.group(1)
+    try:
+        from email.utils import parsedate_to_datetime
+        dt = parsedate_to_datetime(pub_date)
+        return dt.strftime("%Y-%m-%d")
+    except Exception:
+        pass
+    try:
+        dt = datetime.fromisoformat(pub_date.replace("Z", "+00:00"))
+        return dt.strftime("%Y-%m-%d")
+    except Exception:
+        pass
+    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+def fetch_feed_entries(feed_info: Dict[str, Any], max_items: int = 3) -> List[Dict[str, Any]]:
     """Fetches and parses Atom/RSS feed from an authentic primary source."""
     entries = []
     headers = {
@@ -130,20 +212,16 @@ def fetch_feed_entries(feed_info: Dict[str, str], max_items: int = 3) -> List[Di
                     pub_el = item.find("{http://www.w3.org/2005/Atom}updated")
                 pub_date = pub_el.text.strip() if pub_el is not None and pub_el.text else ""
                 
-                # Format ISO date if possible
-                date_match = re.search(r"(\d{4}-\d{2}-\d{2})", pub_date)
-                if date_match:
-                    iso_date = date_match.group(1)
-                else:
-                    iso_date = "2024-08-01"
+                iso_date = parse_feed_date(pub_date)
                 
                 # Verification Gates:
-                if not title or not link or not is_clean_headline(title):
+                content = f"{title} {clean_desc}".lower()
+                if not title or not link or not is_clean_headline(title) or any(re.search(pat, content) for pat in BANNED_CLICKBAIT_PATTERNS):
                     continue
                 
                 # Assert domain is authentic
                 parsed_netloc = urlparse(link).netloc.lower()
-                allowed = feed_info["allowed_domain"]
+                allowed = feed_info["allowed_domain"].lower()
                 if allowed not in parsed_netloc and parsed_netloc not in allowed:
                     continue
                 
@@ -153,11 +231,12 @@ def fetch_feed_entries(feed_info: Dict[str, str], max_items: int = 3) -> List[Di
                     "id": slug_id,
                     "company": feed_info["company"],
                     "source": feed_info["source"],
-                    "source_domain": feed_info["allowed_domain"],
+                    "source_domain": feed_info.get("source_domain", feed_info["allowed_domain"]),
                     "category": feed_info["category"],
                     "title": title,
                     "summary": clean_desc or f"Official technical update published by {feed_info['source']}.",
                     "published_date": iso_date,
+                    "date": iso_date,
                     "url": link,
                     "impact_badge": feed_info["impact_badge"]
                 })
@@ -166,15 +245,39 @@ def fetch_feed_entries(feed_info: Dict[str, str], max_items: int = 3) -> List[Di
         
     return entries
 
-def update_news_feed() -> List[Dict[str, Any]]:
+def save_news_feed(data: Dict[str, Any], filepath: Optional[Union[str, Path]] = None) -> None:
+    """
+    Saves news feed data atomically using atomic_write_json with news_schema.json pre-flight validation.
+    Ensures total_items and $schema conform to data/news_schema.json.
+    """
+    from src.io_utils import atomic_write_json
+    target = Path(filepath) if filepath else NEWS_FILE
+    schema_file = DATA_DIR / "news_schema.json"
+
+    if "news" in data:
+        data["total_items"] = len(data["news"])
+    if "$schema" not in data:
+        data["$schema"] = "./news_schema.json"
+    if "last_updated" not in data:
+        data["last_updated"] = datetime.now(timezone.utc).isoformat()
+
+    atomic_write_json(target, data, schema_path=schema_file)
+
+def update_news_feed(news_file: Optional[Union[str, Path]] = None) -> List[Dict[str, Any]]:
     """Polls verified feeds and merges new items into data/news.json."""
     logger.info("=== Starting Verified Tech & Cloud News Feed Ingestion ===")
+    target_file = Path(news_file) if news_file else NEWS_FILE
     
-    if NEWS_FILE.exists():
-        with open(NEWS_FILE, "r", encoding="utf-8") as f:
+    if target_file.exists():
+        with open(target_file, "r", encoding="utf-8") as f:
             data = json.load(f)
     else:
-        data = {"news": []}
+        data = {
+            "$schema": "./news_schema.json",
+            "last_updated": datetime.now(timezone.utc).isoformat(),
+            "total_items": 0,
+            "news": []
+        }
         
     existing_news = data.get("news", [])
     existing_urls = {item["url"] for item in existing_news}
@@ -195,9 +298,9 @@ def update_news_feed() -> List[Dict[str, Any]]:
     data["last_updated"] = now_iso
     data["last_sync"] = now_iso
     data["news"] = existing_news
-    NEWS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(NEWS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    data["total_items"] = len(existing_news)
+    
+    save_news_feed(data, target_file)
         
     logger.info(f"=== News Feed Ingestion Complete: {len(existing_news)} total items ({new_added} fresh) ===")
     return existing_news

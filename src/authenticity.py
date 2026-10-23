@@ -20,10 +20,114 @@ Capabilities:
    structured verification flags for tracking in offers.json and dashboard visualizations.
 """
 
+import json
 import re
 import ipaddress
 from urllib.parse import urlparse, parse_qs
 from typing import Dict, Any, List, Tuple, Optional, Union
+
+
+def parse_powershell_hash_str(raw: Union[str, Dict[str, Any], Any]) -> Dict[str, Any]:
+    """
+    Defensively parses a PowerShell stringified hashtable `@{Key=Val; ...}`
+    or JSON string into a clean Python dictionary.
+    Returns existing dict if input is already a dictionary, or empty dict on failure.
+    """
+    if isinstance(raw, dict):
+        return raw
+
+    if not isinstance(raw, str):
+        return {}
+
+    raw = raw.strip()
+    if not raw:
+        return {}
+
+    # Check if raw is already valid standard JSON
+    if raw.startswith("{") and not raw.startswith("@{"):
+        try:
+            parsed = json.loads(raw)
+            if isinstance(parsed, dict):
+                return parsed
+        except Exception:
+            pass
+
+    if not (raw.startswith("@{") and raw.endswith("}")):
+        return {}
+
+    content = raw[2:-1].strip()
+    if not content:
+        return {}
+
+    def _parse_val(v_str: str) -> Any:
+        v_str = v_str.strip()
+        if not v_str:
+            return ""
+        if v_str.startswith("@{") and v_str.endswith("}"):
+            return parse_powershell_hash_str(v_str)
+        lower = v_str.lower()
+        if lower in ("true", "$true"):
+            return True
+        if lower in ("false", "$false"):
+            return False
+        if lower in ("none", "null", "$null"):
+            return None
+        if v_str in ("System.Object[]", "@()", "()"):
+            return []
+        if (v_str.startswith("@(") and v_str.endswith(")")) or (v_str.startswith("(") and v_str.endswith(")")):
+            inner = v_str[2:-1] if v_str.startswith("@(") else v_str[1:-1]
+            if not inner.strip():
+                return []
+            return [_parse_val(item) for item in inner.split(",") if item.strip()]
+        if (v_str.startswith('"') and v_str.endswith('"')) or (v_str.startswith("'") and v_str.endswith("'")):
+            return v_str[1:-1]
+        try:
+            return int(v_str)
+        except ValueError:
+            pass
+        try:
+            return float(v_str)
+        except ValueError:
+            pass
+        return v_str
+
+    result: Dict[str, Any] = {}
+    depth = 0
+    in_quote = False
+    quote_char = ""
+    current_key: Optional[str] = None
+    buffer: List[str] = []
+
+    for ch in content:
+        if in_quote:
+            buffer.append(ch)
+            if ch == quote_char:
+                in_quote = False
+        elif ch in ('"', "'"):
+            in_quote = True
+            quote_char = ch
+            buffer.append(ch)
+        elif ch in ("{", "("):
+            depth += 1
+            buffer.append(ch)
+        elif ch in ("}", ")"):
+            depth -= 1
+            buffer.append(ch)
+        elif ch == "=" and depth == 0 and current_key is None:
+            current_key = "".join(buffer).strip()
+            buffer = []
+        elif (ch == ";" or ch == "\n") and depth == 0:
+            if current_key is not None:
+                result[current_key] = _parse_val("".join(buffer).strip())
+                current_key = None
+                buffer = []
+        else:
+            buffer.append(ch)
+
+    if current_key is not None:
+        result[current_key] = _parse_val("".join(buffer).strip())
+
+    return result
 
 # Canonical platform-to-domain mapping
 PLATFORM_DOMAINS: Dict[str, List[str]] = {

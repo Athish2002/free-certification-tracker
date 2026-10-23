@@ -578,9 +578,18 @@ class HeadlessDOMInspector:
     def is_available(self) -> bool:
         return self._browser is not None
 
-    def capture_screenshot(self, page, offer_id: str) -> Tuple[bool, str]:
+    def capture_screenshot(
+        self,
+        page,
+        offer_id: str,
+        old_status: str = "Active",
+        new_status: str = "Active",
+        **kwargs: Any,
+    ) -> Tuple[bool, str]:
         """
         Captures 1280x800 hero viewport screenshot into docs/screenshots/<offer_id>.png.
+        Performs perceptual hash delta-skipping (< 5% delta and status unchanged) to avoid
+        redundant disk writes.
         Asserts PNG magic bytes and minimum file size >= 4096 bytes.
         """
         if not offer_id:
@@ -600,7 +609,10 @@ class HeadlessDOMInspector:
             except Exception:
                 pass
 
-            page.screenshot(path=str(temp_path), full_page=False)
+            screenshot_bytes = page.screenshot(path=str(temp_path), full_page=False)
+            if (not screenshot_bytes or not isinstance(screenshot_bytes, bytes)) and temp_path.exists():
+                screenshot_bytes = temp_path.read_bytes()
+
             if temp_path.exists() and temp_path.stat().st_size >= 4096:
                 header = temp_path.read_bytes()[:8]
                 if header == b"\x89PNG\r\n\x1a\n":
@@ -609,6 +621,22 @@ class HeadlessDOMInspector:
                     # with a tiny blank/loading spinner capture (< 18KB)
                     if target_path.exists() and target_path.stat().st_size >= 30000 and new_size < 18000:
                         logger.info(f"Preserving existing substantive screenshot for {offer_id} ({target_path.stat().st_size} bytes vs {new_size} bytes)")
+                        try:
+                            temp_path.unlink()
+                        except Exception:
+                            pass
+                        return True, rel_path
+
+                    # Check perceptual hash delta skipping
+                    from src.visual_hasher import should_skip_screenshot_write
+                    should_skip, delta, dist = should_skip_screenshot_write(
+                        screenshot_bytes or temp_path, target_path, old_status, new_status
+                    )
+                    if should_skip:
+                        logger.info(
+                            f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
+                            f"Skipped write for {target_path}."
+                        )
                         try:
                             temp_path.unlink()
                         except Exception:
@@ -762,7 +790,13 @@ class HeadlessDOMInspector:
 
             # Capture visual screenshot proof
             if offer_id:
-                screenshot_ok, screenshot_path = self.capture_screenshot(page, offer_id)
+                old_st = offer.get("status", "Active") if offer else "Active"
+                try:
+                    screenshot_ok, screenshot_path = self.capture_screenshot(
+                        page, offer_id, old_status=old_st, new_status=old_st
+                    )
+                except TypeError:
+                    screenshot_ok, screenshot_path = self.capture_screenshot(page, offer_id)
 
             # Extract interactive elements for semantic CTA inspection
             interactive_ctas = []
@@ -906,6 +940,13 @@ class HeadlessDOMInspector:
             if status != "Active":
                 zero_dollar_confirmed = False
 
+            # If status transitioned away from initial status, refresh screenshot write
+            if offer_id and status != old_st:
+                try:
+                    self.capture_screenshot(page, offer_id, old_status=old_st, new_status=status)
+                except Exception:
+                    pass
+
             # Populate visual_proof metadata on offer
             if offer is not None:
                 target_file = screenshots_dir / f"{offer_id}.png" if offer_id else None
@@ -975,3 +1016,8 @@ def inspect_url_with_playwright(
     """
     with HeadlessDOMInspector(headless=True, timeout_ms=timeout_ms) as inspector:
         return inspector.inspect_url(url, offer=offer)
+
+
+# Class alias for DOMInspector
+DOMInspector = HeadlessDOMInspector
+

@@ -683,3 +683,66 @@ def match_badge_phash(
         return res.matched
     except Exception:
         return False
+
+
+def should_skip_screenshot_write(
+    new_image: Union[str, Path, bytes, BinaryIO, Image.Image],
+    existing_screenshot_path: Union[str, Path],
+    old_status: str,
+    new_status: str,
+    delta_threshold: float = 0.05,
+) -> Tuple[bool, float, int]:
+    """
+    Evaluates whether writing a new screenshot to disk should be skipped via perceptual hash diffing.
+
+    Returns:
+        (should_skip: bool, delta: float, hamming_distance: int)
+
+    Invariants:
+        1. existing_screenshot_path must exist, be a regular file, have size >= 4096 bytes,
+           and have valid PNG magic bytes b"\\x89PNG\\r\\n\\x1a\\n". If not, returns (False, 1.0, 64).
+        2. If old_status != new_status: status has changed, so write cannot be skipped.
+           Returns (False, 1.0, 64).
+        3. Computes 64-bit DCT perceptual hash for new_image and existing_screenshot_path.
+        4. Calculates bitwise Hamming distance and normalized delta = hamming_dist / 64.0.
+        5. If delta < delta_threshold (i.e. hamming_dist <= 3 bits difference when delta_threshold=0.05),
+           returns (True, delta, hamming_dist) to skip redundant disk writes.
+        6. Otherwise returns (False, delta, hamming_dist).
+    """
+    # 1. Validate existing target screenshot file on disk
+    if existing_screenshot_path is None:
+        return False, 1.0, 64
+
+    target = Path(existing_screenshot_path)
+    if not target.exists() or not target.is_file():
+        return False, 1.0, 64
+
+    try:
+        st = target.stat()
+        if st.st_size < 4096:
+            return False, 1.0, 64
+        with open(target, "rb") as f:
+            header = f.read(8)
+        if header != b"\x89PNG\r\n\x1a\n":
+            return False, 1.0, 64
+    except Exception:
+        return False, 1.0, 64
+
+    # 2. Status change invariant: any status transition forces screenshot refresh
+    if str(old_status).strip().lower() != str(new_status).strip().lower():
+        return False, 1.0, 64
+
+    # 3. Compute 64-bit DCT perceptual hashes and Hamming distance
+    try:
+        phash_new = PerceptualHashEngine.compute_phash(new_image)
+        phash_existing = PerceptualHashEngine.compute_phash(target)
+        dist = PerceptualHashEngine.hamming_distance(phash_new, phash_existing)
+        delta = dist / 64.0
+    except Exception as e:
+        logger.warning("Perceptual hash computation failed during delta comparison: %s", e)
+        return False, 1.0, 64
+
+    # 4. Threshold check: skip write only if delta is strictly below threshold
+    should_skip = delta < delta_threshold
+    return should_skip, delta, dist
+
