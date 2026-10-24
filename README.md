@@ -29,7 +29,7 @@
 | **Verified Tech Dispatches** | **83 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-23 23:00 UTC` (04:30 IST • 19:00 EDT • 01:00 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-24 03:59 UTC` (09:29 IST • 23:59 EDT • 05:59 CEST) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -651,4 +651,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-23 23:00 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-24 03:59 UTC`.*
