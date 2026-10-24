@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-ci-workflow
+        name: Validate GitHub Actions Workflow
+        entry: python scripts/validate_ci_workflow.py
+        language: system
+        files: ^\.github/workflows/.*\.ya?ml$
+        pass_filenames: false

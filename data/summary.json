@@ -3,5 +3,13 @@
   "review_needed": 3,
   "expired": 13,
   "total": 39,
-  "last_updated": "2026-10-24T09:08:37.201380+00:00"
+  "last_updated": "2026-10-24T09:08:37.201380+00:00",
+  "last_successful_run": "2026-10-24T10:39:59.144455+00:00",
+  "signals_breakdown": {
+    "dom_inspected": 26,
+    "oracle_corroborated": 39,
+    "authentic_vendors": 39,
+    "zero_dollar_confirmed": 39,
+    "historical_archives": 13
+  }
 }

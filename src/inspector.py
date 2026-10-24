@@ -364,7 +364,7 @@ async def run_inspection_async(
     use_headless: bool = True,
     concurrency: int = 5,
     timeout_per_offer: int = 45,
-    per_vendor_concurrency: int = 2,
+    per_vendor_concurrency: int = 4,
 ) -> InspectionResult:
     """
     Asynchronous concurrency-controlled Playwright inspection engine.
@@ -868,6 +868,7 @@ def run_inspection(
     use_headless: bool = True,
     concurrency: int = 5,
     timeout_per_offer: int = 45,
+    per_vendor_concurrency: int = 4,
 ) -> InspectionResult:
     """
     Synchronous wrapper executing run_inspection_async with concurrency-controlled Playwright.
@@ -886,6 +887,7 @@ def run_inspection(
                     use_headless=use_headless,
                     concurrency=concurrency,
                     timeout_per_offer=timeout_per_offer,
+                    per_vendor_concurrency=per_vendor_concurrency,
                 )
             ).result()
     else:
@@ -894,6 +896,7 @@ def run_inspection(
                 use_headless=use_headless,
                 concurrency=concurrency,
                 timeout_per_offer=timeout_per_offer,
+                per_vendor_concurrency=per_vendor_concurrency,
             )
         )
 

@@ -161,12 +161,27 @@ def build_all(
     total_count = len(offers_list)
     last_updated = data.get("last_updated") if isinstance(data, dict) else datetime.now(timezone.utc).isoformat()
 
+    now_iso = datetime.now(timezone.utc).isoformat()
+    dom_count = sum(1 for o in offers_list if "dom" in str(o.get("inspection_method", "")).lower() or "playwright" in str(o.get("inspection_method", "")).lower())
+    oracle_count = sum(1 for o in offers_list if o.get("truth_verification"))
+    authentic_count = sum(1 for o in offers_list if o.get("is_authentic_vendor"))
+    zero_dollar_count = sum(1 for o in offers_list if (o.get("visual_proof") or {}).get("zero_dollar_confirmed") or o.get("cart_balance_verified"))
+    historical_count = sum(1 for o in offers_list if o.get("is_historical_archive"))
+
     summary_data = {
         "active": active_count,
         "review_needed": review_count,
         "expired": expired_count,
         "total": total_count,
         "last_updated": last_updated,
+        "last_successful_run": now_iso,
+        "signals_breakdown": {
+            "dom_inspected": dom_count,
+            "oracle_corroborated": oracle_count,
+            "authentic_vendors": authentic_count,
+            "zero_dollar_confirmed": zero_dollar_count,
+            "historical_archives": historical_count,
+        },
     }
     _atomic_write_text(target_summary, json.dumps(summary_data, indent=2) + "\n")
     print(f"[OK] Successfully built {target_summary}")
