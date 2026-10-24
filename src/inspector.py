@@ -536,8 +536,8 @@ async def run_inspection_async(
                                 rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
                             except Exception as nav_err:
                                 logger.info("Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...", current_url, nav_err)
-                                with httpx.Client(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
-                                    resp = client.get(current_url)
+                                async with httpx.AsyncClient(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
+                                    resp = await client.get(current_url)
                                     http_status = resp.status_code
                                     final_url = str(resp.url)
                                     if final_url != current_url:
