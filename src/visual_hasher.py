@@ -48,6 +48,8 @@ class BadgeRecord(BaseModel):
     max_tolerance: int = Field(default=10, ge=0, le=64, description="Max Hamming distance threshold for authentic match")
     aliases: List[str] = Field(default_factory=list, description="Associated search aliases / keywords")
     metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional provenance metadata")
+    hash_captured_at: Optional[str] = Field(default=None, description="ISO-8601 UTC timestamp of hash capture")
+    recommended_refresh_after: Optional[str] = Field(default=None, description="ISO-8601 UTC timestamp when hash should be refreshed")
 
 
 class BadgeMatchResult(BaseModel):
@@ -400,6 +402,10 @@ DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
     },
 }
 
+for _badge_entry in DEFAULT_REFERENCE_BADGES.values():
+    _badge_entry.setdefault("hash_captured_at", "2026-01-01T00:00:00Z")
+    _badge_entry.setdefault("recommended_refresh_after", "2026-12-31T23:59:59Z")
+
 
 # ==============================================================================
 # 4. Badge Registry Implementation
@@ -454,6 +460,32 @@ class BadgeRegistry:
         """Returns unique sorted list of recognized providers."""
         return sorted(list({b.provider for b in self._badges.values()}))
 
+    def check_badge_freshness(self, badge: BadgeRecord) -> bool:
+        """
+        Checks if badge hash has exceeded its recommended_refresh_after timestamp.
+        Returns True if fresh (or no expiry set), False if stale. Emits [BADGE HASH STALE] warning if stale.
+        """
+        if not badge.recommended_refresh_after:
+            return True
+        try:
+            from datetime import datetime, timezone
+            dt_str = badge.recommended_refresh_after.replace("Z", "+00:00")
+            expiry = datetime.fromisoformat(dt_str)
+            now = datetime.now(timezone.utc)
+            if now > expiry:
+                logger.warning(
+                    f"[BADGE HASH STALE] Reference badge '{badge.badge_id}' ({badge.badge_title}) "
+                    f"exceeded recommended refresh date ({badge.recommended_refresh_after}). Re-harvest from vendor CDN recommended."
+                )
+                return False
+        except Exception as e:
+            logger.debug(f"Error checking freshness for badge '{badge.badge_id}': {e}")
+        return True
+
+    def get_stale_badges(self) -> List[BadgeRecord]:
+        """Returns all registered badges whose hash has exceeded recommended_refresh_after."""
+        return [b for b in self._badges.values() if not self.check_badge_freshness(b)]
+
     def find_match(
         self,
         target_hash: str,
@@ -496,6 +528,7 @@ class BadgeRegistry:
                 continue
 
             if dist <= tolerance:
+                self.check_badge_freshness(badge)
                 conf = PerceptualHashEngine.similarity(target_hash, ref_hash)
                 notes = (
                     f"Authentic {badge.provider} emblem verified: "

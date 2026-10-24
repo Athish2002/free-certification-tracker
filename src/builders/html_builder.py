@@ -78,6 +78,7 @@ def generate_web_dashboard(
     tz_info = format_4_timezones(last_sync_dt)
     last_updated = tz_info["utc"]
     last_sync_iso_js = last_sync_dt.isoformat() if last_sync_dt else datetime.now(timezone.utc).isoformat()
+    last_updated_date = last_sync_dt.strftime("%Y-%m-%d") if last_sync_dt else datetime.now(timezone.utc).strftime("%Y-%m-%d")
     
     # Safe JSON encoding preventing script breakout / XSS injections
     offers_json_str = json.dumps(offers).replace("<", "\\u003c").replace(">", "\\u003e")
@@ -113,7 +114,8 @@ def generate_web_dashboard(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#eff1f5" id="themeColorMeta">
-    <title>CertPulse | Free Certification Tracker & Tech Radar</title>
+    <meta name="last-modified" content="{last_sync_iso_js}">
+    <title>CertPulse | Free Certification Tracker & Tech Radar (Updated {last_updated_date})</title>
     <script src="https://cdn.tailwindcss.com"></script>
     {zero_foit_script}
     <style>

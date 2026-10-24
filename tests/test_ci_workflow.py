@@ -135,6 +135,20 @@ class TestCITestJobMatrix:
         e2e_steps = [s for s in steps if "run" in s and "tests/e2e/runner.py" in s["run"]]
         assert e2e_steps, "E2E runner execution step ('python tests/e2e/runner.py') missing in test job"
 
+    def test_test_job_caches_playwright_browsers(self, workflow_yaml: Dict[str, Any]):
+        """Assert Playwright browser caching step is configured in test job."""
+        job = workflow_yaml["jobs"]["test"]
+        steps = job.get("steps", [])
+        cache_steps = [s for s in steps if "actions/cache" in s.get("uses", "") and "ms-playwright" in s.get("with", {}).get("path", "")]
+        assert cache_steps, "Playwright browser cache step missing in test job"
+
+    def test_test_job_validates_json_schema(self, workflow_yaml: Dict[str, Any]):
+        """Assert JSON schema validation step is present in test job."""
+        job = workflow_yaml["jobs"]["test"]
+        steps = job.get("steps", [])
+        schema_steps = [s for s in steps if "run" in s and "schema.json" in s["run"]]
+        assert schema_steps, "JSON schema validation step missing in test job"
+
 
 class TestCIUpdateAndDeployJob:
     """Verifies update-and-deploy job gated on test job, running live pipeline and preserving file patterns."""

@@ -40,7 +40,8 @@
       "published_date": "2026-10-23",
       "date": "2026-10-23",
       "url": "https://blogs.cisco.com/cisco-devnet/how-cisco-iq-powers-continuous-compliance-for-pci-dss-4-0-and-quantum-readiness",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "e3b7beaf463f03597e294ef06bf05c81a0dde0b78fa21ea97bb9da09345a2e4e"
     },
     {
       "id": "red-hat-red-hat-recognizes-clp-power-h",
@@ -53,7 +54,8 @@
       "published_date": "2026-10-20",
       "date": "2026-10-20",
       "url": "https://www.redhat.com/en/about/press-releases/red-hat-recognizes-clp-power-hong-kong-and-fubon-bank-hong-kong-unlocking-new-possibilities-open-source-red-hat-apac-innovation-awards-2026-hong-kong",
-      "impact_badge": "Linux & Enterprise"
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "dd19d4da50892727719fd3d9695e081012a2bbe8b133f46172cd2890b61d97f6"
     },
     {
       "id": "red-hat-red-hat-ai-factory-with-nvidia",
@@ -66,7 +68,8 @@
       "published_date": "2026-10-21",
       "date": "2026-10-21",
       "url": "https://www.redhat.com/en/about/press-releases/red-hat-ai-factory-nvidia-accelerates-agentic-ai-security-capabilities-across-open-hybrid-cloud",
-      "impact_badge": "Linux & Enterprise"
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "7c60a62cf55af5feda60a4e34092d57469b243a6196a30421631f1a992c14a94"
     },
     {
       "id": "hashicorp-banking-at-machine-speed-secu",
@@ -79,7 +82,8 @@
       "published_date": "2026-10-09",
       "date": "2026-10-09",
       "url": "https://www.hashicorp.com/blog/banking-at-machine-speed-securing-access-across-cloud-ai-and-hybrid-environments",
-      "impact_badge": "Infrastructure as Code"
+      "impact_badge": "Infrastructure as Code",
+      "content_fingerprint": "bfb3c919c4b5e829c187826ec076e2fcd527719178e159867783b781bd804aa8"
     },
     {
       "id": "cisco-the-road-to-zero-scaling-safe",
@@ -92,7 +96,8 @@
       "published_date": "2026-10-23",
       "date": "2026-10-23",
       "url": "https://blogs.cisco.com/industrial-iot/the-road-to-zero-scaling-safety-through-intelligent-infrastructure",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "f2dc6f54b57133ab1c0e4cac96b89dc2afcfb0b44b29ef30d1206035fb94abed"
     },
     {
       "id": "cisco-scan-code-for-vulnerabilities",
@@ -105,7 +110,8 @@
       "published_date": "2026-10-23",
       "date": "2026-10-23",
       "url": "https://blogs.cisco.com/cisco-devnet/antares-gpu-learning-labs",
-      "impact_badge": "Enterprise Networking"
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "ec23b8e255157d062bb4fe086d1e5d834825d658ed3dbef9f66d6f6a7c1aaa60"
     },
     {
       "id": "cisco-using-ai-to-re-architect-the-c",
@@ -118,7 +124,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/ai-network-design-devnet-sandbox-part-1",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "789332d942e5ec540affca48bf2c9eac1dc219ca3ed0a9d0f461761dec29d66e"
     },
     {
       "id": "github-how-bug-bounty-sharpens-one-re",
@@ -131,7 +138,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/security/how-bug-bounty-sharpens-one-researchers-security-skills/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "35b81b289b141511a6784801ae56ed1d4d89a2d78f34cb59eb319dd0ee8d2836"
     },
     {
       "id": "google-cloud-expanding-claude-availability",
@@ -144,7 +152,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/expanding-claude-availability-on-google-cloud/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "0cf452611ead2bd3b78369f8cc24751282f75ae44b11a10a1bbc9a6ce67995af"
     },
     {
       "id": "cisco-are-you-post-quantum-ready-bu",
@@ -157,7 +166,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "01c09e14f63715be0041b7e4fe34c5d16212d1c06c5aab17d557373f6ed336a5"
     },
     {
       "id": "cisco-unified-defense-from-endpoint",
@@ -170,7 +180,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "db3e5954cafa164e59fdaddbddd23e2c73cc7da1488ef8ecc39ee54ce16d86f4"
     },
     {
       "id": "google-cloud-inside-agent-compute-engine-b",
@@ -183,7 +194,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "79fe4b07aad930fa4205d0fb58ed465835c30fd4953c9356763c7fe289ba4100"
     },
     {
       "id": "google-cloud-introducing-new-self-learning",
@@ -196,7 +208,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "56882fbfba4ba41b4951be55807a215ac7f4a2250d45bee530e371b0e60350f0"
     },
     {
       "id": "cisco-a-blank-slate-in-buffalo-how",
@@ -209,7 +222,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/a-blank-slate-in-buffalo-how-the-bills-built-the-nfls-first-complete-wi-fi-7-stadium",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "a865b6bc1b3180e37b1c696e5ee57c578d0e1927dc53643d733c509031e6fc98"
     },
     {
       "id": "amazon-web-services-automate-medical-coding-with-s",
@@ -222,7 +236,8 @@
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/automate-medical-coding-with-step-functions-and-amazon-bedrock-agentcore/",
       "impact_badge": "Architecture RFC",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "f8d0e0822f62788604d02628c99fa62a220f3c63c82ccab081eaf511664a16e1"
     },
     {
       "id": "cisco-cisco-and-fortanix-help-make-c",
@@ -235,7 +250,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/datacenter/cisco-and-fortanix-help-make-confidential-ai-verifiable-from-data-to-kubernetes",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "e9e668f2cdfca7219782570c617cca1894041a8986ba33b90242e22e4a856485"
     },
     {
       "id": "cisco-three-languages-one-binary-b",
@@ -248,7 +264,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/vmware-nutanix-inventory-go-claude",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "bb59a7b9098817cfc9cb9b6c8d45f2265cce5d8d29002aac854d7b0b68a42ccd"
     },
     {
       "id": "github-the-bridge-to-agent-scale-git",
@@ -261,7 +278,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/engineering/architecture-optimization/the-bridge-to-agent-scale-git-infrastructure/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "b0e39ab3920ea48eace77b397b20df7126f2eab36878429664097705709ba6b4"
     },
     {
       "id": "google-cloud-zenteiq-scales-batch-inference",
@@ -274,7 +292,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/containers-kubernetes/zenteiq-scales-physical-ai-inference-4x-with-gke-and-llm-d/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "f5bc5a53b4448f1fae651ada29667ee6c1b98d635d42d98a6a52b3ed03cdb772"
     },
     {
       "id": "google-cloud-bigquery-objectref-now-ga-bui",
@@ -287,7 +306,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/analyze-unstructured-data-in-bigquery-with-objectref/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "9fba172bf57d722dff72183a7d245db41d139b8eeb21628009c368027180e03d"
     },
     {
       "id": "cisco-hardened-by-design-applying-t",
@@ -300,7 +320,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/hardened-by-design-applying-the-nsas-ot-guidance-with-cisco-security-splunk",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "2bd0ace15ae09af7dde3d04125472d1cf3ee2fee05254c4aaca2ce60478634f9"
     },
     {
       "id": "cisco-connecting-people-to-humanitar",
@@ -313,7 +334,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/our-corporate-purpose/connecting-people-to-humanitarian-assistance-with-responsible-ai",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "298dd25b3e5cd99de45bede17cb60d824a1c0fa71892147885efec426260e258"
     },
     {
       "id": "cisco-building-trust-into-enterprise",
@@ -326,7 +348,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/building-trust-into-enterprise-ai-agents-cisco-ai-defense-and-workday-agent-passport",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "649e9afd0e58b689d3e496ed134b681312c74d091ba6cfb13fbc5dda7766281d"
     },
     {
       "id": "cisco-the-receipt-not-the-demo-fou",
@@ -339,7 +362,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/cadreai-ai-agent-trust-production",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "c833cf3ff126bb102a1f12768e58aad962a22623e33a63267c279cfac5e3cef9"
     },
     {
       "id": "cisco-meet-the-finalists-2026-cisco",
@@ -352,7 +376,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/insidervoices/meet-the-finalists-2026-cisco-costumer-achievement-awards-apjc",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "facb4492e6296ef20966b89ed4fd27bf588ac5aa9952a9d7a86a2dbd75bb58b2"
     },
     {
       "id": "github-how-3-java-champions-are-using",
@@ -365,7 +390,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/github-copilot/how-3-java-champions-are-using-github-copilot-for-increased-productivity/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "46fac04a66abf050ee7be503b8ecedbb6e5de130b509742c0398b72df1c741c5"
     },
     {
       "id": "google-cloud-claude-opus-5-5-and-claude-son",
@@ -378,7 +404,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/claude-opus-55-and-claude-sonnet-55-available-in-antigravity/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "4360f624d16f0de89606c6e60eb633af667814541893ef5e2dee98186c3e6623"
     },
     {
       "id": "google-cloud-managed-rag-search-inside-the",
@@ -391,7 +418,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/hybrid-cloud/managed-rag-search-inside-the-sovereign-perimeter-gemini-on-gdc-enterprise-search/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "e5cb484b9ef4411f2313edc83a068510020e3e2dca5f9714b1465cf8ac57a863"
     },
     {
       "id": "google-cloud-announcing-llm-d-1-0-open-dis",
@@ -404,7 +432,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/llm-d-1-0-an-open-source-stack-for-distributed-inference/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "3d84aacea5e87f806ade8187a28177b4687a67f4218439c66f45bb830f24f1b5"
     },
     {
       "id": "google-cloud-torchtpu-is-now-open-source-r",
@@ -417,7 +446,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/torchtpu-is-now-open-source-run-native-pytorch-on-tpus/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "20dd2f103ab5d46d4e9d59be577845c00eefa43ca17beafd5760e1c15ad16515"
     },
     {
       "id": "cisco-on-my-first-day-at-cisco-i-as",
@@ -430,7 +460,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/wearecisco/on-my-first-day-at-cisco-i-asked-my-manager-where-my-manager-was",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "c62dfa7ff511200b8b8bcccdaac7fbd5b15080d47a0ca9fad6fb30c4edf3f636"
     },
     {
       "id": "cisco-state-of-observability-2026-re",
@@ -443,7 +474,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/news/state-of-observability-2026-reveals-how-leaders-are-restoring-predictability-to-the-agentic-era",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "fc2cf3fa7e97d8c77b58838a3c561c67ff45324971bdca545042821bed99f1c6"
     },
     {
       "id": "cisco-the-data-center-networking-mod",
@@ -456,7 +488,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/partner/the-data-center-networking-modernization-gap",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "57103565070b7f2cb4640eea6b9abc7d79b069c7659f30012cdcb381ac2820bb"
     },
     {
       "id": "cisco-rebuilding-pubhub-how-ai-assi",
@@ -469,7 +502,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-devnet/ai-assisted-development-rebuilding-pubhub-part-1",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "1a311d28e7ce0bd1ace7f4f04ebebd1a16cea0dccb2e56eb0334b571cf076a4e"
     },
     {
       "id": "github-how-to-continue-a-github-copil",
@@ -482,7 +516,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "a021913016e1fa26215bd8dfc107c49787a6a0db1c216cc2ed7646375e7c0300"
     },
     {
       "id": "google-cloud-how-to-use-python-udf-logging",
@@ -495,7 +530,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/python-udf-logging-for-pipeline-observability-in-bigquery/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "537ff7521aadf34dec5cc88b56fb20d74f65c343b2bfccd08df10e4a012a4eaa"
     },
     {
       "id": "google-cloud-building-full-virtual-vehicles",
@@ -508,7 +544,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/manufacturing/building-full-virtual-vehicles-on-google-cloud-from-aaos-to-the-smallest-mcu/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "22e68ec8c77fb258b6e5921a1f002b29294b1dc2a1ed9c06127cfa7f8b20aa14"
     },
     {
       "id": "google-cloud-what-s-new-with-google-cloud",
@@ -521,7 +558,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "b91bec6440f509b01244a2379be3f530cc96699668c6186d75d77de34b7ff90f"
     },
     {
       "id": "cisco-accelerating-decision-superior",
@@ -534,7 +572,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/accelerating-decision-superiority-discover-ciscos-solutions-at-afcea-technet-indo-pacific-2026",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "6c8dbf9f3cec1732b3045f99d7869e577840563c1f71276da1af0d5b747fc3bc"
     },
     {
       "id": "google-cloud-architecting-autonomy-a-desig",
@@ -547,7 +586,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/healthcare-life-sciences/architecting-scalable-agentic-biotech-workloads/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "907b331538b51f89b2b0d56a32321e66e19c4f8f9ae3ff7603a87022e039917f"
     },
     {
       "id": "google-cloud-day-0-support-for-reflection-s",
@@ -560,7 +600,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/day-0-support-with-5x-perf-for-reflection-beam-on-google-cloud/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "d0031be5e417b044ab38d73ba1a787726cf895cdde35176b83485b91496710af"
     },
     {
       "id": "google-cloud-announcing-wiz-runtime-sensor",
@@ -573,7 +614,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/identity-security/wiz-sensor-for-gke-turnkey-threat-detection-for-kubernetes/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "88981d1500507dd4a9e87dab46ef6f4080fba096a80a799d006ce18b2b09c4f2"
     },
     {
       "id": "google-cloud-the-save-method-learn-the-fun",
@@ -586,7 +628,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/consulting/fundamentals-to-engineer-trustworthy-gen-media/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "cf9898506712a3befb21985cd58a7afa345e216adf3780faebd02ab6d0d7a9c0"
     },
     {
       "id": "google-cloud-gke-cpu",
@@ -599,7 +642,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/ja/products/containers-kubernetes/gke-cpu-startup-boost-faster-pod-starts-lower-costs/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "77ff766496ecd2bca46359e588be4d3db7117931b4da0b32112721dc74710026"
     },
     {
       "id": "cisco-the-quantum-security-transitio",
@@ -612,7 +656,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/gov/the-quantum-security-transition-a-policy-agenda-for-post-quantum-readiness-in-asia-pacific",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "7bbd0c03c7f40f6ec5d54217d4bef5119550daf903bbeffabc0ebffc89829a31"
     },
     {
       "id": "github-staying-evergreen-how-we-auto",
@@ -625,7 +670,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/engineering/platform-security/staying-evergreen-how-we-automated-secure-access-and-repo-hygiene-in-a-shared-org/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "c41aec815d7d70153b5573bdc9c31d5882cadcd8aef489cae9f10ee356c9b955"
     },
     {
       "id": "github-the-next-developer-interface-i",
@@ -638,7 +684,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/news-insights/company-news/the-next-developer-interface-is-ambient-intelligence/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "325a5d4ca84d824429e6fe68a4973012aefb07b82fe25772fdbd5a2abc6c4d23"
     },
     {
       "id": "google-cloud-what-the-gemini-agent-means-fo",
@@ -651,7 +698,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/topics/startups/what-the-gemini-agent-means-for-startups/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "b65ae76e132ae8a83667b4071b2dcaa6dd14d4da4f3dc21edf0e7ad859e2c97d"
     },
     {
       "id": "cisco-cisco-takes-the-court-powerin",
@@ -664,7 +712,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/industries/cisco-takes-the-court-powering-a-more-connected-future-across-the-nba",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "4725ca84c9623f6592f430af2c8f060be181b6f7147d4628a1788eba7b8a26e3"
     },
     {
       "id": "google-cloud-bringing-the-borderless-lakeho",
@@ -677,7 +726,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/borderless-lakehouse-integrates-with-gemini/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "271eea6cf41d3f4a73351bc8d75585c0e230f5b863c02aca609146b5197b1db6"
     },
     {
       "id": "google-cloud-temporal-serverless-workers-on",
@@ -690,7 +740,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/serverless/temporal-serverless-workers-on-cloud-run-worker-pools/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "4d7d5ea1060589431f5c3f53a76c26cb6ee717195c42fc46d17c515d1d5c9e97"
     },
     {
       "id": "amazon-web-services-how-dynata-scaled-ai-across-th",
@@ -703,7 +754,8 @@
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/how-dynata-scaled-ai-across-the-development-lifecycle-with-ai-dlc-and-kiro-ide/",
       "impact_badge": "Architecture RFC",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "c91354cd5051905ba5893a83bf46423e18a200dd28f13b2ece67a9f13f345f96"
     },
     {
       "id": "cisco-segment-routing-fundamentals",
@@ -716,7 +768,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "e5b38faa9095b77f70e24f407d9f6e371c264972e625c3de32f7e400a6dfe28e"
     },
     {
       "id": "github-from-2-500-requests-to-24-reb",
@@ -729,7 +782,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/engineering/architecture-optimization/from-2500-requests-to-24-rebuilding-star-history-without-the-stargazers/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "79ec985b19401a6b474f971a98874d9525f396c5ad61f99ec4d3ba2d017e5ae1"
     },
     {
       "id": "github-github-availability-report-se",
@@ -742,7 +796,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/news-insights/company-news/github-availability-report-september-2026/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "d22c84398e627c5cd2a9f73ca9921f81c4983b4ae9acc24d7eb41b25547b62e4"
     },
     {
       "id": "cisco-the-ai-security-paradox-how",
@@ -755,7 +810,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "8683c86249210d5d7a28ab3074cfbb4d21b5a5c6caa86408b18a75a9956683a5"
     },
     {
       "id": "cisco-agents-at-the-edge-extending",
@@ -768,7 +824,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "2db9595e93546f090eeb0171552a192fef49a3a97dc8930e2a1379768d248ead"
     },
     {
       "id": "google-cloud-cloud-ciso-perspectives-new-g",
@@ -781,7 +838,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "67291c4a96c07b5044dbb84f688d7e5d8e148e869e9a3d142b6b6745439cdf21"
     },
     {
       "id": "google-cloud-predictable-ai-spend-in-bigque",
@@ -794,7 +852,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/using-bigquerys-generative-ai-cost-management-features/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "7cffe8ed19a1ff1572040f49c5c80ca6299edc28e9d06a53e926c31c5f21ddc7"
     },
     {
       "id": "amazon-web-services-multi-region-disaster-recovery",
@@ -807,7 +866,8 @@
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/multi-region-disaster-recovery-for-amazon-api-gateway-websocket-apis/",
       "impact_badge": "Architecture RFC",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "da5a7f68e4c60d442c69e09c33884a6321eb69d5adeb80737755378f9ac436b6"
     },
     {
       "id": "amazon-web-services-how-uts-established-a-modern-c",
@@ -820,7 +880,8 @@
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/how-uts-established-a-modern-curriculum-data-services-foundation-on-aws/",
       "impact_badge": "Architecture RFC",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "fde55a3ca60ea8924a26aab0bbce0f820900a879018d4b21e331f43015400ce3"
     },
     {
       "id": "cisco-always-on-assurance-how-cisco",
@@ -833,7 +894,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/security/always-on-assurance",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "d1d20647b02b978657076377bd3684b0185c23477b13c31142419afbd7166eab"
     },
     {
       "id": "cisco-beyond-ai-cost-visibility-des",
@@ -846,7 +908,8 @@
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/cisco-on-cisco/beyond-ai-cost-visibility-designing-tokenomics-for-real-users",
       "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "8709c1fa3c5b01e36d7a2ed53944c1bd0f5c1b20f27e427c3e634f79ca4e221f"
     },
     {
       "id": "github-github-copilot-app-for-beginne",
@@ -859,7 +922,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/github-copilot/github-copilot-app-for-beginners-how-to-teach-copilot-about-your-codebase/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "ff0c291ae2bf477b8d200f26bb1f9a383271800d8721de16e7866def3247067b"
     },
     {
       "id": "github-github-s-model-for-secret-dete",
@@ -872,7 +936,8 @@
       "published_date": "2024-08-01",
       "url": "https://github.blog/ai-and-ml/githubs-model-for-secret-detection-finding-more-secrets-with-less-noise/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "9d2fea5d576ec778ecb1b0778e9551547d8bf5222fef33dbb6eebc4cb6feafd1"
     },
     {
       "id": "google-cloud-gemini-4-argon-available-on-go",
@@ -885,7 +950,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/ai-machine-learning/gemini-4-argon-available-on-google-cloud/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "29c8595be6797ca5e067aba5bd7efc69b4da7f37ca19e4f6222eaf79a79ca0fa"
     },
     {
       "id": "google-cloud-cross-cloud-conversational-ana",
@@ -898,7 +964,8 @@
       "published_date": "2024-08-01",
       "url": "https://cloud.google.com/blog/products/data-analytics/cross-cloud-conversational-analytics-with-borderless-lakehouse/",
       "impact_badge": "Cloud Platform",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "e187d22d6001299ffb315641e0228509e7005da918a379586da0b751fe592ed0"
     },
     {
       "id": "amazon-web-services-stopping-business-email-compro",
@@ -911,7 +978,8 @@
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/stopping-business-email-compromise-with-ai-driven-email-security-how-vipre-protects-modern-enterprises-on-aws/",
       "impact_badge": "Architecture RFC",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "527c168fa2bbeab8abb78b28acb6cfd1d059e57a96539f89bf786ba65567a082"
     },
     {
       "id": "amazon-web-services-scope-workloads-and-share-resi",
@@ -924,7 +992,8 @@
       "published_date": "2024-08-01",
       "url": "https://aws.amazon.com/blogs/architecture/scope-workloads-and-share-resilience-policies-with-aws-resilience-hub/",
       "impact_badge": "Architecture RFC",
-      "date": "2024-08-01"
+      "date": "2024-08-01",
+      "content_fingerprint": "26375fc885b0c3ab328d9af31f0a1dd12dd164f82ccfdbef838a8b82e6aacbe4"
     },
     {
       "id": "aws-graviton4-general-availability",
@@ -937,7 +1006,8 @@
       "published_date": "2024-07-10",
       "url": "https://aws.amazon.com/blogs/aws/new-amazon-ec2-r8g-instances-powered-by-aws-graviton4-processors/",
       "impact_badge": "Silicon Innovation",
-      "date": "2024-07-10"
+      "date": "2024-07-10",
+      "content_fingerprint": "0bb6eb0018ae715f7049e42bfe5e95028de006c57da32ac624600c17543a7935"
     },
     {
       "id": "msft-azure-phi3-small-language-models",
@@ -950,7 +1020,8 @@
       "published_date": "2024-04-23",
       "url": "https://www.microsoft.com/en-us/research/blog/phi-3-technical-report/",
       "impact_badge": "Model Architecture",
-      "date": "2024-04-23"
+      "date": "2024-04-23",
+      "content_fingerprint": "ff2a21c78c9c4017da712eabbd20ede4d68584ed29f75116fbfb209e7741508b"
     },
     {
       "id": "gcp-tpu-v5p-hypercomputer",
@@ -963,7 +1034,8 @@
       "published_date": "2024-05-14",
       "url": "https://cloud.google.com/blog/products/compute/introducing-cloud-tpu-v5p",
       "impact_badge": "AI Systems",
-      "date": "2024-05-14"
+      "date": "2024-05-14",
+      "content_fingerprint": "c49d0b5248c22dfbf56d11e764ac85f7ea148947ea93f12a77119a6d45d9a875"
     },
     {
       "id": "oracle-oci-cloud-growth-q1",
@@ -976,7 +1048,8 @@
       "published_date": "2024-09-09",
       "url": "https://blogs.oracle.com/cloud-infrastructure/post/oracle-database-at-aws",
       "impact_badge": "Cloud Financials",
-      "date": "2024-09-09"
+      "date": "2024-09-09",
+      "content_fingerprint": "424bf4c356204c02b61ed1f797583343d86447d4eb48fa0778b2683bfb7d3557"
     },
     {
       "id": "github-copilot-workspace-code-review",
@@ -989,7 +1062,8 @@
       "published_date": "2024-04-29",
       "url": "https://github.blog/news-insights/product-news/github-copilot-workspace/",
       "impact_badge": "Developer Tooling",
-      "date": "2024-04-29"
+      "date": "2024-04-29",
+      "content_fingerprint": "a4fa986cb4e93cc97d99057fcd99482c1b7cc1bcf4d8e00a8131a04c51bb0976"
     },
     {
       "id": "cisco-silicon-one-quantum-entanglement",
@@ -1002,7 +1076,8 @@
       "published_date": "2024-06-18",
       "url": "https://blogs.cisco.com/tag/cisco-research",
       "impact_badge": "Quantum Research",
-      "date": "2024-06-18"
+      "date": "2024-06-18",
+      "content_fingerprint": "87f61e81c2514f93895fe5e62b2068ece2f7c4d863868bced75a8d275542ee50"
     },
     {
       "id": "cncf-kubernetes-v131-elli",
@@ -1015,7 +1090,8 @@
       "published_date": "2024-08-13",
       "url": "https://www.linuxfoundation.org/news",
       "impact_badge": "Open Source Core",
-      "date": "2024-08-13"
+      "date": "2024-08-13",
+      "content_fingerprint": "c04f830430d93723a7872d573b4568a7d885ed0864843a0aa812bd292c64ac09"
     },
     {
       "id": "databricks-dbrx-foundation-model",
@@ -1028,7 +1104,8 @@
       "published_date": "2024-03-27",
       "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
       "impact_badge": "MoE Architecture",
-      "date": "2024-03-27"
+      "date": "2024-03-27",
+      "content_fingerprint": "ff1b4b6f0a9a0b71dbea151d3732d24b2e2788eb8f31dd9d99c5f36ed2ce6c8d"
     },
     {
       "id": "snowflake-apache-iceberg-ga",
@@ -1041,7 +1118,8 @@
       "published_date": "2024-06-04",
       "url": "https://www.snowflake.com/blog/",
       "impact_badge": "Open Data Lake",
-      "date": "2024-06-04"
+      "date": "2024-06-04",
+      "content_fingerprint": "86a3c4cf36adbcc8f7fe7c064c4315057aa8081c8bb764334ffbe1d3d145c259"
     },
     {
       "id": "msft-cloud-earnings-q4",
@@ -1054,7 +1132,8 @@
       "published_date": "2024-07-30",
       "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-24-Q4/press-release-webcast",
       "impact_badge": "Earnings Report",
-      "date": "2024-07-30"
+      "date": "2024-07-30",
+      "content_fingerprint": "6a27333fc2b81669df44c3cc1a598d6d7c91960066adc5daa1dad10911acdeaa"
     },
     {
       "id": "aws-liquid-cooling-ai-clusters",
@@ -1067,7 +1146,8 @@
       "published_date": "2024-08-20",
       "url": "https://aws.amazon.com/blogs/architecture/",
       "impact_badge": "Data Center Thermal",
-      "date": "2024-08-20"
+      "date": "2024-08-20",
+      "content_fingerprint": "8e289909fd668223a95429ce9d4e7f9cf0210d21cdf302579d7dc94c24fb9a93"
     },
     {
       "id": "cisco-splunk-appdynamics-telemetry",
@@ -1080,7 +1160,8 @@
       "published_date": "2024-06-05",
       "url": "https://blogs.cisco.com/news",
       "impact_badge": "Observability Pipeline",
-      "date": "2024-06-05"
+      "date": "2024-06-05",
+      "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
   "total_items": 83

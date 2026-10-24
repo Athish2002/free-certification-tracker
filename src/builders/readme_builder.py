@@ -185,6 +185,8 @@ def generate_readme(
         tier = _escape_md(o.get("difficulty_tier", "Foundational"))
         val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
         status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
+        if o.get("last_zero_dollar_confirmed_date"):
+            status_text += f"<br><sub>$0 Confirmed: {o.get('last_zero_dollar_confirmed_date')}</sub>"
         proof_link = f"[📸 Proof](docs/screenshots/{o.get('id', '')}.png)"
         tv = o.get("truth_verification") or {}
         truth_source_name = _escape_md(tv.get("truth_source_name", f"{provider} Policy"))
@@ -207,6 +209,8 @@ def generate_readme(
         tier = _escape_md(o.get("difficulty_tier", "Foundational"))
         val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
         status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
+        if o.get("last_zero_dollar_confirmed_date"):
+            status_text += f"<br><sub>$0 Confirmed: {o.get('last_zero_dollar_confirmed_date')}</sub>"
         proof_link = f"[📸 Proof](docs/screenshots/{o.get('id', '')}.png)"
         tv = o.get("truth_verification") or {}
         truth_source_name = _escape_md(tv.get("truth_source_name", f"{provider} Policy"))

@@ -165,3 +165,82 @@ def verify_ledger_integrity(
         "valid_screenshot_hashes": screenshot_matches,
         "integrity_rate": 1.0 if total == 0 else valid_hashes / total
     }
+
+
+def compact_audit_log(
+    ledger_path: Optional[Path] = None,
+    archive_path: Optional[Path] = None,
+    keep_recent: int = 500,
+    archive_gz: bool = True
+) -> Dict[str, Any]:
+    """
+    Compacts the audit ledger:
+    1. Retains the most recent `keep_recent` entries verbatim in data/audit_log.jsonl.
+    2. Appends older entries into data/audit_log_archive.jsonl.gz for long-term compressed storage.
+    3. Atomically rewrites data/audit_log.jsonl.
+    """
+    import gzip
+    import tempfile
+    import os
+
+    target_ledger = Path(ledger_path) if ledger_path else LEDGER_FILE
+    target_archive = Path(archive_path) if archive_path else (target_ledger.parent / "audit_log_archive.jsonl.gz")
+
+    if not target_ledger.exists():
+        return {"total_before": 0, "retained": 0, "archived": 0}
+
+    lines: List[str] = []
+    with open(target_ledger, "r", encoding="utf-8") as f:
+        for line in f:
+            stripped = line.strip()
+            if stripped:
+                lines.append(stripped)
+
+    total_count = len(lines)
+    if total_count <= keep_recent:
+        return {"total_before": total_count, "retained": total_count, "archived": 0}
+
+    split_idx = total_count - keep_recent
+    to_archive = lines[:split_idx]
+    to_retain = lines[split_idx:]
+
+    # Append older entries to archive gzip
+    if archive_gz and to_archive:
+        target_archive.parent.mkdir(parents=True, exist_ok=True)
+        with gzip.open(target_archive, "at", encoding="utf-8") as gz:
+            for item in to_archive:
+                gz.write(item + "\n")
+
+    # Atomically rewrite target_ledger with retained lines
+    temp_file = tempfile.NamedTemporaryFile(
+        mode="w",
+        delete=False,
+        dir=str(target_ledger.parent),
+        prefix=f".{target_ledger.name}.",
+        suffix=".tmp",
+        encoding="utf-8"
+    )
+    temp_path = Path(temp_file.name)
+    try:
+        for item in to_retain:
+            temp_file.write(item + "\n")
+        temp_file.flush()
+        temp_file.close()
+        os.replace(temp_path, target_ledger)
+    finally:
+        if temp_path.exists():
+            try:
+                temp_path.unlink()
+            except Exception:
+                pass
+
+    logger.info(
+        f"Compacted audit ledger: {total_count} -> {len(to_retain)} entries "
+        f"({len(to_archive)} archived to {target_archive.name})."
+    )
+    return {
+        "total_before": total_count,
+        "retained": len(to_retain),
+        "archived": len(to_archive)
+    }
+

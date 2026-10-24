@@ -96,6 +96,10 @@
         },
         "impact_badge": {
           "type": "string"
+        },
+        "content_fingerprint": {
+          "type": "string",
+          "description": "SHA-256 fingerprint of normalized title and domain for deduplication"
         }
       }
     }

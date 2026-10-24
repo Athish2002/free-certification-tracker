@@ -54,68 +54,53 @@ try:
 except ImportError:
     async_playwright = None
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+from src.constants import (
+    BROWSER_HEADERS,
+    CLOSED_PATTERNS,
+    SOFT_404_PATTERNS,
+    AFFIRMATIVE_OFFER_SIGNALS,
+    STALENESS_THRESHOLD_DAYS,
+)
+
 logger = logging.getLogger("certpulse.inspector")
 
 DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "offers.json"
 SCHEMA_FILE = Path(__file__).resolve().parent.parent / "data" / "schema.json"
 
 
-BROWSER_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
-}
-
-# Heuristic phrases indicating an offer/voucher campaign is over even if HTTP 200
-CLOSED_PATTERNS = [
-    "has concluded",
-    "closed new enrollments",
-    "has closed new enrollments",
-    "registration is closed",
-    "registrations are closed",
-    "registration has closed",
-    "all vouchers have been claimed",
-    "all vouchers are claimed",
-    "vouchers are no longer available",
-    "this promotion has ended",
-    "promotion has ended",
-    "this offer has expired",
-    "the event has ended",
-    "capacity reached",
-    "seats are full",
-    "program is closed",
-    "program has closed",
-    "program concluded",
-    "program has concluded",
-    "program has ended",
-    "no longer accepting submissions",
-    "no longer accepting applications",
-    "no longer accepting new enrollments",
-    "enrollments are closed",
-    "enrollment is closed",
-    "no longer available",
-    "campaign concluded",
-    "offer ended",
-    "milestone achieved"
-]
-
-
-SOFT_404_PATTERNS = [
-    "page not found",
-    "we couldn't find that page",
-    "page you're looking for doesn't exist",
-    "the page has been removed",
-    "error 404",
-    "this page is not available"
-]
-
-# Affirmative signals that verify a page actually offers something free/discounted
-AFFIRMATIVE_OFFER_SIGNALS = [
-    "free", "voucher", "scholarship", "challenge", "no cost",
-    "waiver", "discount", "reward", "credits", "badge", "grant",
-    "complimentary", "100%", "level up", "applied skills"
-]
+def check_and_flag_stale_offers(
+    offers: List[Dict[str, Any]],
+    threshold_days: int = STALENESS_THRESHOLD_DAYS
+) -> int:
+    """
+    Auto-downgrades Active offers whose verification_date exceeds threshold_days
+    to 'Review Needed' before the inspection sweep begins.
+    """
+    today = datetime.now(timezone.utc).date()
+    stale_count = 0
+    for offer in offers:
+        if offer.get("is_historical_archive"):
+            continue
+        if offer.get("status") == "Active":
+            v_date_str = offer.get("verification_date")
+            is_stale = False
+            if not v_date_str:
+                is_stale = True
+            else:
+                try:
+                    v_date = datetime.strptime(v_date_str, "%Y-%m-%d").date()
+                    if (today - v_date).days > threshold_days:
+                        is_stale = True
+                except Exception:
+                    is_stale = True
+            if is_stale:
+                offer["status"] = "Review Needed"
+                offer["inspection_notes"] = f"Stale — last verified {v_date_str or 'unknown'} (> {threshold_days} days ago), pending re-inspection"
+                stale_count += 1
+                logger.warning(
+                    f"[STALENESS DOWNGRADE] Offer '{offer.get('title')}' flagged as Review Needed (stale > {threshold_days}d)."
+                )
+    return stale_count
 
 def clean_html(raw_html: str) -> str:
     """Removes scripts, styles, and SVG tags to inspect only user-visible text."""
@@ -279,6 +264,8 @@ def inspect_url_with_retry(
                         http_status=resp.status_code
                     )
                     if gate_status != "Active":
+                        if offer is not None and "visual_proof" in offer and isinstance(offer["visual_proof"], dict):
+                            offer["visual_proof"]["zero_dollar_confirmed"] = False
                         return gate_status, gate_reason, final_url, auth_result
 
                 return "Active", f"HTTP {resp.status_code} OK (Live Verified & Authenticated)", final_url, auth_result
@@ -377,15 +364,17 @@ async def run_inspection_async(
     use_headless: bool = True,
     concurrency: int = 5,
     timeout_per_offer: int = 45,
+    per_vendor_concurrency: int = 2,
 ) -> InspectionResult:
     """
     Asynchronous concurrency-controlled Playwright inspection engine.
     Limits in-flight portal audits with asyncio.Semaphore(concurrency),
+    enforces per-vendor rate limiting via per_vendor_concurrency,
     enforces task isolation across individual offer inspections,
     applies perceptual hash delta-skipping, and atomically persists
     data/offers.json with pre-flight schema validation.
     """
-    logger.info("=== Starting Concurrent Playwright DOM Authenticity Engine (concurrency=%d) ===", concurrency)
+    logger.info("=== Starting Concurrent Playwright DOM Authenticity Engine (concurrency=%d, per_vendor=%d) ===", concurrency, per_vendor_concurrency)
     start_time = time.time()
 
     with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -405,7 +394,18 @@ async def run_inspection_async(
     closed_detected = 0
     screenshots_skipped_phash = 0
 
+    # Pre-sweep staleness auto-downgrade check (Item 3)
+    check_and_flag_stale_offers(offers, threshold_days=STALENESS_THRESHOLD_DAYS)
+
     sem = asyncio.Semaphore(concurrency)
+    platform_semaphores: Dict[str, asyncio.Semaphore] = {}
+
+    def get_platform_sem(platform_name: str) -> asyncio.Semaphore:
+        plat_key = (platform_name or "unknown").strip().lower()
+        if plat_key not in platform_semaphores:
+            platform_semaphores[plat_key] = asyncio.Semaphore(per_vendor_concurrency)
+        return platform_semaphores[plat_key]
+
     browser = None
     playwright_mgr = None
 
@@ -461,8 +461,9 @@ async def run_inspection_async(
                     closed_detected += 1
                 return
 
-            # 2. Concurrency-bounded live audit
-            async with sem:
+            # 2. Concurrency-bounded live audit with per-vendor rate limiting
+            plat_sem = get_platform_sem(offer.get("platform", ""))
+            async with sem, plat_sem:
                 new_status = old_status
                 reason = "Audited"
                 canonical_url = current_url
@@ -795,6 +796,10 @@ async def run_inspection_async(
                     offer["status"] = new_status
                     offer["verification_date"] = today
                     offer["inspection_notes"] = reason
+                    vp = offer.get("visual_proof") if isinstance(offer.get("visual_proof"), dict) else {}
+                    zero_dollar_confirmed = bool(vp.get("zero_dollar_confirmed", False))
+                    if new_status == "Active" and zero_dollar_confirmed:
+                        offer["last_zero_dollar_confirmed_date"] = today
                     if old_status != new_status:
                         logger.warning("Status transition for '%s': %s -> %s", title, old_status, new_status)
                         status_changes += 1
@@ -917,6 +922,7 @@ def inspect_offer(offer: Any, capture_screenshot: bool = True) -> Dict[str, Any]
         "auth_score": auth_result.get("authenticity_score", 0),
         "visual_proof": vp,
         "verification_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "zero_dollar_confirmed": vp.get("zero_dollar_confirmed", False) if isinstance(vp, dict) else False,
         "maintenance_detected": vp.get("maintenance_detected", False) if isinstance(vp, dict) else False,
         "paid_catalog_detected": vp.get("paid_catalog_detected", False) if isinstance(vp, dict) else False,
         "offer": offer_dict

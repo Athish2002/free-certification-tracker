@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Union
 from urllib.parse import urlparse
 from datetime import datetime, timezone
+import hashlib
 import httpx
 
 logger = logging.getLogger("certpulse.news")
@@ -122,6 +123,13 @@ BANNED_CLICKBAIT_PATTERNS = [
     r"\bdestroy\b", r"\bmind blowing\b", r"\bexposed\b", r"\bviral\b"
 ]
 
+def compute_news_fingerprint(title: str, domain: str = "") -> str:
+    """Computes a deterministic content fingerprint (SHA-256) of normalized title and domain."""
+    norm_title = " ".join(title.lower().strip().split())
+    norm_domain = domain.lower().strip()
+    raw = f"{norm_title}::{norm_domain}".encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
+
 def is_clean_headline(title: str) -> bool:
     """Verifies that a headline is objective and devoid of clickbait buzzwords."""
     lower = title.lower()
@@ -226,19 +234,22 @@ def fetch_feed_entries(feed_info: Dict[str, Any], max_items: int = 3) -> List[Di
                     continue
                 
                 slug_id = re.sub(r"[^a-z0-9]+", "-", f"{feed_info['company']}-{title[:30]}".lower()).strip("-")
+                src_domain = feed_info.get("source_domain", feed_info["allowed_domain"])
+                fingerprint = compute_news_fingerprint(title, src_domain)
                 
                 entries.append({
                     "id": slug_id,
                     "company": feed_info["company"],
                     "source": feed_info["source"],
-                    "source_domain": feed_info.get("source_domain", feed_info["allowed_domain"]),
+                    "source_domain": src_domain,
                     "category": feed_info["category"],
                     "title": title,
                     "summary": clean_desc or f"Official technical update published by {feed_info['source']}.",
                     "published_date": iso_date,
                     "date": iso_date,
                     "url": link,
-                    "impact_badge": feed_info["impact_badge"]
+                    "impact_badge": feed_info["impact_badge"],
+                    "content_fingerprint": fingerprint
                 })
     except Exception as e:
         logger.warning(f"Failed to fetch feed {feed_info['source']}: {e}")
@@ -280,17 +291,23 @@ def update_news_feed(news_file: Optional[Union[str, Path]] = None) -> List[Dict[
         }
         
     existing_news = data.get("news", [])
-    existing_urls = {item["url"] for item in existing_news}
-    existing_ids = {item["id"] for item in existing_news}
+    existing_urls = {item["url"] for item in existing_news if "url" in item}
+    existing_ids = {item["id"] for item in existing_news if "id" in item}
+    existing_fingerprints = {
+        item.get("content_fingerprint") or compute_news_fingerprint(item.get("title", ""), item.get("source_domain", ""))
+        for item in existing_news
+    }
     
     new_added = 0
     for feed in VERIFIED_FEEDS:
         items = fetch_feed_entries(feed, max_items=2)
         for it in items:
-            if it["url"] not in existing_urls and it["id"] not in existing_ids:
+            fp = it.get("content_fingerprint") or compute_news_fingerprint(it.get("title", ""), it.get("source_domain", ""))
+            if it["url"] not in existing_urls and it["id"] not in existing_ids and fp not in existing_fingerprints:
                 existing_news.insert(0, it)
                 existing_urls.add(it["url"])
                 existing_ids.add(it["id"])
+                existing_fingerprints.add(fp)
                 new_added += 1
                 logger.info(f"[NEW INTELLIGENCE] [{it['company']}] {it['title'][:50]}...")
                 

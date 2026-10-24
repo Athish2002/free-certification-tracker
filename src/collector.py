@@ -11,6 +11,7 @@ from __future__ import annotations
 import re
 import time
 import httpx
+import hashlib
 import logging
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -19,19 +20,21 @@ from datetime import datetime, timezone
 
 from src.authenticity import (
     check_domain_authenticity,
+    audit_offer_authenticity,
     SCAM_DOMAIN_KEYWORDS,
     BANNED_URL_SHORTENERS
 )
+from src.constants import (
+    BROWSER_HEADERS,
+    VOUCHER_KEYWORDS,
+    NOISE_KEYWORDS,
+    UNPROCTORED_BADGE_KEYWORDS,
+    PROCTORED_EXAM_KEYWORDS
+)
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("certpulse.collector")
 
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
-
-BROWSER_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-    "Accept": "application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8"
-}
 
 REDDIT_TARGETS = [
     {
@@ -51,32 +54,105 @@ REDDIT_TARGETS = [
     }
 ]
 
-VOUCHER_KEYWORDS = [
-    "voucher", "challenge", "free exam", "100%", "cloud skills",
-    "level up", "levelup", "promo code", "discount code"
+VENDOR_BLOG_TARGETS: List[Dict[str, str]] = [
+    {
+        "name": "AWS Training and Certification Blog",
+        "feed_url": "https://aws.amazon.com/blogs/training-and-certification/feed/",
+        "platform": "Amazon Web Services",
+        "allowed_domain": "aws.amazon.com",
+    },
+    {
+        "name": "Microsoft Learn Blog",
+        "feed_url": "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/board?board.id=MicrosoftLearnBlog",
+        "platform": "Microsoft Azure",
+        "allowed_domain": "learn.microsoft.com",
+    },
+    {
+        "name": "Google Cloud Blog Training",
+        "feed_url": "https://cloud.google.com/blog/topics/training-certifications/rss/",
+        "platform": "Google Cloud",
+        "allowed_domain": "cloud.google.com",
+    },
+    {
+        "name": "Oracle Cloud Infrastructure Blog",
+        "feed_url": "https://blogs.oracle.com/cloud-infrastructure/rss",
+        "platform": "Oracle Cloud",
+        "allowed_domain": "blogs.oracle.com",
+    },
 ]
 
-NOISE_KEYWORDS = [
-    "passed az", "passed aws", "failed", "exam tomorrow", "cancelled my exam",
-    "lost my voucher", "retry az", "exam dump", "braindump", "dumps"
-]
+class VendorBlogCollector:
+    """
+    Polls official vendor blogs and RSS/Atom feeds for authoritative
+    certification and voucher announcements without Reddit rate limits.
+    """
+    def __init__(self, targets: Optional[List[Dict[str, str]]] = None):
+        self.targets = targets or VENDOR_BLOG_TARGETS
+
+    def fetch_vendor_blog_leads(self) -> List[Dict[str, Any]]:
+        leads: List[Dict[str, Any]] = []
+        with httpx.Client(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
+            for target in self.targets:
+                url = target["feed_url"]
+                platform = target["platform"]
+                try:
+                    logger.info("Scanning vendor blog feed: %s (%s)...", target["name"], platform)
+                    resp = client.get(url)
+                    if resp.status_code != 200:
+                        logger.warning("Vendor blog feed %s returned HTTP %s", url, resp.status_code)
+                        continue
+                    root = ET.fromstring(resp.text)
+                    items = root.findall(".//item")
+                    if not items:
+                        items = root.findall(".//{http://www.w3.org/2005/Atom}entry")
+                    for item in items[:5]:
+                        title_el = item.find("title")
+                        if title_el is None:
+                            title_el = item.find("{http://www.w3.org/2005/Atom}title")
+                        link_el = item.find("link")
+                        if link_el is None:
+                            link_el = item.find("{http://www.w3.org/2005/Atom}link")
+                        desc_el = item.find("description")
+                        if desc_el is None:
+                            desc_el = item.find("{http://www.w3.org/2005/Atom}summary")
+                        if desc_el is None:
+                            desc_el = item.find("{http://www.w3.org/2005/Atom}content")
+                        title = title_el.text.strip() if title_el is not None and title_el.text else ""
+                        if link_el is not None:
+                            link = link_el.text.strip() if link_el.text else link_el.attrib.get("href", "").strip()
+                        else:
+                            link = ""
+                        desc = desc_el.text.strip() if desc_el is not None and desc_el.text else ""
+                        full_text = f"{title} {desc}".lower()
+                        if not any(k in full_text for k in VOUCHER_KEYWORDS):
+                            continue
+                        cand_url = link
+                        if not cand_url or not cand_url.startswith("https://"):
+                            continue
+                        is_auth, _, _, _ = check_domain_authenticity(cand_url, platform)
+                        if is_auth:
+                            lead_hash = hashlib.sha256(title.strip().encode("utf-8")).hexdigest()[:8]
+                            leads.append({
+                                "id": f"blog-{platform.lower().replace(' ', '-')}-{lead_hash}",
+                                "title": title,
+                                "url": cand_url,
+                                "platform": platform,
+                                "source": target["name"],
+                                "is_authentic_vendor": True,
+                                "match_confidence": "High",
+                                "authenticity_tier": "Vendor Official Blog",
+                                "discovered_at": datetime.now(timezone.utc).isoformat()
+                            })
+                except Exception as e:
+                    logger.warning("Error fetching vendor blog %s: %s", target["name"], e)
+        return leads
+
+
+def fetch_vendor_blog_leads() -> List[Dict[str, Any]]:
+    return VendorBlogCollector().fetch_vendor_blog_leads()
+
 
 URL_REGEX = re.compile(r'https?://[^\s<>"\'\)]+')
-
-UNPROCTORED_BADGE_KEYWORDS = [
-    "skill badge", "applied skills", "arcade", "hands-on essentials",
-    "fundamentals student", "digital credential", "educate graduate",
-    "skills assessment", "lantern", "lakehouse fundamentals",
-    "learning path", "workshop", "unproctored", "interactive lab",
-    "sandbox", "course quiz", "accreditation"
-]
-
-PROCTORED_EXAM_KEYWORDS = [
-    "pearson", "vue", "kryterion", "webassessor", "psi",
-    "proctored", "written exam", "exam voucher", "100% voucher",
-    "certification exam", "cka", "ckad", "cks", "lfcs", "associate",
-    "professional", "specialty", "foundations associate"
-]
 
 
 def fetch_reddit_leads() -> List[Dict[str, Any]]:
@@ -346,6 +422,7 @@ def vet_candidate_lead(
     
     # 6. Draft Offer Stub
     today_iso = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    auth_eval = audit_offer_authenticity({"url": vendor_url, "platform": platform, "title": title})
     stub = {
         "id": lead_id,
         "title": title,
@@ -383,7 +460,8 @@ def vet_candidate_lead(
         },
         "claim_steps": f"Register at official {platform} portal and complete challenge requirements.",
         "is_authentic_vendor": True,
-        "authenticity_score": 90,
+        "authenticity_score": auth_eval.get("authenticity_score", 90),
+        "authenticity_details": auth_eval,
         "visual_proof": {
             "screenshot_path": f"docs/screenshots/{lead_id}.png",
             "screenshot_url": f"docs/screenshots/{lead_id}.png",
@@ -446,6 +524,7 @@ def vet_candidate_lead(
     promoted_offer_dict["url"] = inspection_res.get("canonical_url") or vendor_url
     promoted_offer_dict["verified_vendor_url"] = inspection_res.get("canonical_url") or vendor_url
     promoted_offer_dict["verification_date"] = inspection_res.get("verification_date", today_iso)
+    promoted_offer_dict["last_zero_dollar_confirmed_date"] = today_iso
     promoted_offer_dict["inspection_notes"] = reason
     promoted_offer_dict["inspection_method"] = "Autonomous Candidate Ingestion Gate"
     promoted_offer_dict["authenticity_score"] = inspection_res.get("auth_score", 95)

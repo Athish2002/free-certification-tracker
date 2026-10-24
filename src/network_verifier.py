@@ -737,6 +737,14 @@ class ASNRouteVerifier:
             is_infra, tier, resolved_org, flags = self.classify_asn(asn, platform)
             asn_org = asn_org or resolved_org
 
+            # Anti-Fraud Secondary Validation: A domain hosted on AWS/GCP/Azure/Cloudflare
+            # CDN or cloud VPS does NOT gain vendor authenticity unless the domain APEX
+            # is genuinely in the authorized PLATFORM_DOMAINS or ACCREDITED_PARTNER_DOMAINS.
+            if is_infra and not is_whitelisted_domain(host, platform):
+                is_infra = False
+                tier = "Unverified Cloud-Hosted Third Party"
+                flags.append("CLOUD_CDN_COINCIDENCE_NON_CANONICAL_DOMAIN")
+
         res = ASNVerificationResult(
             ip_address=primary_ip,
             asn=asn,

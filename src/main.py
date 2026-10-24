@@ -45,26 +45,41 @@ def apply_self_healing(
     updated = dict(offer)
     old_status = updated.get("status")
     new_status = inspection_res.get("status")
-    
+
+    insp_vp = inspection_res.get("visual_proof") if isinstance(inspection_res.get("visual_proof"), dict) else {}
+    zero_dollar = inspection_res.get(
+        "zero_dollar_confirmed",
+        insp_vp.get("zero_dollar_confirmed", True if new_status == "Active" else False)
+    )
+    maintenance = inspection_res.get(
+        "maintenance_detected",
+        insp_vp.get("maintenance_detected", False)
+    )
+    paid_catalog = inspection_res.get(
+        "paid_catalog_detected",
+        insp_vp.get("paid_catalog_detected", False)
+    )
+
     triage_statuses = ["Review Needed", "Registrations Closed", "Broken Link", "Expired"]
-    if old_status in triage_statuses and new_status == "Active":
+    if old_status in triage_statuses and new_status == "Active" and zero_dollar and not maintenance and not paid_catalog:
         now_iso = datetime.now(timezone.utc).isoformat()
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         offer_id = updated.get("id", "healed-offer")
         shot_path = proof_path or updated.get("screenshot_path", f"docs/screenshots/{offer_id}.png")
-        
+
         updated["status"] = "Active"
         updated["verification_date"] = today
+        updated["last_zero_dollar_confirmed_date"] = today
         updated["screenshot_path"] = shot_path
-        
-        # Ensure visual proof metadata is refreshed
+
+        # Ensure visual proof metadata is refreshed directly from inspection result
         vp = updated.get("visual_proof")
         if isinstance(vp, dict):
             vp["status"] = "verified"
             vp["captured_at"] = now_iso
-            vp["zero_dollar_confirmed"] = True
-            vp["maintenance_detected"] = False
-            vp["paid_catalog_detected"] = False
+            vp["zero_dollar_confirmed"] = zero_dollar
+            vp["maintenance_detected"] = maintenance
+            vp["paid_catalog_detected"] = paid_catalog
             vp["screenshot_path"] = shot_path
             updated["visual_proof"] = vp
         else:
@@ -73,11 +88,11 @@ def apply_self_healing(
                 "screenshot_url": shot_path,
                 "captured_at": now_iso,
                 "status": "verified",
-                "zero_dollar_confirmed": True,
-                "maintenance_detected": False,
-                "paid_catalog_detected": False
+                "zero_dollar_confirmed": zero_dollar,
+                "maintenance_detected": maintenance,
+                "paid_catalog_detected": paid_catalog
             }
-            
+
         updated["self_healing_event"] = {
             "previous_status": old_status,
             "healed_status": "Active",
@@ -89,12 +104,37 @@ def apply_self_healing(
             f"'{old_status}' to 'Active'. Fresh visual proof attached at {shot_path}."
         )
     elif new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed"]:
-        updated["status"] = new_status
+        if new_status == "Active" and (not zero_dollar or maintenance or paid_catalog):
+            updated["status"] = "Review Needed"
+            updated["inspection_notes"] = "Inspection did not confirm affirmative zero-dollar terms"
+        else:
+            updated["status"] = new_status
+            if new_status == "Active" and zero_dollar:
+                updated["last_zero_dollar_confirmed_date"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            if "reason" in inspection_res:
+                updated["inspection_notes"] = inspection_res["reason"]
         updated["verification_date"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        if "reason" in inspection_res:
-            updated["inspection_notes"] = inspection_res["reason"]
 
     return updated
+
+
+def normalize_url(url: str) -> str:
+    """Normalizes URL for duplicate detection and idempotent matching."""
+    if not url:
+        return ""
+    try:
+        from urllib.parse import urlparse
+        p = urlparse(url.strip())
+        netloc = p.netloc.lower()
+        if netloc.startswith("www."):
+            netloc = netloc[4:]
+        path = p.path.rstrip("/")
+        norm = f"{p.scheme.lower()}://{netloc}{path}"
+        if p.query:
+            norm += f"?{p.query}"
+        return norm
+    except Exception:
+        return url.strip().rstrip("/")
 
 
 def ingest_and_vet_candidates(
@@ -140,11 +180,12 @@ def ingest_and_vet_candidates(
         with open(o_file, "r", encoding="utf-8") as f:
             offers_data = json.load(f)
             
-    existing_urls = {
-        o.get("verified_vendor_url", o.get("url", "")).rstrip("/")
-        for o in offers_data.get("offers", [])
-        if o.get("url") or o.get("verified_vendor_url")
-    }
+    existing_urls = set()
+    for o in offers_data.get("offers", []):
+        for u in [o.get("url"), o.get("verified_vendor_url"), o.get("direct_verified_url")]:
+            if u:
+                existing_urls.add(u.rstrip("/"))
+                existing_urls.add(normalize_url(u))
     
     logger.info(f"Running autonomous candidate vetting loop on {len(leads)} community leads...")
     promoted_offers, audit_log = vet_candidates(leads, existing_urls)
@@ -152,12 +193,22 @@ def ingest_and_vet_candidates(
     promoted_count = len(promoted_offers)
     rejected_count = len(audit_log) - promoted_count
     
-    # Ingest promoted offers into offers database
+    # Ingest promoted offers into offers database with idempotency check
     if promoted_count > 0:
         logger.info(f"Promoting {promoted_count} verified zero-dollar certification offers to {o_file.name}...")
+        existing_offer_ids = {o.get("id") for o in offers_data.get("offers", [])}
+        seen_promoted = set()
+        actually_promoted = 0
         for new_offer in promoted_offers:
+            cand_u = new_offer.get("verified_vendor_url") or new_offer.get("url", "")
+            norm_u = normalize_url(cand_u)
+            if new_offer.get("id") in existing_offer_ids or norm_u in seen_promoted:
+                logger.info(f"[DUPLICATE] Candidate lead already tracked: '{cand_u}'")
+                continue
             offers_data["offers"].append(new_offer)
-            existing_urls.add(new_offer.get("verified_vendor_url", new_offer.get("url")).rstrip("/"))
+            existing_offer_ids.add(new_offer.get("id"))
+            seen_promoted.add(norm_u)
+            actually_promoted += 1
             
         temp_offers = o_file.with_suffix(".tmp")
         with open(temp_offers, "w", encoding="utf-8") as f:
@@ -231,10 +282,17 @@ def run_pipeline(
     if dry_run:
         logger.info("[DRY RUN MODE ACTIVE] Actions will be simulated without disk mutation.")
 
-    # 1. Fetch community leads from Reddit Atom feeds
+    # 1. Fetch community leads from Reddit Atom feeds and official vendor blogs
     if not skip_leads and not dry_run:
-        logger.info("Scanning public community feeds for new certification vouchers...")
+        logger.info("Scanning public community feeds and vendor blogs for new certification vouchers...")
+        from src.collector import fetch_reddit_leads, fetch_vendor_blog_leads
         leads = fetch_reddit_leads()
+        try:
+            blog_leads = fetch_vendor_blog_leads()
+            leads.extend(blog_leads)
+        except Exception as blog_err:
+            logger.warning(f"Vendor blog leads fetching failed: {blog_err}")
+
         if leads:
             logger.info(f"Saving {len(leads)} community leads to {CANDIDATES_FILE.name}...")
             CANDIDATES_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -257,15 +315,24 @@ def run_pipeline(
     elif dry_run:
         logger.info("[DRY RUN] Skipping Playwright DOM inspection.")
 
-    # 3.5 Authoritative Online Truth Oracle Corroboration Gate
+    # 3.5 Authoritative Online Truth Oracle Corroboration Gate (with 30s circuit breaker)
     if not dry_run:
         logger.info("Executing Truth Oracle policy corroboration and anti-misleading audit...")
+        import concurrent.futures
         from src.truth_oracle import audit_and_enrich_offers
         if DATA_FILE.exists():
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 o_data = json.load(f)
-            enriched, summary = audit_and_enrich_offers(o_data.get("offers", []), strict_enforcement=True)
-            o_data["offers"] = enriched
+            try:
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(audit_and_enrich_offers, o_data.get("offers", []), strict_enforcement=True)
+                    enriched, summary = future.result(timeout=30.0)
+                o_data["offers"] = enriched
+                logger.info(f"Truth Oracle corroboration complete: {summary['corrections_applied']} corrections applied.")
+            except (concurrent.futures.TimeoutError, TimeoutError):
+                logger.error("Truth Oracle corroboration timed out after 30 seconds. Marking oracle_timeout on offers.")
+                for off in o_data.get("offers", []):
+                    off["oracle_timeout"] = True
             now_iso = datetime.now(timezone.utc).isoformat()
             o_data["last_truth_corroborated"] = now_iso
             o_data["last_sync"] = now_iso
@@ -274,7 +341,14 @@ def run_pipeline(
             with open(temp_o, "w", encoding="utf-8") as f:
                 json.dump(o_data, f, indent=2)
             temp_o.replace(DATA_FILE)
-            logger.info(f"Truth Oracle corroboration complete: {summary['corrections_applied']} corrections applied.")
+
+    # 3.6 Compact and rotate audit ledger
+    if not dry_run:
+        try:
+            from src.audit_ledger import compact_audit_log
+            compact_audit_log()
+        except Exception as cl_err:
+            logger.warning(f"Audit log compaction failed: {cl_err}")
 
     # 4. Ingest verified engineering and cloud intelligence feeds
     if not dry_run:
@@ -287,7 +361,7 @@ def run_pipeline(
     # 5. Re-compile README.md and Web Dashboard with updated statuses and news
     if not dry_run:
         logger.info("Compiling README.md and GitHub Pages dashboard with inspection results...")
-        build_all()
+        build_all(skip_if_unchanged=True)
     else:
         logger.info("[DRY RUN] Skipping README and dashboard compile.")
 

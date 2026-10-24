@@ -19,6 +19,9 @@ from src.builders import (
     format_4_timezones,
     load_offers,
     load_news,
+    compute_build_fingerprint,
+    SUMMARY_FILE,
+    FINGERPRINT_FILE,
     DATA_FILE,
     NEWS_FILE,
     README_FILE,
@@ -81,6 +84,9 @@ def generate_web_dashboard(data: Any, news_data: Optional[Any] = None, *args, **
 
 __all__ = [
     "build_all",
+    "compute_build_fingerprint",
+    "SUMMARY_FILE",
+    "FINGERPRINT_FILE",
     "generate_readme",
     "generate_web_dashboard",
     "format_4_timezones",

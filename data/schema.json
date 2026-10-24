@@ -277,6 +277,13 @@
             "null"
           ]
         },
+        "last_zero_dollar_confirmed_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "ISO 8601 date when zero-dollar terms were last affirmatively validated"
+        },
         "inspection_notes": {
           "type": "string"
         },

@@ -772,6 +772,10 @@ JS_TEMPLATE = """
                     }
                 }
 
+                const zeroConfirmedBadge = o.last_zero_dollar_confirmed_date 
+                    ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Last confirmed 100% free with zero dollar terms">✓ $0: ' + o.last_zero_dollar_confirmed_date + '</span>' 
+                    : '';
+
                 return `
                 <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3 relative transition-all" id="card-${o.id}">
                     <div>
@@ -792,6 +796,7 @@ JS_TEMPLATE = """
                         <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight mt-1" style="color: var(--fg-default);">${o.title}</h3>
                         <div class="flex items-center gap-2 mt-2 flex-wrap">
                             ${tierBadge}
+                            ${zeroConfirmedBadge}
                             <span class="text-[11px] font-bold tabular-nums" style="color: var(--success-fg);">${valText}</span>
                             ${truthBadge}
                             <button onclick="openProofModal('${o.id}')" class="text-[10px] px-1.5 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">

@@ -10,6 +10,9 @@ Deconstructs monolithic builder into focused modules:
 import os
 import time
 import tempfile
+import json
+import hashlib
+from datetime import datetime, timezone
 from typing import Dict, Any, Optional
 from pathlib import Path
 
@@ -37,6 +40,24 @@ from src.builders.readme_builder import (
     STATUS_BADGES,
 )
 from src.builders.html_builder import generate_web_dashboard
+
+FINGERPRINT_FILE = DATA_FILE.parent / ".build_fingerprint"
+SUMMARY_FILE = DATA_FILE.parent / "summary.json"
+
+
+def compute_build_fingerprint(
+    offers_path: Optional[Path] = None,
+    news_path: Optional[Path] = None,
+) -> str:
+    """Computes SHA-256 fingerprint over data/offers.json and data/news.json bytes."""
+    o_file = Path(offers_path) if offers_path else DATA_FILE
+    n_file = Path(news_path) if news_path else NEWS_FILE
+    hasher = hashlib.sha256()
+    if o_file.exists():
+        hasher.update(o_file.read_bytes())
+    if n_file.exists():
+        hasher.update(n_file.read_bytes())
+    return hasher.hexdigest()
 
 
 def _atomic_write_text(path: Path, content: str) -> None:
@@ -90,15 +111,34 @@ def _atomic_write_text(path: Path, content: str) -> None:
 def build_all(
     readme_path: Optional[Path] = None,
     html_path: Optional[Path] = None,
+    summary_path: Optional[Path] = None,
+    force: bool = False,
+    skip_if_unchanged: bool = False,
 ) -> bool:
     """
     Compiles data/offers.json and data/news.json into:
     1. README.md: GitHub repository documentation
     2. docs/index.html: Single-page executive web application
+    3. data/summary.json: Machine-readable status summary
     Removes legacy auxiliary HTML artifacts to maintain a single canonical Pages entry point.
+    Skips rebuild if skip_if_unchanged=True and build fingerprint matches.
     """
     target_readme = Path(readme_path) if readme_path else README_FILE
     target_html = Path(html_path) if html_path else DOCS_HTML
+    target_summary = Path(summary_path) if summary_path else SUMMARY_FILE
+
+    is_default_run = readme_path is None and html_path is None and summary_path is None
+    current_fp = compute_build_fingerprint()
+
+    if skip_if_unchanged and is_default_run and not force and target_readme.exists() and target_html.exists() and target_summary.exists():
+        if FINGERPRINT_FILE.exists():
+            try:
+                stored_fp = FINGERPRINT_FILE.read_text(encoding="utf-8").strip()
+                if stored_fp == current_fp:
+                    print(f"[OK] Data unchanged; build up to date (fingerprint {current_fp[:8]}). Skipping rebuild.")
+                    return True
+            except Exception:
+                pass
 
     data = load_offers()
     news = load_news()
@@ -113,7 +153,25 @@ def build_all(
     _atomic_write_text(target_html, html_content)
     print(f"[OK] Successfully built {target_html}")
 
-    # 3. Clean up legacy archetype_studio.html if present
+    # 3. Write data/summary.json atomically
+    offers_list = data.get("offers", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+    active_count = sum(1 for o in offers_list if str(o.get("status", "")).strip().lower() == "active")
+    review_count = sum(1 for o in offers_list if str(o.get("status", "")).strip().lower() == "review needed")
+    expired_count = sum(1 for o in offers_list if str(o.get("status", "")).strip().lower() == "expired")
+    total_count = len(offers_list)
+    last_updated = data.get("last_updated") if isinstance(data, dict) else datetime.now(timezone.utc).isoformat()
+
+    summary_data = {
+        "active": active_count,
+        "review_needed": review_count,
+        "expired": expired_count,
+        "total": total_count,
+        "last_updated": last_updated,
+    }
+    _atomic_write_text(target_summary, json.dumps(summary_data, indent=2) + "\n")
+    print(f"[OK] Successfully built {target_summary}")
+
+    # 4. Clean up legacy archetype_studio.html if present
     if not html_path:
         studio_file = DOCS_DIR / "archetype_studio.html"
         if studio_file.exists():
@@ -123,11 +181,20 @@ def build_all(
             except Exception as e:
                 print(f"[WARN] Could not unlink {studio_file}: {e}")
 
+    # 5. Save build fingerprint
+    try:
+        FINGERPRINT_FILE.write_text(current_fp, encoding="utf-8")
+    except Exception as e:
+        print(f"[WARN] Could not write build fingerprint: {e}")
+
     return True
 
 
 __all__ = [
     "build_all",
+    "compute_build_fingerprint",
+    "SUMMARY_FILE",
+    "FINGERPRINT_FILE",
     "generate_readme",
     "generate_web_dashboard",
     "format_4_timezones",

@@ -313,6 +313,10 @@ class Offer(BaseModel):
 
     # Lifecycle & Archival
     verification_date: Optional[str] = None
+    last_zero_dollar_confirmed_date: Optional[str] = Field(
+        default=None,
+        description="ISO 8601 date when $0.00 terms were last affirmatively validated",
+    )
     inspection_notes: str = Field(default="")
     inspection_method: Optional[str] = "Playwright Headless DOM & Visual Proof"
     offer_type: Optional[str] = "100% Free Exam Voucher"
@@ -432,9 +436,20 @@ class CandidateLead(BaseModel):
     verified_vendor_url: str = Field(default="")
     authenticity_tier: str = Field(default="Community Lead")
 
-    def to_offer_stub(self, offer_id: str, credential_tier: CredentialTier = "proctored_exam") -> Dict[str, Any]:
+    def to_offer_stub(
+        self,
+        offer_id: str,
+        credential_tier: CredentialTier = "proctored_exam",
+        authenticity_result: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """Converts candidate lead into a draft offer payload ready for inspection."""
         now_iso = datetime.now(timezone.utc).date().isoformat()
+        if authenticity_result and "authenticity_score" in authenticity_result:
+            auth_score = int(authenticity_result["authenticity_score"])
+        elif authenticity_result and "score" in authenticity_result:
+            auth_score = int(authenticity_result["score"])
+        else:
+            auth_score = 85 if self.is_authentic_vendor else 60
         return {
             "id": offer_id,
             "title": self.title,
@@ -449,7 +464,8 @@ class CandidateLead(BaseModel):
             "verification_date": now_iso,
             "claim_steps": "Awaiting automated verification.",
             "is_authentic_vendor": self.is_authentic_vendor,
-            "authenticity_score": 85 if self.is_authentic_vendor else 60,
+            "authenticity_score": auth_score,
+            "authenticity_details": authenticity_result if authenticity_result else None,
             "visual_proof": {
                 "screenshot_path": f"docs/screenshots/{offer_id}.png",
                 "status": "placeholder",

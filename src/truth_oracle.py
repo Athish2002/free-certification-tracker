@@ -24,7 +24,6 @@ from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional, Union
 from urllib.parse import urlparse
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("certpulse.truth_oracle")
 
 # Canonical Truth Policy Types
@@ -53,6 +52,8 @@ CURATED_POLICY_OVERRIDES: Dict[str, Dict[str, Any]] = {
         "verdict_notes": "ISC2 1MCC enrollment reached 1M capacity and closed new enrollments May 20, 2026. Pre-enrolled candidates have until December 31, 2026 to take their free Pearson VUE proctored exam.",
         "enforce_status": "Registrations Closed",
         "zero_dollar_confirmed": False,
+        "valid_through_utc": "2026-12-31T23:59:59Z",
+        "review_due_utc": "2026-11-01T00:00:00Z",
     },
     "oracle-oci-free-cert": {
         "provider": "Oracle Cloud",
@@ -535,6 +536,17 @@ CURATED_POLICY_OVERRIDES: Dict[str, Dict[str, Any]] = {
     },
 }
 
+for _policy_key, _policy_entry in CURATED_POLICY_OVERRIDES.items():
+    if _policy_entry.get("is_historical_archive") or _policy_entry.get("policy_type") == POLICY_HISTORICAL_EVENT_WAVE:
+        _policy_entry.setdefault("valid_through_utc", "2026-06-30T23:59:59Z")
+        _policy_entry.setdefault("review_due_utc", "2026-06-01T00:00:00Z")
+    elif _policy_entry.get("policy_type") == POLICY_ANNUAL_WINDOW_CLOSED:
+        _policy_entry.setdefault("valid_through_utc", "2027-04-01T00:00:00Z")
+        _policy_entry.setdefault("review_due_utc", "2027-03-15T00:00:00Z")
+    else:
+        _policy_entry.setdefault("valid_through_utc", "2026-12-31T23:59:59Z")
+        _policy_entry.setdefault("review_due_utc", "2026-11-01T00:00:00Z")
+
 
 def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -695,7 +707,7 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     # Propagate special override keys if present
-    for k in ["cart_balance_clarification", "eligibility_clarification", "canonical_direct_url", "is_historical_archive"]:
+    for k in ["cart_balance_clarification", "eligibility_clarification", "canonical_direct_url", "is_historical_archive", "valid_through_utc", "review_due_utc"]:
         if k in override:
             policy[k] = override[k]
         elif k in offer:
@@ -775,7 +787,7 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
     or dead links.
     """
     oid = offer.get("id", "")
-    policy_entry = TRUTH_POLICY_REGISTRY.get(oid)
+    policy_entry = TRUTH_POLICY_REGISTRY.get(oid) or CURATED_POLICY_OVERRIDES.get(oid) or derive_truth_policy(offer)
     now_iso = datetime.now(timezone.utc).isoformat()
 
     if not policy_entry:
@@ -791,6 +803,9 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
             "verdict_notes": "Pending deep truth corroboration against vendor policy registry.",
             "last_corroborated": now_iso,
             "is_misleading": False,
+            "valid_through_utc": None,
+            "review_due_utc": None,
+            "confidence_downgraded": False,
         }
 
     policy_type = policy_entry["policy_type"]
@@ -799,6 +814,21 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
     source_name = policy_entry["truth_source_name"]
     source_url = policy_entry["truth_source_url"]
     notes = policy_entry["verdict_notes"]
+
+    valid_through_str = policy_entry.get("valid_through_utc")
+    review_due_str = policy_entry.get("review_due_utc")
+    is_stale_policy = False
+    if valid_through_str:
+        try:
+            vt_dt = datetime.fromisoformat(valid_through_str.replace("Z", "+00:00"))
+            if datetime.now(timezone.utc) > vt_dt:
+                is_stale_policy = True
+                logger.warning(
+                    f"[TRUTH ORACLE STALE OVERRIDE] Policy override for '{oid}' has expired "
+                    f"(valid_through: {valid_through_str}). Downgrading confidence."
+                )
+        except Exception as e:
+            logger.warning(f"Error parsing valid_through_utc for {oid}: {e}")
 
     # Detect misleading states
     is_misleading = False
@@ -836,6 +866,9 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
         "last_corroborated": now_iso,
         "is_misleading": is_misleading,
         "misleading_reasons": misleading_reasons,
+        "valid_through_utc": valid_through_str,
+        "review_due_utc": review_due_str,
+        "confidence_downgraded": is_stale_policy,
     }
 
 

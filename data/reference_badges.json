@@ -16,7 +16,9 @@
     ],
     "metadata": {
       "source_screenshot": "microsoft-azure-free-microsoft-exam-voucher-wave.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "microsoft_azure_retake": {
     "badge_id": "microsoft_azure_retake",
@@ -34,7 +36,9 @@
     ],
     "metadata": {
       "source_screenshot": "microsoft-azure-azure-50-off-free-retake.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "aws_certified_official": {
     "badge_id": "aws_certified_official",
@@ -53,7 +57,9 @@
     ],
     "metadata": {
       "source_screenshot": "aws-50-discount-voucher.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "aws_educate_badge": {
     "badge_id": "aws_educate_badge",
@@ -70,7 +76,9 @@
     ],
     "metadata": {
       "source_screenshot": "aws-educate-badges.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "google_cloud_certified": {
     "badge_id": "google_cloud_certified",
@@ -89,7 +97,9 @@
     ],
     "metadata": {
       "source_screenshot": "hist-gcp-ace-challenge.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "gcp_cloud_skills_boost": {
     "badge_id": "gcp_cloud_skills_boost",
@@ -106,7 +116,9 @@
     ],
     "metadata": {
       "source_screenshot": "gcp-cloud-skills-boost.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "oracle_mylearn_certified": {
     "badge_id": "oracle_mylearn_certified",
@@ -124,7 +136,9 @@
     ],
     "metadata": {
       "source_screenshot": "oracle-oci-free-cert.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "oracle_oci_genai": {
     "badge_id": "oracle_oci_genai",
@@ -142,7 +156,9 @@
     ],
     "metadata": {
       "source_screenshot": "oracle-oci-generative-ai-cert.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "cisco_netacad_cyberops": {
     "badge_id": "cisco_netacad_cyberops",
@@ -160,7 +176,9 @@
     ],
     "metadata": {
       "source_screenshot": "cisco-netacad-cyberops.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "cisco_rev_up_recert": {
     "badge_id": "cisco_rev_up_recert",
@@ -178,7 +196,9 @@
     ],
     "metadata": {
       "source_screenshot": "cisco-rev-up-recert.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "kubernetes_cka_ckad": {
     "badge_id": "kubernetes_cka_ckad",
@@ -197,7 +217,9 @@
     ],
     "metadata": {
       "source_screenshot": "cncf-dan-kohn-scholarship.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   },
   "linux_foundation_lift": {
     "badge_id": "linux_foundation_lift",
@@ -214,6 +236,8 @@
     ],
     "metadata": {
       "source_screenshot": "linux-foundation-lift.png"
-    }
+    },
+    "hash_captured_at": "2026-01-01T00:00:00Z",
+    "recommended_refresh_after": "2026-12-31T23:59:59Z"
   }
 }
