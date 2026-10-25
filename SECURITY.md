@@ -15,16 +15,24 @@ CertPulse is an open-source, automated telemetry and verification system monitor
 
 ## Reporting a Vulnerability
 
-The CertPulse team takes security, user privacy, and data integrity seriously. If you identify a security vulnerability, prompt injection attack vector, SSRF bypass, or unexpected data disclosure, please disclose it responsibly.
+The CertPulse maintainers take security, user privacy, and data integrity seriously. If you identify a security vulnerability, SSRF bypass, prompt injection vector, or unexpected data disclosure, please disclose it responsibly.
 
 ### How to Report
 
-- **Email**: Send a detailed vulnerability report to `security@certpulse.dev` (or open a confidential security advisory on GitHub via the **Security** tab).
-- **Details to Include**:
-  - Description of the vulnerability and its potential impact.
-  - Step-by-step reproduction instructions or a minimal proof of concept (PoC).
-  - Target URL, component, or file affected (e.g. collector, network verifier, VLM semantic gate).
-  - Any proposed remediations.
+To protect our users and maintainers, **do not disclose vulnerabilities in public GitHub issues, discussions, or pull requests**.
+
+Please report all security vulnerabilities confidentially through **GitHub Private Vulnerability Reporting**:
+1. Navigate to the repository's [Security Advisories tab](https://github.com/Athish2002/free-certification-tracker/security/advisories).
+2. Click **"Report a vulnerability"** to open a confidential advisory draft.
+3. Provide details including:
+   - Description of the vulnerability and its potential impact.
+   - Minimal proof of concept (PoC) or reproduction steps.
+   - Affected component or file (e.g. collector, network verifier, builders).
+   - Any proposed remediations.
+
+Reports submitted through GitHub Private Vulnerability Reporting alert repository maintainers directly, keep the disclosure confidential until a patch is released, and allow collaborative security drafting in a temporary private fork.
+
+---
 
 ### Scope and Invariants
 
@@ -36,6 +44,8 @@ The CertPulse team takes security, user privacy, and data integrity seriously. I
 
 3. **Autonomous Bot Etiquette**:
    CertPulse enforces vendor-level rate limiting, concurrency semaphores, standard bot identification headers (`User-Agent: CertPulse-Autonomous-Verifier/2.0`), and complies with vendor robots protocols and maintenance states.
+
+---
 
 ### Response Timelines
 
