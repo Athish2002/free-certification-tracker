@@ -732,9 +732,31 @@ class HeadlessDOMInspector:
 
             page.route("**/*", handle_route)
 
-            # Navigate to direct actionable URL if present
-            nav_target = offer.get("direct_verified_url") or offer.get("verified_vendor_url") or url
+            # Adaptive Verification: Resolve dual-phase targets (prioritizing deep claim URL for syllabus proof)
+            from src.adaptive_verifier import (
+                resolve_dual_phase_targets,
+                classify_platform_cluster,
+                get_pre_navigation_storage,
+                audit_redirect_degradation,
+                calculate_proof_quality_score,
+            )
+            dual_targets = resolve_dual_phase_targets(offer)
+            cluster_prof = classify_platform_cluster(offer.get("platform", ""), url)
+            nav_target = dual_targets.primary_nav_target
             redirect_chain = [nav_target]
+
+            # Pre-inject cookie consent storage tokens to bypass OneTrust / TrustArc / Cookiebot in < 50ms
+            if not is_local_file:
+                storage_preset = get_pre_navigation_storage(nav_target)
+                if storage_preset.get("local_storage"):
+                    try:
+                        storage_items = [
+                            f"window.localStorage.setItem({repr(k)}, {repr(v)});"
+                            for k, v in storage_preset["local_storage"].items()
+                        ]
+                        page.add_init_script("\n".join(storage_items))
+                    except Exception:
+                        pass
             rendered_title = ""
             rendered_text = ""
             final_url = nav_target
@@ -747,8 +769,14 @@ class HeadlessDOMInspector:
                     final_url = page.url
                     if final_url != url:
                         redirect_chain.append(final_url)
+
+                    # Audit redirect degradation to catch silent 302 bounces to generic homepages
+                    is_degraded, deg_reason, url_score = audit_redirect_degradation(nav_target, final_url)
+                    if is_degraded:
+                        logger.warning(f"Redirect degradation detected for {offer_id}: {deg_reason}")
+
                     try:
-                        page.wait_for_load_state("networkidle", timeout=2500)
+                        page.wait_for_load_state(cluster_prof.wait_condition, timeout=2500)
                     except Exception:
                         pass
                     rendered_title = page.title() or ""
@@ -958,6 +986,19 @@ class HeadlessDOMInspector:
                     proof_status = "missing"
                 else:
                     proof_status = "placeholder"
+
+                pqs_res = calculate_proof_quality_score(
+                    url_score=url_score if 'url_score' in locals() else 100.0,
+                    dom_score=100.0 if status == "Active" else 50.0,
+                    visual_score=100.0 if screenshot_ok else 50.0,
+                    corroboration_score=100.0 if auth_result.get("corroboration_passed") else 50.0
+                )
+                offer["adaptive_verification"] = {
+                    "cluster": cluster_prof.code if 'cluster_prof' in locals() else "ENTERPRISE_LMS",
+                    "pqs_score": pqs_res.score,
+                    "pqs_tier": pqs_res.tier,
+                    "dual_phase_divergence": dual_targets.is_divergent if 'dual_targets' in locals() else False,
+                }
 
                 offer["visual_proof"] = {
                     "screenshot_path": screenshot_path,
