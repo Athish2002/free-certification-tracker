@@ -411,21 +411,39 @@ body {
     background-color: var(--canvas-subtle);
     border: 1px solid var(--border-default);
     box-shadow: var(--card-shadow), var(--specular-rim);
-    transition: transform 180ms var(--ease-out), 
-                box-shadow 180ms var(--ease-out), 
-                border-color 150ms ease;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 180ms ease;
+    will-change: transform;
 }
 @media (hover: hover) and (pointer: fine) {
     .primer-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--card-shadow-hover), var(--specular-rim);
+        transform: translateY(-4px) scale(1.004);
+        box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--accent-fg), var(--specular-rim);
         border-color: var(--accent-fg);
+    }
+    .primer-card:active {
+        transform: translateY(-1px) scale(0.996);
     }
 }
 
-button:active, a.tactile-btn:active {
-    transform: scale(0.98);
-    transition: transform 80ms var(--ease-out);
+button, a.cursor-pointer, .btn, .tier-pill, .cat-pill {
+    transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 140ms ease,
+                background-color 140ms ease,
+                border-color 140ms ease,
+                box-shadow 140ms ease;
+    will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+    .tier-pill:hover, .cat-pill:hover {
+        transform: translateY(-1.5px);
+        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+    }
+}
+button:active, a.cursor-pointer:active, a.tactile-btn:active, .tier-pill:active, .cat-pill:active {
+    transform: scale(0.96);
+    filter: brightness(0.92);
 }
 
 input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {

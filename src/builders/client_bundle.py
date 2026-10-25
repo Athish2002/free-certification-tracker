@@ -438,12 +438,13 @@ JS_TEMPLATE = """
 
         function applyTheme(id) {
             let targetId = id;
-            if (id === 'dark') targetId = 'github-dark';
-            if (id === 'light') targetId = 'catppuccin-latte';
+            if (id === 'dark' || id === 'catppuccin-mocha' || id === 'github-dark') targetId = 'catppuccin-mocha';
+            if (id === 'light' || id === 'catppuccin-latte' || id === 'github-light') targetId = 'catppuccin-latte';
 
             const theme = THEMES.find(t => t.id === targetId) || THEMES[0];
             document.documentElement.setAttribute('data-theme', theme.id);
             localStorage.setItem('certpulse_theme_v2', theme.id);
+            localStorage.setItem('certpulse_theme', theme.id);
             localStorage.setItem('theme', theme.id);
             
             const meta = document.getElementById('themeColorMeta');
@@ -470,9 +471,9 @@ JS_TEMPLATE = """
             const current = document.documentElement.getAttribute('data-theme') || 'catppuccin-latte';
             const currentTheme = THEMES.find(t => t.id === current);
             const isCurrentLight = currentTheme ? (currentTheme.type === 'light') : (current.includes('light') || current.includes('latte'));
-            const nextTheme = isCurrentLight ? 'github-dark' : 'catppuccin-latte';
+            const nextTheme = isCurrentLight ? 'catppuccin-mocha' : 'catppuccin-latte';
             applyTheme(nextTheme);
-            toast('Theme: ' + getThemeName(nextTheme));
+            toast('Theme: ' + (nextTheme === 'catppuccin-mocha' ? 'Obsidian Dark' : 'Ceramic Light'));
         }
 
         function toggleThemeDropdown() {
@@ -489,34 +490,33 @@ JS_TEMPLATE = """
             }
         }
 
-        // Global Synchronized 4-Timezone World Telemetry (UTC, IST, EDT/EST, CEST/CET)
+        // Global Synchronized Master UTC Telemetry with Live Seconds & Dynamic Local Offset
         function updateWorldClock() {
-            let syncDate;
-            try {
-                syncDate = new Date(LAST_SYNC_ISO);
-                if (!Number.isFinite(syncDate.getTime())) {
-                    syncDate = new Date();
-                }
-            } catch (e) {
-                syncDate = new Date();
-            }
-            const utcTime = syncDate.toLocaleString('en-US', { timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' UTC';
-            const istTime = syncDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' IST';
-            const etTime = syncDate.toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' EDT';
-            const cetTime = syncDate.toLocaleString('en-US', { timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' CEST';
+            const now = new Date();
+            const utcHours = String(now.getUTCHours()).padStart(2, '0');
+            const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
+            const utcSeconds = String(now.getUTCSeconds()).padStart(2, '0');
+            const utcTime = `${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
+
+            const offsetMin = -now.getTimezoneOffset();
+            const offsetSign = offsetMin >= 0 ? '+' : '-';
+            const absOffsetMin = Math.abs(offsetMin);
+            const offH = String(Math.floor(absOffsetMin / 60)).padStart(2, '0');
+            const offM = String(absOffsetMin % 60).padStart(2, '0');
+            const localStr = `Local (UTC${offsetSign}${offH}:${offM})`;
+
+            const navUtc = document.getElementById('navUtcClock');
+            if (navUtc) navUtc.textContent = utcTime;
+            const navLocal = document.getElementById('navLocalOffset');
+            if (navLocal) navLocal.textContent = `• ${localStr}`;
 
             const navTimeText = document.getElementById('navTimezoneText');
-            if (navTimeText) navTimeText.textContent = `Last Synced: ${utcTime} • ${istTime} • ${etTime} • ${cetTime}`;
+            if (navTimeText) navTimeText.textContent = `Live Telemetry: ${utcTime} • ${localStr}`;
 
             const heroUtc = document.getElementById('heroCadenceUtc');
-            if (heroUtc) heroUtc.textContent = utcTime;
-            const heroIst = document.getElementById('heroCadenceIst');
-            if (heroIst) heroIst.textContent = istTime;
-            const heroEt = document.getElementById('heroCadenceEt');
-            if (heroEt) heroEt.textContent = etTime;
-            const heroCet = document.getElementById('heroCadenceCet');
-            if (heroCet) heroCet.textContent = cetTime;
+            if (heroUtc) heroUtc.textContent = `${utcHours}:${utcMinutes} UTC`;
         }
+        setInterval(updateWorldClock, 1000);
 
         // Backwards compatibility stubs
         function toggleOfferChecked() {}

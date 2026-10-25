@@ -405,21 +405,39 @@ body {
     background-color: var(--canvas-subtle);
     border: 1px solid var(--border-default);
     box-shadow: var(--card-shadow), var(--specular-rim);
-    transition: transform 180ms var(--ease-out), 
-                box-shadow 180ms var(--ease-out), 
-                border-color 150ms ease;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 180ms ease;
+    will-change: transform;
 }
 @media (hover: hover) and (pointer: fine) {
     .primer-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--card-shadow-hover), var(--specular-rim);
+        transform: translateY(-4px) scale(1.004);
+        box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--accent-fg), var(--specular-rim);
         border-color: var(--accent-fg);
+    }
+    .primer-card:active {
+        transform: translateY(-1px) scale(0.996);
     }
 }
 
-button:active, a.tactile-btn:active {
-    transform: scale(0.98);
-    transition: transform 80ms var(--ease-out);
+button, a.cursor-pointer, .btn, .tier-pill, .cat-pill {
+    transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 140ms ease,
+                background-color 140ms ease,
+                border-color 140ms ease,
+                box-shadow 140ms ease;
+    will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+    .tier-pill:hover, .cat-pill:hover {
+        transform: translateY(-1.5px);
+        box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+    }
+}
+button:active, a.cursor-pointer:active, a.tactile-btn:active, .tier-pill:active, .cat-pill:active {
+    transform: scale(0.96);
+    filter: brightness(0.92);
 }
 
 input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {
@@ -498,106 +516,21 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
                 </div>
             </div>
 
-            <!-- Right: Controls, 4-Timezone Telemetry, Theme Selector & Repo CTA -->
+            <!-- Right: Controls, Master UTC Telemetry, Single Theme Toggle & Repo CTA -->
             <div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 relative">
-                <!-- Synchronized 4-Timezone World Telemetry Pill (Desktop/Tablet) -->
-                <div id="navTimezonePill" class="hidden md:flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Synchronized Global 4-Timezone World Telemetry (UTC • IST • EDT • CEST)">
-                    <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
-                    <span id="navTimezoneText" class="tabular-nums font-mono">Last Synced: 03:58 UTC • 09:28 IST • 23:58 EDT • 04:58 CET</span>
+                <!-- Synchronized Master UTC Telemetry Pill with Dynamic Local Offset -->
+                <div id="navTimezonePill" class="hidden md:flex items-center gap-2 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Synchronized Master UTC Telemetry with Dynamic Local Offset">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background-color: var(--success-fg);"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2" style="background-color: var(--success-fg);"></span>
+                    </span>
+                    <span id="navUtcClock" class="tabular-nums font-bold" style="color: var(--fg-default);">2026-10-25 03:58 UTC</span>
+                    <span id="navLocalOffset" class="text-[11px] font-medium opacity-80" style="color: var(--fg-subtle);">• Local</span>
+                    <span id="navTimezoneText" class="sr-only">Last Synced: 03:58 UTC • 09:28 IST • 23:58 EDT • 04:58 CET</span>
                 </div>
 
-                <!-- Theme Dropdown Toggle Button (10 Developer Themes) -->
-                <div class="relative">
-                    <button onclick="toggleThemeDropdown()" id="themeDropdownToggleBtn" title="Select Theme Palette" aria-label="Select Color Theme" class="h-10 px-2.5 sm:h-9 sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Zm7.25-5v10a5 5 0 0 0 0-10Z"/>
-                        </svg>
-                        <span class="hidden sm:inline">Theme</span>
-                    </button>
-                    
-    <div id="themeDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-56 rounded-xl border p-1.5 shadow-2xl z-50 transition-all duration-150" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-        <div class="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider border-b mb-1 flex items-center justify-between" style="border-color: var(--border-muted); color: var(--fg-muted);">
-            <span>Color Themes (10)</span>
-            <span class="text-[9px] font-mono">1-10</span>
-        </div>
-        <div class="space-y-0.5 max-h-72 overflow-y-auto touch-scroll scrollbar-none">
-            
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('catppuccin-latte')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #1e66f5; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Catppuccin Latte</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">light</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('catppuccin-mocha')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #cba6f7; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Catppuccin Mocha</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('github-dark')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #58a6ff; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">GitHub Dark</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('github-light')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #0969da; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">GitHub Light</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">light</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('dracula')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #bd93f9; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Dracula</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('nord')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #88c0d0; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Nord</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('tokyo-night')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #7aa2f7; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Tokyo Night</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('one-dark')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #61afef; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">One Dark</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('gruvbox-dark')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #fe8019; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Gruvbox Dark</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">dark</span>
-        </div>
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('solarized-light')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: #2aa198; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">Solarized Light</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">light</span>
-        </div>
-        </div>
-    </div>
-                </div>
-
-                <!-- Dark / Light Quick Toggle Button -->
-                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark / Light Mode (T)" aria-label="Toggle Dark / Light Contrast Mode" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                <!-- Dark / Light Single Theme Toggle Button (Catppuccin Mocha / Catppuccin Latte) -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Obsidian Dark / Ceramic Light Mode (T)" aria-label="Toggle Dark / Light Contrast Mode" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                     <span id="themeIconSun" class="hidden flex items-center gap-1.5">
                         <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.061Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z"></path></svg>
                         <span class="hidden sm:inline">Light</span>
@@ -1748,12 +1681,13 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
 
         function applyTheme(id) {
             let targetId = id;
-            if (id === 'dark') targetId = 'github-dark';
-            if (id === 'light') targetId = 'catppuccin-latte';
+            if (id === 'dark' || id === 'catppuccin-mocha' || id === 'github-dark') targetId = 'catppuccin-mocha';
+            if (id === 'light' || id === 'catppuccin-latte' || id === 'github-light') targetId = 'catppuccin-latte';
 
             const theme = THEMES.find(t => t.id === targetId) || THEMES[0];
             document.documentElement.setAttribute('data-theme', theme.id);
             localStorage.setItem('certpulse_theme_v2', theme.id);
+            localStorage.setItem('certpulse_theme', theme.id);
             localStorage.setItem('theme', theme.id);
             
             const meta = document.getElementById('themeColorMeta');
@@ -1780,9 +1714,9 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
             const current = document.documentElement.getAttribute('data-theme') || 'catppuccin-latte';
             const currentTheme = THEMES.find(t => t.id === current);
             const isCurrentLight = currentTheme ? (currentTheme.type === 'light') : (current.includes('light') || current.includes('latte'));
-            const nextTheme = isCurrentLight ? 'github-dark' : 'catppuccin-latte';
+            const nextTheme = isCurrentLight ? 'catppuccin-mocha' : 'catppuccin-latte';
             applyTheme(nextTheme);
-            toast('Theme: ' + getThemeName(nextTheme));
+            toast('Theme: ' + (nextTheme === 'catppuccin-mocha' ? 'Obsidian Dark' : 'Ceramic Light'));
         }
 
         function toggleThemeDropdown() {
@@ -1799,34 +1733,33 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
             }
         }
 
-        // Global Synchronized 4-Timezone World Telemetry (UTC, IST, EDT/EST, CEST/CET)
+        // Global Synchronized Master UTC Telemetry with Live Seconds & Dynamic Local Offset
         function updateWorldClock() {
-            let syncDate;
-            try {
-                syncDate = new Date(LAST_SYNC_ISO);
-                if (!Number.isFinite(syncDate.getTime())) {
-                    syncDate = new Date();
-                }
-            } catch (e) {
-                syncDate = new Date();
-            }
-            const utcTime = syncDate.toLocaleString('en-US', { timeZone: 'UTC', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' UTC';
-            const istTime = syncDate.toLocaleString('en-US', { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' IST';
-            const etTime = syncDate.toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' EDT';
-            const cetTime = syncDate.toLocaleString('en-US', { timeZone: 'Europe/Berlin', hour12: false, hour: '2-digit', minute: '2-digit' }) + ' CEST';
+            const now = new Date();
+            const utcHours = String(now.getUTCHours()).padStart(2, '0');
+            const utcMinutes = String(now.getUTCMinutes()).padStart(2, '0');
+            const utcSeconds = String(now.getUTCSeconds()).padStart(2, '0');
+            const utcTime = `${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
+
+            const offsetMin = -now.getTimezoneOffset();
+            const offsetSign = offsetMin >= 0 ? '+' : '-';
+            const absOffsetMin = Math.abs(offsetMin);
+            const offH = String(Math.floor(absOffsetMin / 60)).padStart(2, '0');
+            const offM = String(absOffsetMin % 60).padStart(2, '0');
+            const localStr = `Local (UTC${offsetSign}${offH}:${offM})`;
+
+            const navUtc = document.getElementById('navUtcClock');
+            if (navUtc) navUtc.textContent = utcTime;
+            const navLocal = document.getElementById('navLocalOffset');
+            if (navLocal) navLocal.textContent = `• ${localStr}`;
 
             const navTimeText = document.getElementById('navTimezoneText');
-            if (navTimeText) navTimeText.textContent = `Last Synced: ${utcTime} • ${istTime} • ${etTime} • ${cetTime}`;
+            if (navTimeText) navTimeText.textContent = `Live Telemetry: ${utcTime} • ${localStr}`;
 
             const heroUtc = document.getElementById('heroCadenceUtc');
-            if (heroUtc) heroUtc.textContent = utcTime;
-            const heroIst = document.getElementById('heroCadenceIst');
-            if (heroIst) heroIst.textContent = istTime;
-            const heroEt = document.getElementById('heroCadenceEt');
-            if (heroEt) heroEt.textContent = etTime;
-            const heroCet = document.getElementById('heroCadenceCet');
-            if (heroCet) heroCet.textContent = cetTime;
+            if (heroUtc) heroUtc.textContent = `${utcHours}:${utcMinutes} UTC`;
         }
+        setInterval(updateWorldClock, 1000);
 
         // Backwards compatibility stubs
         function toggleOfferChecked() {}

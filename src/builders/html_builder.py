@@ -148,27 +148,21 @@ def generate_web_dashboard(
                 </div>
             </div>
 
-            <!-- Right: Controls, 4-Timezone Telemetry, Theme Selector & Repo CTA -->
+            <!-- Right: Controls, Master UTC Telemetry, Single Theme Toggle & Repo CTA -->
             <div class="flex items-center gap-1.5 sm:gap-2.5 flex-shrink-0 relative">
-                <!-- Synchronized 4-Timezone World Telemetry Pill (Desktop/Tablet) -->
-                <div id="navTimezonePill" class="hidden md:flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Synchronized Global 4-Timezone World Telemetry (UTC • IST • EDT • CEST)">
-                    <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
-                    <span id="navTimezoneText" class="tabular-nums font-mono">Last Synced: {tz_info['ticker']}</span>
+                <!-- Synchronized Master UTC Telemetry Pill with Dynamic Local Offset -->
+                <div id="navTimezonePill" class="hidden md:flex items-center gap-2 text-xs font-mono font-semibold px-3 py-1.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Synchronized Master UTC Telemetry with Dynamic Local Offset">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background-color: var(--success-fg);"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2" style="background-color: var(--success-fg);"></span>
+                    </span>
+                    <span id="navUtcClock" class="tabular-nums font-bold" style="color: var(--fg-default);">{tz_info['utc']}</span>
+                    <span id="navLocalOffset" class="text-[11px] font-medium opacity-80" style="color: var(--fg-subtle);">• Local</span>
+                    <span id="navTimezoneText" class="sr-only">Last Synced: {tz_info['ticker']}</span>
                 </div>
 
-                <!-- Theme Dropdown Toggle Button (10 Developer Themes) -->
-                <div class="relative">
-                    <button onclick="toggleThemeDropdown()" id="themeDropdownToggleBtn" title="Select Theme Palette" aria-label="Select Color Theme" class="h-10 px-2.5 sm:h-9 sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1.5 8a6.5 6.5 0 1 1 13 0 6.5 6.5 0 0 1-13 0Zm7.25-5v10a5 5 0 0 0 0-10Z"/>
-                        </svg>
-                        <span class="hidden sm:inline">Theme</span>
-                    </button>
-                    {theme_dropdown_html}
-                </div>
-
-                <!-- Dark / Light Quick Toggle Button -->
-                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Dark / Light Mode (T)" aria-label="Toggle Dark / Light Contrast Mode" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                <!-- Dark / Light Single Theme Toggle Button (Catppuccin Mocha / Catppuccin Latte) -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Obsidian Dark / Ceramic Light Mode (T)" aria-label="Toggle Dark / Light Contrast Mode" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                     <span id="themeIconSun" class="hidden flex items-center gap-1.5">
                         <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.061Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z"></path></svg>
                         <span class="hidden sm:inline">Light</span>
