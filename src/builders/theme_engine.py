@@ -15,70 +15,70 @@ THEMES: List[Dict[str, Any]] = [
         "id": "catppuccin-latte",
         "name": "Catppuccin Latte",
         "type": "light",
-        "dot": "#1e66f5",
-        "meta": "#eff1f5",
+        "dot": "#0070f3",
+        "meta": "#ffffff",
         "selector": ':root, [data-theme="catppuccin-latte"], [data-theme="light"]',
         "tokens": {
-            "--canvas-default": "#eff1f5",
-            "--canvas-subtle": "#e6e9ef",
-            "--canvas-inset": "#dce0e8",
-            "--border-default": "#ccd0da",
-            "--border-muted": "#bcc0cc",
-            "--fg-default": "#4c4f69",
-            "--fg-muted": "#5c5f77",
-            "--fg-subtle": "#6c6f85",
-            "--accent-fg": "#1e66f5",
-            "--accent-emphasis": "#1e66f5",
-            "--accent-subtle": "rgba(30, 102, 245, 0.12)",
-            "--success-fg": "#40a02b",
-            "--success-emphasis": "#40a02b",
-            "--success-subtle": "rgba(64, 160, 43, 0.12)",
-            "--attention-fg": "#df8e1d",
-            "--attention-subtle": "rgba(223, 142, 29, 0.12)",
-            "--danger-fg": "#d20f39",
-            "--danger-subtle": "rgba(210, 15, 57, 0.12)",
-            "--btn-default-bg": "#e6e9ef",
-            "--btn-default-hover": "#dce0e8",
-            "--btn-primary-bg": "#1e66f5",
-            "--btn-primary-hover": "#04a5e5",
-            "--card-shadow": "0 1px 3px 0 rgba(76, 79, 105, 0.08), 0 1px 2px -1px rgba(76, 79, 105, 0.06)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(76, 79, 105, 0.12), 0 2px 4px -2px rgba(76, 79, 105, 0.06)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.6)",
+            "--canvas-default": "#ffffff",
+            "--canvas-subtle": "#f8f9fa",
+            "--canvas-inset": "#f1f3f5",
+            "--border-default": "#e4e4e7",
+            "--border-muted": "#f4f4f5",
+            "--fg-default": "#09090b",
+            "--fg-muted": "#71717a",
+            "--fg-subtle": "#a1a1aa",
+            "--accent-fg": "#0070f3",
+            "--accent-emphasis": "#0051b3",
+            "--accent-subtle": "rgba(0, 112, 243, 0.08)",
+            "--success-fg": "#16a34a",
+            "--success-emphasis": "#15803d",
+            "--success-subtle": "rgba(22, 163, 74, 0.08)",
+            "--attention-fg": "#d97706",
+            "--attention-subtle": "rgba(217, 119, 6, 0.08)",
+            "--danger-fg": "#dc2626",
+            "--danger-subtle": "rgba(220, 38, 38, 0.08)",
+            "--btn-default-bg": "#f4f4f5",
+            "--btn-default-hover": "#e4e4e7",
+            "--btn-primary-bg": "#09090b",
+            "--btn-primary-hover": "#27272a",
+            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)",
+            "--card-shadow-hover": "0 12px 28px -6px rgba(0, 0, 0, 0.12), 0 0 0 1px #0070f3",
+            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.8)",
         },
     },
     {
         "id": "catppuccin-mocha",
         "name": "Catppuccin Mocha",
         "type": "dark",
-        "dot": "#cba6f7",
-        "meta": "#1e1e2e",
-        "selector": '[data-theme="catppuccin-mocha"]',
+        "dot": "#38bdf8",
+        "meta": "#000000",
+        "selector": '[data-theme="catppuccin-mocha"], [data-theme="dark"]',
         "tokens": {
-            "--canvas-default": "#1e1e2e",
-            "--canvas-subtle": "#181825",
-            "--canvas-inset": "#11111b",
-            "--border-default": "#313244",
-            "--border-muted": "#45475a",
-            "--fg-default": "#cdd6f4",
-            "--fg-muted": "#a6adc8",
-            "--fg-subtle": "#9399b2",
-            "--accent-fg": "#89b4fa",
-            "--accent-emphasis": "#cba6f7",
-            "--accent-subtle": "rgba(203, 166, 247, 0.15)",
-            "--success-fg": "#a6e3a1",
-            "--success-emphasis": "#a6e3a1",
-            "--success-subtle": "rgba(166, 227, 161, 0.15)",
-            "--attention-fg": "#f9e2af",
-            "--attention-subtle": "rgba(249, 226, 175, 0.15)",
-            "--danger-fg": "#f38ba8",
-            "--danger-subtle": "rgba(243, 139, 168, 0.15)",
-            "--btn-default-bg": "#313244",
-            "--btn-default-hover": "#45475a",
-            "--btn-primary-bg": "#89b4fa",
-            "--btn-primary-hover": "#b4befe",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.3)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(0, 0, 0, 0.45)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)",
+            "--canvas-default": "#000000",
+            "--canvas-subtle": "#111111",
+            "--canvas-inset": "#080808",
+            "--border-default": "#262626",
+            "--border-muted": "#1c1c1c",
+            "--fg-default": "#ffffff",
+            "--fg-muted": "#888888",
+            "--fg-subtle": "#555555",
+            "--accent-fg": "#38bdf8",
+            "--accent-emphasis": "#0ea5e9",
+            "--accent-subtle": "rgba(56, 189, 248, 0.12)",
+            "--success-fg": "#22c55e",
+            "--success-emphasis": "#16a34a",
+            "--success-subtle": "rgba(34, 197, 94, 0.12)",
+            "--attention-fg": "#eab308",
+            "--attention-subtle": "rgba(234, 179, 8, 0.12)",
+            "--danger-fg": "#ef4444",
+            "--danger-subtle": "rgba(239, 68, 68, 0.12)",
+            "--btn-default-bg": "#171717",
+            "--btn-default-hover": "#262626",
+            "--btn-primary-bg": "#ffffff",
+            "--btn-primary-hover": "#e5e5e5",
+            "--card-shadow": "0 0 0 1px rgba(255, 255, 255, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.8)",
+            "--card-shadow-hover": "0 0 0 1px #38bdf8, 0 16px 40px -8px rgba(0, 0, 0, 0.95)",
+            "--specular-rim": "inset 0 1px 0 0 rgba(255, 255, 255, 0.18)",
         },
     },
     {
@@ -87,7 +87,7 @@ THEMES: List[Dict[str, Any]] = [
         "type": "dark",
         "dot": "#58a6ff",
         "meta": "#0d1117",
-        "selector": '[data-theme="github-dark"], [data-theme="dark"]',
+        "selector": '[data-theme="github-dark"]',
         "tokens": {
             "--canvas-default": "#0d1117",
             "--canvas-subtle": "#161b22",
@@ -419,7 +419,7 @@ body {
 @media (hover: hover) and (pointer: fine) {
     .primer-card:hover {
         transform: translateY(-4px) scale(1.004);
-        box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--accent-fg), var(--specular-rim);
+        box-shadow: var(--card-shadow-hover), var(--specular-rim);
         border-color: var(--accent-fg);
     }
     .primer-card:active {
@@ -501,16 +501,21 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
 def generate_zero_foit_script() -> str:
     """Inline <head> script preventing flash of unstyled content (FOIT/FOUC)."""
     return """<script>
-    // Inline Zero-FOIT theme initialization (default: catppuccin-latte)
+    // Inline Zero-FOIT theme initialization (default: catppuccin-latte with auto OS sync)
     (function() {
         try {
-            const saved = localStorage.getItem('certpulse_theme_v2') || localStorage.getItem('certpulse_theme') || localStorage.getItem('theme') || 'catppuccin-latte';
+            const saved = localStorage.getItem('certpulse_theme_v2') || localStorage.getItem('certpulse_theme') || localStorage.getItem('theme');
+            let chosen = saved;
+            if (!chosen) {
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                chosen = prefersDark ? 'catppuccin-mocha' : 'catppuccin-latte';
+            }
             const valid = ['catppuccin-latte', 'catppuccin-mocha', 'github-dark', 'github-light', 'dracula', 'nord', 'tokyo-night', 'one-dark', 'gruvbox-dark', 'solarized-light', 'light', 'dark'];
-            const chosen = valid.includes(saved) ? saved : 'catppuccin-latte';
+            if (!valid.includes(chosen)) chosen = 'catppuccin-latte';
             document.documentElement.setAttribute('data-theme', chosen);
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             if (metaTheme) {
-                const metaMap = {'catppuccin-latte':'#eff1f5','catppuccin-mocha':'#1e1e2e','github-dark':'#0d1117','github-light':'#ffffff','dracula':'#282a36','nord':'#2e3440','tokyo-night':'#1a1b26','one-dark':'#282c34','gruvbox-dark':'#282828','solarized-light':'#fdf6e3'};
+                const metaMap = {'catppuccin-latte':'#ffffff','catppuccin-mocha':'#000000','github-dark':'#0d1117','github-light':'#ffffff','dracula':'#282a36','nord':'#2e3440','tokyo-night':'#1a1b26','one-dark':'#282c34','gruvbox-dark':'#282828','solarized-light':'#fdf6e3','dark':'#000000','light':'#ffffff'};
                 if (metaMap[chosen]) metaTheme.setAttribute('content', metaMap[chosen]);
             }
         } catch(e) {}

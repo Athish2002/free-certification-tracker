@@ -473,7 +473,7 @@ JS_TEMPLATE = """
             const isCurrentLight = currentTheme ? (currentTheme.type === 'light') : (current.includes('light') || current.includes('latte'));
             const nextTheme = isCurrentLight ? 'catppuccin-mocha' : 'catppuccin-latte';
             applyTheme(nextTheme);
-            toast('Theme: ' + (nextTheme === 'catppuccin-mocha' ? 'Obsidian Dark' : 'Ceramic Light'));
+            toast('Theme: ' + (nextTheme === 'catppuccin-mocha' ? 'Pure OLED Dark' : 'Ceramic Light'));
         }
 
         function toggleThemeDropdown() {
@@ -1429,8 +1429,21 @@ JS_TEMPLATE = """
 
             setupSearchListener();
 
-            const savedTheme = localStorage.getItem('certpulse_theme_v2') || localStorage.getItem('theme') || 'catppuccin-latte';
-            applyTheme(savedTheme);
+            const savedTheme = localStorage.getItem('certpulse_theme_v2') || localStorage.getItem('theme');
+            let initialTheme = savedTheme;
+            if (!initialTheme) {
+                const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                initialTheme = prefersDark ? 'catppuccin-mocha' : 'catppuccin-latte';
+            }
+            applyTheme(initialTheme);
+
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (!localStorage.getItem('certpulse_theme_v2')) {
+                        applyTheme(e.matches ? 'catppuccin-mocha' : 'catppuccin-latte');
+                    }
+                });
+            }
             updateGoalCounters();
 
             if (['grid', 'list', 'timeline', 'matrix'].includes(viewParam)) {
