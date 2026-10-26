@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-26T04:02:56.939559+00:00",
-  "last_sync": "2026-10-26T04:02:56.939559+00:00",
+  "last_updated": "2026-10-26T15:20:31.867637+00:00",
+  "last_sync": "2026-10-26T15:20:31.867637+00:00",
   "news": [
+    {
+      "id": "cisco-policy-as-code-for-the-network",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Policy as Code for the Network: Guardrails with Open Policy Agent",
+      "summary": "Learn how to use Open Policy Agent (OPA) to enforce network guardrails as code. Catch insecure configurations before deployment and maintain a unified security posture across your entire enterprise network.",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://blogs.cisco.com/cisco-devnet/network-guardrails-as-code-opa",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "f9805b50b47a32126de5fc8b67ae91a7cd91fcc912a8b44691c41d825c7ad983"
+    },
+    {
+      "id": "cisco-why-virtualization-is-no-longe",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Why Virtualization is No Longer Optional for Service Provider Engineers",
+      "summary": "Building SP clouds and ensuring the appropriate connectivity between enterprise clouds (or enterprise to cloud service providers) is a massive part of the SP business today. Thankfully, we’ve got a perfect way to level up your learning (for...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://blogs.cisco.com/learning/why-virtualization-is-no-longer-optional-for-service-provider-engineers",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "b00f89bff4d5eae842b4885a1eb6e5d00432354ebd66aeabcff4506069bc4f39"
+    },
     {
       "id": "red-hat-red-hat-opens-singapore-ai-cen",
       "company": "Red Hat",
@@ -1164,5 +1192,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 83
+  "total_items": 85
 }

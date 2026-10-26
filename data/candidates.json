@@ -17,24 +17,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-26T04:02:27.558181+00:00"
-    },
-    {
-      "source": "Reddit r/AzureCertification",
-      "title": "Preparing for AZ-104 from North Africa with zero budget\u2014any leads on free voucher programs or sponsorship?",
-      "url": "https://www.reddit.com/r/AzureCertification/comments/1xb9il9/preparing_for_az104_from_north_africa_with_zero/",
-      "platform": "Microsoft Azure",
-      "timestamp": "2026-10-21T01:02:04+00:00",
-      "keywords": [
-        "voucher"
-      ],
-      "match_confidence": "High (Title)",
-      "is_authentic_vendor": false,
-      "verified_vendor_url": "",
-      "authenticity_tier": "Community Lead",
-      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-26T04:02:27.558272+00:00"
+      "vetted_at": "2026-10-26T15:20:03.169317+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -52,7 +35,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-26T04:02:27.558344+00:00"
+      "vetted_at": "2026-10-26T15:20:03.169409+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -70,7 +53,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-26T04:02:27.558395+00:00"
+      "vetted_at": "2026-10-26T15:20:03.169466+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -87,7 +70,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-26T04:02:27.558442+00:00"
+      "vetted_at": "2026-10-26T15:20:03.169513+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -104,10 +87,27 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-26T04:02:27.558484+00:00"
+      "vetted_at": "2026-10-26T15:20:03.169549+00:00"
+    },
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Question about how to get a free voucher",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1x3fwtq/question_about_how_to_get_a_free_voucher/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-10-11T18:40:44+00:00",
+      "keywords": [
+        "voucher"
+      ],
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead",
+      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "vetted_at": "2026-10-26T15:20:03.169586+00:00"
     }
   ],
-  "last_vetted": "2026-10-26T04:02:27.558515+00:00",
+  "last_vetted": "2026-10-26T15:20:03.169616+00:00",
   "vetted_promoted_count": 0,
   "vetted_rejected_count": 6
 }
