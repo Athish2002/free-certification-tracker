@@ -1,8 +1,92 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-26T15:20:31.867637+00:00",
-  "last_sync": "2026-10-26T15:20:31.867637+00:00",
+  "last_updated": "2026-10-26T20:58:44.103263+00:00",
+  "last_sync": "2026-10-26T20:58:44.103263+00:00",
   "news": [
+    {
+      "id": "cisco-cisco-rethinks-privileged-infr",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Cisco Rethinks Privileged Infrastructure Access",
+      "summary": "Cisco Privileged Infrastructure Access replaces standing admin access with identity-bound, cryptographic controls that keep critical work moving.",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://blogs.cisco.com/security/cisco-rethinks-privileged-infrastructure-access",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "e78fa4cc986480708248dbfdbc5e1ff8da7fe09e9c37f782d224a4a404de6e59"
+    },
+    {
+      "id": "cisco-you-asked-for-more-money-and-m",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "You Asked for More Money and More Time. Here’s Both.",
+      "summary": "Partners asked for more profit and time—we listened. Our new announcements offer enhanced deal registration, expanded lifecycle incentives, and AI-driven insights through Cisco IQ. See how we're fueling your growth and streamlining success.",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://blogs.cisco.com/partner/you-asked-for-more-money-and-more-time-heres-both",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "c795fd2da0f0a3b283cf1365f610f32ad725864833924d347f1791d817431697"
+    },
+    {
+      "id": "google-cloud-unifying-enterprise-context-an",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Unifying enterprise context and semantics: LookML in Knowledge Catalog is now GA",
+      "summary": "As enterprises go from experimental AI agent prototypes to using them in production, data teams are realizing that access to data is not the same as understanding that data. To help bridge that gap, today, we are announcing the general avai...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://cloud.google.com/blog/products/business-intelligence/lookml-metadata-indexing-in-knowledge-catalog-is-now-ga/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "91e543b52979de4e8d024cd49ddfd276bfcfc751c000647e8f950f45bd64daba"
+    },
+    {
+      "id": "google-cloud-scale-agents-securely-with-iam",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Scale agents securely with IAM Helper Agent Skills and MCP Tools",
+      "summary": "As organizations adopt autonomous agents to build applications, securing identities and access has become more challenging. Developers relying on agents to provision cloud resources, write Terraform, and deploy microservices at machine-spee...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://cloud.google.com/blog/products/identity-security/scale-agents-securely-with-iam-helper-agent-skills-and-mcp-tools/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "9fcf2bfba3e4ecc37159a6228ec94842cbe7fca88b946e90e8e9e8a471477af1"
+    },
+    {
+      "id": "amazon-web-services-recommended-resilience-testing",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Recommended resilience testing in the next generation of AWS Resilience Hub",
+      "summary": "The next generation of AWS Resilience Hub introduces recommended resilience testing: four pre-configured, AWS FIS-powered tests that validate how your service detects and recovers from failures across Availability Zones, dependencies, and R...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://aws.amazon.com/blogs/architecture/recommended-resilience-testing-in-the-next-generation-of-aws-resilience-hub/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "527fe17dfe1ad5dd0c139f9d305fc31b027c231c8646018a9c3a499fd297f206"
+    },
+    {
+      "id": "amazon-web-services-data-governance-with-annotatio",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Data governance with annotations in Amazon S3",
+      "summary": "Attach governance context such as classification, retention, residency, and PII flags directly to your Amazon S3 objects with S3 annotations. This post walks through the end-to-end pattern and the handful of S3 behaviors that decide whether...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://aws.amazon.com/blogs/architecture/data-governance-with-annotations-in-amazon-s3/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "3de1f9bfb5fb6e9e777b43135ad7f97d1a7b3071f7156a26c27e010f41352f63"
+    },
     {
       "id": "cisco-policy-as-code-for-the-network",
       "company": "Cisco",
@@ -1192,5 +1276,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 85
+  "total_items": 91
 }

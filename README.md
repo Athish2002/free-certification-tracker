@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **85 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **91 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-26 15:20 UTC` (20:50 IST • 11:20 EDT • 16:20 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-26 20:58 UTC` (02:28 IST • 16:58 EDT • 21:58 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,19 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **85 Reports** |
+| **Verified Tech Dispatches** | **91 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (85 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (91 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2026-10-26` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco Rethinks Privileged Infrastructure Access](https://blogs.cisco.com/security/cisco-rethinks-privileged-infrastructure-access)**<br>Cisco Privileged Infrastructure Access replaces standing admin access with identity-bound, cryptographic controls that keep critical work moving. | [Cisco Blogs](https://blogs.cisco.com/security/cisco-rethinks-privileged-infrastructure-access)<br>`blogs.cisco.com` |
+| `2026-10-26` | **Cisco** | Tech Development | `Enterprise Networking` | **[You Asked for More Money and More Time. Here’s Both.](https://blogs.cisco.com/partner/you-asked-for-more-money-and-more-time-heres-both)**<br>Partners asked for more profit and time—we listened. Our new announcements offer enhanced deal registration, expanded lifecycle incentives, and AI-driven insights through Cisco IQ. See how we're fueling your growth and streamlining success. | [Cisco Blogs](https://blogs.cisco.com/partner/you-asked-for-more-money-and-more-time-heres-both)<br>`blogs.cisco.com` |
+| `2026-10-26` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Unifying enterprise context and semantics: LookML in Knowledge Catalog is now GA](https://cloud.google.com/blog/products/business-intelligence/lookml-metadata-indexing-in-knowledge-catalog-is-now-ga/)**<br>As enterprises go from experimental AI agent prototypes to using them in production, data teams are realizing that access to data is not the same as understanding that data. To help bridge that gap, today, we are announcing the general avai... | [Google Cloud Blog](https://cloud.google.com/blog/products/business-intelligence/lookml-metadata-indexing-in-knowledge-catalog-is-now-ga/)<br>`cloud.google.com` |
+| `2026-10-26` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Scale agents securely with IAM Helper Agent Skills and MCP Tools](https://cloud.google.com/blog/products/identity-security/scale-agents-securely-with-iam-helper-agent-skills-and-mcp-tools/)**<br>As organizations adopt autonomous agents to build applications, securing identities and access has become more challenging. Developers relying on agents to provision cloud resources, write Terraform, and deploy microservices at machine-spee... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/scale-agents-securely-with-iam-helper-agent-skills-and-mcp-tools/)<br>`cloud.google.com` |
+| `2026-10-26` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Recommended resilience testing in the next generation of AWS Resilience Hub](https://aws.amazon.com/blogs/architecture/recommended-resilience-testing-in-the-next-generation-of-aws-resilience-hub/)**<br>The next generation of AWS Resilience Hub introduces recommended resilience testing: four pre-configured, AWS FIS-powered tests that validate how your service detects and recovers from failures across Availability Zones, dependencies, and R... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/recommended-resilience-testing-in-the-next-generation-of-aws-resilience-hub/)<br>`aws.amazon.com` |
+| `2026-10-26` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Data governance with annotations in Amazon S3](https://aws.amazon.com/blogs/architecture/data-governance-with-annotations-in-amazon-s3/)**<br>Attach governance context such as classification, retention, residency, and PII flags directly to your Amazon S3 objects with S3 annotations. This post walks through the end-to-end pattern and the handful of S3 behaviors that decide whether... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/data-governance-with-annotations-in-amazon-s3/)<br>`aws.amazon.com` |
 | `2026-10-26` | **Cisco** | Tech Development | `Enterprise Networking` | **[Policy as Code for the Network: Guardrails with Open Policy Agent](https://blogs.cisco.com/cisco-devnet/network-guardrails-as-code-opa)**<br>Learn how to use Open Policy Agent (OPA) to enforce network guardrails as code. Catch insecure configurations before deployment and maintain a unified security posture across your entire enterprise network. | [Cisco Blogs](https://blogs.cisco.com/cisco-devnet/network-guardrails-as-code-opa)<br>`blogs.cisco.com` |
 | `2026-10-26` | **Cisco** | Tech Development | `Enterprise Networking` | **[Why Virtualization is No Longer Optional for Service Provider Engineers](https://blogs.cisco.com/learning/why-virtualization-is-no-longer-optional-for-service-provider-engineers)**<br>Building SP clouds and ensuring the appropriate connectivity between enterprise clouds (or enterprise to cloud service providers) is a massive part of the SP business today. Thankfully, we’ve got a perfect way to level up your learning (for... | [Cisco Blogs](https://blogs.cisco.com/learning/why-virtualization-is-no-longer-optional-for-service-provider-engineers)<br>`blogs.cisco.com` |
 | `2026-10-22` | **Red Hat** | Linux & Enterprise | `Linux & Enterprise` | **[Red Hat Opens Singapore AI Centre of Excellence as Strategic AI Innovation Hub for Asia Pacific](https://www.redhat.com/en/about/press-releases/red-hat-opens-singapore-ai-centre-excellence-strategic-ai-innovation-hub-asia-pacific)**<br>Red Hat, the world’s leading provider of open source solutions, today introduced Red Hat’s APAC AI Centre of Excellence (CoE) in Singapore. Supported by the Singapore Economic Development Board (EDB), the Centre will help organisations evol... | [Red Hat Press Releases](https://www.redhat.com/en/about/press-releases/red-hat-opens-singapore-ai-centre-excellence-strategic-ai-innovation-hub-asia-pacific)<br>`redhat.com` |
@@ -653,4 +659,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-26 15:20 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-26 20:58 UTC`.*
