@@ -1,5 +1,5 @@
 {
-  "total_candidates": 7,
+  "total_candidates": 5,
   "leads": [
     {
       "source": "Reddit r/AzureCertification",
@@ -17,7 +17,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057242+00:00"
+      "vetted_at": "2026-10-27T14:21:42.937103+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -35,7 +35,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057359+00:00"
+      "vetted_at": "2026-10-27T14:21:42.937189+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -53,7 +53,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057442+00:00"
+      "vetted_at": "2026-10-27T14:21:42.937237+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -70,7 +70,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057524+00:00"
+      "vetted_at": "2026-10-27T14:21:42.937274+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -87,44 +87,10 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057619+00:00"
-    },
-    {
-      "source": "Reddit r/AWSCertifications",
-      "title": "Title: \ud83d\ude4f Please Help a Student Find Free AWS Certification Exam Vouchers (Cloud Practitioner & Solutions Architect Associate)",
-      "url": "https://www.reddit.com/r/AWSCertifications/comments/1xfz2tc/title_please_help_a_student_find_free_aws/",
-      "platform": "Amazon Web Services",
-      "timestamp": "2026-10-26T14:55:21+00:00",
-      "keywords": [
-        "voucher"
-      ],
-      "match_confidence": "High (Title)",
-      "is_authentic_vendor": false,
-      "verified_vendor_url": "",
-      "authenticity_tier": "Community Lead",
-      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057692+00:00"
-    },
-    {
-      "source": "Reddit r/AWSCertifications",
-      "title": "September 2026 AMER APCR AI Business Strategist: anyone still waiting for their exam voucher?",
-      "url": "https://www.reddit.com/r/AWSCertifications/comments/1x8e143/september_2026_amer_apcr_ai_business_strategist/",
-      "platform": "Amazon Web Services",
-      "timestamp": "2026-10-17T16:09:01+00:00",
-      "keywords": [
-        "voucher"
-      ],
-      "match_confidence": "High (Title)",
-      "is_authentic_vendor": false,
-      "verified_vendor_url": "",
-      "authenticity_tier": "Community Lead",
-      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-27T04:28:06.057761+00:00"
+      "vetted_at": "2026-10-27T14:21:42.937306+00:00"
     }
   ],
-  "last_vetted": "2026-10-27T04:28:06.057809+00:00",
+  "last_vetted": "2026-10-27T14:21:42.937334+00:00",
   "vetted_promoted_count": 0,
-  "vetted_rejected_count": 7
+  "vetted_rejected_count": 5
 }

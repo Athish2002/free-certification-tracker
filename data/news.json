@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-27T04:28:36.737161+00:00",
-  "last_sync": "2026-10-27T04:28:36.737161+00:00",
+  "last_updated": "2026-10-27T14:22:09.899033+00:00",
+  "last_sync": "2026-10-27T14:22:09.899033+00:00",
   "news": [
+    {
+      "id": "cisco-the-autonomous-channel-how-ci",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The Autonomous Channel: How Cisco Is Pioneering Agentic Solutions for Distribution",
+      "summary": "Cisco is transforming 2-Tier distribution by moving beyond rigid APIs to agentic AI. With partners like Ingram Micro and TD SYNNEX, we’re automating workflows and empowering the channel with a more efficient, secure, and scalable ecosystem.",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://blogs.cisco.com/partner/the-autonomous-channel-how-cisco-is-pioneering-agentic-solutions-for-distribution",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "70446558750cd4c096982efa62d8a4834fd1a9f6f59c5f98b755cbe2720ff311"
+    },
+    {
+      "id": "google-cloud-google-cloud-and-nasa-testing",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Google Cloud and NASA: Testing robotic systems for deep space missions",
+      "summary": "As NASA advances its Artemis program to send astronauts on increasingly difficult missions to explore more of the Moon, build a sustained human presence there with a Moon Base, and build on their foundation for the first crewed missions to ...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://cloud.google.com/blog/topics/public-sector/google-cloud-and-nasa-testing-robotic-systems-for-deep-space-missions/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "47694a2024137f571d1907d59727cee568473032e7e3fd234b011ba2d253e419"
+    },
     {
       "id": "cisco-the-partners-who-set-the-pace",
       "company": "Cisco",
@@ -1318,5 +1346,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 94
+  "total_items": 96
 }
