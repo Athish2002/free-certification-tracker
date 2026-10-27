@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-26T20:58:44.103263+00:00",
-  "last_sync": "2026-10-26T20:58:44.103263+00:00",
+  "last_updated": "2026-10-27T04:28:36.737161+00:00",
+  "last_sync": "2026-10-27T04:28:36.737161+00:00",
   "news": [
+    {
+      "id": "cisco-the-partners-who-set-the-pace",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "The Partners Who Set the Pace: Our FY26 Global Award Winners",
+      "summary": "Fiscal 26 tested us, but our partners delivered record-setting results. We’re celebrating our 2026 Partner of the Year winners who led in AI, security, and ecosystem innovation. See the leaders setting the pace for the year ahead.",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://blogs.cisco.com/partner/the-partners-who-set-the-pace-our-fy26-global-award-winners",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "6f0bd9db2eba33b4cde9a0f0bdc4c6fb44a06c5b8531c8f55f5bd1d45dc01615"
+    },
+    {
+      "id": "cisco-celebrating-the-winners-of-cis",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Celebrating the Winners of Cisco’s 2026 Partner Innovation Challenge",
+      "summary": "The 2026 Cisco Partner Innovation Challenge showcases AI solutions for diverse industry challenges. Partnering for Purpose and APJC Regional Winners highlight AI's potential in enhancing community resilience, safety, and operational efficie...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://blogs.cisco.com/partner/celebrating-the-winners-of-ciscos-2026-partner-innovation-challenge",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "91a3b10390181a96d98cd288cc747d09f3ce29b1618bdc4c50df3a97b3fb6bec"
+    },
+    {
+      "id": "google-cloud-easy-to-integrate-compliant-b",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Easy to integrate, compliant by design: Bringing the Swiss Franc to Google Cloud Universal Ledger",
+      "summary": "Every day, countless financial transactions are interrupted by slow, expensive, and inflexible conventional payment systems. As a result, public commercial stablecoins like Tether, USDC, and PayPal USD have become increasingly popular by ma...",
+      "published_date": "2026-10-26",
+      "date": "2026-10-26",
+      "url": "https://cloud.google.com/blog/topics/financial-services/easy-to-integrate-compliant-by-design-bringing-the-swiss-franc-to-google-cloud-universal-ledger/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "6a566e060c48bccbd66bae4d7185c2ae704866836c50ad81a742476e655e473f"
+    },
     {
       "id": "cisco-cisco-rethinks-privileged-infr",
       "company": "Cisco",
@@ -1276,5 +1318,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 91
+  "total_items": 94
 }
