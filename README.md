@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **96 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-27 14:22 UTC` (19:52 IST • 10:22 EDT • 15:22 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-27 20:33 UTC` (02:03 IST • 16:33 EDT • 21:33 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,17 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **96 Reports** |
+| **Verified Tech Dispatches** | **100 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (96 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (100 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2026-10-27` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Powering the agentic enterprise with latest innovations in Oracle AI Database@Google Cloud](https://cloud.google.com/blog/products/databases/oracle-ai-databasegoogle-cloud-whats-new-at-oracle-ai-world/)**<br>For decades, core enterprise operations — from global supply chains and financial ledgers to billing engines — have relied on the performance and transactional integrity of Oracle databases. Today at Oracle AI World in Las Vegas, Google Clo... | [Google Cloud Blog](https://cloud.google.com/blog/products/databases/oracle-ai-databasegoogle-cloud-whats-new-at-oracle-ai-world/)<br>`cloud.google.com` |
+| `2026-10-27` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Introducing VMware solution on Google Cloud](https://cloud.google.com/blog/products/infrastructure-modernization/vmware-solution-on-google-cloud/)**<br>Many organizations with workloads on VMware are looking for ways to expedite their data center exits, migrate and modernize their mission-critical workloads, or simply leverage the cloud as a secondary disaster recovery site. But they want ... | [Google Cloud Blog](https://cloud.google.com/blog/products/infrastructure-modernization/vmware-solution-on-google-cloud/)<br>`cloud.google.com` |
+| `2026-10-27` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Vessel-specific voyage optimization with machine learning: Manta on AWS](https://aws.amazon.com/blogs/architecture/vessel-specific-voyage-optimization-with-machine-learning-manta-on-aws/)**<br>Manta Marine Technologies closes the gap between seemingly identical ships by training machine learning models on each vessel's own operational history. Learn how Manta delivers vessel-specific voyage optimization on AWS to help shipowners ... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/vessel-specific-voyage-optimization-with-machine-learning-manta-on-aws/)<br>`aws.amazon.com` |
+| `2026-10-27` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[Publishing LMS courses with a Kiro SCORM pipeline](https://aws.amazon.com/blogs/architecture/publishing-lms-courses-with-a-kiro-scorm-pipeline/)**<br>See how to use Kiro, an agentic AI, to automate converting raw training material into compliant SCORM packages that are ready to upload to a learning management system (LMS). | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/publishing-lms-courses-with-a-kiro-scorm-pipeline/)<br>`aws.amazon.com` |
 | `2026-10-27` | **Cisco** | Tech Development | `Enterprise Networking` | **[The Autonomous Channel: How Cisco Is Pioneering Agentic Solutions for Distribution](https://blogs.cisco.com/partner/the-autonomous-channel-how-cisco-is-pioneering-agentic-solutions-for-distribution)**<br>Cisco is transforming 2-Tier distribution by moving beyond rigid APIs to agentic AI. With partners like Ingram Micro and TD SYNNEX, we’re automating workflows and empowering the channel with a more efficient, secure, and scalable ecosystem. | [Cisco Blogs](https://blogs.cisco.com/partner/the-autonomous-channel-how-cisco-is-pioneering-agentic-solutions-for-distribution)<br>`blogs.cisco.com` |
 | `2026-10-27` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Google Cloud and NASA: Testing robotic systems for deep space missions](https://cloud.google.com/blog/topics/public-sector/google-cloud-and-nasa-testing-robotic-systems-for-deep-space-missions/)**<br>As NASA advances its Artemis program to send astronauts on increasingly difficult missions to explore more of the Moon, build a sustained human presence there with a Moon Base, and build on their foundation for the first crewed missions to ... | [Google Cloud Blog](https://cloud.google.com/blog/topics/public-sector/google-cloud-and-nasa-testing-robotic-systems-for-deep-space-missions/)<br>`cloud.google.com` |
 | `2026-10-26` | **Cisco** | Tech Development | `Enterprise Networking` | **[The Partners Who Set the Pace: Our FY26 Global Award Winners](https://blogs.cisco.com/partner/the-partners-who-set-the-pace-our-fy26-global-award-winners)**<br>Fiscal 26 tested us, but our partners delivered record-setting results. We’re celebrating our 2026 Partner of the Year winners who led in AI, security, and ecosystem innovation. See the leaders setting the pace for the year ahead. | [Cisco Blogs](https://blogs.cisco.com/partner/the-partners-who-set-the-pace-our-fy26-global-award-winners)<br>`blogs.cisco.com` |
@@ -664,4 +668,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-27 14:22 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-27 20:33 UTC`.*

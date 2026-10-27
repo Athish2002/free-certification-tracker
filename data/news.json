@@ -1,8 +1,64 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-27T14:22:09.899033+00:00",
-  "last_sync": "2026-10-27T14:22:09.899033+00:00",
+  "last_updated": "2026-10-27T20:33:17.634295+00:00",
+  "last_sync": "2026-10-27T20:33:17.634295+00:00",
   "news": [
+    {
+      "id": "google-cloud-powering-the-agentic-enterpris",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Powering the agentic enterprise with latest innovations in Oracle AI Database@Google Cloud",
+      "summary": "For decades, core enterprise operations — from global supply chains and financial ledgers to billing engines — have relied on the performance and transactional integrity of Oracle databases. Today at Oracle AI World in Las Vegas, Google Clo...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://cloud.google.com/blog/products/databases/oracle-ai-databasegoogle-cloud-whats-new-at-oracle-ai-world/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "77f86dd9241bd1275a40c08cf7745282ae66316bf52404ec6fb3f7c46b99490d"
+    },
+    {
+      "id": "google-cloud-introducing-vmware-solution-on",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Introducing VMware solution on Google Cloud",
+      "summary": "Many organizations with workloads on VMware are looking for ways to expedite their data center exits, migrate and modernize their mission-critical workloads, or simply leverage the cloud as a secondary disaster recovery site. But they want ...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://cloud.google.com/blog/products/infrastructure-modernization/vmware-solution-on-google-cloud/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "d134ce59a6091534fb824110bf29ee6b86313af52fbd0db5930404a5904bfd7c"
+    },
+    {
+      "id": "amazon-web-services-vessel-specific-voyage-optimiz",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Vessel-specific voyage optimization with machine learning: Manta on AWS",
+      "summary": "Manta Marine Technologies closes the gap between seemingly identical ships by training machine learning models on each vessel's own operational history. Learn how Manta delivers vessel-specific voyage optimization on AWS to help shipowners ...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://aws.amazon.com/blogs/architecture/vessel-specific-voyage-optimization-with-machine-learning-manta-on-aws/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "19491099699720637fdcca602a05147e788178c5834e65367c56e5d22fadb4f1"
+    },
+    {
+      "id": "amazon-web-services-publishing-lms-courses-with-a",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Publishing LMS courses with a Kiro SCORM pipeline",
+      "summary": "See how to use Kiro, an agentic AI, to automate converting raw training material into compliant SCORM packages that are ready to upload to a learning management system (LMS).",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://aws.amazon.com/blogs/architecture/publishing-lms-courses-with-a-kiro-scorm-pipeline/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "c4bc0ea1e915308cc5ee5676e4bf04c137a66f34c1d5337da0788c1533509300"
+    },
     {
       "id": "cisco-the-autonomous-channel-how-ci",
       "company": "Cisco",
@@ -1346,5 +1402,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 96
+  "total_items": 100
 }
