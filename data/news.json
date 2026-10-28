@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-27T20:33:17.634295+00:00",
-  "last_sync": "2026-10-27T20:33:17.634295+00:00",
+  "last_updated": "2026-10-28T04:54:05.206973+00:00",
+  "last_sync": "2026-10-28T04:54:05.206973+00:00",
   "news": [
+    {
+      "id": "red-hat-red-hat-recognizes-bc-card-and",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat Recognizes BC Card and KEPCO KDN for Driving AI and Cloud-Native Innovation at the Red Hat APAC Innovation Awards 2026 for Korea",
+      "summary": "Red Hat, the world's leading provider of open source solutions, today announced the winners of the Red Hat APAC Innovation Awards 2026 for Korea. This year, Red Hat is celebrating BC Card and KEPCO KDN (Korea Electric Power Data Network) fo...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-recognizes-bc-card-and-kepco-kdn-driving-ai-and-cloud-native-innovation-red-hat-apac-innovation-awards-2026-korea",
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "ca6d67ddc6294a370f40dcb26393e2b3757b2464ab030ffe4e6071e399a9f0ba"
+    },
     {
       "id": "google-cloud-powering-the-agentic-enterpris",
       "company": "Google Cloud",
@@ -1402,5 +1416,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 100
+  "total_items": 101
 }
