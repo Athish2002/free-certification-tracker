@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-28T04:54:05.206973+00:00",
-  "last_sync": "2026-10-28T04:54:05.206973+00:00",
+  "last_updated": "2026-10-28T14:59:21.828884+00:00",
+  "last_sync": "2026-10-28T14:59:21.828884+00:00",
   "news": [
+    {
+      "id": "cisco-a-shared-language-for-agent-de",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "A Shared Language for Agent Defense: Introducing Project Quarry",
+      "summary": "AI agents now read, decide, and act on their own, and the attacks against them unfold across many ordinary, permitted steps that most of today's defenses were not built to connect. Project Quarry (“Quarry”), which we are open sourcing today...",
+      "published_date": "2026-10-28",
+      "date": "2026-10-28",
+      "url": "https://blogs.cisco.com/ai/project-quarry-agent-security-detections",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "1d44354b54621f81f5e31b411ade8246b988367fded191e3a1384fd6e5219fa8"
+    },
+    {
+      "id": "cisco-breaking-new-ground-your-cx-e",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Breaking New Ground: Your CX Experience at Cisco Live Melbourne 2026",
+      "summary": "Take a look at what the Cisco Customer Experience team has planned for Cisco Live Melbourne starting on November 9.",
+      "published_date": "2026-10-28",
+      "date": "2026-10-28",
+      "url": "https://blogs.cisco.com/customerexperience/breaking-new-ground-your-cx-experience-at-cisco-live-melbourne-2026",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "3f2fbe1bb2e3b5893748c2e68a08ef3f997c24a3cdd0f4fe56e79f3a4c20ca12"
+    },
     {
       "id": "red-hat-red-hat-recognizes-bc-card-and",
       "company": "Red Hat",
@@ -1416,5 +1444,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 101
+  "total_items": 103
 }

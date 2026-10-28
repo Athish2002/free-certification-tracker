@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,493 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **101 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **103 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-28 04:54 UTC` (10:24 IST • 00:54 EDT • 05:54 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-28 14:59 UTC` (20:29 IST • 10:59 EDT • 15:59 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,15 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **101 Reports** |
+| **Verified Tech Dispatches** | **103 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (101 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (103 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2026-10-28` | **Cisco** | Tech Development | `Enterprise Networking` | **[A Shared Language for Agent Defense: Introducing Project Quarry](https://blogs.cisco.com/ai/project-quarry-agent-security-detections)**<br>AI agents now read, decide, and act on their own, and the attacks against them unfold across many ordinary, permitted steps that most of today's defenses were not built to connect. Project Quarry (“Quarry”), which we are open sourcing today... | [Cisco Blogs](https://blogs.cisco.com/ai/project-quarry-agent-security-detections)<br>`blogs.cisco.com` |
+| `2026-10-28` | **Cisco** | Tech Development | `Enterprise Networking` | **[Breaking New Ground: Your CX Experience at Cisco Live Melbourne 2026](https://blogs.cisco.com/customerexperience/breaking-new-ground-your-cx-experience-at-cisco-live-melbourne-2026)**<br>Take a look at what the Cisco Customer Experience team has planned for Cisco Live Melbourne starting on November 9. | [Cisco Blogs](https://blogs.cisco.com/customerexperience/breaking-new-ground-your-cx-experience-at-cisco-live-melbourne-2026)<br>`blogs.cisco.com` |
 | `2026-10-27` | **Red Hat** | Linux & Enterprise | `Linux & Enterprise` | **[Red Hat Recognizes BC Card and KEPCO KDN for Driving AI and Cloud-Native Innovation at the Red Hat APAC Innovation Awards 2026 for Korea](https://www.redhat.com/en/about/press-releases/red-hat-recognizes-bc-card-and-kepco-kdn-driving-ai-and-cloud-native-innovation-red-hat-apac-innovation-awards-2026-korea)**<br>Red Hat, the world's leading provider of open source solutions, today announced the winners of the Red Hat APAC Innovation Awards 2026 for Korea. This year, Red Hat is celebrating BC Card and KEPCO KDN (Korea Electric Power Data Network) fo... | [Red Hat Press Releases](https://www.redhat.com/en/about/press-releases/red-hat-recognizes-bc-card-and-kepco-kdn-driving-ai-and-cloud-native-innovation-red-hat-apac-innovation-awards-2026-korea)<br>`redhat.com` |
 | `2026-10-27` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Powering the agentic enterprise with latest innovations in Oracle AI Database@Google Cloud](https://cloud.google.com/blog/products/databases/oracle-ai-databasegoogle-cloud-whats-new-at-oracle-ai-world/)**<br>For decades, core enterprise operations — from global supply chains and financial ledgers to billing engines — have relied on the performance and transactional integrity of Oracle databases. Today at Oracle AI World in Las Vegas, Google Clo... | [Google Cloud Blog](https://cloud.google.com/blog/products/databases/oracle-ai-databasegoogle-cloud-whats-new-at-oracle-ai-world/)<br>`cloud.google.com` |
 | `2026-10-27` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Introducing VMware solution on Google Cloud](https://cloud.google.com/blog/products/infrastructure-modernization/vmware-solution-on-google-cloud/)**<br>Many organizations with workloads on VMware are looking for ways to expedite their data center exits, migrate and modernize their mission-critical workloads, or simply leverage the cloud as a secondary disaster recovery site. But they want ... | [Google Cloud Blog](https://cloud.google.com/blog/products/infrastructure-modernization/vmware-solution-on-google-cloud/)<br>`cloud.google.com` |
@@ -669,4 +671,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-28 04:54 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-28 14:59 UTC`.*
