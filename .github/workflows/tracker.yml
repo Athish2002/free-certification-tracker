@@ -5,8 +5,8 @@ on:
     branches:
       - main
   schedule:
-    # Run every 4 hours automatically (00:00, 04:00, 08:00, 12:00, 16:00, 20:00 UTC)
-    - cron: '0 */4 * * *'
+    # Run twice daily at 00:00 and 12:00 UTC (optimized 12-hour cadence)
+    - cron: '0 0,12 * * *'
   workflow_dispatch: # Allows manual one-click trigger from GitHub Actions UI
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.12", "3.13"]
+        python-version: ${{ github.event_name == 'push' && fromJSON('["3.12", "3.13"]') || fromJSON('["3.12"]') }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -78,6 +78,8 @@ jobs:
     name: Live Pipeline Execution & Data Update
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      changes_detected: ${{ steps.auto-commit.outputs.changes_detected }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -113,6 +115,7 @@ jobs:
           python tests/e2e/runner.py
 
       - name: Commit and Push Changes If Updated
+        id: auto-commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore(data): auto-update courses, vouchers, and news feed [skip ci]"
@@ -122,6 +125,7 @@ jobs:
           commit_author: "CertPulse Bot <actions@github.com>"
 
       - name: Upload GitHub Pages Artifact
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || steps.auto-commit.outputs.changes_detected == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: "docs/"
@@ -129,6 +133,7 @@ jobs:
   deploy-pages:
     name: Deploy to GitHub Pages
     needs: update-and-deploy
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || needs.update-and-deploy.outputs.changes_detected == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
