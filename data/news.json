@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-29T08:56:04.730793+00:00",
-  "last_sync": "2026-10-29T08:56:04.730793+00:00",
+  "last_updated": "2026-10-29T18:12:03.293268+00:00",
+  "last_sync": "2026-10-29T18:12:03.293268+00:00",
   "news": [
+    {
+      "id": "cisco-from-small-village-to-global-c",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "From Small Village to Global Career: My Journey at Cisco",
+      "summary": "See how one opportunity became a journey across three continents, multiple roles, and a growing sense of purpose for Customer Delivery Engineering Technical Leader Kiran K.",
+      "published_date": "2026-10-29",
+      "date": "2026-10-29",
+      "url": "https://blogs.cisco.com/wearecisco/from-small-village-to-global-career-my-journey-at-cisco",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "b29086e35f4211c790de0d71b7df97d08cea7ec8182b3e439600cd330e1de2de"
+    },
+    {
+      "id": "google-cloud-cloud-ciso-perspectives-intro",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Cloud CISO Perspectives: Introducing new $250,000 tier for Google Cloud VRP (Q&A)",
+      "summary": "Welcome to the second Cloud CISO Perspectives for October 2026. Today, Chris Betz talks with Michael Cote, our vulnerability rewards program lead, about the new tier of our Cloud VRP program and the current state of vulnerability rewards. A...",
+      "published_date": "2026-10-29",
+      "date": "2026-10-29",
+      "url": "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-introducing-new-tier-for-google-cloud-vrp/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "efca7f08bc905f20a17ca255ef32a6b49b528a6094c176e93fa2fec0446a914e"
+    },
+    {
+      "id": "google-cloud-querying-databricks-apache-ice",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Querying Databricks Apache Iceberg Tables with the borderless Lakehouse",
+      "summary": "Enterprise organizations often leverage multiple data platforms, including Databricks, to execute heavy Apache Spark jobs alongside BigQuery to power highly concurrent analytics workloads. Historically, bridging these systems often meant bu...",
+      "published_date": "2026-10-29",
+      "date": "2026-10-29",
+      "url": "https://cloud.google.com/blog/products/data-analytics/querying-databricks-iceberg-tables-with-google-clouds-lakehouse/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "3945160e15535e2955d9f4bf05cac1652243d0dc331352e70f434dc9e8dc5372"
+    },
     {
       "id": "google-cloud-near-zero-downtime-upgrades-a",
       "company": "Google Cloud",
@@ -652,7 +694,7 @@
       "source_domain": "blogs.cisco.com",
       "category": "Tech Development",
       "title": "Building Trust into Enterprise AI Agents: Cisco AI Defense and Workday Agent Passport",
-      "summary": "Workday Agent Passport, now in Early Access, gives customers a signed, auditable record of what has been verified about an agent, who verified it, and to what standard. Cisco AI Defense\u200b\u200b,\u200b Agent Passport\u200b's launch assessor, provides\u200b\u200b....",
+      "summary": "Workday Agent Passport, now in Early Access, gives customers a signed, auditable record of what has been verified about an agent, who verified it, and to what standard. Cisco AI Defense​​,​ Agent Passport​'s launch assessor, provides​​....",
       "published_date": "2024-08-01",
       "url": "https://blogs.cisco.com/ai/building-trust-into-enterprise-ai-agents-cisco-ai-defense-and-workday-agent-passport",
       "impact_badge": "Enterprise Networking",
@@ -1358,20 +1400,6 @@
       "impact_badge": "Open Source Core",
       "date": "2024-08-13",
       "content_fingerprint": "c04f830430d93723a7872d573b4568a7d885ed0864843a0aa812bd292c64ac09"
-    },
-    {
-      "id": "databricks-dbrx-foundation-model",
-      "company": "Databricks",
-      "source": "Databricks Engineering Blog",
-      "source_domain": "databricks.com",
-      "category": "Research & AI",
-      "title": "Databricks DBRX: Open Mixture-of-Experts Architecture for Enterprise SQL & Code",
-      "summary": "Databricks Mosaic AI released DBRX, a 132B parameter MoE architecture (36B active) trained on 12T tokens with fine-grained 16-expert routing, outperforming GPT-3.5 on code evaluation.",
-      "published_date": "2024-03-27",
-      "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
-      "impact_badge": "MoE Architecture",
-      "date": "2024-03-27",
-      "content_fingerprint": "ff1b4b6f0a9a0b71dbea151d3732d24b2e2788eb8f31dd9d99c5f36ed2ce6c8d"
     }
   ],
   "total_items": 100

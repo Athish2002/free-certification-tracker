@@ -17,7 +17,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-29T10:39:27.223328+00:00"
+      "vetted_at": "2026-10-29T18:11:31.602625+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -35,7 +35,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-29T10:39:27.223464+00:00"
+      "vetted_at": "2026-10-29T18:11:31.602727+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -53,7 +53,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-29T10:39:27.223541+00:00"
+      "vetted_at": "2026-10-29T18:11:31.602808+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -70,7 +70,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-29T10:39:27.223620+00:00"
+      "vetted_at": "2026-10-29T18:11:31.602878+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -87,10 +87,10 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-10-29T10:39:27.223692+00:00"
+      "vetted_at": "2026-10-29T18:11:31.602938+00:00"
     }
   ],
-  "last_vetted": "2026-10-29T10:39:27.223737+00:00",
+  "last_vetted": "2026-10-29T18:11:31.602981+00:00",
   "vetted_promoted_count": 0,
   "vetted_rejected_count": 5
 }

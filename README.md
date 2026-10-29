@@ -26,10 +26,10 @@
 | **Total Financial Value** | **$2,842 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
-| **Verified Tech Dispatches** | **98 Reports** | Official primary cloud engineering updates |
+| **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-29 10:39 UTC` (16:09 IST • 06:39 EDT • 11:39 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-29 18:12 UTC` (23:42 IST • 14:12 EDT • 19:12 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -116,13 +116,16 @@
 ## 📰 Verified Cloud & Engineering Intelligence Radar
 > Autonomous technical intelligence stream tracking authentic engineering breakthroughs, architecture RFCs, silicon innovations, and SEC financial filings directly from primary enterprise sources (**AWS**, **Microsoft Azure**, **Google Cloud**, **Oracle Cloud**, **Cisco**, **GitHub**, **Linux Foundation**, **Databricks**, **Snowflake**). Strictly zero rumors, gossip, or clickbait aggregators.
 
-| **Verified Tech Dispatches** | **98 Reports** |
+| **Verified Tech Dispatches** | **100 Reports** |
 
 <details>
-<summary><b>View Verified Cloud & Engineering Intelligence Radar (98 Reports)</b> — <i>Click to expand</i></summary>
+<summary><b>View Verified Cloud & Engineering Intelligence Radar (100 Reports)</b> — <i>Click to expand</i></summary>
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2026-10-29` | **Cisco** | Tech Development | `Enterprise Networking` | **[From Small Village to Global Career: My Journey at Cisco](https://blogs.cisco.com/wearecisco/from-small-village-to-global-career-my-journey-at-cisco)**<br>See how one opportunity became a journey across three continents, multiple roles, and a growing sense of purpose for Customer Delivery Engineering Technical Leader Kiran K. | [Cisco Blogs](https://blogs.cisco.com/wearecisco/from-small-village-to-global-career-my-journey-at-cisco)<br>`blogs.cisco.com` |
+| `2026-10-29` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Cloud CISO Perspectives: Introducing new $250,000 tier for Google Cloud VRP (Q&A)](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-introducing-new-tier-for-google-cloud-vrp/)**<br>Welcome to the second Cloud CISO Perspectives for October 2026. Today, Chris Betz talks with Michael Cote, our vulnerability rewards program lead, about the new tier of our Cloud VRP program and the current state of vulnerability rewards. A... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-introducing-new-tier-for-google-cloud-vrp/)<br>`cloud.google.com` |
+| `2026-10-29` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Querying Databricks Apache Iceberg Tables with the borderless Lakehouse](https://cloud.google.com/blog/products/data-analytics/querying-databricks-iceberg-tables-with-google-clouds-lakehouse/)**<br>Enterprise organizations often leverage multiple data platforms, including Databricks, to execute heavy Apache Spark jobs alongside BigQuery to power highly concurrent analytics workloads. Historically, bridging these systems often meant bu... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/querying-databricks-iceberg-tables-with-google-clouds-lakehouse/)<br>`cloud.google.com` |
 | `2026-10-28` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Near-zero downtime upgrades: Announcing Cloud SQL for MySQL blue-green deployments](https://cloud.google.com/blog/products/databases/cloud-sql-blue-green-deployments/)**<br>Keeping production databases on supported versions shouldn't require giving up your weekend. To stay secure, compliant, and with the best performance and newest AI capabilities, organizations need to run on the latest database engine versio... | [Google Cloud Blog](https://cloud.google.com/blog/products/databases/cloud-sql-blue-green-deployments/)<br>`cloud.google.com` |
 | `2026-10-28` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco IT's Endpoint Observability Strategy: Right-Sized Telemetry for Splunk Observability Cloud](https://blogs.cisco.com/cisco-on-cisco/cisco-its-endpoint-observability-strategy-right-sized-telemetry-for-splunk-observability-cloud)**<br>Learn how Cisco IT reduced endpoint telemetry volume by 75% using Splunk Observability Cloud. Discover a right-sized strategy to improve digital resilience and troubleshooting efficiency while keeping data footprints sustainable at scale. | [Cisco Blogs](https://blogs.cisco.com/cisco-on-cisco/cisco-its-endpoint-observability-strategy-right-sized-telemetry-for-splunk-observability-cloud)<br>`blogs.cisco.com` |
 | `2026-10-28` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco AI Defense joins ServiceNow's Control Tower Alliance](https://blogs.cisco.com/ai/cisco-ai-defense-joins-servicenows-control-tower-alliance)**<br>If you govern AI in ServiceNow, Cisco AI Defense is the security engine you plug in, and it already works today. Now Cisco joins the Control Tower Alliance as a founding member to build on it. | [Cisco Blogs](https://blogs.cisco.com/ai/cisco-ai-defense-joins-servicenows-control-tower-alliance)<br>`blogs.cisco.com` |
@@ -220,7 +223,6 @@
 | `2024-04-29` | **GitHub** | Tech Development | `Developer Tooling` | **[GitHub Copilot Workspace: Task-Centric Agent Environment for Pull Requests](https://github.blog/news-insights/product-news/github-copilot-workspace/)**<br>GitHub Next unveiled GitHub Copilot Workspace, enabling autonomous multi-file code plan generation, integrated test runs, and semantic PR reviews directly in browser sessions. | [GitHub Engineering Blog](https://github.blog/news-insights/product-news/github-copilot-workspace/)<br>`github.blog` |
 | `2024-06-18` | **Cisco** | Research & AI | `Quantum Research` | **[Cisco Research: Quantum Entanglement Distribution in Distributed Computing Networks](https://blogs.cisco.com/tag/cisco-research)**<br>Cisco Research published quantum networking testbed results demonstrating high-fidelity photon entanglement routing over standard optical fiber alongside terabit IP traffic. | [Cisco Research & Technology Blogs](https://blogs.cisco.com/tag/cisco-research)<br>`blogs.cisco.com` |
 | `2024-08-13` | **Linux Foundation / CNCF** | Tech Development | `Open Source Core` | **[Kubernetes 1.31 'Elli' Released: AppArmor GA and DRA Structured Parameters](https://www.linuxfoundation.org/news)**<br>The CNCF and Kubernetes community published release 1.31, promoting AppArmor support to GA, stabilizing memory cgroup v2 metrics, and introducing dynamic resource allocation parameters. | [Linux Foundation & CNCF Newsroom](https://www.linuxfoundation.org/news)<br>`linuxfoundation.org` |
-| `2024-03-27` | **Databricks** | Research & AI | `MoE Architecture` | **[Databricks DBRX: Open Mixture-of-Experts Architecture for Enterprise SQL & Code](https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm)**<br>Databricks Mosaic AI released DBRX, a 132B parameter MoE architecture (36B active) trained on 12T tokens with fine-grained 16-expert routing, outperforming GPT-3.5 on code evaluation. | [Databricks Engineering Blog](https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm)<br>`databricks.com` |
 
 </details>
 
@@ -726,4 +728,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-29 10:39 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-29 18:12 UTC`.*
