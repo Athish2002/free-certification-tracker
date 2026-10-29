@@ -129,7 +129,7 @@ DISALLOWED_PR_PATTERNS = [
     r"\bon my first day\b", r"\branking\b", r"\bhonors\b",
     r"\bcostumer\b", r"\bwinner\b", r"\bchannel\b", r"\bsponsor\b",
     r"\byou asked for more money\b", r"\bapac innovation awards\b",
-    r"\bcongratulates\b", r"\bfinalists?\b"
+    r"\bcongratulates\b", r"\bfinalists?\b", r"\bonderzoek\b"
 ]
 
 

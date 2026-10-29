@@ -808,6 +808,25 @@ async def run_inspection_async(
                     }
 
                 # Update definitive statuses
+                consecutive_failures = offer.get("consecutive_failures", 0)
+
+                # Two-Strike Invariant (P1): Transient network/DOM blips enter grace period on Strike 1
+                if old_status == "Active" and new_status in ["Review Needed", "Broken Link", "Server Error", "Registrations Closed"]:
+                    if consecutive_failures < 1:
+                        # Strike 1: Preserve Active, activate grace period, do not trigger false alarm status changes
+                        offer["consecutive_failures"] = 1
+                        offer["in_grace_period"] = True
+                        new_status = "Active"
+                        reason = f"Strike 1 (Grace Period): Transient check issue encountered ({reason}). Verifying in next pass."
+                        logger.warning("Strike 1 for '%s': Entering grace period without flipping status.", title)
+                    else:
+                        # Strike 2: Confirmed degradation across consecutive scheduled passes
+                        offer["consecutive_failures"] = consecutive_failures + 1
+                        offer.pop("in_grace_period", None)
+                elif new_status == "Active":
+                    offer["consecutive_failures"] = 0
+                    offer.pop("in_grace_period", None)
+
                 if new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed", "Server Error"]:
                     offer["status"] = new_status
                     offer["verification_date"] = today

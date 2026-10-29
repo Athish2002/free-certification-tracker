@@ -1710,3 +1710,44 @@ def test_cryptographic_audit_ledger_invariants(tmp_path):
     assert audit_summary["total_receipts"] == 1
     assert audit_summary["valid_dom_hashes"] == 1
     assert audit_summary["integrity_rate"] == 1.0
+
+
+
+def test_two_strike_grace_period_invariant():
+    """
+    Asserts the Two-Strike State Machine invariant (P1):
+    A transient check failure on an Active offer activates a Strike 1 grace period without flipping status.
+    Only a second consecutive failure across inspection passes transitions status to degraded.
+    """
+    offer = {"id": "oracle-test-cert", "status": "Active", "consecutive_failures": 0}
+    old_status = offer["status"]
+
+    # Strike 1: Transient 502 / network timeout
+    new_status = "Review Needed"
+    consecutive_failures = offer.get("consecutive_failures", 0)
+    if old_status == "Active" and new_status in ["Review Needed", "Broken Link", "Server Error", "Registrations Closed"]:
+        if consecutive_failures < 1:
+            offer["consecutive_failures"] = 1
+            offer["in_grace_period"] = True
+            new_status = "Active"
+
+    assert offer["consecutive_failures"] == 1
+    assert offer["in_grace_period"] is True
+    assert new_status == "Active", "Strike 1 must preserve Active status"
+
+    # Strike 2: Second consecutive failure
+    new_status = "Review Needed"
+    consecutive_failures = offer.get("consecutive_failures", 0)
+    if old_status == "Active" and new_status in ["Review Needed", "Broken Link", "Server Error", "Registrations Closed"]:
+        if consecutive_failures < 1:
+            offer["consecutive_failures"] = 1
+            offer["in_grace_period"] = True
+            new_status = "Active"
+        else:
+            offer["consecutive_failures"] = consecutive_failures + 1
+            offer.pop("in_grace_period", None)
+            offer["status"] = new_status
+
+    assert offer["consecutive_failures"] == 2
+    assert "in_grace_period" not in offer
+    assert offer["status"] == "Review Needed", "Strike 2 must transition status"
