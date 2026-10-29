@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-29T05:04:44.208721+00:00",
-  "last_sync": "2026-10-29T05:04:44.208721+00:00",
+  "last_updated": "2026-10-29T08:56:04.730793+00:00",
+  "last_sync": "2026-10-29T08:56:04.730793+00:00",
   "news": [
+    {
+      "id": "red-hat-red-hat-onderzoek-legt-kloof-b",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat-onderzoek legt kloof bloot tussen vertrouwen in AI-beveiliging en zicht op de software supply chain bij Belgische bedrijven",
+      "summary": "Red Hat, wereldwijd marktleider in open source-oplossingen, maakt de resultaten bekend van een onderzoek naar AI-adoptie en risicobeheer bij bedrijven. Daarvoor werden 1.400 CIO's in 14 landen bevraagd, waaronder 100 in België. Uit het onde...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-onderzoek-legt-kloof-bloot-tussen-vertrouwen-ai-beveiliging-en-zicht-op-de-software-supply-chain-bij-belgische-bedrijven",
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "7698466a1188547a59d402c5e72900ae7f1313ff574d02e4353fdc21f3a50e5f"
+    },
+    {
+      "id": "red-hat-onderzoek-red-hat-onthult-blin",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Onderzoek Red Hat onthult blinde vlekken in de software supply chain van bedrijven",
+      "summary": "Red Hat, wereldwijd marktleider in enterprise open source-oplossingen, maakt vandaag de resultaten bekend van een onderzoek naar de adoptie van kunstmatige intelligentie (AI) en risicobeheer binnen bedrijven. Voor het onderzoek zijn 1.400 C...",
+      "published_date": "2026-10-27",
+      "date": "2026-10-27",
+      "url": "https://www.redhat.com/en/about/press-releases/onderzoek-red-hat-onthult-blinde-vlekken-de-software-supply-chain-van-bedrijven",
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "a7b66deb987126fb3849eb0c97df0791c693da9a64428211db8e5bec29ecc99a"
+    },
     {
       "id": "google-cloud-near-zero-downtime-upgrades-a",
       "company": "Google Cloud",
@@ -1372,63 +1400,7 @@
       "impact_badge": "MoE Architecture",
       "date": "2024-03-27",
       "content_fingerprint": "ff1b4b6f0a9a0b71dbea151d3732d24b2e2788eb8f31dd9d99c5f36ed2ce6c8d"
-    },
-    {
-      "id": "snowflake-apache-iceberg-ga",
-      "company": "Snowflake",
-      "source": "Snowflake Engineering Blog",
-      "source_domain": "snowflake.com",
-      "category": "Tech Development",
-      "title": "Snowflake Iceberg Tables GA: Open Parquet Storage with Snowflake Query Engine",
-      "summary": "Snowflake announced the general availability of Apache Iceberg Tables, allowing customers to keep data in customer-managed external S3/ADLS/GCS buckets with full governance.",
-      "published_date": "2024-06-04",
-      "url": "https://www.snowflake.com/blog/",
-      "impact_badge": "Open Data Lake",
-      "date": "2024-06-04",
-      "content_fingerprint": "86a3c4cf36adbcc8f7fe7c064c4315057aa8081c8bb764334ffbe1d3d145c259"
-    },
-    {
-      "id": "msft-cloud-earnings-q4",
-      "company": "Microsoft Azure",
-      "source": "Microsoft Investor Relations",
-      "source_domain": "microsoft.com",
-      "category": "Enterprise & Financials",
-      "title": "Microsoft Cloud Annual Revenue Exceeds $137 Billion: Azure Growth at 29%",
-      "summary": "Microsoft reported fiscal year-end results with Microsoft Cloud revenue reaching $137.4B (+23% YoY), driven by Azure infrastructure scaling and enterprise generative AI seat expansions.",
-      "published_date": "2024-07-30",
-      "url": "https://www.microsoft.com/en-us/Investor/earnings/FY-24-Q4/press-release-webcast",
-      "impact_badge": "Earnings Report",
-      "date": "2024-07-30",
-      "content_fingerprint": "6a27333fc2b81669df44c3cc1a598d6d7c91960066adc5daa1dad10911acdeaa"
-    },
-    {
-      "id": "aws-liquid-cooling-ai-clusters",
-      "company": "Amazon Web Services",
-      "source": "AWS Architecture Blog",
-      "source_domain": "aws.amazon.com",
-      "category": "Infrastructure & Silicon",
-      "title": "AWS Data Center Architecture: Deploying Direct-to-Chip Liquid Cooling for Trn2",
-      "summary": "AWS revealed engineering details of its next-gen direct-to-chip liquid cooling deployments for Trainium2 server racks, reducing PUE to 1.15 in high-density accelerator facilities.",
-      "published_date": "2024-08-20",
-      "url": "https://aws.amazon.com/blogs/architecture/",
-      "impact_badge": "Data Center Thermal",
-      "date": "2024-08-20",
-      "content_fingerprint": "8e289909fd668223a95429ce9d4e7f9cf0210d21cdf302579d7dc94c24fb9a93"
-    },
-    {
-      "id": "cisco-splunk-appdynamics-telemetry",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Cisco Completes Splunk Integration: Real-Time OpenTelemetry Pipeline GA",
-      "summary": "Cisco announced native interoperability between Cisco ThousandEyes, AppDynamics, and Splunk, delivering a unified OpenTelemetry data layer across multi-cloud network edges.",
-      "published_date": "2024-06-05",
-      "url": "https://blogs.cisco.com/news",
-      "impact_badge": "Observability Pipeline",
-      "date": "2024-06-05",
-      "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 102
+  "total_items": 100
 }
