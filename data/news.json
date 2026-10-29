@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-28T20:55:01.095765+00:00",
-  "last_sync": "2026-10-28T20:55:01.095765+00:00",
+  "last_updated": "2026-10-29T05:04:44.208721+00:00",
+  "last_sync": "2026-10-29T05:04:44.208721+00:00",
   "news": [
+    {
+      "id": "google-cloud-near-zero-downtime-upgrades-a",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Near-zero downtime upgrades: Announcing Cloud SQL for MySQL blue-green deployments",
+      "summary": "Keeping production databases on supported versions shouldn’t require giving up your weekend. To stay secure, compliant, and with the best performance and newest AI capabilities, organizations need to run on the latest database engine versio...",
+      "published_date": "2026-10-28",
+      "date": "2026-10-28",
+      "url": "https://cloud.google.com/blog/products/databases/cloud-sql-blue-green-deployments/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "1d7465f895efb06cf18e054bdb08e9c096dc2b27db2b7a2f77f6fb859b5ae6b9"
+    },
     {
       "id": "red-hat-umfrage-von-red-hat-zeigt-blin",
       "company": "Red Hat",
@@ -1584,5 +1598,5 @@
       "content_fingerprint": "12336e0cf633f72d2886cb431d083a18d0a82ce8b23c3d5d3ee38f99b426ade9"
     }
   ],
-  "total_items": 113
+  "total_items": 114
 }
