@@ -322,3 +322,62 @@ class TestDOMInspectorScreenshotIntegration:
                     target_path.unlink()
                 except Exception:
                     pass
+
+
+class TestBlankScreenshotShield:
+    """Verifies that blank, single-color, and unhydrated screenshots are detected and shielded."""
+
+    def test_blank_white_image_detected(self):
+        from src.visual_hasher import is_blank_or_invalid_screenshot
+        # Pure white image
+        white_img = Image.new("RGB", (1280, 800), (255, 255, 255))
+        buf = io.BytesIO()
+        white_img.save(buf, format="PNG")
+        white_bytes = buf.getvalue()
+
+        assert is_blank_or_invalid_screenshot(white_img) is True
+        assert is_blank_or_invalid_screenshot(white_bytes) is True
+
+    def test_substantive_image_passes(self):
+        from src.visual_hasher import is_blank_or_invalid_screenshot
+        data = _generate_png_bytes(seed=777)
+        assert is_blank_or_invalid_screenshot(data) is False
+
+    def test_capture_screenshot_preserves_substantive_when_candidate_is_blank(self):
+        """DOMInspector must preserve existing substantive screenshot if newly captured screenshot is blank."""
+        from src.visual_hasher import is_blank_or_invalid_screenshot
+        # Create a valid substantive existing screenshot
+        substantive_data = _generate_png_bytes(seed=888)
+        screenshots_dir = Path("docs/screenshots")
+        screenshots_dir.mkdir(parents=True, exist_ok=True)
+        target_path = screenshots_dir / "synthetic-blank-shield-test.png"
+        target_path.write_bytes(substantive_data)
+        initial_bytes = target_path.read_bytes()
+
+        # Simulate crawler returning a blank white page
+        white_img = Image.new("RGB", (1280, 800), (255, 255, 255))
+        buf = io.BytesIO()
+        white_img.save(buf, format="PNG")
+        blank_bytes = buf.getvalue()
+
+        mock_page = MagicMock()
+        mock_page.evaluate.return_value = "Blank or loading text"
+        mock_page.screenshot.return_value = blank_bytes
+
+        inspector = HeadlessDOMInspector(headless=True)
+        try:
+            ok, path = inspector.capture_screenshot(
+                page=mock_page,
+                offer_id="synthetic-blank-shield-test",
+                old_status="Active",
+                new_status="Active"
+            )
+            assert ok is True
+            # Verify file on disk was preserved and NOT overwritten by the blank image
+            assert target_path.read_bytes() == initial_bytes
+        finally:
+            if target_path.exists():
+                try:
+                    target_path.unlink()
+                except Exception:
+                    pass

@@ -718,6 +718,74 @@ def match_badge_phash(
         return False
 
 
+def is_blank_or_invalid_screenshot(
+    image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+    min_size_bytes: int = 6000,
+    min_std_dev: float = 2.0,
+    min_unique_colors: int = 4,
+) -> bool:
+    """
+    Detects whether a screenshot is blank, solid color, corrupt, unhydrated, or a loading spinner.
+
+    Invariants:
+    1. Returns True if image_input is None, empty, unreadable, or not a valid image.
+    2. Returns True if file/byte payload is under min_size_bytes (e.g. blank 1280x800 white PNGs are ~4.7KB;
+       authentic captured web viewports are >= 12KB).
+    3. Returns True if viewport dimensions are smaller than 100x100.
+    4. Returns True if pixel value standard deviation is below min_std_dev (indicates single-color or near-blank canvas).
+    5. Returns True if the palette contains min_unique_colors or fewer distinct colors.
+    6. Returns False ONLY for substantive, authentic web page captures.
+    """
+    if image_input is None:
+        return True
+
+    # 1. Fast byte-level and file-level checks
+    if isinstance(image_input, (str, Path)):
+        p = Path(image_input)
+        if not p.exists() or not p.is_file():
+            return True
+        try:
+            sz = p.stat().st_size
+            if sz < 4096:
+                return True
+            with open(p, "rb") as f:
+                header = f.read(8)
+            if header != b"\x89PNG\r\n\x1a\n":
+                return True
+            if sz < min_size_bytes:
+                return True
+        except Exception:
+            return True
+    elif isinstance(image_input, bytes):
+        if len(image_input) < 4096:
+            return True
+        if image_input[:8] != b"\x89PNG\r\n\x1a\n":
+            return True
+        if len(image_input) < min_size_bytes:
+            return True
+
+    # 2. Pixel entropy and variance checks via PIL + NumPy
+    try:
+        img = PerceptualHashEngine._open_image(image_input)
+        if img.width < 100 or img.height < 100:
+            return True
+
+        arr = np.asarray(img)
+        # Check standard deviation across all pixels and channels
+        std = float(np.std(arr))
+        if std < min_std_dev:
+            return True
+
+        # Check unique colors count
+        colors = img.getcolors(maxcolors=16)
+        if colors is not None and len(colors) <= min_unique_colors:
+            return True
+
+        return False
+    except Exception:
+        return True
+
+
 def should_skip_screenshot_write(
     new_image: Union[str, Path, bytes, BinaryIO, Image.Image],
     existing_screenshot_path: Union[str, Path],

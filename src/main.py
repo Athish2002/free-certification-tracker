@@ -300,9 +300,10 @@ def run_pipeline(
                 json.dump({"total_candidates": len(leads), "leads": leads}, f, indent=2)
 
     # 2. Autonomous Candidate Vetting Loop
+    promoted_count, rejected_count = 0, 0
     if not dry_run:
         logger.info("Evaluating candidate leads against dual visual ground-truth gate...")
-        ingest_and_vet_candidates()
+        promoted_count, rejected_count = ingest_and_vet_candidates()
 
     if vet_only:
         logger.info("Vet-only requested. Skipping full site inspection and build.")
@@ -310,8 +311,9 @@ def run_pipeline(
         return
 
     # 3. Deep site inspection & self-healing recovery engine
+    healed_count = 0
     if not skip_inspection and not dry_run:
-        run_self_healing_refresh(use_headless=True)
+        healed_count, _ = run_self_healing_refresh(use_headless=True)
     elif dry_run:
         logger.info("[DRY RUN] Skipping Playwright DOM inspection.")
 
@@ -323,24 +325,49 @@ def run_pipeline(
         if DATA_FILE.exists():
             with open(DATA_FILE, "r", encoding="utf-8") as f:
                 o_data = json.load(f)
+            initial_offers = o_data.get("offers", [])
+            corrections_applied = 0
             try:
                 with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                    future = executor.submit(audit_and_enrich_offers, o_data.get("offers", []), strict_enforcement=True)
+                    future = executor.submit(audit_and_enrich_offers, initial_offers, strict_enforcement=True)
                     enriched, summary = future.result(timeout=30.0)
                 o_data["offers"] = enriched
-                logger.info(f"Truth Oracle corroboration complete: {summary['corrections_applied']} corrections applied.")
+                corrections_applied = summary.get("corrections_applied", 0)
+                logger.info(f"Truth Oracle corroboration complete: {corrections_applied} corrections applied.")
             except (concurrent.futures.TimeoutError, TimeoutError):
                 logger.error("Truth Oracle corroboration timed out after 30 seconds. Marking oracle_timeout on offers.")
                 for off in o_data.get("offers", []):
                     off["oracle_timeout"] = True
-            now_iso = datetime.now(timezone.utc).isoformat()
-            o_data["last_truth_corroborated"] = now_iso
-            o_data["last_sync"] = now_iso
-            o_data["last_updated"] = now_iso
-            temp_o = DATA_FILE.with_suffix(".tmp")
-            with open(temp_o, "w", encoding="utf-8") as f:
-                json.dump(o_data, f, indent=2)
-            temp_o.replace(DATA_FILE)
+                corrections_applied = 1
+
+            # Substantive change check: only mutate on-disk data if statuses, urls, prices, or policies changed
+            def _has_substantive_changes(old_list, new_list):
+                if len(old_list) != len(new_list):
+                    return True
+                keys = ("id", "status", "url", "direct_verified_url", "verified_vendor_url", "price", "inspection_notes")
+                old_map = {o["id"]: {k: o.get(k) for k in keys} for o in old_list if "id" in o}
+                new_map = {o["id"]: {k: o.get(k) for k in keys} for o in new_list if "id" in o}
+                return old_map != new_map
+
+            has_changes = (
+                promoted_count > 0 or
+                healed_count > 0 or
+                corrections_applied > 0 or
+                _has_substantive_changes(initial_offers, o_data.get("offers", []))
+            )
+
+            if has_changes:
+                now_iso = datetime.now(timezone.utc).isoformat()
+                o_data["last_truth_corroborated"] = now_iso
+                o_data["last_sync"] = now_iso
+                o_data["last_updated"] = now_iso
+                temp_o = DATA_FILE.with_suffix(".tmp")
+                with open(temp_o, "w", encoding="utf-8") as f:
+                    json.dump(o_data, f, indent=2)
+                temp_o.replace(DATA_FILE)
+                logger.info("Saved updated offers data to disk (substantive changes detected).")
+            else:
+                logger.info("No substantive offer changes detected; preserved on-disk data to eliminate git churn.")
 
     # 3.6 Compact and rotate audit ledger
     if not dry_run:

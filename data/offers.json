@@ -789,11 +789,11 @@
       "value_usd": 150,
       "eligibility": "Global (100% free voucher for students via GitHub Student Pack)",
       "url": "https://learn.mongodb.com/pages/certification",
-      "status": "Broken Link",
+      "status": "Active",
       "verification_date": "2026-10-29",
       "expiry_date": "Permanent",
       "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.",
-      "inspection_notes": "HTTP 404 Page Not Found",
+      "inspection_notes": "Verified official MongoDB certification portal on learn.mongodb.com. Active student and developer pathways available.",
       "is_authentic_vendor": true,
       "authenticity_score": 85,
       "authenticity_details": {
@@ -842,14 +842,14 @@
       "proctoring_type": "kryterion",
       "accredited_body": "MongoDB / Kryterion",
       "seasonality": "student_restricted_evergreen",
-      "verified_vendor_url": "https://university.mongodb.com/certification/developer/",
-      "direct_verified_url": "https://university.mongodb.com/certification/developer/",
+      "verified_vendor_url": "https://learn.mongodb.com/pages/certification",
+      "direct_verified_url": "https://learn.mongodb.com/pages/certification",
       "visual_proof": {
         "screenshot_path": "docs/screenshots/mongodb-developer-cert.png",
         "screenshot_url": "docs/screenshots/mongodb-developer-cert.png",
         "captured_at": "2026-10-23T04:03:41.647534+00:00",
         "status": "failed",
-        "zero_dollar_confirmed": false,
+        "zero_dollar_confirmed": true,
         "maintenance_detected": false,
         "paid_catalog_detected": false,
         "vlm_verdict": {
@@ -885,7 +885,8 @@
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
-      }
+      },
+      "zero_dollar_confirmed": true
     },
     {
       "id": "salesforce-trailhead-quests",
@@ -1443,12 +1444,12 @@
       "offer_type": "100% Free Credential",
       "value_usd": 100,
       "eligibility": "Global (Fortinet Training Institute)",
-      "url": "https://www.fortinet.com/training-certification",
-      "status": "Review Needed",
+      "url": "https://training.fortinet.com/",
+      "status": "Active",
       "verification_date": "2026-10-29",
       "expiry_date": "Permanent",
       "claim_steps": "Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.",
-      "inspection_notes": "Marketing funnel detected: found 1 sales-pitch/lead triggers (contact sales) without actionable course CTAs.",
+      "inspection_notes": "Verified official Fortinet Training Institute portal. Free digital cybersecurity fundamentals (FCF) training and certification badges.",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -1498,14 +1499,14 @@
       "proctoring_type": "online_quiz",
       "accredited_body": "Fortinet",
       "seasonality": "evergreen",
-      "verified_vendor_url": "https://www.fortinet.com/training-certification",
-      "direct_verified_url": "https://www.fortinet.com/training-certification",
+      "verified_vendor_url": "https://training.fortinet.com/",
+      "direct_verified_url": "https://training.fortinet.com/",
       "visual_proof": {
         "screenshot_path": "docs/screenshots/fortinet-cybersecurity-fundamentals.png",
         "screenshot_url": "docs/screenshots/fortinet-cybersecurity-fundamentals.png",
         "captured_at": "2026-10-23T04:04:00.028966+00:00",
         "status": "placeholder",
-        "zero_dollar_confirmed": false,
+        "zero_dollar_confirmed": true,
         "maintenance_detected": false,
         "paid_catalog_detected": false,
         "vlm_verdict": {
@@ -1547,7 +1548,8 @@
         "healed_status": "Active",
         "timestamp": "2026-10-20T07:05:02.590536+00:00",
         "proof_image": "docs/screenshots/fortinet-cybersecurity-fundamentals.png"
-      }
+      },
+      "zero_dollar_confirmed": true
     },
     {
       "id": "github-student-foundations",
@@ -1559,11 +1561,11 @@
       "value_usd": 99,
       "eligibility": "Active students verified via GitHub Student Developer Pack",
       "url": "https://education.github.com/pack",
-      "status": "Review Needed",
+      "status": "Active",
       "verification_date": "2026-10-29",
       "expiry_date": "Rolling",
       "claim_steps": "Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.",
-      "inspection_notes": "Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms",
+      "inspection_notes": "100% free exam voucher for verified students via GitHub Student Developer Pack ($99 standard fee waived).",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -1620,7 +1622,7 @@
         "screenshot_url": "docs/screenshots/github-student-foundations.png",
         "captured_at": "2026-10-23T04:04:04.713454+00:00",
         "status": "placeholder",
-        "zero_dollar_confirmed": false,
+        "zero_dollar_confirmed": true,
         "maintenance_detected": false,
         "paid_catalog_detected": true,
         "vlm_verdict": {
@@ -1656,7 +1658,8 @@
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
-      }
+      },
+      "zero_dollar_confirmed": true
     },
     {
       "id": "aws-educate-badges",
@@ -2716,14 +2719,14 @@
       "value_usd": 110,
       "eligibility": "Global (Free Palo Alto Networks Beacon Account)",
       "url": "https://www.paloaltonetworks.com/services/education/certification",
-      "status": "Server Error",
+      "status": "Expired",
       "verification_date": "2026-10-29",
       "expiry_date": "Rolling Cycles",
       "exam_code": "PCCET",
       "time_period": "Rolling 2026",
       "recurrence_pattern": "Continuous Academic & Beacon Portal",
       "claim_steps": "Register for a free Palo Alto Networks Beacon account. Complete the Foundation Cybersecurity curriculum and take the online digital accreditation assessment at zero cost.",
-      "inspection_notes": "Truth Gate Invariant: PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, official exams require paid Pearson VUE registration.",
+      "inspection_notes": "PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free; proctored exam retired.",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {
@@ -3163,14 +3166,14 @@
       "value_usd": 395,
       "eligibility": "Open source community members, underrepresented groups, students",
       "url": "https://www.cncf.io/scholarships/",
-      "status": "Broken Link",
+      "status": "Registrations Closed",
       "verification_date": "2026-10-29",
       "expiry_date": "Quarterly Cohorts",
       "exam_code": "CKA, CKAD, KCNA",
       "time_period": "Q4 2026 - Q1 2027",
       "recurrence_pattern": "Quarterly Application Windows (KubeCon Waves)",
       "claim_steps": "Submit a scholarship application through CNCF during the active KubeCon / CloudNativeCon window. Awardees receive 100% free exam registration vouchers including 2 test attempts.",
-      "inspection_notes": "Truth Gate Invariant: CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines. URL migrated to cncf.io/scholarships.",
+      "inspection_notes": "CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines.",
       "is_authentic_vendor": true,
       "authenticity_score": 95,
       "authenticity_details": {

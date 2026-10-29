@@ -617,18 +617,19 @@ class HeadlessDOMInspector:
                 header = temp_path.read_bytes()[:8]
                 if header == b"\x89PNG\r\n\x1a\n":
                     new_size = temp_path.stat().st_size
-                    # Anti-spinner protection: never overwrite an existing rich screenshot (>= 30KB)
-                    # with a tiny blank/loading spinner capture (< 18KB)
-                    if target_path.exists() and target_path.stat().st_size >= 30000 and new_size < 18000:
-                        logger.info(f"Preserving existing substantive screenshot for {offer_id} ({target_path.stat().st_size} bytes vs {new_size} bytes)")
-                        try:
-                            temp_path.unlink()
-                        except Exception:
-                            pass
-                        return True, rel_path
+                    from src.visual_hasher import is_blank_or_invalid_screenshot, should_skip_screenshot_write
+                    # Anti-blank & anti-spinner protection: never overwrite an existing rich screenshot
+                    # with a blank, unhydrated, or tiny loading spinner capture
+                    if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
+                        if is_blank_or_invalid_screenshot(temp_path) or (target_path.stat().st_size >= 30000 and new_size < 18000):
+                            logger.info(f"Preserving existing substantive screenshot for {offer_id} ({target_path.stat().st_size} bytes vs {new_size} bytes / blank={is_blank_or_invalid_screenshot(temp_path)})")
+                            try:
+                                temp_path.unlink()
+                            except Exception:
+                                pass
+                            return True, rel_path
 
                     # Check perceptual hash delta skipping
-                    from src.visual_hasher import should_skip_screenshot_write
                     should_skip, delta, dist = should_skip_screenshot_write(
                         screenshot_bytes or temp_path, target_path, old_status, new_status
                     )

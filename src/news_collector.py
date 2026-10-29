@@ -123,6 +123,28 @@ BANNED_CLICKBAIT_PATTERNS = [
     r"\bdestroy\b", r"\bmind blowing\b", r"\bexposed\b", r"\bviral\b"
 ]
 
+DISALLOWED_PR_PATTERNS = [
+    r"\bumfrage\b", r"\bétude\b", r"\brecognizes\b", r"\bawards?\b",
+    r"\bpartner\b", r"\bfinancial results\b", r"\bquarterly\b",
+    r"\bon my first day\b", r"\branking\b", r"\bhonors\b",
+    r"\bcostumer\b", r"\bwinner\b", r"\bchannel\b", r"\bsponsor\b",
+    r"\byou asked for more money\b", r"\bapac innovation awards\b",
+    r"\bcongratulates\b", r"\bfinalists?\b"
+]
+
+
+def normalize_news_text(s: str) -> str:
+    """Normalizes typography and cleans unicode artifacts for cross-platform stability."""
+    if not s:
+        return ""
+    s = s.replace("\u2019", "'").replace("\u2018", "'")
+    s = s.replace("\u201c", '"').replace("\u201d", '"')
+    s = s.replace("\u2013", "-").replace("\u2014", "-")
+    s = s.replace("\u2026", "...")
+    s = s.replace("\ufffd", "").replace(chr(65533), "")
+    return " ".join(s.strip().split())
+
+
 def compute_news_fingerprint(title: str, domain: str = "") -> str:
     """Computes a deterministic content fingerprint (SHA-256) of normalized title and domain."""
     norm_title = " ".join(title.lower().strip().split())
@@ -222,9 +244,19 @@ def fetch_feed_entries(feed_info: Dict[str, Any], max_items: int = 3) -> List[Di
                 
                 iso_date = parse_feed_date(pub_date)
                 
+                title = normalize_news_text(title)
+                clean_desc = normalize_news_text(clean_desc)
+
                 # Verification Gates:
                 content = f"{title} {clean_desc}".lower()
-                if not title or not link or not is_clean_headline(title) or any(re.search(pat, content) for pat in BANNED_CLICKBAIT_PATTERNS):
+                if not title or not link or not is_clean_headline(title):
+                    continue
+                if any(re.search(pat, content) for pat in BANNED_CLICKBAIT_PATTERNS):
+                    continue
+                if any(re.search(pat, content) for pat in DISALLOWED_PR_PATTERNS):
+                    continue
+                # Ensure clean English typography (reject foreign press releases)
+                if len(title) > 0 and (sum(1 for c in title if ord(c) < 128) / len(title)) < 0.95:
                     continue
                 
                 # Assert domain is authentic
@@ -311,15 +343,22 @@ def update_news_feed(news_file: Optional[Union[str, Path]] = None) -> List[Dict[
                 new_added += 1
                 logger.info(f"[NEW INTELLIGENCE] [{it['company']}] {it['title'][:50]}...")
                 
-    now_iso = datetime.now(timezone.utc).isoformat()
-    data["last_updated"] = now_iso
-    data["last_sync"] = now_iso
+    # Cap stored news items to the top 20 freshest items
+    existing_news = existing_news[:100]
     data["news"] = existing_news
     data["total_items"] = len(existing_news)
-    
-    save_news_feed(data, target_file)
+
+    # Git churn defense: only touch disk file if new items were actually added or file was missing
+    if new_added > 0 or not target_file.exists():
+        now_iso = datetime.now(timezone.utc).isoformat()
+        data["last_updated"] = now_iso
+        data["last_sync"] = now_iso
+        save_news_feed(data, target_file)
+        logger.info(f"Saved {len(existing_news)} news items ({new_added} fresh) to {target_file}.")
+    else:
+        logger.info(f"No fresh news items found; preserved existing news timestamp to eliminate git churn.")
         
-    logger.info(f"=== News Feed Ingestion Complete: {len(existing_news)} total items ({new_added} fresh) ===")
+    logger.info(f"=== News Feed Ingestion Complete: {len(existing_news)} total items ===")
     return existing_news
 
 if __name__ == "__main__":

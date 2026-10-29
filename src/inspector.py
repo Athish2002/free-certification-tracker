@@ -562,22 +562,31 @@ async def run_inspection_async(
                             try:
                                 screenshot_bytes = await page.screenshot(full_page=False)
                                 if screenshot_bytes and len(screenshot_bytes) >= 4096 and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n":
-                                    from src.visual_hasher import should_skip_screenshot_write
-                                    should_skip, delta, dist = should_skip_screenshot_write(
-                                        screenshot_bytes, target_path, old_status, old_status
-                                    )
-                                    if should_skip:
-                                        logger.info(
-                                            f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
-                                            f"Skipped write for {target_path}."
+                                    from src.visual_hasher import is_blank_or_invalid_screenshot, should_skip_screenshot_write
+                                    if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
+                                        if is_blank_or_invalid_screenshot(screenshot_bytes) or (target_path.stat().st_size >= 30000 and len(screenshot_bytes) < 18000):
+                                            logger.info(
+                                                "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
+                                                offer_id
+                                            )
+                                            skipped_write = True
+                                            screenshot_ok = True
+                                    if not skipped_write:
+                                        should_skip, delta, dist = should_skip_screenshot_write(
+                                            screenshot_bytes, target_path, old_status, old_status
                                         )
-                                        skipped_write = True
-                                        screenshot_ok = True
-                                    else:
-                                        temp_path = target_path.with_suffix(".tmp.png")
-                                        temp_path.write_bytes(screenshot_bytes)
-                                        temp_path.replace(target_path)
-                                        screenshot_ok = True
+                                        if should_skip:
+                                            logger.info(
+                                                f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
+                                                f"Skipped write for {target_path}."
+                                            )
+                                            skipped_write = True
+                                            screenshot_ok = True
+                                        else:
+                                            temp_path = target_path.with_suffix(".tmp.png")
+                                            temp_path.write_bytes(screenshot_bytes)
+                                            temp_path.replace(target_path)
+                                            screenshot_ok = True
                                 elif target_path.exists() and target_path.stat().st_size >= 4096:
                                     screenshot_ok = True
                             except Exception as sc_err:
