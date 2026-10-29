@@ -710,12 +710,19 @@ async def run_inspection_async(
                         if new_status != "Active":
                             zero_dollar_confirmed = False
 
-                        # If status changed, ensure screenshot write is refreshed
+                        # If status changed, ensure screenshot write is refreshed only with a non-blank screenshot
                         if offer_id and new_status != old_status and screenshot_bytes:
-                            temp_path = target_path.with_suffix(".tmp.png")
-                            temp_path.write_bytes(screenshot_bytes)
-                            temp_path.replace(target_path)
-                            skipped_write = False
+                            from src.visual_hasher import is_blank_or_invalid_screenshot
+                            if not is_blank_or_invalid_screenshot(screenshot_bytes):
+                                temp_path = target_path.with_suffix(".tmp.png")
+                                temp_path.write_bytes(screenshot_bytes)
+                                temp_path.replace(target_path)
+                                skipped_write = False
+                            else:
+                                logger.warning(
+                                    "Status changed for %s, but candidate screenshot is blank/invalid. Preserving existing screenshot.",
+                                    offer_id
+                                )
 
                         canonical_url = final_url
                         if "Bot Protected" in reason or "HTTP Fallback" in reason or "Direct GET" in reason:
