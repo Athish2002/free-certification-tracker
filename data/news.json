@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-29T08:56:04.730793+00:00",
-  "last_sync": "2026-10-29T08:56:04.730793+00:00",
+  "last_updated": "2026-10-29T09:30:26.768406+00:00",
+  "last_sync": "2026-10-29T09:30:26.768406+00:00",
   "news": [
+    {
+      "id": "google-cloud-behind-the-scenes-two-months",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Behind the scenes, two months later: How we ship Google Agent Skills like products",
+      "summary": "In my previous post, I took you behind the scenes of Google Agent Skills, covering how the project started, how we maintain quality at scale, and how we handle governance. In this post, I'll share what we've built since then: the automated ...",
+      "published_date": "2026-10-28",
+      "date": "2026-10-28",
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/behind-the-scenes-two-months-later-how-we-ship-google-agent-skills-like-products/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "fe1af0477bd432e89e85d1830f71fc1e3e0581ebe17502911e91cbf96913fdca"
+    },
     {
       "id": "red-hat-red-hat-onderzoek-legt-kloof-b",
       "company": "Red Hat",
@@ -1386,20 +1400,6 @@
       "impact_badge": "Open Source Core",
       "date": "2024-08-13",
       "content_fingerprint": "c04f830430d93723a7872d573b4568a7d885ed0864843a0aa812bd292c64ac09"
-    },
-    {
-      "id": "databricks-dbrx-foundation-model",
-      "company": "Databricks",
-      "source": "Databricks Engineering Blog",
-      "source_domain": "databricks.com",
-      "category": "Research & AI",
-      "title": "Databricks DBRX: Open Mixture-of-Experts Architecture for Enterprise SQL & Code",
-      "summary": "Databricks Mosaic AI released DBRX, a 132B parameter MoE architecture (36B active) trained on 12T tokens with fine-grained 16-expert routing, outperforming GPT-3.5 on code evaluation.",
-      "published_date": "2024-03-27",
-      "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
-      "impact_badge": "MoE Architecture",
-      "date": "2024-03-27",
-      "content_fingerprint": "ff1b4b6f0a9a0b71dbea151d3732d24b2e2788eb8f31dd9d99c5f36ed2ce6c8d"
     }
   ],
   "total_items": 100
