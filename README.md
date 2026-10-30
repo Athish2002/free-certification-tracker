@@ -99,7 +99,7 @@
 <details>
 <summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 5 Opportunities)</b> — <i>Click to expand</i></summary>
 
-> Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 4 hours before retiring to the permanent archive.
+> Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 12 hours (twice daily) before retiring to the permanent archive.
 
 | Provider | Certification | Triage Status | Proof | Reason / Inspection Note |
 | :--- | :--- | :---: | :---: | :--- |
@@ -683,7 +683,7 @@ CertPulse enforces a strict four-layer authenticity and anti-fraud verification 
 
 ```mermaid
 flowchart TD
-    subgraph Ingest [1. Ingestion Engine - Every 4h]
+    subgraph Ingest [1. Ingestion Engine - Every 12h (Twice Daily)]
         A[Official Enterprise Engineering Feeds] --> C[GitHub Actions Runner]
         B[Community Candidate Feeds] --> C
     end

@@ -25,10 +25,20 @@ from src.builders.readme_builder import (
 )
 
 
+def escape_js_attr(val: Any) -> str:
+    """Escapes string for safe embedding inside single-quoted JavaScript literal in HTML attribute."""
+    s = str(val or "")
+    return s.replace("\\", "\\\\").replace("'", "\\'").replace('"', '&quot;').replace("<", "&lt;").replace(">", "&gt;")
+
+
 def generate_web_dashboard(
-    data: Union[Dict[str, Any], List[Dict[str, Any]]],
+    data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None,
     news_data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None,
     last_sync: Optional[str] = None,
+    offers: Optional[List[Dict[str, Any]]] = None,
+    news: Optional[List[Dict[str, Any]]] = None,
+    last_sync_iso: Optional[str] = None,
+    **kwargs: Any,
 ) -> str:
     """
     Generates a high-craft, single-page web dashboard:
@@ -41,8 +51,24 @@ def generate_web_dashboard(
     - Strict credential separation: primary written proctored exams on top, secondary unproctored badges in collapsible accordion.
     - Accessible Proof Modal Dialog with focus trapping and keyboard navigation.
     """
-    if news_data is None:
+    if data is None and offers is not None:
+        data = offers
+    elif data is None and "offers" in kwargs:
+        data = kwargs["offers"]
+    elif data is None:
+        data = []
+
+    if news_data is None and news is not None:
+        news_data = news
+    elif news_data is None and "news" in kwargs:
+        news_data = kwargs["news"]
+    elif news_data is None:
         news_data = load_news()
+
+    if last_sync is None and last_sync_iso is not None:
+        last_sync = last_sync_iso
+    elif last_sync is None and "last_sync_iso" in kwargs:
+        last_sync = kwargs["last_sync_iso"]
         
     offers: List[Dict[str, Any]] = (
         data if isinstance(data, list) else (data.get("offers", []) if isinstance(data, dict) else [])
@@ -102,7 +128,7 @@ def generate_web_dashboard(
         <div class="flex items-center gap-2 flex-wrap">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{STATUS_BADGES.get(o.get('status'), o.get('status'))}</span>
             <span class="text-[11px]" style="color: var(--fg-subtle);">{html_lib.escape(str(o.get('inspection_notes', 'Under continuous review')))}</span>
-            <button onclick="openProofModal('{html_lib.escape(str(o.get('id', '')))}')" class="px-2 py-0.5 rounded border text-[10px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96]" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
+            <button onclick="openProofModal('{escape_js_attr(o.get('id', ''))}')" class="px-2 py-0.5 rounded border text-[10px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96]" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
                 <span>📸 Proof</span>
             </button>
         </div>
@@ -293,7 +319,7 @@ def generate_web_dashboard(
                 <div class="p-4 sm:p-5 rounded-2xl border primer-card flex flex-col justify-between" id="heroCadenceCard">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Last Sync (4-TZ)</span>
-                        <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded" style="background-color: var(--accent-subtle); color: var(--accent-fg);">4-HOUR CRON</span>
+                        <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded" style="background-color: var(--accent-subtle); color: var(--accent-fg);">12-HOUR CRON</span>
                     </div>
                     <div class="mt-3">
                         <div class="text-xs sm:text-sm font-extrabold tracking-tight tabular-nums font-mono" style="color: var(--fg-default);">
@@ -466,7 +492,7 @@ def generate_web_dashboard(
                         <span class="text-xs transition-transform group-open:rotate-180" style="color: var(--fg-muted);">▼</span>
                     </summary>
                     <p class="text-xs mt-3 leading-relaxed" style="color: var(--fg-muted);">
-                        Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Re-audited automatically every 4 hours.
+                        Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Re-audited automatically every 12 hours (twice daily).
                     </p>
                     <div class="mt-4 divide-y border rounded-lg overflow-hidden text-xs" style="border-color: var(--border-default);">
                         {closed_offers_markup}

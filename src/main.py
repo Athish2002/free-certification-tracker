@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional, Set
 from datetime import datetime, timezone
 
+from src.io_utils import atomic_write_json
 from src.collector import fetch_reddit_leads, vet_candidates, vet_candidate_lead
 from src.inspector import run_inspection, inspect_offer
 from src.builder import build_all
@@ -25,6 +26,7 @@ logger = logging.getLogger("certpulse.main")
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT_DIR / "data" / "offers.json"
+SCHEMA_FILE = ROOT_DIR / "data" / "schema.json"
 CANDIDATES_FILE = ROOT_DIR / "data" / "candidates.json"
 SCREENSHOTS_DIR = ROOT_DIR / "docs" / "screenshots"
 
@@ -210,10 +212,15 @@ def ingest_and_vet_candidates(
             seen_promoted.add(norm_u)
             actually_promoted += 1
             
-        temp_offers = o_file.with_suffix(".tmp")
-        with open(temp_offers, "w", encoding="utf-8") as f:
-            json.dump(offers_data, f, indent=2)
-        temp_offers.replace(o_file)
+        now_iso = datetime.now(timezone.utc).isoformat()
+        if "last_updated" not in offers_data:
+            offers_data["last_updated"] = now_iso
+        if "$schema" not in offers_data:
+            offers_data["$schema"] = "./schema.json"
+        offers_data["total_offers"] = len(offers_data.get("offers", []))
+
+        schema_to_validate = SCHEMA_FILE if SCHEMA_FILE.exists() else None
+        atomic_write_json(o_file, offers_data, schema_path=schema_to_validate)
         
     # Persist updated vetting status and audit records to candidates.json
     cand_data["total_candidates"] = len(leads)
@@ -221,10 +228,7 @@ def ingest_and_vet_candidates(
     cand_data["vetted_promoted_count"] = promoted_count
     cand_data["vetted_rejected_count"] = rejected_count
     
-    temp_cand = c_file.with_suffix(".tmp")
-    with open(temp_cand, "w", encoding="utf-8") as f:
-        json.dump(cand_data, f, indent=2)
-    temp_cand.replace(c_file)
+    atomic_write_json(c_file, cand_data, schema_path=None)
     
     logger.info(
         f"Candidate vetting finished: {promoted_count} promoted to Active, "
@@ -361,10 +365,11 @@ def run_pipeline(
                 o_data["last_truth_corroborated"] = now_iso
                 o_data["last_sync"] = now_iso
                 o_data["last_updated"] = now_iso
-                temp_o = DATA_FILE.with_suffix(".tmp")
-                with open(temp_o, "w", encoding="utf-8") as f:
-                    json.dump(o_data, f, indent=2)
-                temp_o.replace(DATA_FILE)
+                if "$schema" not in o_data:
+                    o_data["$schema"] = "./schema.json"
+                o_data["total_offers"] = len(o_data.get("offers", []))
+                schema_to_validate = SCHEMA_FILE if SCHEMA_FILE.exists() else None
+                atomic_write_json(DATA_FILE, o_data, schema_path=schema_to_validate)
                 logger.info("Saved updated offers data to disk (substantive changes detected).")
             else:
                 logger.info("No substantive offer changes detected; preserved on-disk data to eliminate git churn.")
@@ -403,7 +408,7 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python -m src.main                    # Run full 4-hour pipeline (refresh, vet, build)
+  python -m src.main                    # Run full 12-hour pipeline (refresh, vet, build)
   python -m src.main --dry-run          # Dry-run pipeline without modifying data
   python -m src.main --vet-only         # Only execute autonomous candidate lead vetting
   python -m src.main --skip-leads       # Skip scraping Reddit feeds, run vetting on existing
