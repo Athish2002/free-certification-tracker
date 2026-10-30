@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-30T01:54:41.555994+00:00",
-  "last_sync": "2026-10-30T01:54:41.555994+00:00",
+  "last_updated": "2026-10-30T17:53:06.332880+00:00",
+  "last_sync": "2026-10-30T17:53:06.332880+00:00",
   "news": [
+    {
+      "id": "google-cloud-what-s-new-in-ai-infrastructur",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "What's new in AI infrastructure and orchestration in October",
+      "summary": "The Google Cloud AI Infrastructure team had another busy month in October, filled with new product launches and updates to power today's AI and agentic workloads scalably and efficiently. We were also honored to share our progress with cust...",
+      "published_date": "2026-10-30",
+      "date": "2026-10-30",
+      "url": "https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "c934a5a908be737f34f11129fb8a2233cd3059853a60f4679f53bc3a8458e590"
+    },
     {
       "id": "google-cloud-what-s-new-with-google-data-cl",
       "company": "Google Cloud",
@@ -1386,20 +1400,6 @@
       "impact_badge": "AI Systems",
       "date": "2024-05-14",
       "content_fingerprint": "c49d0b5248c22dfbf56d11e764ac85f7ea148947ea93f12a77119a6d45d9a875"
-    },
-    {
-      "id": "oracle-oci-cloud-growth-q1",
-      "company": "Oracle Cloud",
-      "source": "Oracle Investor Relations & SEC 10-Q",
-      "source_domain": "blogs.oracle.com",
-      "category": "Enterprise & Financials",
-      "title": "Oracle Q1 Financials: Cloud Infrastructure Revenue Surges 45% to $2.2 Billion",
-      "summary": "Oracle Corporation reported 45% year-over-year revenue growth in OCI IaaS to $2.2B, driven by multi-cloud contract expansions with AWS and Microsoft Azure for Oracle Database@Cloud.",
-      "published_date": "2024-09-09",
-      "url": "https://blogs.oracle.com/cloud-infrastructure/post/oracle-database-at-aws",
-      "impact_badge": "Cloud Financials",
-      "date": "2024-09-09",
-      "content_fingerprint": "424bf4c356204c02b61ed1f797583343d86447d4eb48fa0778b2683bfb7d3557"
     }
   ],
   "total_items": 100

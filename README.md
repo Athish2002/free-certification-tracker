@@ -29,7 +29,7 @@
 | **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-10-30 04:51 UTC` (10:21 IST • 00:51 EDT • 05:51 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-10-30 17:53 UTC` (23:23 IST • 13:53 EDT • 18:53 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 
 ---
@@ -123,6 +123,7 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2026-10-30` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[What's new in AI infrastructure and orchestration in October](https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/)**<br>The Google Cloud AI Infrastructure team had another busy month in October, filled with new product launches and updates to power today's AI and agentic workloads scalably and efficiently. We were also honored to share our progress with cust... | [Google Cloud Blog](https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/)<br>`cloud.google.com` |
 | `2026-10-29` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[What's new with Google Data Cloud](https://cloud.google.com/blog/products/data-analytics/whats-new-with-google-data-cloud/)**<br>October 19 - October 23 BigQuery introduces column aliases in GoogleSQL and cross-region table copy GAGoogleSQL in BigQuery now supports column aliases in SELECT and WHERE clauses (GA opt-in), avoiding nested subqueries and simplifying migr... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/whats-new-with-google-data-cloud/)<br>`cloud.google.com` |
 | `2026-10-29` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[How boAt delivers personalized fitness coaching with Amazon Bedrock](https://aws.amazon.com/blogs/architecture/how-boat-delivers-personalized-fitness-coaching-with-amazon-bedrock/)**<br>Learn how boAt built its AI Coach feature on Amazon Bedrock and AWS Lambda to deliver personalized, real-time fitness coaching to millions of smartwatch users across India, and the design choices that made the solution scalable and cost-eff... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/how-boat-delivers-personalized-fitness-coaching-with-amazon-bedrock/)<br>`aws.amazon.com` |
 | `2026-10-29` | **Amazon Web Services** | Infrastructure & Silicon | `Architecture RFC` | **[How BMW Group accelerated connected vehicle workloads on AWS Graviton](https://aws.amazon.com/blogs/architecture/how-bmw-group-accelerated-connected-vehicle-workloads-on-aws-graviton/)**<br>Learn how BMW Group migrated its connected vehicle platform from x86 to AWS Graviton. Using Karpenter, multi-architecture container builds, and Graviton-based CI/CD runners, the team moved workloads without disruption, cutting NGINX ingress... | [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/how-bmw-group-accelerated-connected-vehicle-workloads-on-aws-graviton/)<br>`aws.amazon.com` |
@@ -222,7 +223,6 @@
 | `2024-07-10` | **Amazon Web Services** | Infrastructure & Silicon | `Silicon Innovation` | **[AWS Graviton4 Processors: 30% Higher Compute Performance for Cloud Workloads](https://aws.amazon.com/blogs/aws/new-amazon-ec2-r8g-instances-powered-by-aws-graviton4-processors/)**<br>Amazon Web Services announced the general availability of Graviton4-based R8g instances, delivering up to 30% better compute performance and 75% more memory bandwidth than Graviton3. | [AWS Architecture Blog](https://aws.amazon.com/blogs/aws/new-amazon-ec2-r8g-instances-powered-by-aws-graviton4-processors/)<br>`aws.amazon.com` |
 | `2024-04-23` | **Microsoft Azure** | Research & AI | `Model Architecture` | **[Microsoft Phi-3 Open Models: High-Capability Lightweight SLMs for Edge & Cloud](https://www.microsoft.com/en-us/research/blog/phi-3-technical-report/)**<br>Microsoft Research introduced the Phi-3 family of open, small language models trained on synthetic textbooks and filtered web data, matching Llama-3 performance at 3.8B parameters. | [Microsoft Research Blog](https://www.microsoft.com/en-us/research/blog/phi-3-technical-report/)<br>`microsoft.com` |
 | `2024-05-14` | **Google Cloud** | Infrastructure & Silicon | `AI Systems` | **[Google Cloud AI Hypercomputer: Scaling Pods with Cloud TPU v5p & Titanium](https://cloud.google.com/blog/products/compute/introducing-cloud-tpu-v5p)**<br>Google Cloud detailed its AI Hypercomputer architecture, integrating Cloud TPU v5p accelerators with Jupiter network fabrics to scale training clusters up to 8,960 chips with 4x FLOPs per pod. | [Google Cloud Blog](https://cloud.google.com/blog/products/compute/introducing-cloud-tpu-v5p)<br>`cloud.google.com` |
-| `2024-09-09` | **Oracle Cloud** | Enterprise & Financials | `Cloud Financials` | **[Oracle Q1 Financials: Cloud Infrastructure Revenue Surges 45% to $2.2 Billion](https://blogs.oracle.com/cloud-infrastructure/post/oracle-database-at-aws)**<br>Oracle Corporation reported 45% year-over-year revenue growth in OCI IaaS to $2.2B, driven by multi-cloud contract expansions with AWS and Microsoft Azure for Oracle Database@Cloud. | [Oracle Investor Relations & SEC 10-Q](https://blogs.oracle.com/cloud-infrastructure/post/oracle-database-at-aws)<br>`blogs.oracle.com` |
 
 </details>
 
@@ -728,4 +728,4 @@ Found a new free voucher or noticed an expired link?
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-10-30 04:51 UTC`.*
+*Built for the tech community. Audited automatically on `2026-10-30 17:53 UTC`.*
