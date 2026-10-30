@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-29T18:12:03.293268+00:00",
-  "last_sync": "2026-10-29T18:12:03.293268+00:00",
+  "last_updated": "2026-10-30T01:54:41.555994+00:00",
+  "last_sync": "2026-10-30T01:54:41.555994+00:00",
   "news": [
+    {
+      "id": "google-cloud-what-s-new-with-google-data-cl",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "What's new with Google Data Cloud",
+      "summary": "October 19 - October 23 BigQuery introduces column aliases in GoogleSQL and cross-region table copy GAGoogleSQL in BigQuery now supports column aliases in SELECT and WHERE clauses (GA opt-in), avoiding nested subqueries and simplifying migr...",
+      "published_date": "2026-10-29",
+      "date": "2026-10-29",
+      "url": "https://cloud.google.com/blog/products/data-analytics/whats-new-with-google-data-cloud/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "2b235cf3ed95b2eef4b0a1e702033d23749074f68ae48fbe75503048ae206b13"
+    },
+    {
+      "id": "amazon-web-services-how-boat-delivers-personalized",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How boAt delivers personalized fitness coaching with Amazon Bedrock",
+      "summary": "Learn how boAt built its AI Coach feature on Amazon Bedrock and AWS Lambda to deliver personalized, real-time fitness coaching to millions of smartwatch users across India, and the design choices that made the solution scalable and cost-eff...",
+      "published_date": "2026-10-29",
+      "date": "2026-10-29",
+      "url": "https://aws.amazon.com/blogs/architecture/how-boat-delivers-personalized-fitness-coaching-with-amazon-bedrock/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "07a756c0ac72f6387a82c83348c3ccd4acbe72bbd51db28214c423d32e5ecaff"
+    },
+    {
+      "id": "amazon-web-services-how-bmw-group-accelerated-conn",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How BMW Group accelerated connected vehicle workloads on AWS Graviton",
+      "summary": "Learn how BMW Group migrated its connected vehicle platform from x86 to AWS Graviton. Using Karpenter, multi-architecture container builds, and Graviton-based CI/CD runners, the team moved workloads without disruption, cutting NGINX ingress...",
+      "published_date": "2026-10-29",
+      "date": "2026-10-29",
+      "url": "https://aws.amazon.com/blogs/architecture/how-bmw-group-accelerated-connected-vehicle-workloads-on-aws-graviton/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "4334cd67d7162d745989b5ed9c856e21640ddd7f369db8265ea036acb7d456a8"
+    },
     {
       "id": "cisco-from-small-village-to-global-c",
       "company": "Cisco",
@@ -1358,48 +1400,6 @@
       "impact_badge": "Cloud Financials",
       "date": "2024-09-09",
       "content_fingerprint": "424bf4c356204c02b61ed1f797583343d86447d4eb48fa0778b2683bfb7d3557"
-    },
-    {
-      "id": "github-copilot-workspace-code-review",
-      "company": "GitHub",
-      "source": "GitHub Engineering Blog",
-      "source_domain": "github.blog",
-      "category": "Tech Development",
-      "title": "GitHub Copilot Workspace: Task-Centric Agent Environment for Pull Requests",
-      "summary": "GitHub Next unveiled GitHub Copilot Workspace, enabling autonomous multi-file code plan generation, integrated test runs, and semantic PR reviews directly in browser sessions.",
-      "published_date": "2024-04-29",
-      "url": "https://github.blog/news-insights/product-news/github-copilot-workspace/",
-      "impact_badge": "Developer Tooling",
-      "date": "2024-04-29",
-      "content_fingerprint": "a4fa986cb4e93cc97d99057fcd99482c1b7cc1bcf4d8e00a8131a04c51bb0976"
-    },
-    {
-      "id": "cisco-silicon-one-quantum-entanglement",
-      "company": "Cisco",
-      "source": "Cisco Research & Technology Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Research & AI",
-      "title": "Cisco Research: Quantum Entanglement Distribution in Distributed Computing Networks",
-      "summary": "Cisco Research published quantum networking testbed results demonstrating high-fidelity photon entanglement routing over standard optical fiber alongside terabit IP traffic.",
-      "published_date": "2024-06-18",
-      "url": "https://blogs.cisco.com/tag/cisco-research",
-      "impact_badge": "Quantum Research",
-      "date": "2024-06-18",
-      "content_fingerprint": "87f61e81c2514f93895fe5e62b2068ece2f7c4d863868bced75a8d275542ee50"
-    },
-    {
-      "id": "cncf-kubernetes-v131-elli",
-      "company": "Linux Foundation / CNCF",
-      "source": "Linux Foundation & CNCF Newsroom",
-      "source_domain": "linuxfoundation.org",
-      "category": "Tech Development",
-      "title": "Kubernetes 1.31 'Elli' Released: AppArmor GA and DRA Structured Parameters",
-      "summary": "The CNCF and Kubernetes community published release 1.31, promoting AppArmor support to GA, stabilizing memory cgroup v2 metrics, and introducing dynamic resource allocation parameters.",
-      "published_date": "2024-08-13",
-      "url": "https://www.linuxfoundation.org/news",
-      "impact_badge": "Open Source Core",
-      "date": "2024-08-13",
-      "content_fingerprint": "c04f830430d93723a7872d573b4568a7d885ed0864843a0aa812bd292c64ac09"
     }
   ],
   "total_items": 100
