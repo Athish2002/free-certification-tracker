@@ -289,8 +289,6 @@ ACTIONABLE_FULFILLMENT_SIGNALS = [
 
 # Chromium launch arguments optimized for sandboxed headless execution
 PLAYWRIGHT_LAUNCH_ARGS = [
-    "--no-sandbox",
-    "--disable-setuid-sandbox",
     "--disable-gpu",
     "--disable-dev-shm-usage",
     "--dns-result-order=ipv4first",
@@ -539,6 +537,11 @@ class HeadlessDOMInspector:
         self.timeout_ms = timeout_ms
         self._playwright = None
         self._browser = None
+        self._routes: Dict[str, Any] = {}
+
+    def route(self, url_or_pattern: str, handler: Any):
+        """Registers a route handler for request interception/mocking."""
+        self._routes[url_or_pattern] = handler
 
     def __enter__(self):
         self.start()
@@ -679,28 +682,32 @@ class HeadlessDOMInspector:
         and enforces the dual visual ground-truth gate.
         Returns: (status, reason, final_canonical_url, auth_result)
         """
+        # Enforce strict HTTPS URL requirement for all browser navigation (VULN-02 Defense)
+        if not url or not isinstance(url, str) or not url.strip().lower().startswith("https://"):
+            logger.warning(f"Rejected non-HTTPS or file URL for browser inspection: {url}")
+            return (
+                "Review Needed",
+                f"Security Alert: Insecure or forbidden URL scheme (strictly https:// required): {url}",
+                url or "",
+                {
+                    "is_authentic_vendor": False,
+                    "authenticity_score": 0,
+                    "verdict": "SUSPICIOUS_UNTRUSTED",
+                    "summary": "Non-HTTPS or file scheme rejected by security policy",
+                    "domain_verified": False,
+                    "ssl_verified": False,
+                }
+            )
+
         if offer is None:
             offer = {"url": url}
         else:
             offer["url"] = url
 
         # 1. Pre-inspection authenticity gate
-        is_local_file = url.startswith("file://")
-        if not is_local_file:
-            pre_auth = audit_offer_authenticity(offer)
-            if pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
-                return "Review Needed", f"Security Alert: Domain authenticity failed ({pre_auth['summary']})", url, pre_auth
-        else:
-            pre_auth = {
-                "is_authentic_vendor": True,
-                "authenticity_score": 100,
-                "verdict": "VERIFIED_AUTHENTIC",
-                "summary": "Local File Fixture Validated",
-                "domain_verified": True,
-                "ssl_verified": True,
-                "redirect_secure": True,
-                "corroboration_passed": True
-            }
+        pre_auth = audit_offer_authenticity(offer)
+        if pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
+            return "Review Needed", f"Security Alert: Domain authenticity failed ({pre_auth['summary']})", url, pre_auth
 
         if not self._browser:
             from src.inspector import inspect_url_with_retry
@@ -733,6 +740,10 @@ class HeadlessDOMInspector:
 
             page.route("**/*", handle_route)
 
+            # Apply any registered route handlers (e.g. for offline testing or route interception)
+            for pattern, handler in self._routes.items():
+                page.route(pattern, handler)
+
             # Adaptive Verification: Resolve dual-phase targets (prioritizing deep claim URL for syllabus proof)
             from src.adaptive_verifier import (
                 resolve_dual_phase_targets,
@@ -747,75 +758,63 @@ class HeadlessDOMInspector:
             redirect_chain = [nav_target]
 
             # Pre-inject cookie consent storage tokens to bypass OneTrust / TrustArc / Cookiebot in < 50ms
-            if not is_local_file:
-                storage_preset = get_pre_navigation_storage(nav_target)
-                if storage_preset.get("local_storage"):
-                    try:
-                        storage_items = [
-                            f"window.localStorage.setItem({repr(k)}, {repr(v)});"
-                            for k, v in storage_preset["local_storage"].items()
-                        ]
-                        page.add_init_script("\n".join(storage_items))
-                    except Exception:
-                        pass
+            storage_preset = get_pre_navigation_storage(nav_target)
+            if storage_preset.get("local_storage"):
+                try:
+                    storage_items = [
+                        f"window.localStorage.setItem({repr(k)}, {repr(v)});"
+                        for k, v in storage_preset["local_storage"].items()
+                    ]
+                    page.add_init_script("\n".join(storage_items))
+                except Exception:
+                    pass
             rendered_title = ""
             rendered_text = ""
             final_url = nav_target
             http_status = 200
 
-            if not is_local_file:
-                try:
-                    response = page.goto(nav_target, wait_until="domcontentloaded", timeout=self.timeout_ms)
-                    http_status = response.status if response else 200
-                    final_url = page.url
-                    if final_url != url:
-                        redirect_chain.append(final_url)
-
-                    # Audit redirect degradation to catch silent 302 bounces to generic homepages
-                    is_degraded, deg_reason, url_score = audit_redirect_degradation(nav_target, final_url)
-                    if is_degraded:
-                        logger.warning(f"Redirect degradation detected for {offer_id}: {deg_reason}")
-
-                    try:
-                        page.wait_for_load_state(cluster_prof.wait_condition, timeout=2500)
-                    except Exception:
-                        pass
-                    rendered_title = page.title() or ""
-                    rendered_text = page.evaluate("() => document.body ? document.body.innerText : ''")
-                except Exception as nav_err:
-                    logger.info(f"Playwright direct navigation failed for {url} ({nav_err}). Attempting HTTPX fallback...")
-                    import httpx
-                    try:
-                        from src.inspector import BROWSER_HEADERS
-                        with httpx.Client(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
-                            resp = client.get(url)
-                            http_status = resp.status_code
-                            final_url = str(resp.url)
-                            if final_url != url:
-                                redirect_chain.append(final_url)
-                            page.set_content(resp.text, wait_until="domcontentloaded")
-                            try:
-                                page.wait_for_load_state("networkidle", timeout=1500)
-                            except Exception:
-                                pass
-                            rendered_title = page.title() or ""
-                            rendered_text = page.evaluate("() => document.body ? document.body.innerText : ''")
-                    except Exception as fb_err:
-                        logger.warning(f"Both direct navigation and HTTPX fallback failed for {url}: {fb_err}")
-                        rendered_title = ""
-                        rendered_text = ""
-                        final_url = url
-                        http_status = 500
-            else:
-                response = page.goto(url, wait_until="domcontentloaded", timeout=self.timeout_ms)
+            try:
+                response = page.goto(nav_target, wait_until="domcontentloaded", timeout=self.timeout_ms)
                 http_status = response.status if response else 200
                 final_url = page.url
+                if final_url != url:
+                    redirect_chain.append(final_url)
+
+                # Audit redirect degradation to catch silent 302 bounces to generic homepages
+                is_degraded, deg_reason, url_score = audit_redirect_degradation(nav_target, final_url)
+                if is_degraded:
+                    logger.warning(f"Redirect degradation detected for {offer_id}: {deg_reason}")
+
                 try:
-                    page.wait_for_load_state("networkidle", timeout=2500)
+                    page.wait_for_load_state(cluster_prof.wait_condition, timeout=2500)
                 except Exception:
                     pass
                 rendered_title = page.title() or ""
                 rendered_text = page.evaluate("() => document.body ? document.body.innerText : ''")
+            except Exception as nav_err:
+                logger.info(f"Playwright direct navigation failed for {url} ({nav_err}). Attempting HTTPX fallback...")
+                import httpx
+                try:
+                    from src.inspector import BROWSER_HEADERS
+                    with httpx.Client(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
+                        resp = client.get(url)
+                        http_status = resp.status_code
+                        final_url = str(resp.url)
+                        if final_url != url:
+                            redirect_chain.append(final_url)
+                        page.set_content(resp.text, wait_until="domcontentloaded")
+                        try:
+                            page.wait_for_load_state("networkidle", timeout=1500)
+                        except Exception:
+                            pass
+                        rendered_title = page.title() or ""
+                        rendered_text = page.evaluate("() => document.body ? document.body.innerText : ''")
+                except Exception as fb_err:
+                    logger.warning(f"Both direct navigation and HTTPX fallback failed for {url}: {fb_err}")
+                    rendered_title = ""
+                    rendered_text = ""
+                    final_url = url
+                    http_status = 500
 
             # Capture visual screenshot proof
             if offer_id:
@@ -883,14 +882,11 @@ class HeadlessDOMInspector:
             )
 
             # Authenticity verification on rendered DOM
-            if not is_local_file:
-                auth_result = audit_offer_authenticity(
-                    offer=offer,
-                    body_text=rendered_text,
-                    redirect_chain=redirect_chain
-                )
-            else:
-                auth_result = pre_auth
+            auth_result = audit_offer_authenticity(
+                offer=offer,
+                body_text=rendered_text,
+                redirect_chain=redirect_chain
+            )
 
             auth_score = auth_result.get("authenticity_score", 90)
 

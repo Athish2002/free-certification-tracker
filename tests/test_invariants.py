@@ -885,19 +885,20 @@ def test_playwright_headless_dom_rendering_on_local_fixture(tmp_path):
     </body>
     </html>"""
 
-    test_file = tmp_path / "spa_test.html"
-    test_file.write_text(html_content, encoding="utf-8")
-    test_uri = test_file.as_uri()
+    test_url = "https://learn.microsoft.com/spa_test"
 
     with HeadlessDOMInspector(headless=True, timeout_ms=8000) as inspector:
         assert inspector.is_available is True, "Headless Chromium failed to start"
-        
+        inspector.route(
+            test_url,
+            lambda route: route.fulfill(status=200, content_type="text/html", body=html_content)
+        )
         status, reason, final_url, auth_result = inspector.inspect_url(
-            test_uri,
+            test_url,
             offer={
                 "id": "test-spa-offer",
                 "platform": "Microsoft Azure",
-                "url": test_uri
+                "url": test_url
             }
         )
         assert status == "Registrations Closed", f"Expected Registrations Closed, got {status} ({reason})"

@@ -8,7 +8,7 @@ Strictly bans clickbait and rumor aggregators.
 import re
 import json
 import logging
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Union
 from urllib.parse import urlparse
@@ -259,10 +259,14 @@ def fetch_feed_entries(feed_info: Dict[str, Any], max_items: int = 3) -> List[Di
                 if len(title) > 0 and (sum(1 for c in title if ord(c) < 128) / len(title)) < 0.95:
                     continue
                 
-                # Assert domain is authentic
-                parsed_netloc = urlparse(link).netloc.lower()
+                # Assert protocol is HTTPS and domain matches authentic FQDN / subdomain (VULN-04 Defense)
+                parsed_url = urlparse(link)
+                scheme = (parsed_url.scheme or "").lower()
+                if scheme != "https":
+                    continue
+                hostname = (parsed_url.hostname or "").lower()
                 allowed = feed_info["allowed_domain"].lower()
-                if allowed not in parsed_netloc and parsed_netloc not in allowed:
+                if not hostname or not (hostname == allowed or hostname.endswith("." + allowed)):
                     continue
                 
                 slug_id = re.sub(r"[^a-z0-9]+", "-", f"{feed_info['company']}-{title[:30]}".lower()).strip("-")

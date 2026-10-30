@@ -19,8 +19,6 @@ BROWSER_HEADERS = {
 
 # Playwright launch arguments for headless environments
 PLAYWRIGHT_LAUNCH_ARGS: List[str] = [
-    "--no-sandbox",
-    "--disable-setuid-sandbox",
     "--disable-dev-shm-usage",
     "--disable-gpu",
     "--disable-extensions",

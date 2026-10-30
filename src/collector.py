@@ -13,7 +13,7 @@ import time
 import httpx
 import hashlib
 import logging
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
 from pathlib import Path
 from typing import List, Dict, Any, Tuple, Optional, Set
 from datetime import datetime, timezone
@@ -343,7 +343,13 @@ def vet_candidate_lead(
     title = str(getattr(lead, 'title', None) or (lead_dict.get('title') if isinstance(lead_dict, dict) else '') or '').strip()
     platform = str(getattr(lead, 'platform', None) or (lead_dict.get('platform') if isinstance(lead_dict, dict) else '') or 'Multi-Cloud').strip()
     raw_lead_id = getattr(lead, 'id', None) or (lead_dict.get('id') if isinstance(lead_dict, dict) else None)
-    lead_id = str(raw_lead_id).strip() if raw_lead_id and not isinstance(raw_lead_id, bool) else generate_candidate_id(title, platform)
+    if raw_lead_id and not isinstance(raw_lead_id, bool):
+        candidate_id_str = str(raw_lead_id).strip()
+        if not re.match(r"^[a-z0-9-]+$", candidate_id_str):
+            return None, f"INVALID_CANDIDATE_ID: Candidate ID '{candidate_id_str}' contains invalid characters (must match '^[a-z0-9-]+$')"
+        lead_id = candidate_id_str
+    else:
+        lead_id = generate_candidate_id(title, platform)
     
     # 1. Authenticity check
     is_authentic = bool(getattr(lead, 'is_authentic_vendor', False) or (lead_dict.get("is_authentic_vendor", False) if isinstance(lead_dict, dict) else False))
@@ -513,8 +519,13 @@ def vet_candidate_lead(
         return None, f"COPAY_REQUIRED: Cart balance did not assert to $0.00 ({cart_verdict.reason})"
         
     # Check screenshot file exists and is valid PNG >= 1KB
-    screenshots_dir = Path(__file__).resolve().parent.parent / "docs" / "screenshots"
-    shot_file = screenshots_dir / f"{lead_id}.png"
+    screenshots_dir = (Path(__file__).resolve().parent.parent / "docs" / "screenshots").resolve()
+    shot_file = (screenshots_dir / f"{lead_id}.png").resolve()
+    try:
+        shot_file.relative_to(screenshots_dir)
+    except ValueError:
+        return None, f"PATH_TRAVERSAL_DETECTED: Target screenshot path escapes screenshots directory ('{shot_file}')"
+
     if not shot_file.exists() or shot_file.stat().st_size < 1000:
         return None, f"MISSING_SCREENSHOT: Screenshot proof file not found or invalid ({shot_file.name})"
         

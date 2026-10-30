@@ -10,9 +10,7 @@ on:
   workflow_dispatch: # Allows manual one-click trigger from GitHub Actions UI
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 concurrency:
   group: "certpulse-tracker"
@@ -78,6 +76,8 @@ jobs:
     name: Live Pipeline Execution & Data Update
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     outputs:
       changes_detected: ${{ steps.auto-commit.outputs.changes_detected }}
     steps:
@@ -135,6 +135,9 @@ jobs:
     needs: update-and-deploy
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || needs.update-and-deploy.outputs.changes_detected == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

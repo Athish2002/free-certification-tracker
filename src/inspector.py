@@ -492,27 +492,29 @@ async def run_inspection_async(
 
                         await page.route("**/*", handle_route)
 
-                        is_local_file = current_url.startswith("file://")
-                        if not is_local_file:
-                            pre_auth = audit_offer_authenticity(offer)
-                            if pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
-                                new_status = "Review Needed"
-                                reason = f"Security Alert: Domain authenticity failed ({pre_auth['summary']})"
-                                auth_result = pre_auth
-                                auth_score = auth_result.get("authenticity_score", 0)
-                                offer["inspection_method"] = "Playwright Headless DOM"
-                                return
-                        else:
-                            pre_auth = {
-                                "is_authentic_vendor": True,
-                                "authenticity_score": 100,
-                                "verdict": "VERIFIED_AUTHENTIC",
-                                "summary": "Local File Fixture Validated",
-                                "domain_verified": True,
-                                "ssl_verified": True,
-                                "redirect_secure": True,
-                                "corroboration_passed": True
+                        if not current_url or not isinstance(current_url, str) or not current_url.strip().lower().startswith("https://"):
+                            new_status = "Review Needed"
+                            reason = f"Security Alert: Insecure or forbidden URL scheme (strictly https:// required): {current_url}"
+                            auth_result = {
+                                "is_authentic_vendor": False,
+                                "authenticity_score": 0,
+                                "verdict": "SUSPICIOUS_UNTRUSTED",
+                                "summary": "Non-HTTPS or file scheme rejected by security policy",
+                                "domain_verified": False,
+                                "ssl_verified": False,
                             }
+                            auth_score = 0
+                            offer["inspection_method"] = "Playwright Headless DOM"
+                            return
+
+                        pre_auth = audit_offer_authenticity(offer)
+                        if pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
+                            new_status = "Review Needed"
+                            reason = f"Security Alert: Domain authenticity failed ({pre_auth['summary']})"
+                            auth_result = pre_auth
+                            auth_score = auth_result.get("authenticity_score", 0)
+                            offer["inspection_method"] = "Playwright Headless DOM"
+                            return
 
                         nav_target = offer.get("direct_verified_url") or offer.get("verified_vendor_url") or current_url
                         redirect_chain = [nav_target]
@@ -521,36 +523,29 @@ async def run_inspection_async(
                         final_url = nav_target
                         http_status = 200
 
-                        if not is_local_file:
-                            try:
-                                response = await page.goto(nav_target, wait_until="domcontentloaded", timeout=timeout_per_offer * 1000)
-                                http_status = response.status if response else 200
-                                final_url = page.url
-                                if final_url != current_url:
-                                    redirect_chain.append(final_url)
-                                try:
-                                    await page.wait_for_load_state("networkidle", timeout=2500)
-                                except Exception:
-                                    pass
-                                rendered_title = await page.title() or ""
-                                rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
-                            except Exception as nav_err:
-                                logger.info("Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...", current_url, nav_err)
-                                async with httpx.AsyncClient(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
-                                    resp = await client.get(current_url)
-                                    http_status = resp.status_code
-                                    final_url = str(resp.url)
-                                    if final_url != current_url:
-                                        redirect_chain.append(final_url)
-                                    await page.set_content(resp.text, wait_until="domcontentloaded")
-                                    rendered_title = await page.title() or ""
-                                    rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
-                        else:
+                        try:
                             response = await page.goto(nav_target, wait_until="domcontentloaded", timeout=timeout_per_offer * 1000)
                             http_status = response.status if response else 200
                             final_url = page.url
+                            if final_url != current_url:
+                                redirect_chain.append(final_url)
+                            try:
+                                await page.wait_for_load_state("networkidle", timeout=2500)
+                            except Exception:
+                                pass
                             rendered_title = await page.title() or ""
                             rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
+                        except Exception as nav_err:
+                            logger.info("Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...", current_url, nav_err)
+                            async with httpx.AsyncClient(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
+                                resp = await client.get(current_url)
+                                http_status = resp.status_code
+                                final_url = str(resp.url)
+                                if final_url != current_url:
+                                    redirect_chain.append(final_url)
+                                await page.set_content(resp.text, wait_until="domcontentloaded")
+                                rendered_title = await page.title() or ""
+                                rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
 
                         # Capture screenshot with delta skipping
                         target_path = screenshots_dir / f"{offer_id}.png"
@@ -632,14 +627,11 @@ async def run_inspection_async(
                             offer_data=offer
                         )
 
-                        if not is_local_file:
-                            auth_result = audit_offer_authenticity(
-                                offer=offer,
-                                body_text=rendered_text,
-                                redirect_chain=redirect_chain
-                            )
-                        else:
-                            auth_result = pre_auth
+                        auth_result = audit_offer_authenticity(
+                            offer=offer,
+                            body_text=rendered_text,
+                            redirect_chain=redirect_chain
+                        )
 
                         auth_score = auth_result.get("authenticity_score", 90)
 

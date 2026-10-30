@@ -12,6 +12,37 @@ JS_TEMPLATE = """
         const newsData = __NEWS_DATA__;
         const LAST_SYNC_ISO = "__LAST_SYNC_ISO__";
 
+        // Security & HTML Sanitization Invariants (VULN-01 Defense)
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escapeJs(str) {
+            if (str == null) return '';
+            return String(str)
+                .replace(/\\\\/g, '\\\\\\\\')
+                .replace(/'/g, "\\\\'")
+                .replace(/"/g, '\\\\"')
+                .replace(/</g, '\\\\x3c')
+                .replace(/>/g, '\\\\x3e')
+                .replace(/&/g, '\\\\x26');
+        }
+
+        function sanitizeUrl(url) {
+            if (!url) return '#';
+            const s = String(url).trim();
+            if (/^(?:https?:\\/\\/|\\/|#|mailto:)/i.test(s)) {
+                return escapeHtml(s);
+            }
+            return '#';
+        }
+
         let currentMainTab = 'vouchers';
         let currentTier = 'all';
         let currentCategory = 'All';
@@ -265,7 +296,7 @@ JS_TEMPLATE = """
                     if (alertEl) {
                         alertEl.classList.remove('hidden');
                         alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
-                        alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Official ' + tv.verified_discount_pct + '% Discount Voucher:</strong> This voucher covers ' + tv.verified_discount_pct + '% of the examination fee. The candidate must pay the remaining co-pay fee of ~$' + tv.real_exam_cost_usd.toFixed(2) + ' USD at Pearson VUE checkout. It is NOT a $0.00 waiver.</span>';
+                        alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Official ' + escapeHtml(String(tv.verified_discount_pct)) + '% Discount Voucher:</strong> This voucher covers ' + escapeHtml(String(tv.verified_discount_pct)) + '% of the examination fee. The candidate must pay the remaining co-pay fee of ~$' + escapeHtml(String(tv.real_exam_cost_usd.toFixed(2))) + ' USD at Pearson VUE checkout. It is NOT a $0.00 waiver.</span>';
                     }
                 }
             } else if (truthCard) {
@@ -777,12 +808,12 @@ JS_TEMPLATE = """
                     : '';
 
                 return `
-                <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3 relative transition-all" id="card-${o.id}">
+                <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3 relative transition-all" id="card-${escapeHtml(o.id)}">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-2">
                             <div class="flex items-center gap-2 min-w-0">
                                 ${getPlatformIconSvg(o.platform)}
-                                <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${o.platform}</span>
+                                <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
                             </div>
                             <div class="flex items-center gap-1.5 flex-shrink-0">
                                 ${statusBadge}
@@ -793,33 +824,33 @@ JS_TEMPLATE = """
                             ${credBadge}
                         </div>
 
-                        <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight mt-1" style="color: var(--fg-default);">${o.title}</h3>
+                        <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight mt-1" style="color: var(--fg-default);">${escapeHtml(o.title)}</h3>
                         <div class="flex items-center gap-2 mt-2 flex-wrap">
                             ${tierBadge}
                             ${zeroConfirmedBadge}
                             <span class="text-[11px] font-bold tabular-nums" style="color: var(--success-fg);">${valText}</span>
                             ${truthBadge}
-                            <button onclick="openProofModal('${o.id}')" class="text-[10px] px-1.5 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
+                            <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-[10px] px-1.5 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
                                 <span>🛡️ ${o.authenticity_score || 100}% Proof</span>
                             </button>
                         </div>
 
-                        <p class="text-xs mt-2.5 leading-relaxed text-pretty" style="color: var(--fg-muted);">${o.eligibility || 'Open to all developers & engineers globally.'}</p>
+                        <p class="text-xs mt-2.5 leading-relaxed text-pretty" style="color: var(--fg-muted);">${escapeHtml(o.eligibility || 'Open to all developers & engineers globally.')}</p>
                     </div>
 
                     <div class="pt-3 border-t flex items-center justify-between gap-2 flex-wrap" style="border-color: var(--border-muted);">
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <button onclick="copySteps('${o.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                            <button onclick="copySteps('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                                 Copy Guide
                             </button>
-                            <button onclick="openRedemptionFor('${o.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where & How Offer is Applied ($0.00)">
+                            <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where & How Offer is Applied ($0.00)">
                                 $0.00 Apply
                             </button>
-                            <button onclick="openProofModal('${o.id}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                            <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
                                 <span>📸 Proof</span>
                             </button>
                         </div>
-                        <a href="${o.direct_verified_url || o.verified_vendor_url || o.url}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
+                        <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
                             <span>Claim Free</span>
                             <span>→</span>
                         </a>
@@ -920,19 +951,19 @@ JS_TEMPLATE = """
                     <div class="sm:col-span-3 flex items-center gap-2 min-w-0">
                         ${getPlatformIconSvg(o.platform)}
                         <div class="flex flex-col min-w-0">
-                            <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${o.platform}</span>
+                            <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
                             <div class="flex items-center gap-1 mt-0.5">${credBadge} ${truthBadge}</div>
                         </div>
                     </div>
                     <div class="sm:col-span-5 min-w-0">
-                        <div class="font-semibold text-xs sm:text-sm truncate" style="color: var(--fg-default);">${o.certification_name || o.title}</div>
-                        <div class="text-[11px]" style="color: var(--fg-muted);">${o.category} • ${o.difficulty_tier || 'Foundational'}</div>
+                        <div class="font-semibold text-xs sm:text-sm truncate" style="color: var(--fg-default);">${escapeHtml(o.certification_name || o.title)}</div>
+                        <div class="text-[11px]" style="color: var(--fg-muted);">${escapeHtml(o.category)} • ${escapeHtml(o.difficulty_tier || 'Foundational')}</div>
                     </div>
                     <div class="sm:col-span-1 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${valText}</div>
                     <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
-                        <button onclick="openProofModal('${o.id}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
-                        <button onclick="openRedemptionFor('${o.id}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
-                        <a href="${o.direct_verified_url || o.verified_vendor_url || o.url}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
+                        <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
+                        <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
+                        <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
                     </div>
                 </div>`;
             };
@@ -971,15 +1002,15 @@ JS_TEMPLATE = """
                     <div class="flex items-start gap-3">
                         ${getPlatformIconSvg(o.platform)}
                         <div>
-                            <div class="font-bold text-sm" style="color: var(--fg-default);">${o.platform} — ${o.title}</div>
-                            <div class="text-xs mt-1" style="color: var(--fg-muted);">Cadence: <span class="font-semibold text-blue-500">${o.recurrence_pattern || 'Annual Conference Cycle'}</span> • Period: ${o.time_period || 'Continuous'}</div>
+                            <div class="font-bold text-sm" style="color: var(--fg-default);">${escapeHtml(o.platform)} — ${escapeHtml(o.title)}</div>
+                            <div class="text-xs mt-1" style="color: var(--fg-muted);">Cadence: <span class="font-semibold text-blue-500">${escapeHtml(o.recurrence_pattern || 'Annual Conference Cycle')}</span> • Period: ${escapeHtml(o.time_period || 'Continuous')}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
-                        <button onclick="openProofModal('${o.id}')" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                        <button onclick="openProofModal('${escapeJs(o.id)}')" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
                             📸 Proof
                         </button>
-                        <a href="${o.direct_verified_url || o.verified_vendor_url || o.url}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
+                        <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
                     </div>
                 </div>`).join('')}
             </div>`;
@@ -1013,16 +1044,16 @@ JS_TEMPLATE = """
                         <div class="primer-card p-3 rounded-lg border text-xs flex flex-col justify-between gap-2">
                             <div>
                                 <div class="flex items-center justify-between gap-1 mb-1">
-                                    <span class="font-bold truncate" style="color: var(--fg-default);">${o.platform}</span>
+                                    <span class="font-bold truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
                                     <span class="font-bold text-emerald-500">${o.value_usd ? '$' + o.value_usd : 'Free'}</span>
                                 </div>
-                                <div class="font-medium text-slate-700 dark:text-slate-300 truncate">${o.certification_name || o.title}</div>
+                                <div class="font-medium text-slate-700 dark:text-slate-300 truncate">${escapeHtml(o.certification_name || o.title)}</div>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t" style="border-color: var(--border-muted);">
-                                <span class="text-[10px] font-mono">${o.difficulty_tier || 'Foundational'}</span>
+                                <span class="text-[10px] font-mono">${escapeHtml(o.difficulty_tier || 'Foundational')}</span>
                                 <div class="flex items-center gap-2">
-                                    <button onclick="openProofModal('${o.id}')" class="text-[11px] font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
-                                    <a href="${o.direct_verified_url || o.verified_vendor_url || o.url}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
+                                    <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-[11px] font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
+                                    <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
                                 </div>
                             </div>
                         </div>`).join('')}
@@ -1261,15 +1292,15 @@ JS_TEMPLATE = """
             <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-3">
                 <div>
                     <div class="flex items-center justify-between text-xs mb-2">
-                        <span class="font-bold" style="color: var(--accent-fg);">${item.company}</span>
-                        <span class="text-[10px] font-mono tabular-nums" style="color: var(--fg-subtle);">${item.published_date}</span>
+                        <span class="font-bold" style="color: var(--accent-fg);">${escapeHtml(item.company)}</span>
+                        <span class="text-[10px] font-mono tabular-nums" style="color: var(--fg-subtle);">${escapeHtml(item.published_date)}</span>
                     </div>
-                    <h4 class="font-bold text-sm sm:text-base leading-snug tracking-tight" style="color: var(--fg-default);">${item.title}</h4>
-                    <p class="text-xs mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">${item.summary}</p>
+                    <h4 class="font-bold text-sm sm:text-base leading-snug tracking-tight" style="color: var(--fg-default);">${escapeHtml(item.title)}</h4>
+                    <p class="text-xs mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">${escapeHtml(item.summary)}</p>
                 </div>
                 <div class="pt-3 border-t flex items-center justify-between text-xs" style="border-color: var(--border-muted);">
-                    <span class="text-[10px] font-mono truncate max-w-[150px]" style="color: var(--fg-subtle);">${item.source_domain}</span>
-                    <a href="${item.url}" target="_blank" rel="noopener" class="font-semibold text-blue-500 hover:underline inline-flex items-center gap-1">
+                    <span class="text-[10px] font-mono truncate max-w-[150px]" style="color: var(--fg-subtle);">${escapeHtml(item.source_domain)}</span>
+                    <a href="${sanitizeUrl(item.url)}" target="_blank" rel="noopener" class="font-semibold text-blue-500 hover:underline inline-flex items-center gap-1">
                         <span>Read Dispatch</span>
                         <span>→</span>
                     </a>
@@ -1359,35 +1390,35 @@ JS_TEMPLATE = """
                 const stepsHtml = instructions.map((s, idx) => `
                     <li class="flex items-start gap-2.5 text-xs leading-relaxed" style="color: var(--fg-default);">
                         <span class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">${idx + 1}</span>
-                        <span class="text-pretty">${s}</span>
+                        <span class="text-pretty">${escapeHtml(s)}</span>
                     </li>
                 `).join('');
 
                 return `
-                <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4 border transition-all" id="redemption-card-${o.id}">
+                <div class="primer-card rounded-2xl p-4 sm:p-5 flex flex-col justify-between gap-4 border transition-all" id="redemption-card-${escapeHtml(o.id)}">
                     <div>
                         <div class="flex items-center justify-between gap-2 mb-2 flex-wrap">
                             <div class="flex items-center gap-2">
                                 ${getPlatformIconSvg(o.platform)}
-                                <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${o.platform}</span>
+                                <span class="font-bold text-xs truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
                             </div>
-                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border" style="background-color: var(--accent-subtle); color: var(--accent-fg); border-color: var(--accent-fg);">${flowType}</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold border" style="background-color: var(--accent-subtle); color: var(--accent-fg); border-color: var(--accent-fg);">${escapeHtml(flowType)}</span>
                         </div>
 
-                        <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight" style="color: var(--fg-default);">${o.title}</h3>
+                        <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight" style="color: var(--fg-default);">${escapeHtml(o.title)}</h3>
                         
                         <!-- Checkout Field & Voucher Token Callout -->
                         <div class="mt-3 p-3 rounded-xl border" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
                             <div class="text-[11px] font-semibold uppercase tracking-wider mb-1" style="color: var(--fg-muted);">Exact Checkout Field</div>
                             <div class="text-xs font-mono font-medium flex items-center gap-1.5" style="color: var(--fg-default);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="color: var(--accent-fg); flex-shrink: 0;"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
-                                <span class="text-pretty">${fieldLoc}</span>
+                                <span class="text-pretty">${escapeHtml(fieldLoc)}</span>
                             </div>
                             <div class="mt-2.5 pt-2 border-t flex items-center justify-between gap-2 flex-wrap" style="border-color: var(--border-muted);">
                                 <span class="text-[11px]" style="color: var(--fg-muted);">Voucher Token:</span>
                                 <div class="flex items-center gap-1.5">
-                                    <code class="px-1.5 py-0.5 rounded text-[11px] font-mono font-bold" style="background-color: var(--canvas-default); color: var(--accent-fg); border: 1px solid var(--border-default);">${code}</code>
-                                    <button onclick="copyVoucherToken('${code}')" class="text-[10px] px-2 py-0.5 rounded border font-semibold transition active:scale-[0.95] cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">Copy</button>
+                                    <code class="px-1.5 py-0.5 rounded text-[11px] font-mono font-bold" style="background-color: var(--canvas-default); color: var(--accent-fg); border: 1px solid var(--border-default);">${escapeHtml(code)}</code>
+                                    <button onclick="copyVoucherToken('${escapeJs(code)}')" class="text-[10px] px-2 py-0.5 rounded border font-semibold transition active:scale-[0.95] cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">Copy</button>
                                 </div>
                             </div>
                         </div>
@@ -1408,11 +1439,11 @@ JS_TEMPLATE = """
                                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
                                 <span>Cart Balance: $0.00</span>
                             </div>
-                            <button onclick="openProofModal('${o.id}')" class="text-xs font-semibold px-2.5 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                            <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
                                 📸 Proof
                             </button>
                         </div>
-                        <a href="${portalUrl}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
+                        <a href="${sanitizeUrl(portalUrl)}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
                             <span>Launch Portal</span>
                             <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L8.53 10.03a.75.75 0 0 1-1.06-1.06l5.47-5.47H11.25a.75.75 0 0 1-.75-.75Z"></path></svg>
                         </a>
