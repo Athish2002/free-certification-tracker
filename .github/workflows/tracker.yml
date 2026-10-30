@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: "certpulse-tracker"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -113,6 +113,10 @@ jobs:
       - name: Run End-to-End Invariant Verification
         run: |
           python tests/e2e/runner.py
+
+      - name: Sync remote with rebase before commit
+        run: |
+          git pull --rebase origin main || true
 
       - name: Commit and Push Changes If Updated
         id: auto-commit
