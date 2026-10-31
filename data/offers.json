@@ -1,6 +1,6 @@
 {
   "$schema": "./schema.json",
-  "last_updated": "2026-10-31T04:37:30.508667+00:00",
+  "last_updated": "2026-10-31T16:59:53.145580+00:00",
   "offers": [
     {
       "id": "isc2-one-million-cc",
@@ -103,7 +103,7 @@
         "truth_source_name": "ISC2 One Million CC Official Program",
         "truth_source_url": "https://www.isc2.org/landing/1mcc",
         "verdict_notes": "ISC2 1MCC enrollment reached 1M capacity and closed new enrollments May 20, 2026. Pre-enrolled candidates have until December 31, 2026 to take their free Pearson VUE proctored exam.",
-        "last_corroborated": "2026-10-31T04:37:30.506748+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144666+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -212,7 +212,7 @@
         "truth_source_name": "Oracle University MyLearn Portal",
         "truth_source_url": "https://mylearn.oracle.com/",
         "verdict_notes": "Oracle University provides 100% free digital learning paths and embedded free proctored online exam attempts for OCI Foundations directly through Oracle MyLearn SSO.",
-        "last_corroborated": "2026-10-31T04:37:30.506775+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144697+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -323,7 +323,7 @@
         "truth_source_name": "Cisco Learning Network Community",
         "truth_source_url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community",
         "verdict_notes": "Cisco Rev Up to Recert awards free Continuing Education (CE) credits to recertify active CCNA, CCNP, and CCIE credentials without paying for written Pearson VUE exams. Not a new exam voucher.",
-        "last_corroborated": "2026-10-31T04:37:30.506787+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144706+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -434,7 +434,7 @@
         "truth_source_name": "Microsoft Learn Credentials Registry",
         "truth_source_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/",
         "verdict_notes": "Free unproctored interactive scenario-based lab credentials verified on Microsoft Learn. Distinct from paid proctored Microsoft Certifications (AZ-900/AZ-104).",
-        "last_corroborated": "2026-10-31T04:37:30.506795+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144712+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -549,14 +549,14 @@
         "truth_source_name": "Google Cloud Innovators Program",
         "truth_source_url": "https://cloud.google.com/innovators",
         "verdict_notes": "Free hands-on lab quests and digital skill badges via Google Cloud Skills Boost. Formal proctored ACE and PCA certification exams require separate paid Webassessor registration.",
-        "last_corroborated": "2026-10-31T04:37:30.506801+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144717+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -660,7 +660,7 @@
         "truth_source_name": "Linux Foundation LiFT Scholarships Policy",
         "truth_source_url": "https://www.linuxfoundation.org/about/lift-scholarships",
         "verdict_notes": "The Linux Foundation LiFT scholarship application window is strictly annual (April 1 to April 30). The 2026 cycle is officially closed. Next application window opens April 2027.",
-        "last_corroborated": "2026-10-31T04:37:30.506887+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144777+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2027-04-01T00:00:00Z",
@@ -775,7 +775,7 @@
         "truth_source_name": "Snowflake Learn Essentials Track",
         "truth_source_url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
         "verdict_notes": "Free interactive Snowflake workshop track with Accredible verified digital badges. SnowPro Core proctored exam is $175 Pearson VUE.",
-        "last_corroborated": "2026-10-31T04:37:30.506907+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144787+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -801,10 +801,10 @@
       "claim_steps": "Complete free developer learning paths on MongoDB University. Students can claim 100% free certification exam vouchers through the GitHub Student Developer Pack.",
       "inspection_notes": "Truth Gate Invariant: MongoDB offers official developer certification paths and 100% free exam vouchers to verified students through GitHub Student Developer Pack on learn.mongodb.com.",
       "is_authentic_vendor": true,
-      "authenticity_score": 85,
+      "authenticity_score": 95,
       "authenticity_details": {
         "is_authentic_vendor": true,
-        "authenticity_score": 85,
+        "authenticity_score": 95,
         "verdict": "VERIFIED_AUTHENTIC",
         "trust_tier": "Official Vendor Portal",
         "domain_verified": true,
@@ -816,10 +816,12 @@
           "STRICT_HTTPS_PROTOCOL",
           "STANDARD_PORT_SECURITY",
           "CANONICAL_URL_STRUCTURE",
-          "CLEAN_REDIRECT_CHAIN"
+          "CLEAN_REDIRECT_CHAIN",
+          "VENDOR_NAME_MATCHED",
+          "CREDENTIAL_SIGNALS_FOUND (6)"
         ],
         "warning_flags": [],
-        "summary": "85% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
+        "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
       },
       "difficulty_tier": "Associate",
       "time_period": "Continuous",
@@ -884,7 +886,7 @@
         "truth_source_name": "MongoDB Learn Portal & GitHub Student Pack",
         "truth_source_url": "https://learn.mongodb.com/pages/certification",
         "verdict_notes": "MongoDB offers official developer certification paths and 100% free exam vouchers to verified students through GitHub Student Developer Pack on learn.mongodb.com.",
-        "last_corroborated": "2026-10-31T04:37:30.506918+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144793+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -892,7 +894,7 @@
         "confidence_downgraded": false
       },
       "zero_dollar_confirmed": true,
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -995,7 +997,7 @@
         "truth_source_name": "Salesforce Trailhead Quests Program",
         "truth_source_url": "https://trailhead.salesforce.com/quests",
         "verdict_notes": "Monthly sweepstakes where completing specified Trailhead trails grants raffle entry to win a $200-$400 certification exam voucher. Not a guaranteed voucher for all participants.",
-        "last_corroborated": "2026-10-31T04:37:30.507027+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144833+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -1104,7 +1106,7 @@
         "truth_source_name": "Postman Academy Student Programs",
         "truth_source_url": "https://academy.postman.com/",
         "verdict_notes": "Free verified digital credential awarded upon passing the API Fundamentals assessment on Postman Academy.",
-        "last_corroborated": "2026-10-31T04:37:30.507045+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144839+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -1112,7 +1114,7 @@
         "confidence_downgraded": false
       },
       "last_zero_dollar_confirmed_date": "2026-10-29",
-      "consecutive_failures": 9
+      "consecutive_failures": 10
     },
     {
       "id": "juniper-open-learning",
@@ -1215,14 +1217,14 @@
         "truth_source_name": "Juniper Open Learning Voucher Policy",
         "truth_source_url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478",
         "verdict_notes": "Juniper Open Learning provides a 75% discount exam voucher upon scoring 70%+ on the Voucher Assessment Test. Candidate must pay ~$50 USD at Pearson VUE checkout. It is NOT a 100% free ($0.00) voucher.",
-        "last_corroborated": "2026-10-31T04:37:30.507165+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144863+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -1326,7 +1328,7 @@
         "truth_source_name": "Qualys Training Official Portal",
         "truth_source_url": "https://www.qualys.com/training",
         "verdict_notes": "100% free official self-paced courses and online exams hosted directly on Qualys Training portal with free verifiable certificates.",
-        "last_corroborated": "2026-10-31T04:37:30.507233+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144891+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -1437,7 +1439,7 @@
         "truth_source_name": "Databricks Academy Accreditations",
         "truth_source_url": "https://www.databricks.com/learn/training/certification",
         "verdict_notes": "Free online training and accreditation quiz on Databricks Academy awarding verifiable digital badge.",
-        "last_corroborated": "2026-10-31T04:37:30.507248+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144896+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -1548,7 +1550,7 @@
         "truth_source_name": "Fortinet Training Institute",
         "truth_source_url": "https://training.fortinet.com/",
         "verdict_notes": "Free digital cybersecurity fundamentals (FCF) training and verified digital badges via Fortinet Training Institute.",
-        "last_corroborated": "2026-10-31T04:37:30.507254+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144902+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -1562,7 +1564,7 @@
         "proof_image": "docs/screenshots/fortinet-cybersecurity-fundamentals.png"
       },
       "zero_dollar_confirmed": true,
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -1666,7 +1668,7 @@
         "truth_source_name": "GitHub Education Student Pack",
         "truth_source_url": "https://education.github.com/pack",
         "verdict_notes": "Dedicated student portal tile for GitHub Foundations 100% free exam vouchers. Requires verified academic email or student enrollment proof.",
-        "last_corroborated": "2026-10-31T04:37:30.507314+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144927+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -1674,7 +1676,7 @@
         "confidence_downgraded": false
       },
       "zero_dollar_confirmed": true,
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -1778,14 +1780,14 @@
         "truth_source_name": "AWS Educate Program",
         "truth_source_url": "https://aws.amazon.com/education/awseducate/",
         "verdict_notes": "Free hands-on cloud labs and Credly badges for learners. AWS formal certification exams (CLF-C02, SAA-C03) require paid Pearson VUE registration.",
-        "last_corroborated": "2026-10-31T04:37:30.507374+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144951+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -1871,7 +1873,7 @@
         "truth_source_name": "Microsoft Build Cloud Skills Challenge",
         "truth_source_url": "https://learn.microsoft.com/en-us/training/challenges",
         "verdict_notes": "Concluded June 2024. Eligible challenge completers received 100% free Pearson VUE exam vouchers.",
-        "last_corroborated": "2026-10-31T04:37:30.507428+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144972+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -1963,7 +1965,7 @@
         "truth_source_name": "Microsoft Ignite Challenge",
         "truth_source_url": "https://learn.microsoft.com/en-us/training/challenges",
         "verdict_notes": "Concluded January 2024. Vouchers were redeemable for AZ-104, AZ-204, MS-102.",
-        "last_corroborated": "2026-10-31T04:37:30.507467+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.144997+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2055,7 +2057,7 @@
         "truth_source_name": "Oracle University Race to Certification",
         "truth_source_url": "https://education.oracle.com/oracle-cloud-infrastructure",
         "verdict_notes": "Concluded July 2024. Two free exam attempts were provided for associate & professional levels.",
-        "last_corroborated": "2026-10-31T04:37:30.507551+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145022+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2147,7 +2149,7 @@
         "truth_source_name": "Cisco U. Learning",
         "truth_source_url": "https://u.cisco.com/",
         "verdict_notes": "Concluded wave awarding 16 CE credits upon course completion.",
-        "last_corroborated": "2026-10-31T04:37:30.507619+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145062+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2239,7 +2241,7 @@
         "truth_source_name": "AWS Training & Certification",
         "truth_source_url": "https://aws.amazon.com/certification/certified-ai-practitioner/",
         "verdict_notes": "Concluded beta registration wave for early AI practitioner candidates.",
-        "last_corroborated": "2026-10-31T04:37:30.507689+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145084+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2331,7 +2333,7 @@
         "truth_source_name": "Google Cloud Skills Boost",
         "truth_source_url": "https://www.cloudskillsboost.google/",
         "verdict_notes": "Concluded challenge providing free Webassessor exam seats to top finishers.",
-        "last_corroborated": "2026-10-31T04:37:30.507745+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145104+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2423,7 +2425,7 @@
         "truth_source_name": "Databricks Academy",
         "truth_source_url": "https://www.databricks.com/learn/training/certification",
         "verdict_notes": "Concluded introductory accreditation campaign.",
-        "last_corroborated": "2026-10-31T04:37:30.507807+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145126+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2515,7 +2517,7 @@
         "truth_source_name": "GitHub Universe Official",
         "truth_source_url": "https://githubuniverse.com/",
         "verdict_notes": "Concluded conference wave providing free exam codes to virtual attendees.",
-        "last_corroborated": "2026-10-31T04:37:30.507859+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145149+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2626,14 +2628,14 @@
         "truth_source_name": "Red Hat Developer Program",
         "truth_source_url": "https://developers.redhat.com/",
         "verdict_notes": "Free developer subscription, hands-on tutorials, and skills assessment badges. Formal RHCSA / RHCE practical exams cost $400 USD.",
-        "last_corroborated": "2026-10-31T04:37:30.507904+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145169+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -2719,7 +2721,7 @@
         "truth_source_name": "HashiCorp Official Certification Program",
         "truth_source_url": "https://developer.hashicorp.com/certifications/terraform-associate",
         "verdict_notes": "HashiCorp standard exam fee is $70.50 USD. HashiCorp does not offer evergreen open free vouchers; free seats occur strictly during HashiConf or partner training webinars. Community wave concluded.",
-        "last_corroborated": "2026-10-31T04:37:30.507982+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145190+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -2830,7 +2832,7 @@
         "truth_source_name": "Palo Alto Networks Beacon",
         "truth_source_url": "https://learn.paloaltonetworks.com/learn",
         "verdict_notes": "PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, Pearson VUE proctored exam retired.",
-        "last_corroborated": "2026-10-31T04:37:30.508033+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145210+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -2875,7 +2877,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (7)"
+          "CREDENTIAL_SIGNALS_FOUND (6)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -2946,14 +2948,14 @@
         "truth_source_name": "GitLab University",
         "truth_source_url": "https://university.gitlab.com/",
         "verdict_notes": "Free self-paced training courses and verifiable completion certificates on GitLab University.",
-        "last_corroborated": "2026-10-31T04:37:30.508076+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145229+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -3058,14 +3060,14 @@
         "truth_source_name": "Splunk Lantern & Training",
         "truth_source_url": "https://lantern.splunk.com/",
         "verdict_notes": "Free self-paced learning paths and knowledge assessments on Splunk Lantern. Formal Pearson VUE exams are $130 USD.",
-        "last_corroborated": "2026-10-31T04:37:30.508126+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145249+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -3170,7 +3172,7 @@
         "truth_source_name": "IBM SkillsBuild Global Initiative",
         "truth_source_url": "https://skillsbuild.org/",
         "verdict_notes": "100% free global education program providing digital learning and Credly-backed verified credentials.",
-        "last_corroborated": "2026-10-31T04:37:30.508169+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145269+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -3282,7 +3284,7 @@
         "truth_source_name": "CNCF Scholarships Program",
         "truth_source_url": "https://www.cncf.io/scholarships/",
         "verdict_notes": "CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines. Active landing page at cncf.io/scholarships.",
-        "last_corroborated": "2026-10-31T04:37:30.508181+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145274+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -3292,7 +3294,7 @@
       "self_healing_event": {
         "previous_status": "Registrations Closed",
         "healed_status": "Active",
-        "timestamp": "2026-10-31T04:37:27.116763+00:00",
+        "timestamp": "2026-10-31T16:59:49.426150+00:00",
         "proof_image": "docs/screenshots/cncf-dan-kohn-scholarship.png"
       },
       "consecutive_failures": 0
@@ -3399,7 +3401,7 @@
         "truth_source_name": "Databricks Academy",
         "truth_source_url": "https://www.databricks.com/learn/training/certification",
         "verdict_notes": "Free self-paced accreditation on Databricks Academy with verifiable digital badge.",
-        "last_corroborated": "2026-10-31T04:37:30.508222+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145295+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -3517,14 +3519,14 @@
         "truth_source_name": "Oracle University AI Skilling Initiative",
         "truth_source_url": "https://mylearn.oracle.com/",
         "verdict_notes": "Oracle University offers free digital learning paths and free proctored exam attempts for OCI Generative AI & Agentic AI Foundations Associate on Oracle MyLearn.",
-        "last_corroborated": "2026-10-31T04:37:30.508230+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145300+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -3564,7 +3566,7 @@
           "CANONICAL_URL_STRUCTURE",
           "CLEAN_REDIRECT_CHAIN",
           "VENDOR_NAME_MATCHED",
-          "CREDENTIAL_SIGNALS_FOUND (3)"
+          "CREDENTIAL_SIGNALS_FOUND (7)"
         ],
         "warning_flags": [],
         "summary": "95% Authenticity: Official Vendor Portal (TLS Verified, Clean Destination)"
@@ -3635,7 +3637,7 @@
         "truth_source_name": "Cisco Networking Academy",
         "truth_source_url": "https://www.netacad.com/",
         "verdict_notes": "Free interactive course and digital credential on Cisco NetAcad / Skills for All.",
-        "last_corroborated": "2026-10-31T04:37:30.508264+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145320+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
@@ -3747,14 +3749,14 @@
         "truth_source_name": "GitHub Student Developer Pack & DataCamp Integration",
         "truth_source_url": "https://education.github.com/pack",
         "verdict_notes": "100% free $99 exam voucher is available exclusively to verified students via the GitHub Student Developer Pack and DataCamp track completion. General public pays $99.",
-        "last_corroborated": "2026-10-31T04:37:30.508272+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145325+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-12-31T23:59:59Z",
         "review_due_utc": "2026-11-01T00:00:00Z",
         "confidence_downgraded": false
       },
-      "consecutive_failures": 9,
+      "consecutive_failures": 10,
       "last_zero_dollar_confirmed_date": "2026-10-29"
     },
     {
@@ -3841,7 +3843,7 @@
         "truth_source_name": "Red Hat Summit Official",
         "truth_source_url": "https://developers.redhat.com/",
         "verdict_notes": "Concluded May 2024. In-person and virtual summit promo codes expired.",
-        "last_corroborated": "2026-10-31T04:37:30.508302+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145345+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -3933,7 +3935,7 @@
         "truth_source_name": "HashiCorp Developer Hub",
         "truth_source_url": "https://developer.hashicorp.com/",
         "verdict_notes": "Concluded 2023 challenge wave providing free Kryterion voucher codes.",
-        "last_corroborated": "2026-10-31T04:37:30.508331+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145363+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -4025,7 +4027,7 @@
         "truth_source_name": "Palo Alto Networks Ignite",
         "truth_source_url": "https://learn.paloaltonetworks.com/learn",
         "verdict_notes": "Concluded December 2023 onsite testing room wave.",
-        "last_corroborated": "2026-10-31T04:37:30.508359+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145380+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -4117,7 +4119,7 @@
         "truth_source_name": "Splunk .conf24 Official",
         "truth_source_url": "https://lantern.splunk.com/",
         "verdict_notes": "Concluded June 2024. Exam voucher codes expired August 2024.",
-        "last_corroborated": "2026-10-31T04:37:30.508404+00:00",
+        "last_corroborated": "2026-10-31T16:59:53.145399+00:00",
         "is_misleading": false,
         "misleading_reasons": [],
         "valid_through_utc": "2026-06-30T23:59:59Z",
@@ -4126,8 +4128,8 @@
       }
     }
   ],
-  "last_inspected": "2026-10-31T04:37:30.479618+00:00",
-  "last_truth_corroborated": "2026-10-31T04:37:30.508667+00:00",
-  "last_sync": "2026-10-31T04:37:30.508667+00:00",
+  "last_inspected": "2026-10-31T16:59:53.067030+00:00",
+  "last_truth_corroborated": "2026-10-31T16:59:53.145580+00:00",
+  "last_sync": "2026-10-31T16:59:53.145580+00:00",
   "total_offers": 39
 }
