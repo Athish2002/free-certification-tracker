@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-30T17:53:06.332880+00:00",
-  "last_sync": "2026-10-30T17:53:06.332880+00:00",
+  "last_updated": "2026-10-31T04:37:33.521043+00:00",
+  "last_sync": "2026-10-31T04:37:33.521043+00:00",
   "news": [
+    {
+      "id": "google-cloud-when-the-kubernetes-api-went-s",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "When the Kubernetes API went silent: A three-layer networking mystery",
+      "summary": "Every support engineer has a case that stays with them. The one that comes up at team lunches. The one where, even after it's resolved, you find yourself staring at a packet capture at midnight just to make sure you really understand what h...",
+      "published_date": "2026-10-30",
+      "date": "2026-10-30",
+      "url": "https://cloud.google.com/blog/products/networking/the-three-layer-gke-network-mystery/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "f13d9115e9611524a4df7c1eff0a0f98cd6acbc1d0e44e7b82906b93dc3f8b41"
+    },
     {
       "id": "google-cloud-what-s-new-in-ai-infrastructur",
       "company": "Google Cloud",
@@ -1386,20 +1400,6 @@
       "impact_badge": "Model Architecture",
       "date": "2024-04-23",
       "content_fingerprint": "ff2a21c78c9c4017da712eabbd20ede4d68584ed29f75116fbfb209e7741508b"
-    },
-    {
-      "id": "gcp-tpu-v5p-hypercomputer",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Google Cloud AI Hypercomputer: Scaling Pods with Cloud TPU v5p & Titanium",
-      "summary": "Google Cloud detailed its AI Hypercomputer architecture, integrating Cloud TPU v5p accelerators with Jupiter network fabrics to scale training clusters up to 8,960 chips with 4x FLOPs per pod.",
-      "published_date": "2024-05-14",
-      "url": "https://cloud.google.com/blog/products/compute/introducing-cloud-tpu-v5p",
-      "impact_badge": "AI Systems",
-      "date": "2024-05-14",
-      "content_fingerprint": "c49d0b5248c22dfbf56d11e764ac85f7ea148947ea93f12a77119a6d45d9a875"
     }
   ],
   "total_items": 100
