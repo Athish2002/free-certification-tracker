@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-10-31T04:37:33.521043+00:00",
-  "last_sync": "2026-10-31T04:37:33.521043+00:00",
+  "last_updated": "2026-11-02T04:58:03.569997+00:00",
+  "last_sync": "2026-11-02T04:58:03.569997+00:00",
   "news": [
+    {
+      "id": "github-game-off-2026-the-theme-is-sh",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "Game Off 2026: The theme is SHIFT",
+      "summary": "GitHub's annual month-long game jam is back for its 14th year! This November, make a game inspired by the theme SHIFT. Change gears, swap perspectives, bend reality, or just press a certain key. The post Game Off 2026: The theme is SHIFT ap...",
+      "published_date": "2026-11-01",
+      "date": "2026-11-01",
+      "url": "https://github.blog/open-source/gaming/game-off-2026-the-theme-is-shift/",
+      "impact_badge": "Developer Tooling",
+      "content_fingerprint": "5365ed125247309def96a8c679378df7e15b15719210ca0c480c484ab742c7ef"
+    },
     {
       "id": "google-cloud-when-the-kubernetes-api-went-s",
       "company": "Google Cloud",
@@ -1386,20 +1400,6 @@
       "impact_badge": "Silicon Innovation",
       "date": "2024-07-10",
       "content_fingerprint": "0bb6eb0018ae715f7049e42bfe5e95028de006c57da32ac624600c17543a7935"
-    },
-    {
-      "id": "msft-azure-phi3-small-language-models",
-      "company": "Microsoft Azure",
-      "source": "Microsoft Research Blog",
-      "source_domain": "microsoft.com",
-      "category": "Research & AI",
-      "title": "Microsoft Phi-3 Open Models: High-Capability Lightweight SLMs for Edge & Cloud",
-      "summary": "Microsoft Research introduced the Phi-3 family of open, small language models trained on synthetic textbooks and filtered web data, matching Llama-3 performance at 3.8B parameters.",
-      "published_date": "2024-04-23",
-      "url": "https://www.microsoft.com/en-us/research/blog/phi-3-technical-report/",
-      "impact_badge": "Model Architecture",
-      "date": "2024-04-23",
-      "content_fingerprint": "ff2a21c78c9c4017da712eabbd20ede4d68584ed29f75116fbfb209e7741508b"
     }
   ],
   "total_items": 100
