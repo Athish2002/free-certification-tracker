@@ -3,8 +3,8 @@
   "review_needed": 1,
   "expired": 14,
   "total": 39,
-  "last_updated": "2026-11-04T15:16:25.074368+00:00",
-  "last_successful_run": "2026-11-04T16:19:55.553977+00:00",
+  "last_updated": "2026-11-04T16:26:12.036803+00:00",
+  "last_successful_run": "2026-11-04T16:26:17.706338+00:00",
   "signals_breakdown": {
     "dom_inspected": 26,
     "oracle_corroborated": 39,

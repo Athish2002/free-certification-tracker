@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-04T15:16:28.879594+00:00",
-  "last_sync": "2026-11-04T15:16:28.879594+00:00",
+  "last_updated": "2026-11-04T16:26:15.260402+00:00",
+  "last_sync": "2026-11-04T16:26:15.260402+00:00",
   "news": [
+    {
+      "id": "cisco-grid-solutions-at-scale-in-a",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Grid Solutions at Scale, in a Small Footprint: Visit Cisco at Enlit Europe",
+      "summary": "Explore Cisco solutions to modernise the grid at Enlit Europe 2026 - including a new ultra-compact, ultra-low power industrial router...",
+      "published_date": "2026-11-04",
+      "date": "2026-11-04",
+      "url": "https://blogs.cisco.com/industrial-iot/grid-solutions-at-scale-in-a-small-footprint-visit-cisco-at-enlit-europe",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "a00c32dbc78bd4e24fa984251d9b8f384a9faf0a099338f847f4a3f118f43b65"
+    },
+    {
+      "id": "cisco-more-100g-in-every-rack-meet",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "More 100G in every rack: Meet the Cisco N9348C8D-H2",
+      "summary": "See how the Cisco N9348C8D-H2 combines dense 100G ports, 400G uplinks, and software choice in a compact 1RU leaf switch.",
+      "published_date": "2026-11-04",
+      "date": "2026-11-04",
+      "url": "https://blogs.cisco.com/datacenter/more-100g-in-every-rack-meet-the-cisco-n9348c8d-h2",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "3cfb0228ea400a4c9ae84c09e8011d959e52fad7ad8ba2b671b6248ba5316f5a"
+    },
     {
       "id": "google-cloud-new-capabilities-to-power-agen",
       "company": "Google Cloud",
@@ -1372,34 +1400,6 @@
       "impact_badge": "Cloud Platform",
       "date": "2024-08-01",
       "content_fingerprint": "4d7d5ea1060589431f5c3f53a76c26cb6ee717195c42fc46d17c515d1d5c9e97"
-    },
-    {
-      "id": "amazon-web-services-how-dynata-scaled-ai-across-th",
-      "company": "Amazon Web Services",
-      "source": "AWS Architecture Blog",
-      "source_domain": "aws.amazon.com",
-      "category": "Infrastructure & Silicon",
-      "title": "How Dynata scaled AI across the development lifecycle with AI-DLC and Kiro IDE",
-      "summary": "Dynata reimagined its development lifecycle with AI, moving from AI-assisted coding to the AI-Driven Development Lifecycle (AI-DLC) methodology with Kiro IDE. Learn how the company reduced the development phase of full-stack features from t...",
-      "published_date": "2024-08-01",
-      "url": "https://aws.amazon.com/blogs/architecture/how-dynata-scaled-ai-across-the-development-lifecycle-with-ai-dlc-and-kiro-ide/",
-      "impact_badge": "Architecture RFC",
-      "date": "2024-08-01",
-      "content_fingerprint": "c91354cd5051905ba5893a83bf46423e18a200dd28f13b2ece67a9f13f345f96"
-    },
-    {
-      "id": "cisco-segment-routing-fundamentals",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Segment Routing Fundamentals: From MPLS to SRv6",
-      "summary": "Explore the fundamentals of Segment Routing in this technical deep dive. Learn how SR MPLS and SRv6 work, the benefits of stateless traffic engineering, and why TI-LFA is essential for modern, resilient network data planes.",
-      "published_date": "2024-08-01",
-      "url": "https://blogs.cisco.com/learning/segment-routing-fundamentals-from-mpls-to-srv6",
-      "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01",
-      "content_fingerprint": "e5b38faa9095b77f70e24f407d9f6e371c264972e625c3de32f7e400a6dfe28e"
     }
   ],
   "total_items": 100
