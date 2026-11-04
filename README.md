@@ -11,7 +11,9 @@
 ![Visual Proof](https://img.shields.io/badge/Visual%20Proof-39%2F39%20Verified-brightgreen.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
-![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg)
+![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg) 
+![Maintainer](https://img.shields.io/badge/Maintained%20By-Solo%20Developer%20(Athish%20R%20S)-blueviolet.svg) 
+![Support](https://img.shields.io/badge/Support-Best--Effort%20(No%20SLA)-orange.svg)
 
 ---
 
@@ -31,6 +33,7 @@
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
 | **Last Automated Inspection** | `2026-11-04 05:22 UTC` (10:52 IST • 00:22 EST • 06:22 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
+| **Maintainer Model** | **Solo Developer ([Athish R S](https://github.com/Athish2002))** | 100% independent project; best-effort response (no corporate SLAs) |
 
 ---
 
@@ -99,7 +102,7 @@
 <details>
 <summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 5 Opportunities)</b> — <i>Click to expand</i></summary>
 
-> Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 12 hours (twice daily) before retiring to the permanent archive.
+> Authentic vendor opportunities flagged by the automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 12 hours (twice daily) before retiring to the permanent archive.
 
 | Provider | Certification | Triage Status | Proof | Reason / Inspection Note |
 | :--- | :--- | :---: | :---: | :--- |
@@ -716,16 +719,32 @@ flowchart TD
 7. **Atomic Single-Source Synchronization**: `README.md` and `docs/index.html` are compiled simultaneously from the identical ground-truth datasets, guaranteeing zero drift between the repository and GitHub Pages.
 
 > [!TIP]
-> For an in-depth post-mortem analyzing why prior certification voucher projects failed and how CertPulse's closed-loop architecture solves each failure mode, read our [RFC & Historical Post-Mortem Deep Dive](docs/DEEP_DIVE_PAST_FAILURES_AND_ARCHITECTURE_RFC.md).
+> For an in-depth post-mortem analyzing why prior certification voucher projects failed and how CertPulse's closed-loop architecture solves each failure mode, read the [RFC & Historical Post-Mortem Deep Dive](docs/DEEP_DIVE_PAST_FAILURES_AND_ARCHITECTURE_RFC.md).
 
 ---
 
-## Contributing & Submitting Offers
+## 👤 Project Maintainer & Realistic Expectations
 
-Found a new free voucher or noticed an expired link?
-- Open an issue using the [Submit Free Voucher](../../issues) template.
-- Or open a quick PR editing `data/offers.json`.
+CertPulse is created, architected, and maintained independently by a **single solo developer** — [Athish R S](https://github.com/Athish2002).
+
+> [!NOTE]
+> **No Corporate Team or Response SLAs**: Because this is an independent open-source passion project operated by a single person, there are **no commercial support teams, dedicated maintainer rotations, or guaranteed response timelines (no 24h/48h SLAs)**. Inquiries, issue reports, and community contributions are reviewed on a **best-effort basis** as personal time permits.
+
+### Why CertPulse is 100% Autonomous
+To keep this tracker reliable, comprehensive, and up-to-date without burning out a solo maintainer, CertPulse was engineered from day one as an **autonomous, self-updating telemetry engine**:
+- **Scheduled Verification**: GitHub Actions automatically runs Playwright headless Chromium audits twice daily (every 12 hours) to inspect every portal for soft-404s, cohort closures, and expired promos.
+- **Self-Healing State Transitions**: When closed campaigns reopen, the pipeline automatically detects the active status, captures fresh screenshot proof, and updates the repository and GitHub Pages with zero human intervention.
+- **Direct Data Ingestion**: Primary cloud engineering blogs and RSS feeds are ingested and sanitized automatically.
 
 ---
 
-*Built for the tech community. Audited automatically on `2026-11-04 05:22 UTC`.*
+## 🤝 Contributing & Submitting Offers
+
+Community contributions are warmly welcome! If you find a new verified free voucher or notice an expired campaign:
+- **Submit an Offer**: Open an issue using the [Submit Free Voucher](../../issues) template.
+- **Submit a Pull Request**: Edit `data/offers.json` directly. The automated CI test suite will validate JSON schemas and invariant rules on your PR.
+- **Review Expectations**: As a solo-maintained repository, PR reviews and issue triaging occur on a best-effort basis. Automated bots handle daily verification runs.
+
+---
+
+*Built and maintained by [Athish R S](https://github.com/Athish2002) for the global tech community. Audited automatically every 12 hours on `2026-11-04 05:22 UTC`.*

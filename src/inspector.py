@@ -12,42 +12,41 @@ Capabilities:
 8. Atomic Persistence: Safely writes database to prevent corruption during unexpected crashes.
 """
 
-import re
-import time
-import httpx
-import json
-import logging
 import asyncio
 import concurrent.futures
+import json
+import logging
+import re
+import time
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
+from typing import Any
 from urllib.parse import urlparse
-from typing import Dict, Any, List, Tuple, Optional, Union
 
-from src.io_utils import atomic_write_json
-from src.visual_hasher import should_skip_screenshot_write
+import httpx
+
 from src.authenticity import audit_offer_authenticity
 from src.dom_inspector import (
-    HeadlessDOMInspector,
-    DOMInspector,
-    inspect_url_with_playwright,
-    inspect_rendered_dom,
-    evaluate_dual_gate,
-    scan_accessibility_elements,
-    assert_cart_balance,
-    evaluate_vlm_semantic_gate,
-    record_audit_entry,
-    PLAYWRIGHT_LAUNCH_ARGS,
     BLOCKED_RESOURCE_TYPES,
     BLOCKED_URL_REGEX,
     CAPACITY_PATTERNS,
+    CONFIRMED_ZERO_DOLLAR_CART,
     COUPON_EXPIRED_PATTERNS,
-    REGISTRATION_CLOSED_PATTERNS,
     MAINTENANCE_PATTERNS,
     PAID_CATALOG_PATTERNS,
-    ZERO_DOLLAR_SIGNALS,
-    CONFIRMED_ZERO_DOLLAR_CART
+    PLAYWRIGHT_LAUNCH_ARGS,
+    REGISTRATION_CLOSED_PATTERNS,
+    HeadlessDOMInspector,
+    assert_cart_balance,
+    evaluate_dual_gate,
+    evaluate_vlm_semantic_gate,
+    inspect_rendered_dom,
+    inspect_url_with_playwright,
+    scan_accessibility_elements,
 )
+from src.io_utils import atomic_write_json
+from src.visual_hasher import should_skip_screenshot_write
+from src.dom_inspector import DOMInspector, record_audit_entry, ZERO_DOLLAR_SIGNALS
 
 try:
     from playwright.async_api import async_playwright
@@ -55,10 +54,10 @@ except ImportError:
     async_playwright = None
 
 from src.constants import (
+    AFFIRMATIVE_OFFER_SIGNALS,
     BROWSER_HEADERS,
     CLOSED_PATTERNS,
     SOFT_404_PATTERNS,
-    AFFIRMATIVE_OFFER_SIGNALS,
     STALENESS_THRESHOLD_DAYS,
 )
 
@@ -69,14 +68,14 @@ SCHEMA_FILE = Path(__file__).resolve().parent.parent / "data" / "schema.json"
 
 
 def check_and_flag_stale_offers(
-    offers: List[Dict[str, Any]],
+    offers: list[dict[str, Any]],
     threshold_days: int = STALENESS_THRESHOLD_DAYS
 ) -> int:
     """
     Auto-downgrades Active offers whose verification_date exceeds threshold_days
     to 'Review Needed' before the inspection sweep begins.
     """
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(UTC).date()
     stale_count = 0
     for offer in offers:
         if offer.get("is_historical_archive"):
@@ -129,9 +128,9 @@ def check_silent_reroute(original_url: str, final_url: str) -> bool:
 
 def inspect_url_with_retry(
     url: str,
-    offer: Optional[Dict[str, Any]] = None,
+    offer: dict[str, Any] | None = None,
     max_retries: int = 2
-) -> Tuple[str, str, str, Dict[str, Any]]:
+) -> tuple[str, str, str, dict[str, Any]]:
     """
     Performs deep inspection with transient retry backoff and multi-layer authenticity verification.
     Returns: (status, reason, final_canonical_url, authenticity_result)
@@ -247,7 +246,7 @@ def inspect_url_with_retry(
                     offer["visual_proof"] = {
                         "screenshot_path": screenshot_path,
                         "screenshot_url": screenshot_path,
-                        "captured_at": datetime.now(timezone.utc).isoformat() if screenshot_valid else None,
+                        "captured_at": datetime.now(UTC).isoformat() if screenshot_valid else None,
                         "status": proof_status,
                         "zero_dollar_confirmed": True,
                         "maintenance_detected": False,
@@ -270,7 +269,7 @@ def inspect_url_with_retry(
 
                 return "Active", f"HTTP {resp.status_code} OK (Live Verified & Authenticated)", final_url, auth_result
                 
-        except (httpx.ConnectTimeout, httpx.ReadTimeout) as e:
+        except (httpx.ConnectTimeout, httpx.ReadTimeout):
             last_err = "Read/Connect Timeout"
             time.sleep(1.5)
         except httpx.ConnectError as e:
@@ -316,7 +315,7 @@ class InspectionResult(list):
     while also exposing dictionary keys ('summary', 'results', 'offers')
     and metrics properties for new callers and schema validation.
     """
-    def __init__(self, offers: List[Dict[str, Any]], summary: Optional[Dict[str, Any]] = None):
+    def __init__(self, offers: list[dict[str, Any]], summary: dict[str, Any] | None = None):
         super().__init__(offers)
         self.summary = summary or {}
         self.results = list(offers)
@@ -352,7 +351,7 @@ class InspectionResult(list):
     def items(self):
         return [("summary", self.summary), ("results", list(self)), ("offers", list(self))]
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "summary": self.summary,
             "results": list(self),
@@ -381,7 +380,7 @@ async def run_inspection_async(
         data = json.load(f)
 
     offers = data.get("offers", [])
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    today = datetime.now(UTC).strftime("%Y-%m-%d")
 
     screenshots_dir = Path(__file__).resolve().parent.parent / "docs" / "screenshots"
     screenshots_dir.mkdir(parents=True, exist_ok=True)
@@ -398,7 +397,7 @@ async def run_inspection_async(
     check_and_flag_stale_offers(offers, threshold_days=STALENESS_THRESHOLD_DAYS)
 
     sem = asyncio.Semaphore(concurrency)
-    platform_semaphores: Dict[str, asyncio.Semaphore] = {}
+    platform_semaphores: dict[str, asyncio.Semaphore] = {}
 
     def get_platform_sem(platform_name: str) -> asyncio.Semaphore:
         plat_key = (platform_name or "unknown").strip().lower()
@@ -422,7 +421,7 @@ async def run_inspection_async(
             browser = None
             playwright_mgr = None
 
-    async def inspect_single_offer(offer: Dict[str, Any]) -> None:
+    async def inspect_single_offer(offer: dict[str, Any]) -> None:
         nonlocal status_changes, healed_count, url_healed_count
         nonlocal authentic_count, active_confirmed, closed_detected, screenshots_skipped_phash
 
@@ -469,6 +468,10 @@ async def run_inspection_async(
                 canonical_url = current_url
                 auth_result = audit_offer_authenticity(offer)
                 skipped_write = False
+                http_status = 200
+                maintenance_detected = False
+                paid_catalog_detected = False
+                zero_dollar_confirmed = (new_status == "Active")
 
                 if browser is not None:
                     context = None
@@ -557,7 +560,10 @@ async def run_inspection_async(
                             try:
                                 screenshot_bytes = await page.screenshot(full_page=False)
                                 if screenshot_bytes and len(screenshot_bytes) >= 4096 and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n":
-                                    from src.visual_hasher import is_blank_or_invalid_screenshot, should_skip_screenshot_write
+                                    from src.visual_hasher import (
+                                        is_blank_or_invalid_screenshot,
+                                        should_skip_screenshot_write,
+                                    )
                                     if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
                                         if is_blank_or_invalid_screenshot(screenshot_bytes) or (target_path.stat().st_size >= 30000 and len(screenshot_bytes) < 18000):
                                             logger.info(
@@ -736,6 +742,18 @@ async def run_inspection_async(
                     canonical_url = canonical_url or current_url
                     offer["inspection_method"] = "HTTP Multi-Layer Gate"
                     skipped_write = False
+                    maintenance_detected = "maintenance" in reason.lower()
+                    paid_catalog_detected = "catalog" in reason.lower()
+                    zero_dollar_confirmed = (new_status == "Active")
+                    http_match = re.search(r"HTTP\s+(\d{3})", reason)
+                    if http_match:
+                        http_status = int(http_match.group(1))
+                    elif new_status == "Broken Link":
+                        http_status = 404
+                    elif new_status == "Server Error":
+                        http_status = 500
+                    else:
+                        http_status = 200
 
                 if skipped_write:
                     screenshots_skipped_phash += 1
@@ -754,7 +772,7 @@ async def run_inspection_async(
                     offer["visual_proof"] = {
                         "screenshot_path": f"docs/screenshots/{offer_id}.png",
                         "screenshot_url": f"docs/screenshots/{offer_id}.png",
-                        "captured_at": datetime.now(timezone.utc).isoformat(),
+                        "captured_at": datetime.now(UTC).isoformat(),
                         "status": "verified" if new_status == "Active" else "placeholder",
                         "zero_dollar_confirmed": new_status == "Active",
                         "maintenance_detected": "maintenance" in reason.lower(),
@@ -766,7 +784,7 @@ async def run_inspection_async(
                 if re.match(r"^\d{4}-\d{2}-\d{2}$", expiry_str):
                     try:
                         exp_date = datetime.strptime(expiry_str, "%Y-%m-%d").date()
-                        if exp_date < datetime.now(timezone.utc).date():
+                        if exp_date < datetime.now(UTC).date():
                             new_status = "Expired"
                             reason = f"Calendar Invariant: Stated expiration date passed ({expiry_str})"
                     except ValueError:
@@ -795,27 +813,53 @@ async def run_inspection_async(
                     offer["self_healing_event"] = {
                         "previous_status": old_status,
                         "healed_status": "Active",
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "timestamp": datetime.now(UTC).isoformat(),
                         "proof_image": offer.get("screenshot_path", f"docs/screenshots/{offer_id}.png")
                     }
 
-                # Update definitive statuses
-                consecutive_failures = offer.get("consecutive_failures", 0)
+                # Update definitive statuses with 2-strike hysteresis & hard-closure fast-path (Option 3A)
+                consecutive_transient = offer.get("consecutive_transient_failures", offer.get("consecutive_failures", 0))
 
-                # Two-Strike Invariant (P1): Transient network/DOM blips enter grace period on Strike 1
-                if old_status == "Active" and new_status in ["Review Needed", "Broken Link", "Server Error", "Registrations Closed"]:
-                    if consecutive_failures < 1:
-                        # Strike 1: Preserve Active, activate grace period, do not trigger false alarm status changes
-                        offer["consecutive_failures"] = 1
-                        offer["in_grace_period"] = True
+                is_hard_closure = (
+                    new_status in ["Registrations Closed", "Expired"]
+                    or any(pat.lower() in reason.lower() for pat in REGISTRATION_CLOSED_PATTERNS + COUPON_EXPIRED_PATTERNS + CAPACITY_PATTERNS)
+                )
+
+                is_transient = (
+                    maintenance_detected
+                    or (isinstance(http_status, int) and 500 <= http_status <= 599)
+                    or "500" in reason or "502" in reason or "503" in reason or "504" in reason
+                    or "timeout" in reason.lower()
+                    or "connection" in reason.lower()
+                    or "maintenance" in reason.lower()
+                    or new_status == "Server Error"
+                    or (new_status == "Review Needed" and ("rate limit" in reason.lower() or "bot protect" in reason.lower() or "gateway" in reason.lower()))
+                )
+
+                if is_hard_closure:
+                    # Hard-closure fast-path: demote immediately on Strike 1
+                    if new_status not in ["Registrations Closed", "Expired"]:
+                        new_status = "Registrations Closed"
+                    offer["consecutive_transient_failures"] = 0
+                    offer["consecutive_failures"] = 0
+                    offer.pop("in_grace_period", None)
+                elif old_status == "Active" and is_transient:
+                    consecutive_transient += 1
+                    offer["consecutive_transient_failures"] = consecutive_transient
+                    offer["consecutive_failures"] = consecutive_transient
+                    if consecutive_transient < 2:
+                        # Strike 1: Preserve Active, activate grace period warning
                         new_status = "Active"
-                        reason = f"Strike 1 (Grace Period): Transient check issue encountered ({reason}). Verifying in next pass."
-                        logger.warning("Strike 1 for '%s': Entering grace period without flipping status.", title)
+                        offer["in_grace_period"] = True
+                        reason = f"Active (Warning: Transient Outage Strike 1): {reason}"
+                        logger.warning("Active (Warning: Transient Outage Strike 1) for '%s': %s", title, reason)
                     else:
-                        # Strike 2: Confirmed degradation across consecutive scheduled passes
-                        offer["consecutive_failures"] = consecutive_failures + 1
+                        # Strike 2: Demote after confirmed degradation
                         offer.pop("in_grace_period", None)
-                elif new_status == "Active":
+                        if new_status == "Active":
+                            new_status = "Broken Link" if http_status in [404, 410] else "Review Needed"
+                elif new_status == "Active" and zero_dollar_confirmed and not maintenance_detected:
+                    offer["consecutive_transient_failures"] = 0
                     offer["consecutive_failures"] = 0
                     offer.pop("in_grace_period", None)
 
@@ -854,7 +898,7 @@ async def run_inspection_async(
             except Exception:
                 pass
 
-    now_iso = datetime.now(timezone.utc).isoformat()
+    now_iso = datetime.now(UTC).isoformat()
     data["last_inspected"] = now_iso
     data["last_sync"] = now_iso
     data["last_updated"] = now_iso
@@ -929,7 +973,7 @@ def run_inspection(
 
 
 
-def inspect_offer(offer: Any, capture_screenshot: bool = True) -> Dict[str, Any]:
+def inspect_offer(offer: Any, capture_screenshot: bool = True) -> dict[str, Any]:
     """
     Interface contract function: inspects a single offer and returns
     updated status, visual_proof, auth_score, verification_date,
@@ -951,7 +995,7 @@ def inspect_offer(offer: Any, capture_screenshot: bool = True) -> Dict[str, Any]
         "canonical_url": canonical_url,
         "auth_score": auth_result.get("authenticity_score", 0),
         "visual_proof": vp,
-        "verification_date": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "verification_date": datetime.now(UTC).strftime("%Y-%m-%d"),
         "zero_dollar_confirmed": vp.get("zero_dollar_confirmed", False) if isinstance(vp, dict) else False,
         "maintenance_detected": vp.get("maintenance_detected", False) if isinstance(vp, dict) else False,
         "paid_catalog_detected": vp.get("paid_catalog_detected", False) if isinstance(vp, dict) else False,

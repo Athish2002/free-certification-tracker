@@ -10,3 +10,5 @@ htmlcov/
 .DS_Store
 .agents/
 linkedin_screenshots/
+scratch/
+data/*.gz

@@ -15,11 +15,11 @@ CertPulse is an open-source, automated telemetry and verification system monitor
 
 ## Reporting a Vulnerability
 
-The CertPulse maintainers take security, user privacy, and data integrity seriously. If you identify a security vulnerability, SSRF bypass, prompt injection vector, or unexpected data disclosure, please disclose it responsibly.
+CertPulse is created, architected, and maintained independently by a solo developer ([Athish R S](https://github.com/Athish2002)). Security, user privacy, and data integrity are taken seriously. If you identify a security vulnerability, SSRF bypass, prompt injection vector, or unexpected data disclosure, please disclose it responsibly.
 
 ### How to Report
 
-To protect our users and maintainers, **do not disclose vulnerabilities in public GitHub issues, discussions, or pull requests**.
+To protect users and community members, **do not disclose vulnerabilities in public GitHub issues, discussions, or pull requests**.
 
 Please report all security vulnerabilities confidentially through **GitHub Private Vulnerability Reporting**:
 1. Navigate to the repository's [Security Advisories tab](https://github.com/Athish2002/free-certification-tracker/security/advisories).
@@ -30,7 +30,7 @@ Please report all security vulnerabilities confidentially through **GitHub Priva
    - Affected component or file (e.g. collector, network verifier, builders).
    - Any proposed remediations.
 
-Reports submitted through GitHub Private Vulnerability Reporting alert repository maintainers directly, keep the disclosure confidential until a patch is released, and allow collaborative security drafting in a temporary private fork.
+Reports submitted through GitHub Private Vulnerability Reporting alert the repository maintainer directly, keep the disclosure confidential until a fix is released, and allow collaborative security drafting in a temporary private fork.
 
 ---
 
@@ -47,8 +47,8 @@ Reports submitted through GitHub Private Vulnerability Reporting alert repositor
 
 ---
 
-### Response Timelines
+### Solo Maintainer Response & Realistic Expectations
 
-- **Initial Acknowledgment**: Within 48 hours of receipt.
-- **Triage & Assessment**: Within 5 business days.
-- **Remediation & Advisory Release**: Coordinated with the reporter before public disclosure.
+- **Single Maintainer**: CertPulse is an independent, non-commercial open-source project operated by a single person. There is **no full-time security team, commercial response rotation, or guaranteed response timeline (no formal 48-hour or 5-business-day response SLA)**.
+- **Best-Effort Handling**: Vulnerability reports submitted via GitHub Private Vulnerability Reporting are reviewed on a **best-effort basis** around personal availability.
+- **Coordinated Disclosure**: Valid vulnerabilities will be remediated and released through GitHub Advisories as swiftly as feasible before public disclosure.

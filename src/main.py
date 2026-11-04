@@ -7,19 +7,22 @@ the README and Web Dashboard.
 
 from __future__ import annotations
 
-import re
-import sys
+import argparse
 import json
 import logging
-import argparse
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Dict, Any, List, Tuple, Optional, Set
-from datetime import datetime, timezone
+from typing import Any
 
-from src.io_utils import atomic_write_json
-from src.collector import fetch_reddit_leads, vet_candidates, vet_candidate_lead
-from src.inspector import run_inspection, inspect_offer
 from src.builder import build_all
+from src.collector import vet_candidates
+from src.constants import (
+    CAPACITY_PATTERNS,
+    COUPON_EXPIRED_PATTERNS,
+    REGISTRATION_CLOSED_PATTERNS,
+)
+from src.inspector import run_inspection
+from src.io_utils import atomic_write_json
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("certpulse.main")
@@ -32,17 +35,14 @@ SCREENSHOTS_DIR = ROOT_DIR / "docs" / "screenshots"
 
 
 def apply_self_healing(
-    offer: Dict[str, Any],
-    inspection_res: Dict[str, Any],
-    proof_path: Optional[str] = None
-) -> Dict[str, Any]:
+    offer: dict[str, Any],
+    inspection_res: dict[str, Any],
+    proof_path: str | None = None
+) -> dict[str, Any]:
     """
-    Self-Healing Recovery Engine:
-    During scheduled refresh, if an offer transitions from a triage/outage state
-    ('Review Needed', 'Registrations Closed', 'Broken Link', or 'Expired') back to
-    'Active' (e.g. Oracle University re-opens, or Salesforce launches a new cohort),
-    update status to 'Active', capture/attach a fresh screenshot with ISO timestamp,
-    and log the self-healing event on the Offer.
+    Self-Healing Recovery & Flapping Status Hysteresis Engine:
+    During scheduled refresh, coordinates self-healing recovery, 2-strike hysteresis
+    for transient outages, and immediate Strike-1 demotion for hard closures.
     """
     updated = dict(offer)
     old_status = updated.get("status")
@@ -61,11 +61,13 @@ def apply_self_healing(
         "paid_catalog_detected",
         insp_vp.get("paid_catalog_detected", False)
     )
+    reason = inspection_res.get("reason", "")
+    http_status = inspection_res.get("http_status", 200)
 
     triage_statuses = ["Review Needed", "Registrations Closed", "Broken Link", "Expired"]
     if old_status in triage_statuses and new_status == "Active" and zero_dollar and not maintenance and not paid_catalog:
-        now_iso = datetime.now(timezone.utc).isoformat()
-        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        now_iso = datetime.now(UTC).isoformat()
+        today = datetime.now(UTC).strftime("%Y-%m-%d")
         offer_id = updated.get("id", "healed-offer")
         shot_path = proof_path or updated.get("screenshot_path", f"docs/screenshots/{offer_id}.png")
 
@@ -73,6 +75,9 @@ def apply_self_healing(
         updated["verification_date"] = today
         updated["last_zero_dollar_confirmed_date"] = today
         updated["screenshot_path"] = shot_path
+        updated["consecutive_transient_failures"] = 0
+        updated["consecutive_failures"] = 0
+        updated.pop("in_grace_period", None)
 
         # Ensure visual proof metadata is refreshed directly from inspection result
         vp = updated.get("visual_proof")
@@ -92,30 +97,93 @@ def apply_self_healing(
                 "status": "verified",
                 "zero_dollar_confirmed": zero_dollar,
                 "maintenance_detected": maintenance,
-                "paid_catalog_detected": paid_catalog
+                "paid_catalog_detected": paid_catalog,
             }
 
         updated["self_healing_event"] = {
             "previous_status": old_status,
             "healed_status": "Active",
             "timestamp": now_iso,
-            "proof_image": shot_path
+            "proof_image": shot_path,
         }
         logger.warning(
             f"[SELF-HEALING RECOVERY] Offer '{updated.get('title')}' successfully recovered from "
             f"'{old_status}' to 'Active'. Fresh visual proof attached at {shot_path}."
         )
-    elif new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed"]:
-        if new_status == "Active" and (not zero_dollar or maintenance or paid_catalog):
-            updated["status"] = "Review Needed"
-            updated["inspection_notes"] = "Inspection did not confirm affirmative zero-dollar terms"
+    elif new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed", "Server Error"]:
+        is_hard_closure = (
+            new_status in ["Registrations Closed", "Expired"]
+            or any(pat.lower() in reason.lower() for pat in REGISTRATION_CLOSED_PATTERNS + COUPON_EXPIRED_PATTERNS + CAPACITY_PATTERNS)
+        )
+
+        is_transient = (
+            maintenance
+            or (isinstance(http_status, int) and 500 <= http_status <= 599)
+            or "500" in reason or "502" in reason or "503" in reason or "504" in reason
+            or "timeout" in reason.lower()
+            or "connection" in reason.lower()
+            or "maintenance" in reason.lower()
+            or new_status == "Server Error"
+            or (new_status == "Review Needed" and ("rate limit" in reason.lower() or "bot protect" in reason.lower() or "gateway" in reason.lower()))
+        )
+
+        consecutive_transient = updated.get("consecutive_transient_failures", updated.get("consecutive_failures", 0))
+
+        if is_hard_closure:
+            # Fast-path: immediately demote on Strike 1
+            updated["status"] = new_status if new_status in ["Registrations Closed", "Expired"] else "Registrations Closed"
+            updated["consecutive_transient_failures"] = 0
+            updated["consecutive_failures"] = 0
+            updated.pop("in_grace_period", None)
+            if reason:
+                updated["inspection_notes"] = reason
+        elif old_status == "Active" and is_transient:
+            consecutive_transient += 1
+            updated["consecutive_transient_failures"] = consecutive_transient
+            updated["consecutive_failures"] = consecutive_transient
+            if consecutive_transient < 2:
+                updated["status"] = "Active"
+                updated["in_grace_period"] = True
+                warning_note = f"Active (Warning: Transient Outage Strike 1): {reason}" if reason else "Active (Warning: Transient Outage Strike 1)"
+                updated["inspection_notes"] = warning_note
+                logger.warning("Active (Warning: Transient Outage Strike 1) for '%s': %s", updated.get("title"), warning_note)
+            else:
+                updated["status"] = "Broken Link" if http_status in [404, 410] else "Review Needed"
+                updated.pop("in_grace_period", None)
+                if reason:
+                    updated["inspection_notes"] = reason
+        elif new_status == "Active":
+            if not zero_dollar or maintenance or paid_catalog:
+                if old_status == "Active" and (maintenance or is_transient):
+                    consecutive_transient += 1
+                    updated["consecutive_transient_failures"] = consecutive_transient
+                    updated["consecutive_failures"] = consecutive_transient
+                    if consecutive_transient < 2:
+                        updated["status"] = "Active"
+                        updated["in_grace_period"] = True
+                        warning_note = f"Active (Warning: Transient Outage Strike 1): {reason}" if reason else "Active (Warning: Transient Outage Strike 1)"
+                        updated["inspection_notes"] = warning_note
+                    else:
+                        updated["status"] = "Review Needed"
+                        updated.pop("in_grace_period", None)
+                        updated["inspection_notes"] = reason or "Inspection did not confirm affirmative zero-dollar terms"
+                else:
+                    updated["status"] = "Review Needed"
+                    updated["inspection_notes"] = reason or "Inspection did not confirm affirmative zero-dollar terms"
+            else:
+                updated["status"] = "Active"
+                updated["consecutive_transient_failures"] = 0
+                updated["consecutive_failures"] = 0
+                updated.pop("in_grace_period", None)
+                updated["last_zero_dollar_confirmed_date"] = datetime.now(UTC).strftime("%Y-%m-%d")
+                if reason:
+                    updated["inspection_notes"] = reason
         else:
             updated["status"] = new_status
-            if new_status == "Active" and zero_dollar:
-                updated["last_zero_dollar_confirmed_date"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-            if "reason" in inspection_res:
-                updated["inspection_notes"] = inspection_res["reason"]
-        updated["verification_date"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            if reason:
+                updated["inspection_notes"] = reason
+
+        updated["verification_date"] = datetime.now(UTC).strftime("%Y-%m-%d")
 
     return updated
 
@@ -128,8 +196,7 @@ def normalize_url(url: str) -> str:
         from urllib.parse import urlparse
         p = urlparse(url.strip())
         netloc = p.netloc.lower()
-        if netloc.startswith("www."):
-            netloc = netloc[4:]
+        netloc = netloc.removeprefix("www.")
         path = p.path.rstrip("/")
         norm = f"{p.scheme.lower()}://{netloc}{path}"
         if p.query:
@@ -140,9 +207,9 @@ def normalize_url(url: str) -> str:
 
 
 def ingest_and_vet_candidates(
-    candidates_file: Optional[Path] = None,
-    offers_file: Optional[Path] = None
-) -> Tuple[int, int]:
+    candidates_file: Path | None = None,
+    offers_file: Path | None = None
+) -> tuple[int, int]:
     """
     Autonomous Candidate Vetting Loop:
     1. Loads discovered community leads from data/candidates.json.
@@ -212,7 +279,7 @@ def ingest_and_vet_candidates(
             seen_promoted.add(norm_u)
             actually_promoted += 1
             
-        now_iso = datetime.now(timezone.utc).isoformat()
+        now_iso = datetime.now(UTC).isoformat()
         if "last_updated" not in offers_data:
             offers_data["last_updated"] = now_iso
         if "$schema" not in offers_data:
@@ -224,7 +291,7 @@ def ingest_and_vet_candidates(
         
     # Persist updated vetting status and audit records to candidates.json
     cand_data["total_candidates"] = len(leads)
-    cand_data["last_vetted"] = datetime.now(timezone.utc).isoformat()
+    cand_data["last_vetted"] = datetime.now(UTC).isoformat()
     cand_data["vetted_promoted_count"] = promoted_count
     cand_data["vetted_rejected_count"] = rejected_count
     
@@ -237,7 +304,7 @@ def ingest_and_vet_candidates(
     return promoted_count, rejected_count
 
 
-def run_self_healing_refresh(use_headless: bool = True) -> Tuple[int, int]:
+def run_self_healing_refresh(use_headless: bool = True) -> tuple[int, int]:
     """
     Executes the scheduled site inspection pass, monitoring for portal recovery
     and executing self-healing visual proof capture.
@@ -325,6 +392,7 @@ def run_pipeline(
     if not dry_run:
         logger.info("Executing Truth Oracle policy corroboration and anti-misleading audit...")
         import concurrent.futures
+
         from src.truth_oracle import audit_and_enrich_offers
         if DATA_FILE.exists():
             with open(DATA_FILE, "r", encoding="utf-8") as f:
@@ -361,7 +429,7 @@ def run_pipeline(
             )
 
             if has_changes:
-                now_iso = datetime.now(timezone.utc).isoformat()
+                now_iso = datetime.now(UTC).isoformat()
                 o_data["last_truth_corroborated"] = now_iso
                 o_data["last_sync"] = now_iso
                 o_data["last_updated"] = now_iso

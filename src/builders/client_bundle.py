@@ -469,8 +469,8 @@ JS_TEMPLATE = """
 
         function applyTheme(id) {
             let targetId = id;
-            if (id === 'dark' || id === 'catppuccin-mocha' || id === 'github-dark') targetId = 'catppuccin-mocha';
-            if (id === 'light' || id === 'catppuccin-latte' || id === 'github-light') targetId = 'catppuccin-latte';
+            if (id === 'dark') targetId = 'catppuccin-mocha';
+            if (id === 'light') targetId = 'catppuccin-latte';
 
             const theme = THEMES.find(t => t.id === targetId) || THEMES[0];
             document.documentElement.setAttribute('data-theme', theme.id);
@@ -1045,9 +1045,9 @@ JS_TEMPLATE = """
                             <div>
                                 <div class="flex items-center justify-between gap-1 mb-1">
                                     <span class="font-bold truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
-                                    <span class="font-bold text-emerald-500">${o.value_usd ? '$' + o.value_usd : 'Free'}</span>
+                                    <span class="font-bold tabular-nums" style="color: var(--success-fg);">${o.value_usd ? '$' + o.value_usd : 'Free'}</span>
                                 </div>
-                                <div class="font-medium text-slate-700 dark:text-slate-300 truncate">${escapeHtml(o.certification_name || o.title)}</div>
+                                <div class="font-medium truncate" style="color: var(--fg-default);">${escapeHtml(o.certification_name || o.title)}</div>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t" style="border-color: var(--border-muted);">
                                 <span class="text-[10px] font-mono">${escapeHtml(o.difficulty_tier || 'Foundational')}</span>
@@ -1133,7 +1133,8 @@ JS_TEMPLATE = """
                     return;
                 }
                 if (e.key === 'Tab') {
-                    const focusables = proofModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                    const focusables = Array.from(proofModal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+                        .filter(el => !el.classList.contains('hidden') && el.offsetParent !== null && window.getComputedStyle(el).display !== 'none');
                     if (focusables.length > 0) {
                         const firstEl = focusables[0];
                         const lastEl = focusables[focusables.length - 1];
@@ -1437,7 +1438,7 @@ JS_TEMPLATE = """
                         <div class="flex items-center gap-2.5">
                             <div class="flex items-center gap-1.5 text-xs font-bold" style="color: var(--success-fg);">
                                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
-                                <span>Cart Balance: $0.00</span>
+                                <span class="tabular-nums">Cart Balance: $0.00</span>
                             </div>
                             <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
                                 📸 Proof

@@ -25,6 +25,29 @@ from src.builders.readme_builder import (
 )
 
 
+def minify_offer_for_client(o: Dict[str, Any]) -> Dict[str, Any]:
+    """Prunes heavy internal backend diagnostics to optimize inlined client bundle payload while preserving all UI fields."""
+    keys = (
+        "id", "title", "platform", "category", "certification_name", "credential_tier",
+        "difficulty_tier", "url", "verified_vendor_url", "direct_verified_url", "status",
+        "value_usd", "time_period", "recurrence_pattern", "voucher_code", "application_flow_type",
+        "cart_balance_verified", "checkout_field", "claim_steps", "redemption_guide",
+        "authenticity_score", "screenshot_path", "visual_proof", "truth_verification",
+        "inspection_notes", "verification_date", "last_zero_dollar_confirmed_date", "is_historical_archive"
+    )
+    m = {k: o[k] for k in keys if k in o and o[k] is not None}
+    if "visual_proof" in m and isinstance(m["visual_proof"], dict):
+        vp_keys = ("screenshot_path", "status", "captured_at", "zero_dollar_confirmed")
+        m["visual_proof"] = {k: m["visual_proof"][k] for k in vp_keys if k in m["visual_proof"]}
+    return m
+
+
+def minify_news_for_client(n: Dict[str, Any]) -> Dict[str, Any]:
+    """Prunes non-display news fields to optimize inlined client bundle payload."""
+    keys = ("id", "title", "url", "published_date", "category", "company", "source_domain", "summary")
+    return {k: n[k] for k in keys if k in n and n[k] is not None}
+
+
 def escape_js_attr(val: Any) -> str:
     """Escapes string for safe embedding inside single-quoted JavaScript literal in HTML attribute."""
     s = str(val or "")
@@ -106,9 +129,11 @@ def generate_web_dashboard(
     last_sync_iso_js = last_sync_dt.isoformat() if last_sync_dt else datetime.now(timezone.utc).isoformat()
     last_updated_date = last_sync_dt.strftime("%Y-%m-%d") if last_sync_dt else datetime.now(timezone.utc).strftime("%Y-%m-%d")
     
-    # Safe JSON encoding preventing script breakout / XSS injections
-    offers_json_str = json.dumps(offers).replace("<", "\\u003c").replace(">", "\\u003e")
-    news_json_str = json.dumps(news_items).replace("<", "\\u003c").replace(">", "\\u003e")
+    # Safe minified JSON encoding preventing script breakout / XSS injections (ADR-02 Payload Optimization)
+    minified_offers = [minify_offer_for_client(o) for o in offers]
+    minified_news = [minify_news_for_client(n) for n in news_items]
+    offers_json_str = json.dumps(minified_offers, separators=(",", ":")).replace("<", "\\u003c").replace(">", "\\u003e")
+    news_json_str = json.dumps(minified_news, separators=(",", ":")).replace("<", "\\u003c").replace(">", "\\u003e")
     
     cloud_count = sum(1 for o in offers if "Cloud" in (o.get("category") or "") or "Cloud" in (o.get("platform") or ""))
     sec_count = sum(1 for o in offers if "Security" in (o.get("category") or ""))
@@ -196,8 +221,17 @@ def generate_web_dashboard(
                         <span class="relative inline-flex rounded-full h-2 w-2" style="background-color: var(--success-fg);"></span>
                     </span>
                     <span id="navUtcClock" class="tabular-nums font-bold" style="color: var(--fg-default);">{tz_info['utc']}</span>
-                    <span id="navLocalOffset" class="text-[11px] font-medium opacity-80" style="color: var(--fg-subtle);">• Local</span>
+                    <span id="navLocalOffset" class="text-[11px] font-medium opacity-80 tabular-nums" style="color: var(--fg-subtle);">• Local</span>
                     <span id="navTimezoneText" class="sr-only">Last Synced: {tz_info['ticker']}</span>
+                </div>
+
+                <!-- Theme Palette Dropdown Button (10 Developer Themes) -->
+                <div class="relative">
+                    <button onclick="toggleThemeDropdown()" id="themeDropdownToggleBtn" title="Select from 10 Developer Color Themes" aria-label="Select Theme Palette" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-2.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 2 7a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2c0-2 2-4 2-7a7 7 0 0 0-7-7Z"/></svg>
+                        <span class="hidden sm:inline text-[11px]">Themes</span>
+                    </button>
+                    {theme_dropdown_html}
                 </div>
 
                 <!-- Dark / Light Single Theme Toggle Button (Catppuccin Mocha / Catppuccin Latte) -->

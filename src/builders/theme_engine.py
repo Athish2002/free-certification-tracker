@@ -411,39 +411,41 @@ body {
     background-color: var(--canvas-subtle);
     border: 1px solid var(--border-default);
     box-shadow: var(--card-shadow), var(--specular-rim);
-    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1), 
-                border-color 180ms ease;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), 
+                box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1), 
+                border-color 180ms cubic-bezier(0.23, 1, 0.32, 1);
     will-change: transform;
 }
 @media (hover: hover) and (pointer: fine) {
     .primer-card:hover {
-        transform: translateY(-4px) scale(1.004);
-        box-shadow: var(--card-shadow-hover), var(--specular-rim);
+        transform: translateY(-4px) rotateX(1deg) rotateY(-1deg);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 16px -4px rgba(0, 0, 0, 0.04), 0 20px 40px -8px rgba(0, 0, 0, 0.08);
         border-color: var(--accent-fg);
     }
     .primer-card:active {
-        transform: translateY(-1px) scale(0.996);
+        transform: translateY(-1px) scale(0.99);
     }
 }
 
-button, a.cursor-pointer, .btn, .tier-pill, .cat-pill {
-    transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
-                filter 140ms ease,
-                background-color 140ms ease,
-                border-color 140ms ease,
-                box-shadow 140ms ease;
+button, a.cursor-pointer, .btn, .tier-pill, .cat-pill, .news-cat-pill {
+    transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1),
+                filter 140ms cubic-bezier(0.23, 1, 0.32, 1),
+                background-color 140ms cubic-bezier(0.23, 1, 0.32, 1),
+                border-color 140ms cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
     will-change: transform;
 }
 @media (hover: hover) and (pointer: fine) {
-    .tier-pill:hover, .cat-pill:hover {
+    .tier-pill:hover, .cat-pill:hover, .news-cat-pill:hover {
         transform: translateY(-1.5px);
         box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
     }
 }
-button:active, a.cursor-pointer:active, a.tactile-btn:active, .tier-pill:active, .cat-pill:active {
-    transform: scale(0.96);
-    filter: brightness(0.92);
+button:active, a.cursor-pointer:active, a.tactile-btn:active, .tier-pill:active, .cat-pill:active, .news-cat-pill:active {
+    transform: scale(0.98);
+    filter: brightness(0.95);
 }
 
 input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {

@@ -7,11 +7,10 @@ promotional seasonality, visual screenshot proof metadata, and candidate lead ve
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from datetime import UTC, datetime
+from typing import Any, Literal
 
-from src.vlm_engine import VLMSemanticVerdict
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 # --- 1. Enumeration & Literal Type Aliases ---
 
@@ -67,11 +66,11 @@ class VisualProof(BaseModel):
         ...,
         description="Relative repository path to captured PNG (e.g. 'docs/screenshots/<id>.png')",
     )
-    screenshot_url: Optional[str] = Field(
+    screenshot_url: str | None = Field(
         default=None,
         description="Optional web URI or relative link for UI embedding",
     )
-    captured_at: Optional[str] = Field(
+    captured_at: str | None = Field(
         default=None,
         description="ISO 8601 UTC timestamp of the most recent visual capture",
     )
@@ -93,11 +92,11 @@ class VisualProof(BaseModel):
     )
 
     # --- Milestone 2 Tier 3 Additions ---
-    vlm_verdict: Optional[Dict[str, Any]] = Field(
+    vlm_verdict: dict[str, Any] | None = Field(
         default=None,
         description="Serialized VLMSemanticVerdict payload from Multimodal VLM Semantic Gate",
     )
-    visual_confidence_score: Optional[float] = Field(
+    visual_confidence_score: float | None = Field(
         default=None,
         ge=0.0,
         le=1.0,
@@ -107,7 +106,7 @@ class VisualProof(BaseModel):
         default=False,
         description="True if official certification badge was perceptually matched",
     )
-    ocr_text_snippet: Optional[str] = Field(
+    ocr_text_snippet: str | None = Field(
         default=None,
         description="Extracted OCR text snippet from viewport screenshot",
     )
@@ -142,7 +141,7 @@ class RedemptionGuide(BaseModel):
     field_location: str
     flow_type: ApplicationFlowType
     verified_cart_balance: str
-    instructions: List[str] = Field(default_factory=list)
+    instructions: list[str] = Field(default_factory=list)
 
     @field_validator("verified_cart_balance")
     @classmethod
@@ -162,24 +161,24 @@ class NetworkProvenance(BaseModel):
     """
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    asn: Optional[int] = Field(default=None, description="Autonomous System Number (e.g. 8075 for Microsoft)")
-    asn_org: Optional[str] = Field(default=None, description="BGP route origin organization handle")
-    ip_address: Optional[str] = Field(default=None, description="Resolved IPv4/IPv6 host address")
+    asn: int | None = Field(default=None, description="Autonomous System Number (e.g. 8075 for Microsoft)")
+    asn_org: str | None = Field(default=None, description="BGP route origin organization handle")
+    ip_address: str | None = Field(default=None, description="Resolved IPv4/IPv6 host address")
     is_vendor_infra: bool = Field(default=True, description="True if IP maps to authorized vendor ASN or enterprise CDN")
     tls_ct_verified: bool = Field(default=True, description="True if certificate carries valid embedded RFC 6962 SCTs")
     sct_count: int = Field(default=0, ge=0, description="Count of embedded Signed Certificate Timestamps")
     dnssec_valid: bool = Field(default=False, description="True if DNSSEC AD flag confirms cryptographic trust")
     caa_authorized: bool = Field(default=True, description="True if certificate issuer is permitted by CAA records")
     verified_at_utc: str = Field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        default_factory=lambda: datetime.now(UTC).isoformat(),
         description="ISO 8601 UTC timestamp of verification",
     )
 
     # Diagnostic telemetry
-    dnssec_verdict: Optional[str] = Field(default="INSECURE_STANDARD")
-    authorized_cas: List[str] = Field(default_factory=list)
-    sct_log_operators: List[str] = Field(default_factory=list)
-    security_flags: List[str] = Field(default_factory=list)
+    dnssec_verdict: str | None = Field(default="INSECURE_STANDARD")
+    authorized_cas: list[str] = Field(default_factory=list)
+    sct_log_operators: list[str] = Field(default_factory=list)
+    security_flags: list[str] = Field(default_factory=list)
 
 
 class TemporalLongevity(BaseModel):
@@ -190,11 +189,11 @@ class TemporalLongevity(BaseModel):
     """
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    first_seen_archive_utc: Optional[str] = Field(
+    first_seen_archive_utc: str | None = Field(
         default=None,
         description="ISO 8601 UTC timestamp of earliest recorded Internet Archive snapshot",
     )
-    domain_age_days: Optional[int] = Field(
+    domain_age_days: int | None = Field(
         default=None,
         description="Calculated domain age in days since earliest archive snapshot",
     )
@@ -222,14 +221,14 @@ class TemporalLongevity(BaseModel):
         description="Classification: annual_window | periodic_challenge_wave | evergreen | event_driven | unknown",
     )
     verified_at_utc: str = Field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        default_factory=lambda: datetime.now(UTC).isoformat(),
         description="ISO 8601 UTC timestamp when temporal analysis was performed",
     )
     source: str = Field(
         default="live_cdx",
         description="Provenance of verdict: live_cdx | cache | vendor_whitelist_fallback | offline_fallback",
     )
-    warning_flags: List[str] = Field(default_factory=list)
+    warning_flags: list[str] = Field(default_factory=list)
 
 
 # --- 4. Canonical Offer Schema ---
@@ -258,18 +257,18 @@ class Offer(BaseModel):
         default="unproctored_lab",
         description="Delivery mode: pearson_vue | kryterion | webassessor | psi | unproctored_lab | online_quiz",
     )
-    accredited_body: Optional[str] = Field(
+    accredited_body: str | None = Field(
         default=None,
         description="Official certifying / delivery body: Pearson VUE, Kryterion, PSI, Oracle, etc.",
     )
 
     # URL Ground Truth
     url: str = Field(..., pattern=r"^https://", description="Primary vendor or promo landing URL")
-    verified_vendor_url: Optional[str] = Field(
+    verified_vendor_url: str | None = Field(
         default=None,
         description="Direct verified URL bypassing generic homepages or maintenance roots",
     )
-    direct_verified_url: Optional[str] = Field(
+    direct_verified_url: str | None = Field(
         default=None,
         description="Alternative direct link target",
     )
@@ -280,7 +279,7 @@ class Offer(BaseModel):
         default="evergreen",
         description="Promotional cycle: evergreen | periodic_challenge_wave | annual_window | student_restricted_evergreen | monthly_sweepstakes | event_driven",
     )
-    value_usd: Optional[int] = Field(default=None, ge=0)
+    value_usd: int | None = Field(default=None, ge=0)
     difficulty_tier: DifficultyTier = Field(default="Foundational")
     eligibility: str = Field(default="Open to all global candidates")
     time_period: str = Field(default="Rolling")
@@ -292,52 +291,62 @@ class Offer(BaseModel):
     checkout_field: str = Field(default="")
     cart_balance_verified: str = Field(default="$0.00 (100% Free / Waiver Confirmed)")
     voucher_code: str = Field(default="AUTO_APPLIED")
-    redemption_guide: Optional[Dict[str, Any]] = None
+    redemption_guide: dict[str, Any] | None = None
     claim_steps: str = Field(default="")
 
     # Authenticity & Security
     is_authentic_vendor: bool = Field(default=True)
     authenticity_score: int = Field(default=90, ge=0, le=100)
-    authenticity_details: Optional[Dict[str, Any]] = None
+    authenticity_details: dict[str, Any] | None = None
 
     # Tier 1 Network Provenance & Tier 2 Temporal Longevity (M1)
-    network_provenance: Optional[NetworkProvenance] = None
-    temporal_longevity: Optional[TemporalLongevity] = None
+    network_provenance: NetworkProvenance | None = None
+    temporal_longevity: TemporalLongevity | None = None
 
     # Online Truth Oracle Verification
-    truth_verification: Optional[Dict[str, Any]] = None
+    truth_verification: dict[str, Any] | None = None
 
     # Visual Proof Metadata (R2, R3)
-    visual_proof: Optional[VisualProof] = None
-    screenshot_path: Optional[str] = None
+    visual_proof: VisualProof | None = None
+    screenshot_path: str | None = None
 
     # Lifecycle & Archival
-    verification_date: Optional[str] = None
-    last_zero_dollar_confirmed_date: Optional[str] = Field(
+    verification_date: str | None = None
+    last_zero_dollar_confirmed_date: str | None = Field(
         default=None,
         description="ISO 8601 date when $0.00 terms were last affirmatively validated",
     )
     inspection_notes: str = Field(default="")
-    inspection_method: Optional[str] = "Playwright Headless DOM & Visual Proof"
-    offer_type: Optional[str] = "100% Free Exam Voucher"
-    exam_code: Optional[str] = None
+    inspection_method: str | None = "Playwright Headless DOM & Visual Proof"
+    offer_type: str | None = "100% Free Exam Voucher"
+    exam_code: str | None = None
     is_historical_archive: bool = Field(default=False)
-    concluded_date: Optional[str] = None
-    expiry_date: Optional[str] = None
+    concluded_date: str | None = None
+    expiry_date: str | None = None
+    consecutive_transient_failures: int = Field(
+        default=0,
+        ge=0,
+        description="Hysteresis strike counter for transient network/maintenance events",
+    )
+    consecutive_failures: int = Field(
+        default=0,
+        ge=0,
+        description="Legacy strike counter for backward compatibility",
+    )
 
     # Schema Alignment & Dual Compatibility Fields
-    company: Optional[str] = None
-    tier: Optional[str] = None
-    official_url: Optional[str] = None
-    terms_url: Optional[str] = None
-    terms: Optional[str] = None
-    last_verified: Optional[str] = None
-    badge_eligible: Optional[bool] = None
-    verification_state: Optional[str] = None
+    company: str | None = None
+    tier: str | None = None
+    official_url: str | None = None
+    terms_url: str | None = None
+    terms: str | None = None
+    last_verified: str | None = None
+    badge_eligible: bool | None = None
+    verification_state: str | None = None
 
     @field_validator("authenticity_details", mode="before")
     @classmethod
-    def validate_authenticity_details(cls, v: Any) -> Optional[Dict[str, Any]]:
+    def validate_authenticity_details(cls, v: Any) -> dict[str, Any] | None:
         if v is None or isinstance(v, dict):
             return v
         if isinstance(v, str):
@@ -429,9 +438,9 @@ class CandidateLead(BaseModel):
     title: str = Field(..., description="Lead title or post subject")
     url: str = Field(..., description="Lead reference URL")
     platform: str = Field(..., description="Associated cloud vendor / provider")
-    timestamp: Optional[str] = Field(default=None, description="ISO 8601 discovery timestamp")
-    keywords: List[str] = Field(default_factory=list)
-    match_confidence: Optional[str] = Field(default="Medium")
+    timestamp: str | None = Field(default=None, description="ISO 8601 discovery timestamp")
+    keywords: list[str] = Field(default_factory=list)
+    match_confidence: str | None = Field(default="Medium")
     is_authentic_vendor: bool = Field(default=False)
     verified_vendor_url: str = Field(default="")
     authenticity_tier: str = Field(default="Community Lead")
@@ -440,10 +449,10 @@ class CandidateLead(BaseModel):
         self,
         offer_id: str,
         credential_tier: CredentialTier = "proctored_exam",
-        authenticity_result: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        authenticity_result: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """Converts candidate lead into a draft offer payload ready for inspection."""
-        now_iso = datetime.now(timezone.utc).date().isoformat()
+        now_iso = datetime.now(UTC).date().isoformat()
         if authenticity_result and "authenticity_score" in authenticity_result:
             auth_score = int(authenticity_result["authenticity_score"])
         elif authenticity_result and "score" in authenticity_result:
@@ -480,13 +489,13 @@ class OffersDatabase(BaseModel):
     """Complete schema for data/offers.json database file."""
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    schema_version: Optional[str] = Field(default="./schema.json", alias="$schema")
-    last_updated: Optional[str] = None
-    last_inspected: Optional[str] = None
-    last_truth_corroborated: Optional[str] = None
-    last_sync: Optional[str] = None
-    total_offers: Optional[int] = None
-    offers: List[Offer] = Field(default_factory=list)
+    schema_version: str | None = Field(default="./schema.json", alias="$schema")
+    last_updated: str | None = None
+    last_inspected: str | None = None
+    last_truth_corroborated: str | None = None
+    last_sync: str | None = None
+    total_offers: int | None = None
+    offers: list[Offer] = Field(default_factory=list)
 
 
 # --- 7. Offers Data Dictionary Helper ---
@@ -498,11 +507,11 @@ class OfferDataDict(dict):
     Preserves all standard Python dictionary invariants (e.g. list(d) == list(d.keys())).
     """
     @property
-    def offers(self) -> List[Dict[str, Any]]:
+    def offers(self) -> list[dict[str, Any]]:
         """Returns the list of raw offer dictionaries."""
         return self.get("offers", [])
 
-    def to_models(self) -> List[Offer]:
+    def to_models(self) -> list[Offer]:
         """Converts offers to validated Pydantic Offer instances."""
         return [Offer(**o) for o in self.get("offers", [])]
 
