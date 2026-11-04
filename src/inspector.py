@@ -418,6 +418,11 @@ async def run_inspection_async(
             logger.info("Playwright async Chromium launched successfully.")
         except Exception as pw_err:
             logger.warning("Playwright async launch unavailable (%s). Falling back to HTTP inspection.", pw_err)
+            if playwright_mgr is not None:
+                try:
+                    await playwright_mgr.stop()
+                except Exception:
+                    pass
             browser = None
             playwright_mgr = None
 
@@ -495,7 +500,10 @@ async def run_inspection_async(
 
                         await page.route("**/*", handle_route)
 
-                        if not current_url or not isinstance(current_url, str) or not current_url.strip().lower().startswith("https://"):
+                        is_valid_https = bool(current_url and isinstance(current_url, str) and current_url.strip().lower().startswith("https://"))
+                        pre_auth = audit_offer_authenticity(offer) if is_valid_https else None
+
+                        if not is_valid_https:
                             new_status = "Review Needed"
                             reason = f"Security Alert: Insecure or forbidden URL scheme (strictly https:// required): {current_url}"
                             auth_result = {
@@ -507,226 +515,230 @@ async def run_inspection_async(
                                 "ssl_verified": False,
                             }
                             auth_score = 0
+                            zero_dollar_confirmed = False
+                            http_status = 400
+                            skipped_write = True
+                            canonical_url = current_url
                             offer["inspection_method"] = "Playwright Headless DOM"
-                            return
-
-                        pre_auth = audit_offer_authenticity(offer)
-                        if pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
+                        elif pre_auth and pre_auth.get("verdict") in ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]:
                             new_status = "Review Needed"
                             reason = f"Security Alert: Domain authenticity failed ({pre_auth['summary']})"
                             auth_result = pre_auth
                             auth_score = auth_result.get("authenticity_score", 0)
+                            zero_dollar_confirmed = False
+                            http_status = 403
+                            skipped_write = True
+                            canonical_url = current_url
                             offer["inspection_method"] = "Playwright Headless DOM"
-                            return
+                        else:
+                            nav_target = offer.get("direct_verified_url") or offer.get("verified_vendor_url") or current_url
+                            redirect_chain = [nav_target]
+                            rendered_title = ""
+                            rendered_text = ""
+                            final_url = nav_target
+                            http_status = 200
 
-                        nav_target = offer.get("direct_verified_url") or offer.get("verified_vendor_url") or current_url
-                        redirect_chain = [nav_target]
-                        rendered_title = ""
-                        rendered_text = ""
-                        final_url = nav_target
-                        http_status = 200
-
-                        try:
-                            response = await page.goto(nav_target, wait_until="domcontentloaded", timeout=timeout_per_offer * 1000)
-                            http_status = response.status if response else 200
-                            final_url = page.url
-                            if final_url != current_url:
-                                redirect_chain.append(final_url)
                             try:
-                                await page.wait_for_load_state("networkidle", timeout=2500)
-                            except Exception:
-                                pass
-                            rendered_title = await page.title() or ""
-                            rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
-                        except Exception as nav_err:
-                            logger.info("Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...", current_url, nav_err)
-                            async with httpx.AsyncClient(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
-                                resp = await client.get(current_url)
-                                http_status = resp.status_code
-                                final_url = str(resp.url)
+                                response = await page.goto(nav_target, wait_until="domcontentloaded", timeout=timeout_per_offer * 1000)
+                                http_status = response.status if response else 200
+                                final_url = page.url
                                 if final_url != current_url:
                                     redirect_chain.append(final_url)
-                                await page.set_content(resp.text, wait_until="domcontentloaded")
+                                try:
+                                    await page.wait_for_load_state("networkidle", timeout=2500)
+                                except Exception:
+                                    pass
                                 rendered_title = await page.title() or ""
                                 rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
+                            except Exception as nav_err:
+                                logger.info("Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...", current_url, nav_err)
+                                async with httpx.AsyncClient(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
+                                    resp = await client.get(current_url)
+                                    http_status = resp.status_code
+                                    final_url = str(resp.url)
+                                    if final_url != current_url:
+                                        redirect_chain.append(final_url)
+                                    await page.set_content(resp.text, wait_until="domcontentloaded")
+                                    rendered_title = await page.title() or ""
+                                    rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
 
-                        # Capture screenshot with delta skipping
-                        target_path = screenshots_dir / f"{offer_id}.png"
-                        rel_path = f"docs/screenshots/{offer_id}.png"
-                        screenshot_ok = False
-                        screenshot_bytes = None
+                            # Capture screenshot with delta skipping
+                            target_path = screenshots_dir / f"{offer_id}.png"
+                            rel_path = f"docs/screenshots/{offer_id}.png"
+                            screenshot_ok = False
+                            screenshot_bytes = None
 
-                        if offer_id:
-                            try:
-                                screenshot_bytes = await page.screenshot(full_page=False)
-                                if screenshot_bytes and len(screenshot_bytes) >= 4096 and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n":
-                                    from src.visual_hasher import (
-                                        is_blank_or_invalid_screenshot,
-                                        should_skip_screenshot_write,
-                                    )
-                                    if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
-                                        if is_blank_or_invalid_screenshot(screenshot_bytes) or (target_path.stat().st_size >= 30000 and len(screenshot_bytes) < 18000):
-                                            logger.info(
-                                                "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
-                                                offer_id
-                                            )
-                                            skipped_write = True
-                                            screenshot_ok = True
-                                    if not skipped_write:
-                                        should_skip, delta, dist = should_skip_screenshot_write(
-                                            screenshot_bytes, target_path, old_status, old_status
+                            if offer_id:
+                                try:
+                                    screenshot_bytes = await page.screenshot(full_page=False)
+                                    if screenshot_bytes and len(screenshot_bytes) >= 4096 and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n":
+                                        from src.visual_hasher import (
+                                            is_blank_or_invalid_screenshot,
+                                            should_skip_screenshot_write,
                                         )
-                                        if should_skip:
-                                            logger.info(
-                                                f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
-                                                f"Skipped write for {target_path}."
+                                        if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
+                                            if is_blank_or_invalid_screenshot(screenshot_bytes) or (target_path.stat().st_size >= 30000 and len(screenshot_bytes) < 18000):
+                                                logger.info(
+                                                    "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
+                                                    offer_id
+                                                )
+                                                skipped_write = True
+                                                screenshot_ok = True
+                                        if not skipped_write:
+                                            should_skip, delta, dist = should_skip_screenshot_write(
+                                                screenshot_bytes, target_path, old_status, old_status
                                             )
-                                            skipped_write = True
-                                            screenshot_ok = True
-                                        else:
-                                            temp_path = target_path.with_suffix(".tmp.png")
-                                            temp_path.write_bytes(screenshot_bytes)
-                                            temp_path.replace(target_path)
-                                            screenshot_ok = True
-                                elif target_path.exists() and target_path.stat().st_size >= 4096:
-                                    screenshot_ok = True
-                            except Exception as sc_err:
-                                logger.warning("Screenshot capture failed for %s: %s", offer_id, sc_err)
-                                if target_path.exists() and target_path.stat().st_size >= 4096:
-                                    screenshot_ok = True
+                                            if should_skip:
+                                                logger.info(
+                                                    f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
+                                                    f"Skipped write for {target_path}."
+                                                )
+                                                skipped_write = True
+                                                screenshot_ok = True
+                                            else:
+                                                temp_path = target_path.with_suffix(".tmp.png")
+                                                temp_path.write_bytes(screenshot_bytes)
+                                                temp_path.replace(target_path)
+                                                screenshot_ok = True
+                                    elif target_path.exists() and target_path.stat().st_size >= 4096:
+                                        screenshot_ok = True
+                                except Exception as sc_err:
+                                    logger.warning("Screenshot capture failed for %s: %s", offer_id, sc_err)
+                                    if target_path.exists() and target_path.stat().st_size >= 4096:
+                                        screenshot_ok = True
 
-                        # Interactive CTAs
-                        try:
-                            interactive_ctas = await page.evaluate("""() => {
-                                const ctas = [];
-                                document.querySelectorAll('button, a, [role="button"], input[type="submit"]').forEach(el => {
-                                    const txt = (el.innerText || el.textContent || el.value || '').trim().toLowerCase();
-                                    if (txt.length > 2 && txt.length < 80) ctas.push(txt);
-                                });
-                                return ctas;
-                            }""")
-                        except Exception:
-                            interactive_ctas = []
+                            # Interactive CTAs
+                            try:
+                                interactive_ctas = await page.evaluate("""() => {
+                                    const ctas = [];
+                                    document.querySelectorAll('button, a, [role="button"], input[type="submit"]').forEach(el => {
+                                        const txt = (el.innerText || el.textContent || el.value || '').trim().toLowerCase();
+                                        if (txt.length > 2 && txt.length < 80) ctas.push(txt);
+                                    });
+                                    return ctas;
+                                }""")
+                            except Exception:
+                                interactive_ctas = []
 
-                        # Run semantic scanning, cart balance assertion, DOM analysis, and VLM gate
-                        actionability_report = scan_accessibility_elements(
-                            interactive_elements=interactive_ctas,
-                            page_text=rendered_text,
-                            page_title=rendered_title
-                        )
-                        cart_verdict = assert_cart_balance(offer)
-                        dom_eval = inspect_rendered_dom(
-                            rendered_text=rendered_text,
-                            rendered_title=rendered_title,
-                            final_url=final_url,
-                            original_url=current_url,
-                            interactive_elements=interactive_ctas
-                        )
-                        vlm_verdict = evaluate_vlm_semantic_gate(
-                            offer_id=offer_id,
-                            url=final_url or current_url,
-                            dom_text=rendered_text,
-                            dom_title=rendered_title,
-                            screenshot_path=rel_path if screenshot_ok else None,
-                            screenshot_bytes=screenshot_bytes,
-                            platform=offer.get("platform", ""),
-                            offer_data=offer
-                        )
+                            # Run semantic scanning, cart balance assertion, DOM analysis, and VLM gate
+                            actionability_report = scan_accessibility_elements(
+                                interactive_elements=interactive_ctas,
+                                page_text=rendered_text,
+                                page_title=rendered_title
+                            )
+                            cart_verdict = assert_cart_balance(offer)
+                            dom_eval = inspect_rendered_dom(
+                                rendered_text=rendered_text,
+                                rendered_title=rendered_title,
+                                final_url=final_url,
+                                original_url=current_url,
+                                interactive_elements=interactive_ctas
+                            )
+                            vlm_verdict = evaluate_vlm_semantic_gate(
+                                offer_id=offer_id,
+                                url=final_url or current_url,
+                                dom_text=rendered_text,
+                                dom_title=rendered_title,
+                                screenshot_path=rel_path if screenshot_ok else None,
+                                screenshot_bytes=screenshot_bytes,
+                                platform=offer.get("platform", ""),
+                                offer_data=offer
+                            )
 
-                        auth_result = audit_offer_authenticity(
-                            offer=offer,
-                            body_text=rendered_text,
-                            redirect_chain=redirect_chain
-                        )
+                            auth_result = audit_offer_authenticity(
+                                offer=offer,
+                                body_text=rendered_text,
+                                redirect_chain=redirect_chain
+                            )
 
-                        auth_score = auth_result.get("authenticity_score", 90)
+                            auth_score = auth_result.get("authenticity_score", 90)
 
-                        if http_status in [404, 410]:
-                            new_status = "Broken Link"
-                            reason = f"HTTP {http_status} Page Not Found"
-                        elif http_status >= 500:
-                            new_status = "Server Error"
-                            reason = f"HTTP {http_status} Host Down"
-                        elif http_status == 429:
-                            new_status = "Review Needed"
-                            reason = f"Rate Limit Invariant: HTTP {http_status} Too Many Requests / Bot Protection"
-                        elif http_status in [401, 403]:
-                            if dom_eval["status"] != "Active":
+                            if http_status in [404, 410]:
+                                new_status = "Broken Link"
+                                reason = f"HTTP {http_status} Page Not Found"
+                            elif http_status >= 500:
+                                new_status = "Server Error"
+                                reason = f"HTTP {http_status} Host Down"
+                            elif http_status == 429:
+                                new_status = "Review Needed"
+                                reason = f"Rate Limit Invariant: HTTP {http_status} Too Many Requests / Bot Protection"
+                            elif http_status in [401, 403]:
+                                if dom_eval["status"] != "Active":
+                                    new_status = dom_eval["status"]
+                                    reason = dom_eval["reason"]
+                                else:
+                                    new_status = "Review Needed"
+                                    reason = f"Restricted Gateway: HTTP {http_status} encountered without verified promotional terms"
+                            else:
                                 new_status = dom_eval["status"]
                                 reason = dom_eval["reason"]
-                            else:
-                                new_status = "Review Needed"
-                                reason = f"Restricted Gateway: HTTP {http_status} encountered without verified promotional terms"
-                        else:
-                            new_status = dom_eval["status"]
-                            reason = dom_eval["reason"]
 
-                        maintenance_detected = dom_eval.get("maintenance_detected", False)
-                        paid_catalog_detected = dom_eval.get("paid_catalog_detected", False)
-                        zero_dollar_confirmed = dom_eval.get("zero_dollar_confirmed", True)
+                            maintenance_detected = dom_eval.get("maintenance_detected", False)
+                            paid_catalog_detected = dom_eval.get("paid_catalog_detected", False)
+                            zero_dollar_confirmed = dom_eval.get("zero_dollar_confirmed", True)
 
-                        if new_status == "Active" and actionability_report.verdict == "MARKETING_LEAD_FUNNEL":
-                            new_status = "Review Needed"
-                            reason = actionability_report.reason
-                            zero_dollar_confirmed = False
-
-                        if new_status == "Active" and cart_verdict.is_copay_required and cart_verdict.copay_amount_usd > 0.0:
-                            new_status = "Review Needed"
-                            reason = f"Cart Assertion: Copay Required (${cart_verdict.copay_amount_usd:.2f}) - {cart_verdict.reason}"
-                            paid_catalog_detected = True
-                            zero_dollar_confirmed = False
-
-                        if new_status == "Active":
-                            if not auth_result.get("is_authentic_vendor", True) or auth_score < 80:
+                            if new_status == "Active" and actionability_report.verdict == "MARKETING_LEAD_FUNNEL":
                                 new_status = "Review Needed"
-                                reason = f"Authenticity Check Failed: {auth_result.get('summary', 'Score below threshold')}"
-                            elif not zero_dollar_confirmed or maintenance_detected or paid_catalog_detected:
-                                new_status = "Review Needed"
-                                reason = dom_eval.get("reason", "DOM failed zero-dollar confirmation")
-                            elif not screenshot_ok:
-                                new_status = "Review Needed"
-                                reason = "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
-                            elif vlm_verdict.registration_status in ["closed", "cohort_full"]:
-                                new_status = "Registrations Closed"
-                                reason = f"VLM Semantic Gate: {vlm_verdict.primary_evidence}"
+                                reason = actionability_report.reason
                                 zero_dollar_confirmed = False
-                            elif vlm_verdict.requires_payment_or_copay and vlm_verdict.copay_amount_usd > 0.0:
+
+                            if new_status == "Active" and cart_verdict.is_copay_required and cart_verdict.copay_amount_usd > 0.0:
                                 new_status = "Review Needed"
-                                reason = f"VLM Semantic Gate: Copay required (${vlm_verdict.copay_amount_usd:.2f} USD)"
+                                reason = f"Cart Assertion: Copay Required (${cart_verdict.copay_amount_usd:.2f}) - {cart_verdict.reason}"
                                 paid_catalog_detected = True
                                 zero_dollar_confirmed = False
-                            elif not vlm_verdict.has_zero_dollar_waiver:
-                                new_status = "Review Needed"
-                                reason = f"VLM Semantic Gate: {vlm_verdict.primary_evidence}"
+
+                            if new_status == "Active":
+                                if not auth_result.get("is_authentic_vendor", True) or auth_score < 80:
+                                    new_status = "Review Needed"
+                                    reason = f"Authenticity Check Failed: {auth_result.get('summary', 'Score below threshold')}"
+                                elif not zero_dollar_confirmed or maintenance_detected or paid_catalog_detected:
+                                    new_status = "Review Needed"
+                                    reason = dom_eval.get("reason", "DOM failed zero-dollar confirmation")
+                                elif not screenshot_ok:
+                                    new_status = "Review Needed"
+                                    reason = "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
+                                elif vlm_verdict.registration_status in ["closed", "cohort_full"]:
+                                    new_status = "Registrations Closed"
+                                    reason = f"VLM Semantic Gate: {vlm_verdict.primary_evidence}"
+                                    zero_dollar_confirmed = False
+                                elif vlm_verdict.requires_payment_or_copay and vlm_verdict.copay_amount_usd > 0.0:
+                                    new_status = "Review Needed"
+                                    reason = f"VLM Semantic Gate: Copay required (${vlm_verdict.copay_amount_usd:.2f} USD)"
+                                    paid_catalog_detected = True
+                                    zero_dollar_confirmed = False
+                                elif not vlm_verdict.has_zero_dollar_waiver:
+                                    new_status = "Review Needed"
+                                    reason = f"VLM Semantic Gate: {vlm_verdict.primary_evidence}"
+                                    zero_dollar_confirmed = False
+                                elif vlm_verdict.visual_confidence_score < 0.60:
+                                    new_status = "Review Needed"
+                                    reason = f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
+                                else:
+                                    reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
+
+                            if new_status != "Active":
                                 zero_dollar_confirmed = False
-                            elif vlm_verdict.visual_confidence_score < 0.60:
-                                new_status = "Review Needed"
-                                reason = f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
+
+                            # If status changed, ensure screenshot write is refreshed only with a non-blank screenshot
+                            if offer_id and new_status != old_status and screenshot_bytes:
+                                from src.visual_hasher import is_blank_or_invalid_screenshot
+                                if not is_blank_or_invalid_screenshot(screenshot_bytes):
+                                    temp_path = target_path.with_suffix(".tmp.png")
+                                    temp_path.write_bytes(screenshot_bytes)
+                                    temp_path.replace(target_path)
+                                    skipped_write = False
+                                else:
+                                    logger.warning(
+                                        "Status changed for %s, but candidate screenshot is blank/invalid. Preserving existing screenshot.",
+                                        offer_id
+                                    )
+
+                            canonical_url = final_url
+                            if "Bot Protected" in reason or "HTTP Fallback" in reason or "Direct GET" in reason:
+                                offer["inspection_method"] = "Playwright DOM (HTTP Fallback)"
                             else:
-                                reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
-
-                        if new_status != "Active":
-                            zero_dollar_confirmed = False
-
-                        # If status changed, ensure screenshot write is refreshed only with a non-blank screenshot
-                        if offer_id and new_status != old_status and screenshot_bytes:
-                            from src.visual_hasher import is_blank_or_invalid_screenshot
-                            if not is_blank_or_invalid_screenshot(screenshot_bytes):
-                                temp_path = target_path.with_suffix(".tmp.png")
-                                temp_path.write_bytes(screenshot_bytes)
-                                temp_path.replace(target_path)
-                                skipped_write = False
-                            else:
-                                logger.warning(
-                                    "Status changed for %s, but candidate screenshot is blank/invalid. Preserving existing screenshot.",
-                                    offer_id
-                                )
-
-                        canonical_url = final_url
-                        if "Bot Protected" in reason or "HTTP Fallback" in reason or "Direct GET" in reason:
-                            offer["inspection_method"] = "Playwright DOM (HTTP Fallback)"
-                        else:
-                            offer["inspection_method"] = "Playwright Headless DOM"
+                                offer["inspection_method"] = "Playwright Headless DOM"
                     finally:
                         if context:
                             try:
