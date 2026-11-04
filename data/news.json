@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-04T16:26:15.260402+00:00",
-  "last_sync": "2026-11-04T16:26:15.260402+00:00",
+  "last_updated": "2026-11-04T16:50:42.773707+00:00",
+  "last_sync": "2026-11-04T16:50:42.773707+00:00",
   "news": [
+    {
+      "id": "google-cloud-introducing-compute-engine-api",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Introducing Compute Engine API multi-versioning: Predictable evolution without breaking production",
+      "summary": "Ready to modernize your infrastructure without risking production stability? API multi-versioning for Compute Engine, now in general availability, helps you do just that. With date-based API versions, Compute Engine can now regularly delive...",
+      "published_date": "2026-11-04",
+      "date": "2026-11-04",
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/introducing-compute-engine-api-multi-versioning-predictable-evolution-without-breaking-production/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "9f24c1dacc6db039b72791f020feb990413d10c9a43a856ae58bf07792f44bd6"
+    },
     {
       "id": "cisco-grid-solutions-at-scale-in-a",
       "company": "Cisco",
@@ -1386,20 +1400,6 @@
       "impact_badge": "Cloud Platform",
       "date": "2024-08-01",
       "content_fingerprint": "271eea6cf41d3f4a73351bc8d75585c0e230f5b863c02aca609146b5197b1db6"
-    },
-    {
-      "id": "google-cloud-temporal-serverless-workers-on",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Temporal Serverless Workers on Cloud Run: Scale workers ahead of demand",
-      "summary": "The open-source Temporal execution platform is rapidly becoming a foundational layer of modern software infrastructure - especially for orchestration in distributed systems and AI agent workloads. However, deploying and scaling workers in T...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/products/serverless/temporal-serverless-workers-on-cloud-run-worker-pools/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "4d7d5ea1060589431f5c3f53a76c26cb6ee717195c42fc46d17c515d1d5c9e97"
     }
   ],
   "total_items": 100
