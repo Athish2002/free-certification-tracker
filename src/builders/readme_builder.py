@@ -86,6 +86,34 @@ def _escape_md(text: Any) -> str:
     return str(text).replace("|", "\\|")
 
 
+def classify_offer_tier(o: Dict[str, Any]) -> str:
+    """Classifies an offer into 'wave' (limited-time exam wave), 'discount' (active ongoing discount/voucher), or 'badge' (skill badge & lab)."""
+    tv = o.get("truth_verification") or {}
+    otype = (o.get("offer_type") or "").lower()
+    seas = (o.get("seasonality") or "").lower()
+    oid = (o.get("id") or "").lower()
+    title = (o.get("title") or "").lower()
+    rec = (o.get("recurrence_pattern") or "").lower()
+
+    # 1. Partial / Ongoing Discounts & Student Vouchers
+    is_partial_copay = tv.get("policy_type") == "partial_discount_copay" or (tv.get("real_exam_cost_usd") or 0) > 0
+    is_student_discount = "student" in seas or "student" in otype or "student" in oid
+    is_discount_type = ("discount" in otype and "100% free" not in otype) or ("%" in otype and "100%" not in otype)
+    if is_partial_copay or is_student_discount or is_discount_type:
+        return "discount"
+
+    # 2. Exam Waves (Seasonal challenge waves, limited-time cohorts, annual/event windows)
+    if (
+        seas in ("periodic_challenge_wave", "annual_window", "monthly_sweepstakes", "event_driven")
+        or "wave" in oid or "wave" in title or "challenge" in title
+        or "wave" in rec or "cohort" in rec
+    ):
+        return "wave"
+
+    # 3. Free Skill Badges & Labs
+    return "badge"
+
+
 def generate_readme(
     data: Union[Dict[str, Any], List[Dict[str, Any]]],
     news_data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None,
@@ -115,6 +143,8 @@ def generate_readme(
     badge_offers = [o for o in offers if o.get("credential_tier") in ("skill_badge_lab", "secondary")]
     active_proctored = [o for o in proctored_offers if o.get("status") == "Active"]
     active_badges = [o for o in badge_offers if o.get("status") == "Active"]
+    active_waves = [o for o in active_offers if classify_offer_tier(o) == "wave"]
+    active_discounts = [o for o in active_offers if classify_offer_tier(o) == "discount"]
     
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     verified_proofs_count = sum(1 for o in offers if (DOCS_DIR / "screenshots" / f"{o.get('id', '')}.png").exists())
@@ -176,16 +206,16 @@ def generate_readme(
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append(f"## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers ({len(active_proctored)} Active / {len(proctored_offers)} Tracked)")
-    lines.append("> Formal accredited industry certifications featuring proctored written examinations (Pearson VUE, Kryterion, Webassessor waivers, 100% discount promo codes, and official challenge voucher waves).")
+    lines.append(f"## 🌊 Tier 1A: Limited-Time Exam Waves & Seasonal Challenge Cohorts ({len(active_waves)} Active)")
+    lines.append("> Time-bounded challenge cohorts, Cloud Skills Waves, and promotional certification windows with periodic renewal cycles.")
     lines.append("")
-    lines.append("| Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Truth Source | Claim Link |")
-    lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |")
-    for o in active_proctored:
+    lines.append("| Provider | Certification & Program | Category | Cadence & Wave | Value (USD) | Status | Proof | Truth Source | Claim Link |")
+    lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |")
+    for o in active_waves:
         provider = _escape_md(o.get("platform"))
         cert = _escape_md(o.get("certification_name") or o.get("title"))
         cat = _escape_md(o.get("category", "General"))
-        tier = _escape_md(o.get("difficulty_tier", "Foundational"))
+        cadence = _escape_md(o.get("recurrence_pattern") or "Periodic Wave")
         val = f"${o.get('value_usd')}" if o.get('value_usd') else "Free"
         status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
         if o.get("last_zero_dollar_confirmed_date"):
@@ -196,7 +226,31 @@ def generate_readme(
         truth_source_url = tv.get("truth_source_url", o.get("url"))
         truth_link = f"[{truth_source_name}]({truth_source_url})"
         url = o.get("url", "#")
-        lines.append(f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | {truth_link} | [**Claim Voucher**]({url}) |")
+        lines.append(f"| **{provider}** | {cert} | {cat} | `{cadence}` | {val} | {status_text} | {proof_link} | {truth_link} | [**Claim Voucher**]({url}) |")
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+    lines.append(f"## 🏷️ Tier 1B: Active Ongoing Discounts & Vouchers ({len(active_discounts)} Active)")
+    lines.append("> Ongoing student discounts, continuous partner vouchers, partial co-pay discounts, and permanent $0 certification waivers.")
+    lines.append("")
+    lines.append("| Provider | Discount / Voucher Program | Category | Terms & Prereqs | Value (USD) | Status | Proof | Truth Source | Claim Link |")
+    lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |")
+    for o in active_discounts:
+        provider = _escape_md(o.get("platform"))
+        cert = _escape_md(o.get("certification_name") or o.get("title"))
+        cat = _escape_md(o.get("category", "General"))
+        elig = _escape_md(o.get("eligibility") or "Continuous Discount")
+        val = f"${o.get('value_usd')}" if o.get('value_usd') else "Discount"
+        status_text = STATUS_BADGES.get(o.get("status", "Active"), "🟢 Active")
+        if o.get("last_zero_dollar_confirmed_date"):
+            status_text += f"<br><sub>$0 Confirmed: {o.get('last_zero_dollar_confirmed_date')}</sub>"
+        proof_link = f"[📸 Proof](docs/screenshots/{o.get('id', '')}.png)"
+        tv = o.get("truth_verification") or {}
+        truth_source_name = _escape_md(tv.get("truth_source_name", f"{provider} Policy"))
+        truth_source_url = tv.get("truth_source_url", o.get("url"))
+        truth_link = f"[{truth_source_name}]({truth_source_url})"
+        url = o.get("url", "#")
+        lines.append(f"| **{provider}** | {cert} | {cat} | {elig} | {val} | {status_text} | {proof_link} | {truth_link} | [**Claim Discount**]({url}) |")
     lines.append("")
     lines.append("---")
     lines.append("")

@@ -49,10 +49,36 @@ JS_TEMPLATE = """
         let currentSearch = '';
         let currentLayout = 'grid';
 
+        function getOfferTier(o) {
+            if (o.category_tier) return o.category_tier;
+            const tv = o.truth_verification || {};
+            const otype = (o.offer_type || '').toLowerCase();
+            const seas = (o.seasonality || '').toLowerCase();
+            const oid = (o.id || '').toLowerCase();
+            const title = (o.title || '').toLowerCase();
+            const rec = (o.recurrence_pattern || '').toLowerCase();
+
+            const isPartialCopay = tv.policy_type === 'partial_discount_copay' || (tv.real_exam_cost_usd || 0) > 0;
+            const isStudent = seas.includes('student') || otype.includes('student') || oid.includes('student');
+            const isDiscount = (otype.includes('discount') && !otype.includes('100% free')) || (otype.includes('%') && !otype.includes('100%'));
+
+            if (isPartialCopay || isStudent || isDiscount) return 'discount';
+            if (['periodic_challenge_wave', 'annual_window', 'monthly_sweepstakes', 'event_driven'].includes(seas) ||
+                oid.includes('wave') || title.includes('wave') || title.includes('challenge') ||
+                rec.includes('wave') || rec.includes('cohort')) {
+                return 'wave';
+            }
+            return 'badge';
+        }
+
         function filterTier(tier) {
             currentTier = tier;
             document.querySelectorAll('#tierFilterPills .tier-pill').forEach(btn => {
-                if (btn.getAttribute('data-tier') === tier) {
+                const btnTier = btn.getAttribute('data-tier');
+                const isMatch = (btnTier === tier) || 
+                                (tier === 'badge' && btnTier === 'skill_badge_lab') ||
+                                (tier === 'skill_badge_lab' && btnTier === 'badge');
+                if (isMatch) {
                     btn.style.backgroundColor = 'var(--accent-emphasis)';
                     btn.style.color = '#ffffff';
                     btn.classList.add('font-semibold');
@@ -112,15 +138,22 @@ JS_TEMPLATE = """
             if (dateEl) dateEl.textContent = dateDisplay ? ('Audited: ' + dateDisplay) : '';
             if (capturedAtEl) capturedAtEl.textContent = multiTzCaptured || 'Verified';
 
-            const isProctored = offer.credential_tier === 'proctored_exam' || offer.credential_tier === 'primary';
-            const tierLabel = isProctored ? '🎓 Written Proctored Exam' : '🎖️ Skill Badge & Lab';
-            
+            const tierType = getOfferTier(offer);
+            let tierLabel = '🎓 Written Proctored Exam';
+            if (tierType === 'wave') tierLabel = '🌊 Limited-Time Exam Wave';
+            else if (tierType === 'discount') tierLabel = '🏷️ Active Discount / Voucher';
+            else if (tierType === 'badge') tierLabel = '🎓 Skill Badge & Lab';
+
             if (tierEl) {
                 tierEl.textContent = tierLabel;
-                if (isProctored) {
+                if (tierType === 'wave') {
                     tierEl.style.backgroundColor = 'var(--accent-subtle)';
                     tierEl.style.borderColor = 'var(--accent-fg)';
                     tierEl.style.color = 'var(--accent-fg)';
+                } else if (tierType === 'discount') {
+                    tierEl.style.backgroundColor = 'rgba(217, 119, 6, 0.15)';
+                    tierEl.style.borderColor = 'rgba(217, 119, 6, 0.4)';
+                    tierEl.style.color = 'var(--attention-fg)';
                 } else {
                     tierEl.style.backgroundColor = 'var(--canvas-inset)';
                     tierEl.style.borderColor = 'var(--border-default)';
@@ -442,56 +475,47 @@ JS_TEMPLATE = """
             return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="var(--accent-fg)"><circle cx="8" cy="8" r="6"/></svg>`;
         }
 
-        // Canonical 10 Developer Color Palettes
+        // Canonical Developer Color Palettes: GitHub Dark and GitHub Light
         const THEMES = [
-            { id: 'catppuccin-latte', name: 'Catppuccin Latte', dot: '#1e66f5', meta: '#eff1f5', type: 'light' },
-            { id: 'catppuccin-mocha', name: 'Catppuccin Mocha', dot: '#cba6f7', meta: '#1e1e2e', type: 'dark' },
             { id: 'github-dark', name: 'GitHub Dark', dot: '#58a6ff', meta: '#0d1117', type: 'dark' },
-            { id: 'github-light', name: 'GitHub Light', dot: '#0969da', meta: '#ffffff', type: 'light' },
-            { id: 'dracula', name: 'Dracula', dot: '#bd93f9', meta: '#282a36', type: 'dark' },
-            { id: 'nord', name: 'Nord', dot: '#88c0d0', meta: '#2e3440', type: 'dark' },
-            { id: 'tokyo-night', name: 'Tokyo Night', dot: '#7aa2f7', meta: '#1a1b26', type: 'dark' },
-            { id: 'one-dark', name: 'One Dark', dot: '#61afef', meta: '#282c34', type: 'dark' },
-            { id: 'gruvbox-dark', name: 'Gruvbox Dark', dot: '#fe8019', meta: '#282828', type: 'dark' },
-            { id: 'solarized-light', name: 'Solarized Light', dot: '#2aa198', meta: '#fdf6e3', type: 'light' }
+            { id: 'github-light', name: 'GitHub Light', dot: '#0969da', meta: '#ffffff', type: 'light' }
         ];
 
         function selectTheme(id) {
             applyTheme(id);
             closeThemeDropdown();
-            toast('Theme: ' + getThemeName(id));
         }
 
         function getThemeName(id) {
-            const t = THEMES.find(x => x.id === id);
-            return t ? t.name : id;
+            return (id === 'github-light' || id === 'light') ? 'GitHub Light' : 'GitHub Dark';
         }
 
         function applyTheme(id) {
-            let targetId = id;
-            if (id === 'dark') targetId = 'catppuccin-mocha';
-            if (id === 'light') targetId = 'catppuccin-latte';
+            let targetId = (id === 'github-light' || id === 'light') ? 'github-light' : 'github-dark';
 
-            const theme = THEMES.find(t => t.id === targetId) || THEMES[0];
-            document.documentElement.setAttribute('data-theme', theme.id);
-            localStorage.setItem('certpulse_theme_v2', theme.id);
-            localStorage.setItem('certpulse_theme', theme.id);
-            localStorage.setItem('theme', theme.id);
+            document.documentElement.setAttribute('data-theme', targetId);
+            try {
+                localStorage.setItem('certpulse_theme_v2', targetId);
+                localStorage.setItem('certpulse_theme', targetId);
+                localStorage.setItem('theme', targetId);
+            } catch(e) {}
             
             const meta = document.getElementById('themeColorMeta');
-            if (meta) meta.content = theme.meta;
+            if (meta) meta.content = (targetId === 'github-light') ? '#ffffff' : '#0d1117';
 
-            // Sync Sun/Moon icon for quick toggle button
-            const isLight = (theme.type === 'light');
+            // Sync Sun/Moon icon for quick toggle button:
+            // When in Dark mode, show Sun icon ("Light" label - click to switch to Light)
+            // When in Light mode, show Moon icon ("Dark" label - click to switch to Dark)
+            const isLight = (targetId === 'github-light');
             const sun = document.getElementById('themeIconSun');
             const moon = document.getElementById('themeIconMoon');
             if (sun && moon) {
                 if (isLight) {
-                    sun.classList.remove('hidden');
-                    moon.classList.add('hidden');
-                } else {
                     sun.classList.add('hidden');
                     moon.classList.remove('hidden');
+                } else {
+                    sun.classList.remove('hidden');
+                    moon.classList.add('hidden');
                 }
             }
         }
@@ -499,27 +523,17 @@ JS_TEMPLATE = """
         const switchTheme = applyTheme;
 
         function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme') || 'catppuccin-latte';
-            const currentTheme = THEMES.find(t => t.id === current);
-            const isCurrentLight = currentTheme ? (currentTheme.type === 'light') : (current.includes('light') || current.includes('latte'));
-            const nextTheme = isCurrentLight ? 'catppuccin-mocha' : 'catppuccin-latte';
+            const current = document.documentElement.getAttribute('data-theme') || 'github-dark';
+            const nextTheme = (current === 'github-dark' || current === 'dark') ? 'github-light' : 'github-dark';
             applyTheme(nextTheme);
-            toast('Theme: ' + (nextTheme === 'catppuccin-mocha' ? 'Pure OLED Dark' : 'Ceramic Light'));
+            toast('Theme: ' + (nextTheme === 'github-dark' ? 'GitHub Dark' : 'GitHub Light'));
         }
 
         function toggleThemeDropdown() {
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) {
-                menu.classList.toggle('hidden');
-            }
+            toggleTheme();
         }
 
-        function closeThemeDropdown() {
-            const menu = document.getElementById('themeDropdownMenu');
-            if (menu) {
-                menu.classList.add('hidden');
-            }
-        }
+        function closeThemeDropdown() {}
 
         // Global Synchronized Master UTC Telemetry with Live Seconds & Dynamic Local Offset
         function updateWorldClock() {
@@ -782,10 +796,15 @@ JS_TEMPLATE = """
                     ? '<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 Active</span>'
                     : '<span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">' + o.status + '</span>';
 
-                const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
-                const credBadge = isProctored 
-                    ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">🎓 Written Proctored Exam</span>' 
-                    : '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">🎖️ Skill Badge & Lab</span>';
+                const tierType = getOfferTier(o);
+                let credBadge = '';
+                if (tierType === 'wave') {
+                    credBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">🌊 Exam Wave</span>';
+                } else if (tierType === 'discount') {
+                    credBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500">🏷️ Active Discount</span>';
+                } else {
+                    credBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">🎓 Skill Badge</span>';
+                }
 
                 const tierBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">' + (o.difficulty_tier || 'Foundational') + '</span>';
 
@@ -830,8 +849,8 @@ JS_TEMPLATE = """
                             ${zeroConfirmedBadge}
                             <span class="text-[11px] font-bold tabular-nums" style="color: var(--success-fg);">${valText}</span>
                             ${truthBadge}
-                            <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-[10px] px-1.5 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
-                                <span>🛡️ ${o.authenticity_score || 100}% Proof</span>
+                            <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-[10px] px-2 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
+                                <span class="pointer-events-none">🛡️ ${o.authenticity_score || 100}% Proof</span>
                             </button>
                         </div>
 
@@ -846,8 +865,8 @@ JS_TEMPLATE = """
                             <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where & How Offer is Applied ($0.00)">
                                 $0.00 Apply
                             </button>
-                            <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
-                                <span>📸 Proof</span>
+                            <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                                <span class="pointer-events-none">📸 Proof</span>
                             </button>
                         </div>
                         <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
@@ -865,45 +884,83 @@ JS_TEMPLATE = """
                 return;
             }
 
-            if (currentTier !== 'all') {
-                grid.innerHTML = filtered.map(o => renderCardHtml(o)).join('');
+            const wavesList = filtered.filter(o => getOfferTier(o) === 'wave');
+            const discountsList = filtered.filter(o => getOfferTier(o) === 'discount');
+            const badgesList = filtered.filter(o => getOfferTier(o) === 'badge');
+
+            if (currentTier === 'wave') {
+                grid.innerHTML = wavesList.length > 0
+                    ? wavesList.map(o => renderCardHtml(o)).join('')
+                    : '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No active exam waves match criteria.</div>';
+                return;
+            }
+            if (currentTier === 'discount') {
+                grid.innerHTML = discountsList.length > 0
+                    ? discountsList.map(o => renderCardHtml(o)).join('')
+                    : '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No active discounts match criteria.</div>';
+                return;
+            }
+            if (currentTier === 'skill_badge_lab' || currentTier === 'badge') {
+                grid.innerHTML = badgesList.length > 0
+                    ? badgesList.map(o => renderCardHtml(o)).join('')
+                    : '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No active skill badges match criteria.</div>';
+                return;
+            }
+            if (currentTier === 'proctored_exam') {
+                const combined = [...wavesList, ...discountsList];
+                grid.innerHTML = combined.length > 0
+                    ? combined.map(o => renderCardHtml(o)).join('')
+                    : '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No proctored exam opportunities match criteria.</div>';
                 return;
             }
 
-            const proctoredList = filtered.filter(o => o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary');
-            const badgesList = filtered.filter(o => o.credential_tier === 'skill_badge_lab' || o.credential_tier === 'secondary');
-
             let html = '';
 
-            // 1. Primary Tier: Written Proctored Exams & Discounts (Top Section)
-            if (proctoredList.length > 0) {
+            // 1. Limited-Time Exam Waves & Seasonal Challenge Cohorts
+            if (wavesList.length > 0) {
                 html += `
-                <div class="col-span-full flex items-center justify-between p-3 rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-                    <div class="flex items-center gap-2">
-                        <span class="text-base">🎓</span>
+                <div class="col-span-full flex items-center justify-between p-3.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-lg">🌊</span>
                         <div>
-                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Primary Tier: Industry-Recognized Written Proctored Exams & Discounts</h2>
-                            <p class="text-[11px]" style="color: var(--fg-muted);">Pearson VUE / Kryterion / Webassessor proctored exams, official waivers, and verified voucher waves (${proctoredList.length} Opportunities)</p>
+                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Limited-Time Exam Waves & Seasonal Challenge Cohorts</h2>
+                            <p class="text-[11px]" style="color: var(--fg-muted);">Vendor race-to-certify challenges, Cloud Skills Waves, and annual testing windows (${wavesList.length} Active Waves)</p>
                         </div>
                     </div>
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">${proctoredList.length} Exams</span>
+                    <span class="px-2.5 py-0.5 rounded text-[10px] font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">${wavesList.length} Waves</span>
                 </div>`;
-                html += proctoredList.map(o => renderCardHtml(o)).join('');
+                html += wavesList.map(o => renderCardHtml(o)).join('');
             }
 
-            // 2. Secondary Tier: Digital Skill Badges & Cloud Labs (Secondary Collapsible Section)
+            // 2. Active Ongoing Discounts & Vouchers
+            if (discountsList.length > 0) {
+                html += `
+                <div class="col-span-full mt-4 flex items-center justify-between p-3.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-lg">🏷️</span>
+                        <div>
+                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Active Ongoing Discounts & Vouchers</h2>
+                            <p class="text-[11px]" style="color: var(--fg-muted);">Continuous student vouchers, partial co-pay discounts, and permanent $0 certification waivers (${discountsList.length} Opportunities)</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-0.5 rounded text-[10px] font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500">${discountsList.length} Discounts</span>
+                </div>`;
+                html += discountsList.map(o => renderCardHtml(o)).join('');
+            }
+
+            // 3. Free Digital Skill Badges & Hands-On Cloud Labs
             if (badgesList.length > 0) {
                 html += `
                 <details class="col-span-full mt-4 rounded-2xl border p-4 sm:p-5 transition-all shadow-xs group" style="background-color: var(--canvas-subtle); border-color: var(--border-default);" open>
                     <summary class="cursor-pointer list-none flex items-center justify-between select-none">
                         <div class="flex items-center gap-2.5">
-                            <span class="text-base">🎖️</span>
+                            <span class="text-lg">🎓</span>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs</h2>
+                                    <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Free Digital Skill Badges & Hands-On Cloud Labs</h2>
                                     <span class="px-2 py-0.5 rounded text-[10px] font-semibold border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">${badgesList.length} Badges</span>
                                 </div>
-                                <p class="text-[11px] mt-0.5" style="color: var(--fg-muted);">Unproctored practical learning paths, sandbox labs, and verifiable Credly/Skill badges (Click to collapse / expand)</p>
+                                <p class="text-[11px] mt-0.5" style="color: var(--fg-muted);">Unproctored practical learning paths, sandbox labs, and verifiable Credly/Skill badges (Click to toggle)</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border transition group-open:rotate-180" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
@@ -961,7 +1018,7 @@ JS_TEMPLATE = """
                     </div>
                     <div class="sm:col-span-1 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${valText}</div>
                     <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
-                        <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
+                        <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-[11px] font-semibold px-2.5 py-1 rounded border cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox"><span class="pointer-events-none">📸 Proof</span></button>
                         <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-[11px] font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
                         <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
                     </div>
@@ -1007,8 +1064,8 @@ JS_TEMPLATE = """
                         </div>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
-                        <button onclick="openProofModal('${escapeJs(o.id)}')" class="px-2.5 py-1 rounded text-xs border font-medium cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
-                            📸 Proof
+                        <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="px-3 py-1 rounded text-xs border font-medium cursor-pointer relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                            <span class="pointer-events-none">📸 Proof</span>
                         </button>
                         <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
                     </div>
@@ -1052,7 +1109,7 @@ JS_TEMPLATE = """
                             <div class="flex items-center justify-between pt-2 border-t" style="border-color: var(--border-muted);">
                                 <span class="text-[10px] font-mono">${escapeHtml(o.difficulty_tier || 'Foundational')}</span>
                                 <div class="flex items-center gap-2">
-                                    <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-[11px] font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5" title="View Verified Zero-Dollar Proof Lightbox">📸 Proof</button>
+                                    <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-[11px] font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5 relative z-10 select-none" title="View Verified Zero-Dollar Proof Lightbox"><span class="pointer-events-none">📸 Proof</span></button>
                                     <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
                                 </div>
                             </div>
@@ -1440,8 +1497,8 @@ JS_TEMPLATE = """
                                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
                                 <span class="tabular-nums">Cart Balance: $0.00</span>
                             </div>
-                            <button onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
-                                📸 Proof
+                            <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
+                                <span class="pointer-events-none">📸 Proof</span>
                             </button>
                         </div>
                         <a href="${sanitizeUrl(portalUrl)}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
@@ -1454,6 +1511,33 @@ JS_TEMPLATE = """
         }
 
         // Initialize URL Query Params & Initial Load
+
+        // Document-Level Event Delegation for Bulletproof Proof Button Clicks
+        document.addEventListener('click', function(e) {
+            const proofBtn = e.target.closest('[data-proof-id]');
+            if (proofBtn) {
+                const id = proofBtn.getAttribute('data-proof-id');
+                if (id) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openProofModal(id);
+                }
+            }
+        });
+
+        // Global Window Function Bindings
+        window.openProofModal = openProofModal;
+        window.closeProofModal = closeProofModal;
+        window.handleProofModalBackdrop = handleProofModalBackdrop;
+        window.closeProofModalOnBackdrop = closeProofModalOnBackdrop;
+        window.applyTheme = applyTheme;
+        window.toggleTheme = toggleTheme;
+        window.switchTheme = applyTheme;
+        window.filterTier = filterTier;
+        window.filterCategory = filterCategory;
+        window.setLayoutView = setLayoutView;
+        window.switchMainTab = switchMainTab;
+
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const viewParam = urlParams.get('view');

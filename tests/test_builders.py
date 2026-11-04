@@ -43,17 +43,17 @@ from src.builders.html_builder import generate_web_dashboard
 
 class TestThemeEngine:
     def test_theme_engine_palettes_and_composition_invariants(self):
-        """Theme engine must export exactly 10 themes, unique IDs, light/dark balance, and required tokens."""
-        assert len(THEMES) == 10
-        assert DEFAULT_THEME == "catppuccin-latte"
+        """Theme engine must export exactly 2 canonical themes: GitHub Dark (default) and GitHub Light."""
+        assert len(THEMES) == 2
+        assert DEFAULT_THEME == "github-dark"
         theme_ids = [t["id"] for t in THEMES]
-        assert len(set(theme_ids)) == 10, "Theme IDs must be strictly unique"
+        assert set(theme_ids) == {"github-dark", "github-light"}, "Theme IDs must be github-dark and github-light"
         assert DEFAULT_THEME in theme_ids
 
         light_themes = [t for t in THEMES if t["type"] == "light"]
         dark_themes = [t for t in THEMES if t["type"] == "dark"]
-        assert len(light_themes) >= 3, "Must have at least 3 light themes"
-        assert len(dark_themes) >= 5, "Must have at least 5 dark themes"
+        assert len(light_themes) == 1, "Must have exactly 1 light theme"
+        assert len(dark_themes) == 1, "Must have exactly 1 dark theme"
 
         required_keys = {"id", "name", "type", "dot", "meta", "css_vars"}
         required_css_tokens = {
@@ -68,7 +68,8 @@ class TestThemeEngine:
             assert required_css_tokens.issubset(css_keys), f"Missing CSS tokens in theme {theme['id']}"
 
         # get_theme_by_id and fallback
-        assert get_theme_by_id("catppuccin-mocha")["type"] == "dark"
+        assert get_theme_by_id("github-dark")["type"] == "dark"
+        assert get_theme_by_id("github-light")["type"] == "light"
         assert get_theme_by_id("non-existent-theme-xyz")["id"] == DEFAULT_THEME
 
     def test_theme_engine_code_generation_invariants(self):
@@ -85,12 +86,12 @@ class TestThemeEngine:
         assert "document.documentElement.setAttribute('data-theme'" in script
 
         dropdown_html = generate_theme_dropdown_options()
-        assert '<option value="catppuccin-latte" selected>' in dropdown_html
+        assert '<option value="github-dark" selected>' in dropdown_html
         for theme in THEMES:
             assert f'value="{theme["id"]}"' in dropdown_html
 
         parsed = json.loads(get_theme_json())
-        assert len(parsed) == 10 and parsed[0]["id"] == THEMES[0]["id"]
+        assert len(parsed) == 2 and parsed[0]["id"] == THEMES[0]["id"]
 
 
 # ==============================================================================

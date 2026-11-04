@@ -262,15 +262,12 @@ class TestBuilderThemeEngineAdversarial:
     """Stress testing 10 developer color palettes, CSS token completeness, and Zero-FOIT script."""
 
     def test_theme_catalog_exactness(self):
-        """Verify exactly 10 canonical developer color palettes are defined with Catppuccin Latte default."""
-        assert len(THEMES) == 10
-        assert DEFAULT_THEME == "catppuccin-latte"
+        """Verify canonical GitHub Dark and GitHub Light developer color palettes are defined."""
+        assert len(THEMES) == 2
+        assert DEFAULT_THEME == "github-dark"
 
         theme_ids = [t["id"] for t in THEMES]
-        expected_ids = [
-            "catppuccin-latte", "catppuccin-mocha", "github-dark", "github-light",
-            "dracula", "nord", "tokyo-night", "one-dark", "gruvbox-dark", "solarized-light"
-        ]
+        expected_ids = ["github-dark", "github-light"]
         assert sorted(theme_ids) == sorted(expected_ids)
 
     def test_theme_tokens_contract(self):
@@ -299,20 +296,20 @@ class TestBuilderThemeEngineAdversarial:
         """Verify CSS generation and Zero-FOIT inline initialization script."""
         css = generate_css_variables()
         assert ":root" in css
-        assert "[data-theme=\"catppuccin-latte\"]" in css
-        assert ".theme-item" in css
+        assert "[data-theme=\"github-dark\"]" in css
+        assert "[data-theme=\"github-light\"]" in css
 
         script = generate_zero_foit_script()
         assert "<script>" in script and "</script>" in script
         assert "certpulse_theme_v2" in script or "certpulse_theme" in script
-        assert "catppuccin-latte" in script
+        assert "github-dark" in script
         assert "data-theme" in script
 
     def test_theme_helpers_and_fallback(self):
         """Verify get_theme_by_id fallback, get_theme_json serialization, and dropdown HTML."""
         # Known theme
-        nord = get_theme_by_id("nord")
-        assert nord["id"] == "nord"
+        gh_dark = get_theme_by_id("github-dark")
+        assert gh_dark["id"] == "github-dark" and gh_dark["type"] == "dark"
 
         # Unknown theme falls back to default
         unknown = get_theme_by_id("non-existent-matrix-theme")
@@ -320,11 +317,11 @@ class TestBuilderThemeEngineAdversarial:
 
         # JSON serialization roundtrip
         parsed = json.loads(get_theme_json())
-        assert len(parsed) == 10
+        assert len(parsed) == 2
 
         # Dropdown options
         opts = generate_theme_dropdown_options()
-        assert "value=\"catppuccin-latte\"" in opts
+        assert "value=\"github-dark\"" in opts
         assert "selected" in opts
 
 

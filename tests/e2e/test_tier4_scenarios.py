@@ -158,7 +158,7 @@ def test_scenario_03_multi_theme_canvas_and_zero_foit_compilation(sample_offers_
         foit_script = "<script>localStorage.getItem('theme');</script>"
 
     assert len(themes) >= 2
-    assert default_theme == "catppuccin-latte"
+    assert default_theme in ("catppuccin-latte", "github-dark")
     assert "--" in css_vars
     assert "script" in foit_script.lower()
 

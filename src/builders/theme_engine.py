@@ -1,93 +1,24 @@
 """
 Theme engine for CertPulse.
-Defines 10 iconic developer color palettes (Catppuccin Latte default, Catppuccin Mocha,
-GitHub Dark, GitHub Light, Dracula, Nord, Tokyo Night, One Dark, Gruvbox Dark, Solarized Light),
-generates CSS custom properties, and provides inline Zero-FOIT styling scripts.
+Defines canonical GitHub developer color palettes:
+- GitHub Dark (default, dark mode)
+- GitHub Light (light mode)
+Generates CSS custom properties and provides inline Zero-FOIT styling scripts.
 """
 
 import json
 from typing import Dict, Any, List
 
-DEFAULT_THEME = "catppuccin-latte"
+DEFAULT_THEME = "github-dark"
 
 THEMES: List[Dict[str, Any]] = [
-    {
-        "id": "catppuccin-latte",
-        "name": "Catppuccin Latte",
-        "type": "light",
-        "dot": "#0070f3",
-        "meta": "#ffffff",
-        "selector": ':root, [data-theme="catppuccin-latte"], [data-theme="light"]',
-        "tokens": {
-            "--canvas-default": "#ffffff",
-            "--canvas-subtle": "#f8f9fa",
-            "--canvas-inset": "#f1f3f5",
-            "--border-default": "#e4e4e7",
-            "--border-muted": "#f4f4f5",
-            "--fg-default": "#09090b",
-            "--fg-muted": "#71717a",
-            "--fg-subtle": "#a1a1aa",
-            "--accent-fg": "#0070f3",
-            "--accent-emphasis": "#0051b3",
-            "--accent-subtle": "rgba(0, 112, 243, 0.08)",
-            "--success-fg": "#16a34a",
-            "--success-emphasis": "#15803d",
-            "--success-subtle": "rgba(22, 163, 74, 0.08)",
-            "--attention-fg": "#d97706",
-            "--attention-subtle": "rgba(217, 119, 6, 0.08)",
-            "--danger-fg": "#dc2626",
-            "--danger-subtle": "rgba(220, 38, 38, 0.08)",
-            "--btn-default-bg": "#f4f4f5",
-            "--btn-default-hover": "#e4e4e7",
-            "--btn-primary-bg": "#09090b",
-            "--btn-primary-hover": "#27272a",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04)",
-            "--card-shadow-hover": "0 12px 28px -6px rgba(0, 0, 0, 0.12), 0 0 0 1px #0070f3",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.8)",
-        },
-    },
-    {
-        "id": "catppuccin-mocha",
-        "name": "Catppuccin Mocha",
-        "type": "dark",
-        "dot": "#38bdf8",
-        "meta": "#000000",
-        "selector": '[data-theme="catppuccin-mocha"], [data-theme="dark"]',
-        "tokens": {
-            "--canvas-default": "#000000",
-            "--canvas-subtle": "#111111",
-            "--canvas-inset": "#080808",
-            "--border-default": "#262626",
-            "--border-muted": "#1c1c1c",
-            "--fg-default": "#ffffff",
-            "--fg-muted": "#888888",
-            "--fg-subtle": "#555555",
-            "--accent-fg": "#38bdf8",
-            "--accent-emphasis": "#0ea5e9",
-            "--accent-subtle": "rgba(56, 189, 248, 0.12)",
-            "--success-fg": "#22c55e",
-            "--success-emphasis": "#16a34a",
-            "--success-subtle": "rgba(34, 197, 94, 0.12)",
-            "--attention-fg": "#eab308",
-            "--attention-subtle": "rgba(234, 179, 8, 0.12)",
-            "--danger-fg": "#ef4444",
-            "--danger-subtle": "rgba(239, 68, 68, 0.12)",
-            "--btn-default-bg": "#171717",
-            "--btn-default-hover": "#262626",
-            "--btn-primary-bg": "#ffffff",
-            "--btn-primary-hover": "#e5e5e5",
-            "--card-shadow": "0 0 0 1px rgba(255, 255, 255, 0.1), 0 4px 16px -2px rgba(0, 0, 0, 0.8)",
-            "--card-shadow-hover": "0 0 0 1px #38bdf8, 0 16px 40px -8px rgba(0, 0, 0, 0.95)",
-            "--specular-rim": "inset 0 1px 0 0 rgba(255, 255, 255, 0.18)",
-        },
-    },
     {
         "id": "github-dark",
         "name": "GitHub Dark",
         "type": "dark",
         "dot": "#58a6ff",
         "meta": "#0d1117",
-        "selector": '[data-theme="github-dark"]',
+        "selector": ':root, [data-theme="github-dark"], [data-theme="dark"]',
         "tokens": {
             "--canvas-default": "#0d1117",
             "--canvas-subtle": "#161b22",
@@ -122,7 +53,7 @@ THEMES: List[Dict[str, Any]] = [
         "type": "light",
         "dot": "#0969da",
         "meta": "#ffffff",
-        "selector": '[data-theme="github-light"]',
+        "selector": '[data-theme="github-light"], [data-theme="light"]',
         "tokens": {
             "--canvas-default": "#ffffff",
             "--canvas-subtle": "#f6f8fa",
@@ -151,233 +82,23 @@ THEMES: List[Dict[str, Any]] = [
             "--specular-rim": "inset 0 1px 0 0 rgba(255, 255, 255, 0.95)",
         },
     },
-    {
-        "id": "dracula",
-        "name": "Dracula",
-        "type": "dark",
-        "dot": "#bd93f9",
-        "meta": "#282a36",
-        "selector": '[data-theme="dracula"]',
-        "tokens": {
-            "--canvas-default": "#282a36",
-            "--canvas-subtle": "#21222c",
-            "--canvas-inset": "#191a21",
-            "--border-default": "#44475a",
-            "--border-muted": "#6272a4",
-            "--fg-default": "#f8f8f2",
-            "--fg-muted": "#6272a4",
-            "--fg-subtle": "#ff79c6",
-            "--accent-fg": "#bd93f9",
-            "--accent-emphasis": "#bd93f9",
-            "--accent-subtle": "rgba(189, 147, 249, 0.15)",
-            "--success-fg": "#50fa7b",
-            "--success-emphasis": "#50fa7b",
-            "--success-subtle": "rgba(80, 250, 123, 0.15)",
-            "--attention-fg": "#f1fa8c",
-            "--attention-subtle": "rgba(241, 250, 140, 0.15)",
-            "--danger-fg": "#ff5555",
-            "--danger-subtle": "rgba(255, 85, 85, 0.15)",
-            "--btn-default-bg": "#44475a",
-            "--btn-default-hover": "#6272a4",
-            "--btn-primary-bg": "#bd93f9",
-            "--btn-primary-hover": "#ff79c6",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.4)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(0, 0, 0, 0.5)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)",
-        },
-    },
-    {
-        "id": "nord",
-        "name": "Nord",
-        "type": "dark",
-        "dot": "#88c0d0",
-        "meta": "#2e3440",
-        "selector": '[data-theme="nord"]',
-        "tokens": {
-            "--canvas-default": "#2e3440",
-            "--canvas-subtle": "#3b4252",
-            "--canvas-inset": "#242933",
-            "--border-default": "#434c5e",
-            "--border-muted": "#4c566a",
-            "--fg-default": "#eceff4",
-            "--fg-muted": "#d8dee9",
-            "--fg-subtle": "#e5e9f0",
-            "--accent-fg": "#88c0d0",
-            "--accent-emphasis": "#81a1c1",
-            "--accent-subtle": "rgba(136, 192, 208, 0.15)",
-            "--success-fg": "#a3be8c",
-            "--success-emphasis": "#a3be8c",
-            "--success-subtle": "rgba(163, 190, 140, 0.15)",
-            "--attention-fg": "#ebcb8b",
-            "--attention-subtle": "rgba(235, 203, 139, 0.15)",
-            "--danger-fg": "#bf616a",
-            "--danger-subtle": "rgba(191, 97, 106, 0.15)",
-            "--btn-default-bg": "#434c5e",
-            "--btn-default-hover": "#4c566a",
-            "--btn-primary-bg": "#88c0d0",
-            "--btn-primary-hover": "#81a1c1",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.35)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(0, 0, 0, 0.45)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)",
-        },
-    },
-    {
-        "id": "tokyo-night",
-        "name": "Tokyo Night",
-        "type": "dark",
-        "dot": "#7aa2f7",
-        "meta": "#1a1b26",
-        "selector": '[data-theme="tokyo-night"]',
-        "tokens": {
-            "--canvas-default": "#1a1b26",
-            "--canvas-subtle": "#16161e",
-            "--canvas-inset": "#0f0f14",
-            "--border-default": "#292e42",
-            "--border-muted": "#3b4261",
-            "--fg-default": "#c0caf5",
-            "--fg-muted": "#9aa5ce",
-            "--fg-subtle": "#565f89",
-            "--accent-fg": "#7aa2f7",
-            "--accent-emphasis": "#7aa2f7",
-            "--accent-subtle": "rgba(122, 162, 247, 0.15)",
-            "--success-fg": "#9ece6a",
-            "--success-emphasis": "#9ece6a",
-            "--success-subtle": "rgba(158, 206, 106, 0.15)",
-            "--attention-fg": "#e0af68",
-            "--attention-subtle": "rgba(224, 175, 104, 0.15)",
-            "--danger-fg": "#f7768e",
-            "--danger-subtle": "rgba(247, 118, 142, 0.15)",
-            "--btn-default-bg": "#292e42",
-            "--btn-default-hover": "#3b4261",
-            "--btn-primary-bg": "#7aa2f7",
-            "--btn-primary-hover": "#bb9af7",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.4)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(0, 0, 0, 0.5)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)",
-        },
-    },
-    {
-        "id": "one-dark",
-        "name": "One Dark",
-        "type": "dark",
-        "dot": "#61afef",
-        "meta": "#282c34",
-        "selector": '[data-theme="one-dark"]',
-        "tokens": {
-            "--canvas-default": "#282c34",
-            "--canvas-subtle": "#21252b",
-            "--canvas-inset": "#1b1d23",
-            "--border-default": "#3b4048",
-            "--border-muted": "#4b5263",
-            "--fg-default": "#abb2bf",
-            "--fg-muted": "#7f848e",
-            "--fg-subtle": "#5c6370",
-            "--accent-fg": "#61afef",
-            "--accent-emphasis": "#61afef",
-            "--accent-subtle": "rgba(97, 175, 239, 0.15)",
-            "--success-fg": "#98c379",
-            "--success-emphasis": "#98c379",
-            "--success-subtle": "rgba(152, 195, 121, 0.15)",
-            "--attention-fg": "#e5c07b",
-            "--attention-subtle": "rgba(229, 192, 123, 0.15)",
-            "--danger-fg": "#e06c75",
-            "--danger-subtle": "rgba(224, 108, 117, 0.15)",
-            "--btn-default-bg": "#3b4048",
-            "--btn-default-hover": "#4b5263",
-            "--btn-primary-bg": "#61afef",
-            "--btn-primary-hover": "#c678dd",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.35)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(0, 0, 0, 0.45)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)",
-        },
-    },
-    {
-        "id": "gruvbox-dark",
-        "name": "Gruvbox Dark",
-        "type": "dark",
-        "dot": "#fe8019",
-        "meta": "#282828",
-        "selector": '[data-theme="gruvbox-dark"]',
-        "tokens": {
-            "--canvas-default": "#282828",
-            "--canvas-subtle": "#1d2021",
-            "--canvas-inset": "#141617",
-            "--border-default": "#3c3836",
-            "--border-muted": "#504945",
-            "--fg-default": "#ebdbb2",
-            "--fg-muted": "#a89984",
-            "--fg-subtle": "#928374",
-            "--accent-fg": "#fe8019",
-            "--accent-emphasis": "#fe8019",
-            "--accent-subtle": "rgba(254, 128, 25, 0.15)",
-            "--success-fg": "#b8bb26",
-            "--success-emphasis": "#b8bb26",
-            "--success-subtle": "rgba(184, 187, 38, 0.15)",
-            "--attention-fg": "#fabd2f",
-            "--attention-subtle": "rgba(250, 189, 47, 0.15)",
-            "--danger-fg": "#fb4934",
-            "--danger-subtle": "rgba(251, 73, 52, 0.15)",
-            "--btn-default-bg": "#3c3836",
-            "--btn-default-hover": "#504945",
-            "--btn-primary-bg": "#fe8019",
-            "--btn-primary-hover": "#fabd2f",
-            "--card-shadow": "0 1px 3px 0 rgba(0, 0, 0, 0.4)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(0, 0, 0, 0.5)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.05)",
-        },
-    },
-    {
-        "id": "solarized-light",
-        "name": "Solarized Light",
-        "type": "light",
-        "dot": "#2aa198",
-        "meta": "#fdf6e3",
-        "selector": '[data-theme="solarized-light"]',
-        "tokens": {
-            "--canvas-default": "#fdf6e3",
-            "--canvas-subtle": "#eee8d5",
-            "--canvas-inset": "#e0d8c3",
-            "--border-default": "#cb4b16",
-            "--border-muted": "#93a1a1",
-            "--fg-default": "#657b83",
-            "--fg-muted": "#586e75",
-            "--fg-subtle": "#839496",
-            "--accent-fg": "#268bd2",
-            "--accent-emphasis": "#268bd2",
-            "--accent-subtle": "rgba(38, 139, 210, 0.12)",
-            "--success-fg": "#859900",
-            "--success-emphasis": "#859900",
-            "--success-subtle": "rgba(133, 153, 0, 0.12)",
-            "--attention-fg": "#b58900",
-            "--attention-subtle": "rgba(181, 137, 0, 0.12)",
-            "--danger-fg": "#dc322f",
-            "--danger-subtle": "rgba(220, 50, 47, 0.12)",
-            "--btn-default-bg": "#eee8d5",
-            "--btn-default-hover": "#e0d8c3",
-            "--btn-primary-bg": "#268bd2",
-            "--btn-primary-hover": "#2aa198",
-            "--card-shadow": "0 1px 3px 0 rgba(101, 123, 131, 0.1)",
-            "--card-shadow-hover": "0 4px 6px -1px rgba(101, 123, 131, 0.15)",
-            "--specular-rim": "inset 0 1px 1px 0 rgba(255, 255, 255, 0.8)",
-        },
-    },
 ]
 
 # Alias standard tokens and attach css_vars for ergonomic access
 for _t in THEMES:
     _tok = _t["tokens"]
-    _tok["--bg-primary"] = _tok.get("--canvas-default", "#eff1f5")
-    _tok["--bg-card"] = _tok.get("--canvas-subtle", "#e6e9ef")
-    _tok["--text-primary"] = _tok.get("--fg-default", "#4c4f69")
-    _tok["--text-muted"] = _tok.get("--fg-muted", "#5c5f77")
-    _tok["--border-color"] = _tok.get("--border-default", "#ccd0da")
-    _tok["--accent-color"] = _tok.get("--accent-fg", "#1e66f5")
-    _tok["--accent-bg"] = _tok.get("--accent-subtle", "rgba(30, 102, 245, 0.12)")
+    _tok["--bg-primary"] = _tok.get("--canvas-default", "#0d1117")
+    _tok["--bg-card"] = _tok.get("--canvas-subtle", "#161b22")
+    _tok["--text-primary"] = _tok.get("--fg-default", "#e6edf3")
+    _tok["--text-muted"] = _tok.get("--fg-muted", "#848d97")
+    _tok["--border-color"] = _tok.get("--border-default", "#30363d")
+    _tok["--accent-color"] = _tok.get("--accent-fg", "#58a6ff")
+    _tok["--accent-bg"] = _tok.get("--accent-subtle", "rgba(56, 139, 253, 0.15)")
     _t["css_vars"] = _tok
 
 
 def generate_css_variables() -> str:
-    """Generates the unified CSS custom properties for all 10 developer themes."""
+    """Generates the unified CSS custom properties for GitHub Dark and GitHub Light."""
     lines: List[str] = [
         ":root {",
         "    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);",
@@ -411,16 +132,14 @@ body {
     background-color: var(--canvas-subtle);
     border: 1px solid var(--border-default);
     box-shadow: var(--card-shadow), var(--specular-rim);
-    perspective: 1000px;
-    transform-style: preserve-3d;
-    transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1), 
-                box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1), 
+    transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1), 
+                box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1), 
                 border-color 180ms cubic-bezier(0.23, 1, 0.32, 1);
-    will-change: transform;
+    position: relative;
 }
 @media (hover: hover) and (pointer: fine) {
     .primer-card:hover {
-        transform: translateY(-4px) rotateX(1deg) rotateY(-1deg);
+        transform: translateY(-2px);
         box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 16px -4px rgba(0, 0, 0, 0.04), 0 20px 40px -8px rgba(0, 0, 0, 0.08);
         border-color: var(--accent-fg);
     }
@@ -435,7 +154,9 @@ button, a.cursor-pointer, .btn, .tier-pill, .cat-pill, .news-cat-pill {
                 background-color 140ms cubic-bezier(0.23, 1, 0.32, 1),
                 border-color 140ms cubic-bezier(0.23, 1, 0.32, 1),
                 box-shadow 140ms cubic-bezier(0.23, 1, 0.32, 1);
-    will-change: transform;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
 }
 @media (hover: hover) and (pointer: fine) {
     .tier-pill:hover, .cat-pill:hover, .news-cat-pill:hover {
@@ -481,44 +202,26 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
         font-size: 16px !important;
     }
 }
-
-/* Theme Item in Dropdown */
-.theme-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 7px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.12s;
-}
-.theme-item:hover {
-    background: var(--btn-default-bg);
-}
 """)
 
     return "\n".join(lines)
 
 
 def generate_zero_foit_script() -> str:
-    """Inline <head> script preventing flash of unstyled content (FOIT/FOUC)."""
+    """Inline <head> script preventing flash of unstyled content (FOIT/FOUC). Defaults to GitHub Dark with OS preference sync."""
     return """<script>
-    // Inline Zero-FOIT theme initialization (default: catppuccin-latte with auto OS sync)
     (function() {
         try {
             const saved = localStorage.getItem('certpulse_theme_v2') || localStorage.getItem('certpulse_theme') || localStorage.getItem('theme');
             let chosen = saved;
-            if (!chosen) {
+            if (chosen !== 'github-light' && chosen !== 'github-dark') {
                 const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                chosen = prefersDark ? 'catppuccin-mocha' : 'catppuccin-latte';
+                chosen = prefersDark ? 'github-dark' : 'github-light';
             }
-            const valid = ['catppuccin-latte', 'catppuccin-mocha', 'github-dark', 'github-light', 'dracula', 'nord', 'tokyo-night', 'one-dark', 'gruvbox-dark', 'solarized-light', 'light', 'dark'];
-            if (!valid.includes(chosen)) chosen = 'catppuccin-latte';
             document.documentElement.setAttribute('data-theme', chosen);
             const metaTheme = document.querySelector('meta[name="theme-color"]');
             if (metaTheme) {
-                const metaMap = {'catppuccin-latte':'#ffffff','catppuccin-mocha':'#000000','github-dark':'#0d1117','github-light':'#ffffff','dracula':'#282a36','nord':'#2e3440','tokyo-night':'#1a1b26','one-dark':'#282c34','gruvbox-dark':'#282828','solarized-light':'#fdf6e3','dark':'#000000','light':'#ffffff'};
-                if (metaMap[chosen]) metaTheme.setAttribute('content', metaMap[chosen]);
+                metaTheme.setAttribute('content', chosen === 'github-light' ? '#ffffff' : '#0d1117');
             }
         } catch(e) {}
     })();
@@ -526,51 +229,29 @@ def generate_zero_foit_script() -> str:
 
 
 def generate_theme_dropdown_html() -> str:
-    """Emits the dropdown menu markup for all 10 developer themes."""
-    items_html = []
-    for t in THEMES:
-        items_html.append(f"""
-        <div class="theme-item text-xs font-medium" onclick="selectTheme('{t['id']}')">
-            <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: {t['dot']}; border: 1px solid var(--border-default);"></span>
-                <span style="color: var(--fg-default);">{t['name']}</span>
-            </div>
-            <span class="text-[10px] uppercase font-mono px-1 rounded" style="color: var(--fg-subtle);">{t['type']}</span>
-        </div>""")
-
-    return f"""
-    <div id="themeDropdownMenu" class="hidden absolute right-0 top-full mt-2 w-56 rounded-xl border p-1.5 shadow-2xl z-50 transition-all duration-150" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
-        <div class="px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider border-b mb-1 flex items-center justify-between" style="border-color: var(--border-muted); color: var(--fg-muted);">
-            <span>Color Themes (10)</span>
-            <span class="text-[9px] font-mono">1-10</span>
-        </div>
-        <div class="space-y-0.5 max-h-72 overflow-y-auto touch-scroll scrollbar-none">
-            {"".join(items_html)}
-        </div>
-    </div>"""
+    """Legacy helper: returns empty string as dropdown is retired in favor of clean Dark/Light toggle."""
+    return ""
 
 
 def get_theme_by_id(theme_id: str) -> Dict[str, Any]:
-    """Retrieve theme dictionary by ID, falling back to default theme if not found."""
+    """Retrieve theme dictionary by ID, falling back to GitHub Dark / Light."""
     for theme in THEMES:
         if theme["id"] == theme_id:
             return theme
-    for theme in THEMES:
-        if theme["id"] == DEFAULT_THEME:
-            return theme
-    return THEMES[0]
+    if theme_id in ("light", "github-light", "catppuccin-latte", "solarized-light"):
+        return THEMES[1]  # github-light
+    return THEMES[0]  # github-dark default
 
 
 def get_theme_json() -> str:
-    """Returns JSON string of all themes."""
+    """Returns JSON string of active themes."""
     return json.dumps(THEMES)
 
 
 def generate_theme_dropdown_options() -> str:
-    """Emits HTML option tags for all 10 developer themes."""
+    """Emits HTML option tags for GitHub Dark and GitHub Light."""
     options = []
     for t in THEMES:
         selected = " selected" if t["id"] == DEFAULT_THEME else ""
         options.append(f'<option value="{t["id"]}"{selected}>{t["name"]} ({t["type"]})</option>')
     return "\n".join(options)
-

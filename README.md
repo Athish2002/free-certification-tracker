@@ -37,17 +37,27 @@
 
 ---
 
-## 🎓 Primary Tier: Industry-Recognized Written Proctored Exam Vouchers (6 Active / 21 Tracked)
-> Formal accredited industry certifications featuring proctored written examinations (Pearson VUE, Kryterion, Webassessor waivers, 100% discount promo codes, and official challenge voucher waves).
+## 🌊 Tier 1A: Limited-Time Exam Waves & Seasonal Challenge Cohorts (5 Active)
+> Time-bounded challenge cohorts, Cloud Skills Waves, and promotional certification windows with periodic renewal cycles.
 
-| Provider | Certification & Program | Category | Tier | Value (USD) | Status | Proof | Truth Source | Claim Link |
-| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Foundational` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-04</sub> | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) |
-| **MongoDB** | MongoDB Associate Developer / DBA | AI & Data | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | [MongoDB Learn Portal & GitHub Student Pack](https://learn.mongodb.com/pages/certification) | [**Claim Voucher**](https://learn.mongodb.com/pages/certification) |
-| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | `Associate` | $200 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [Juniper Open Learning Voucher Policy](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | [**Claim Voucher**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
-| **GitHub** | GitHub Foundations | DevOps | `Foundational` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-student-foundations.png) | [GitHub Education Student Pack](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Professional` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227) |
-| **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Foundational` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
+| Provider | Certification & Program | Category | Cadence & Wave | Value (USD) | Status | Proof | Truth Source | Claim Link |
+| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Quarterly Learning Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-04</sub> | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) |
+| **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Continuous Cisco U Tracks` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-04</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Claim Voucher**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
+| **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-04</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Claim Voucher**](https://www.databricks.com/learn/training/certification) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227) |
+| **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Biannual Student & Universe Waves` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
+
+---
+
+## 🏷️ Tier 1B: Active Ongoing Discounts & Vouchers (3 Active)
+> Ongoing student discounts, continuous partner vouchers, partial co-pay discounts, and permanent $0 certification waivers.
+
+| Provider | Discount / Voucher Program | Category | Terms & Prereqs | Value (USD) | Status | Proof | Truth Source | Claim Link |
+| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
+| **MongoDB** | MongoDB Associate Developer / DBA | AI & Data | Global (100% free voucher for students via GitHub Student Pack) | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | [MongoDB Learn Portal & GitHub Student Pack](https://learn.mongodb.com/pages/certification) | [**Claim Discount**](https://learn.mongodb.com/pages/certification) |
+| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | Global (Participants of Open Learning webinars) | $200 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [Juniper Open Learning Voucher Policy](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | [**Claim Discount**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+| **GitHub** | GitHub Foundations | DevOps | Active students verified via GitHub Student Developer Pack | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-student-foundations.png) | [GitHub Education Student Pack](https://education.github.com/pack) | [**Claim Discount**](https://education.github.com/pack) |
 
 ---
 

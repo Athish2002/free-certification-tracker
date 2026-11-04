@@ -354,9 +354,9 @@ def test_f07_theme_engine_palettes_and_zero_foit_invariants():
     """
     from src.builders.theme_engine import THEMES, DEFAULT_THEME, generate_css_variables, generate_zero_foit_script
 
-    assert len(THEMES) >= 10
+    assert len(THEMES) >= 2
     theme_ids = {t["id"] for t in THEMES}
-    assert "catppuccin-latte" in theme_ids or "vercel-pure-oled" in theme_ids or "github-dark" in theme_ids
+    assert "github-dark" in theme_ids and "github-light" in theme_ids
     assert DEFAULT_THEME in theme_ids
 
     # CSS variables
@@ -370,7 +370,7 @@ def test_f07_theme_engine_palettes_and_zero_foit_invariants():
     # Mode balance
     light_count = sum(1 for t in THEMES if t.get("type") == "light")
     dark_count = sum(1 for t in THEMES if t.get("type") == "dark")
-    assert light_count >= 3 and dark_count >= 5
+    assert light_count >= 1 and dark_count >= 1
 
 
 # ---------------------------------------------------------------------------

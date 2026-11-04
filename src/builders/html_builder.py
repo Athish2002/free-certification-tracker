@@ -25,6 +25,34 @@ from src.builders.readme_builder import (
 )
 
 
+def classify_offer_tier(o: Dict[str, Any]) -> str:
+    """Classifies an offer into 'wave' (limited-time exam wave), 'discount' (active ongoing discount/voucher), or 'badge' (skill badge & lab)."""
+    tv = o.get("truth_verification") or {}
+    otype = (o.get("offer_type") or "").lower()
+    seas = (o.get("seasonality") or "").lower()
+    oid = (o.get("id") or "").lower()
+    title = (o.get("title") or "").lower()
+    rec = (o.get("recurrence_pattern") or "").lower()
+
+    # 1. Partial / Ongoing Discounts & Student Vouchers
+    is_partial_copay = tv.get("policy_type") == "partial_discount_copay" or (tv.get("real_exam_cost_usd") or 0) > 0
+    is_student_discount = "student" in seas or "student" in otype or "student" in oid
+    is_discount_type = ("discount" in otype and "100% free" not in otype) or ("%" in otype and "100%" not in otype)
+    if is_partial_copay or is_student_discount or is_discount_type:
+        return "discount"
+
+    # 2. Exam Waves (Seasonal challenge waves, limited-time cohorts, annual/event windows)
+    if (
+        seas in ("periodic_challenge_wave", "annual_window", "monthly_sweepstakes", "event_driven")
+        or "wave" in oid or "wave" in title or "challenge" in title
+        or "wave" in rec or "cohort" in rec
+    ):
+        return "wave"
+
+    # 3. Free Skill Badges & Labs
+    return "badge"
+
+
 def minify_offer_for_client(o: Dict[str, Any]) -> Dict[str, Any]:
     """Prunes heavy internal backend diagnostics to optimize inlined client bundle payload while preserving all UI fields."""
     keys = (
@@ -39,6 +67,7 @@ def minify_offer_for_client(o: Dict[str, Any]) -> Dict[str, Any]:
     if "visual_proof" in m and isinstance(m["visual_proof"], dict):
         vp_keys = ("screenshot_path", "status", "captured_at", "zero_dollar_confirmed")
         m["visual_proof"] = {k: m["visual_proof"][k] for k in vp_keys if k in m["visual_proof"]}
+    m["category_tier"] = classify_offer_tier(o)
     return m
 
 
@@ -108,6 +137,11 @@ def generate_web_dashboard(
     badge_offers = [o for o in offers if o.get("credential_tier") in ("skill_badge_lab", "secondary")]
     active_proctored = [o for o in proctored_offers if o.get("status") == "Active"]
     active_badges = [o for o in badge_offers if o.get("status") == "Active"]
+    active_waves = [o for o in active_offers if classify_offer_tier(o) == "wave"]
+    active_discounts = [o for o in active_offers if classify_offer_tier(o) == "discount"]
+    total_waves = [o for o in offers if classify_offer_tier(o) == "wave"]
+    total_discounts = [o for o in offers if classify_offer_tier(o) == "discount"]
+    total_badges = [o for o in offers if classify_offer_tier(o) == "badge"]
 
     total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     last_sync_raw = (
@@ -153,8 +187,8 @@ def generate_web_dashboard(
         <div class="flex items-center gap-2 flex-wrap">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{STATUS_BADGES.get(o.get('status'), o.get('status'))}</span>
             <span class="text-[11px]" style="color: var(--fg-subtle);">{html_lib.escape(str(o.get('inspection_notes', 'Under continuous review')))}</span>
-            <button onclick="openProofModal('{escape_js_attr(o.get('id', ''))}')" class="px-2 py-0.5 rounded border text-[10px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96]" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
-                <span>📸 Proof</span>
+            <button type="button" data-proof-id="{escape_js_attr(o.get('id', ''))}" onclick="openProofModal('{escape_js_attr(o.get('id', ''))}')" class="px-2.5 py-1 rounded border text-[11px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96] relative z-10 select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
+                <span class="pointer-events-none">📸 Proof</span>
             </button>
         </div>
     </div>''' for o in closed_offers])
@@ -225,17 +259,8 @@ def generate_web_dashboard(
                     <span id="navTimezoneText" class="sr-only">Last Synced: {tz_info['ticker']}</span>
                 </div>
 
-                <!-- Theme Palette Dropdown Button (10 Developer Themes) -->
-                <div class="relative">
-                    <button onclick="toggleThemeDropdown()" id="themeDropdownToggleBtn" title="Select from 10 Developer Color Themes" aria-label="Select Theme Palette" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-2.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 2 7a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2c0-2 2-4 2-7a7 7 0 0 0-7-7Z"/></svg>
-                        <span class="hidden sm:inline text-[11px]">Themes</span>
-                    </button>
-                    {theme_dropdown_html}
-                </div>
-
-                <!-- Dark / Light Single Theme Toggle Button (Catppuccin Mocha / Catppuccin Latte) -->
-                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle Pure OLED Dark / Ceramic Light Mode (T)" aria-label="Toggle Dark / Light Contrast Mode" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3.5 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                <!-- Dark / Light Single Theme Toggle Button (GitHub Dark / GitHub Light) -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="Toggle GitHub Dark / Light Mode (T)" aria-label="Toggle Dark / Light Mode" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs cursor-pointer select-none" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                     <span id="themeIconSun" class="hidden flex items-center gap-1.5">
                         <svg class="w-4 h-4" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0Zm0 13a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.061Zm9.193 9.193a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM0 8a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8Zm13 0a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5A.75.75 0 0 1 13 8ZM2.343 13.657a.75.75 0 0 1 0-1.06l1.06-1.061a.75.75 0 1 1 1.061 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Zm9.193-9.193a.75.75 0 0 1 0-1.06l1.061-1.061a.75.75 0 0 1 1.06 1.06l-1.06 1.061a.75.75 0 0 1-1.061 0Z"></path></svg>
                         <span class="hidden sm:inline">Light</span>
@@ -331,7 +356,7 @@ def generate_web_dashboard(
                         <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
                             {len(active_offers)} <span class="text-xs font-normal" style="color: var(--fg-muted);">Vouchers</span>
                         </div>
-                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">{len(active_proctored)} Proctored &bull; {len(active_badges)} Skill Badges &bull; {len(historical_offers)} Archived</p>
+                        <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">{len(active_waves)} Exam Waves &bull; {len(active_discounts)} Discounts &bull; {len(active_badges)} Skill Badges</p>
                     </div>
                 </div>
 
@@ -394,13 +419,17 @@ def generate_web_dashboard(
                     <span>All Credentials</span>
                     <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-bold bg-white/20">{len(offers)}</span>
                 </button>
-                <button onclick="filterTier('proctored_exam')" id="tierPillProctored" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-tier="proctored_exam">
-                    <span>🎓 Written Proctored Exams</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(proctored_offers)}</span>
+                <button onclick="filterTier('wave')" id="tierPillWave" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-tier="wave">
+                    <span>🌊 Exam Waves</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(total_waves)}</span>
+                </button>
+                <button onclick="filterTier('discount')" id="tierPillDiscount" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-tier="discount">
+                    <span>🏷️ Active Discounts</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(total_discounts)}</span>
                 </button>
                 <button onclick="filterTier('skill_badge_lab')" id="tierPillBadges" class="tier-pill min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap border transition hover:opacity-80 active:scale-[0.98] flex items-center gap-1.5 flex-shrink-0 cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);" data-tier="skill_badge_lab">
-                    <span>🎖️ Digital Skill Badges & Labs</span>
-                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(badge_offers)}</span>
+                    <span>🎓 Skill Badges & Labs</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full tabular-nums font-medium" style="background-color: var(--canvas-inset);">{len(total_badges)}</span>
                 </button>
             </div>
 
