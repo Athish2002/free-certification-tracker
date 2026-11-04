@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-03T19:17:29.309238+00:00",
-  "last_sync": "2026-11-03T19:17:29.309238+00:00",
+  "last_updated": "2026-11-04T05:22:06.395045+00:00",
+  "last_sync": "2026-11-04T05:22:06.395045+00:00",
   "news": [
+    {
+      "id": "red-hat-city-of-cape-town-saves-1-192",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "City of Cape Town Saves 1,192 Staff Hours with Red Hat Ansible Automation Platform",
+      "summary": "Red Hat, the world's leading provider of enterprise open source software solutions, today announced that City of Cape Town is using Red Hat Ansible Automation Platform to cut the cost and time of routine IT operations that keep municipal se...",
+      "published_date": "2026-10-30",
+      "date": "2026-10-30",
+      "url": "https://www.redhat.com/en/about/press-releases/city-cape-town-saves-1192-staff-hours-red-hat-ansible-automation-platform",
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "653f411db5a3c91ed34f51b8438821b2bdbe5dc944319b5ee2463887ebe3adc2"
+    },
+    {
+      "id": "hashicorp-introducing-ibm-cloud-secrets",
+      "company": "HashiCorp",
+      "source": "HashiCorp Blog",
+      "source_domain": "hashicorp.com",
+      "category": "Infrastructure & DevOps",
+      "title": "Introducing IBM Cloud Secrets Manager Vault Dedicated: HashiCorp Vault Enterprise, managed by IBM",
+      "summary": "A new way for IBM Cloud® customers to consume HashiCorp® Vault® Enterprise on dedicated infrastructure without the operational burden of running it themselves.",
+      "published_date": "2026-11-03",
+      "date": "2026-11-03",
+      "url": "https://www.hashicorp.com/blog/introducing-ibm-cloud-secrets-manager-vault-dedicated",
+      "impact_badge": "Infrastructure as Code",
+      "content_fingerprint": "3ed0f0eeec0c27a97a481984e3977489219279956831641f17253817b3dde45d"
+    },
+    {
+      "id": "cisco-cisco-live-melbourne-what-s-h",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Cisco Live Melbourne: What's Happening at the Learn with Cisco Booth",
+      "summary": "Discover what's happening in the Learn with Cisco Booth at Cisco Live Melbourne, November 9-12, 2026: Trivia-style challenges, certification exam savings, Continuing Education (CE) Credits, exclusive offers, and more to power your networkin...",
+      "published_date": "2026-11-03",
+      "date": "2026-11-03",
+      "url": "https://blogs.cisco.com/learning/cl-apjc-2026",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "e9b798fc9833e4a537e6a1232943a2b5334a77706b9d79ef9b213bb8a3a15453"
+    },
     {
       "id": "hashicorp-terraform-advances-infrastruct",
       "company": "HashiCorp",
@@ -1358,48 +1400,6 @@
       "impact_badge": "Developer Tooling",
       "date": "2024-08-01",
       "content_fingerprint": "d22c84398e627c5cd2a9f73ca9921f81c4983b4ae9acc24d7eb41b25547b62e4"
-    },
-    {
-      "id": "cisco-the-ai-security-paradox-how",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "The AI Security Paradox - How Shadow AI Became the Enterprise's Biggest Blind Spot",
-      "summary": "AI adoption inside the enterprise is no longer waiting for governance to catch up. Employees are already using generative AI to write code, summarize documents, analyze data, draft communications, and automate routine work, often through to...",
-      "published_date": "2024-08-01",
-      "url": "https://blogs.cisco.com/ai/the-ai-security-paradox-how-shadow-ai-became-the-enterprises-biggest-blind-spot",
-      "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01",
-      "content_fingerprint": "8683c86249210d5d7a28ab3074cfbb4d21b5a5c6caa86408b18a75a9956683a5"
-    },
-    {
-      "id": "cisco-agents-at-the-edge-extending",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Agents at the Edge: Extending AI Security Governance to Physical AI with DefenseClaw",
-      "summary": "AI agents are moving beyond screens and servers into the physical world -- controlling robots, drones, factory equipment, and building systems. DefenseClaw now includes an Edge Connector that brings AI agent security to these constrained de...",
-      "published_date": "2024-08-01",
-      "url": "https://blogs.cisco.com/ai/agents-at-the-edge-extending-ai-security-governance-to-physical-ai-with-defenseclaw",
-      "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01",
-      "content_fingerprint": "2db9595e93546f090eeb0171552a192fef49a3a97dc8930e2a1379768d248ead"
-    },
-    {
-      "id": "google-cloud-cloud-ciso-perspectives-new-g",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Cloud CISO Perspectives: New Gemini Notebook can help CISOs and policymakers prepare for PQC",
-      "summary": "Welcome to the first Cloud CISO Perspectives for October 2026. Today, Stephanie Kiel explains the latest on our approach to post-quantum cryptography, and shares a new tool to help CISOs and executives prepare their organizations for PQC.As...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-new-gemini-notebook-can-help-cisos-policymakers-prepare-for-pqc/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "67291c4a96c07b5044dbb84f688d7e5d8e148e869e9a3d142b6b6745439cdf21"
     }
   ],
   "total_items": 100
