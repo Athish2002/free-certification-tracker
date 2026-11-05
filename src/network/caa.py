@@ -90,12 +90,14 @@ class CAAVerifier:
                         tokens = raw_data.strip().split(maxsplit=2)
                         if len(tokens) >= 3:
                             try:
-                                caa_entries.append({
-                                    "flags": int(tokens[0]),
-                                    "tag": tokens[1].lower(),
-                                    "value": tokens[2].strip('"\''),
-                                    "domain": curr_domain,
-                                })
+                                caa_entries.append(
+                                    {
+                                        "flags": int(tokens[0]),
+                                        "tag": tokens[1].lower(),
+                                        "value": tokens[2].strip("\"'"),
+                                        "domain": curr_domain,
+                                    }
+                                )
                             except ValueError:
                                 pass
                     elif ans.get("type") == 5:

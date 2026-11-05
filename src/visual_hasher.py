@@ -14,20 +14,21 @@ from __future__ import annotations
 import io
 import json
 import logging
-import os
+from datetime import UTC
 from pathlib import Path
-from typing import Any, BinaryIO, Dict, List, Optional, Tuple, Union
+from typing import Any, BinaryIO
 
 import numpy as np
 from PIL import Image, UnidentifiedImageError
-from scipy.fftpack import dct
 from pydantic import BaseModel, ConfigDict, Field
+from scipy.fftpack import dct
 
 logger = logging.getLogger("certpulse.visual_hasher")
 
 
 class VisualHashError(Exception):
     """Custom exception raised for invalid image inputs or hash failures."""
+
     pass
 
 
@@ -35,8 +36,10 @@ class VisualHashError(Exception):
 # 1. Pydantic Models for Badge Records and Verification Verdicts
 # ==============================================================================
 
+
 class BadgeRecord(BaseModel):
     """Catalog entry for an official vendor emblem or certification badge."""
+
     model_config = ConfigDict(extra="ignore")
 
     badge_id: str = Field(..., description="Unique badge slug (e.g. 'microsoft_certified')")
@@ -45,19 +48,24 @@ class BadgeRecord(BaseModel):
     dhash: str = Field(..., min_length=16, max_length=16, description="16-hex character difference hash")
     phash: str = Field(..., min_length=16, max_length=16, description="16-hex character perceptual hash")
     category: str = Field(default="proctored_exam", description="'proctored_exam' or 'skill_badge'")
-    max_tolerance: int = Field(default=10, ge=0, le=64, description="Max Hamming distance threshold for authentic match")
-    aliases: List[str] = Field(default_factory=list, description="Associated search aliases / keywords")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional provenance metadata")
-    hash_captured_at: Optional[str] = Field(default=None, description="ISO-8601 UTC timestamp of hash capture")
-    recommended_refresh_after: Optional[str] = Field(default=None, description="ISO-8601 UTC timestamp when hash should be refreshed")
+    max_tolerance: int = Field(
+        default=10, ge=0, le=64, description="Max Hamming distance threshold for authentic match"
+    )
+    aliases: list[str] = Field(default_factory=list, description="Associated search aliases / keywords")
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional provenance metadata")
+    hash_captured_at: str | None = Field(default=None, description="ISO-8601 UTC timestamp of hash capture")
+    recommended_refresh_after: str | None = Field(
+        default=None, description="ISO-8601 UTC timestamp when hash should be refreshed"
+    )
 
 
 class BadgeMatchResult(BaseModel):
     """Result of querying target visual hashes against registered badges."""
+
     model_config = ConfigDict(extra="ignore")
 
     matched: bool = Field(..., description="True if target hash matches a registered badge within tolerance")
-    badge: Optional[BadgeRecord] = Field(default=None, description="Matched badge record if found")
+    badge: BadgeRecord | None = Field(default=None, description="Matched badge record if found")
     distance_phash: int = Field(default=64, ge=0, le=64, description="Hamming distance for pHash")
     distance_dhash: int = Field(default=64, ge=0, le=64, description="Hamming distance for dHash")
     min_distance: int = Field(default=64, ge=0, le=64, description="Minimum distance across evaluated hashes")
@@ -70,6 +78,7 @@ class BadgeMatchResult(BaseModel):
 # 2. Perceptual Hash Engine (PIL + NumPy + SciPy DCT)
 # ==============================================================================
 
+
 class PerceptualHashEngine:
     """
     Computes difference hash (dHash) and 2D DCT perceptual hash (pHash)
@@ -77,7 +86,7 @@ class PerceptualHashEngine:
     """
 
     @staticmethod
-    def _open_image(image_input: Union[str, Path, bytes, BinaryIO, Image.Image]) -> Image.Image:
+    def _open_image(image_input: str | Path | bytes | BinaryIO | Image.Image) -> Image.Image:
         """
         Safely loads an image into a PIL Image instance.
         Validates non-empty input and traps corrupt data.
@@ -130,7 +139,7 @@ class PerceptualHashEngine:
     @classmethod
     def compute_dhash(
         cls,
-        image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+        image_input: str | Path | bytes | BinaryIO | Image.Image,
         hash_size: int = 8,
     ) -> str:
         """
@@ -157,7 +166,7 @@ class PerceptualHashEngine:
     @classmethod
     def compute_phash(
         cls,
-        image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+        image_input: str | Path | bytes | BinaryIO | Image.Image,
         hash_size: int = 8,
         highfreq_factor: int = 4,
     ) -> str:
@@ -202,16 +211,16 @@ class PerceptualHashEngine:
     @classmethod
     def compute_hashes(
         cls,
-        image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+        image_input: str | Path | bytes | BinaryIO | Image.Image,
         hash_size: int = 8,
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         """Computes both dHash and pHash in one invocation, returning (dhash, phash)."""
         dhash = cls.compute_dhash(image_input, hash_size=hash_size)
         phash = cls.compute_phash(image_input, hash_size=hash_size)
         return dhash, phash
 
     @staticmethod
-    def hamming_distance(hash1: Union[str, int], hash2: Union[str, int]) -> int:
+    def hamming_distance(hash1: str | int, hash2: str | int) -> int:
         """
         Computes the bitwise Hamming distance (count of differing bits) between two hashes.
         Accepts 16-hex strings or 64-bit integers.
@@ -241,13 +250,13 @@ class PerceptualHashEngine:
         return xor_val.bit_count()
 
     @classmethod
-    def similarity(cls, hash1: Union[str, int], hash2: Union[str, int], total_bits: int = 64) -> float:
+    def similarity(cls, hash1: str | int, hash2: str | int, total_bits: int = 64) -> float:
         """Returns a normalized similarity score between 0.0 and 1.0 (1.0 = identical)."""
         dist = cls.hamming_distance(hash1, hash2)
         return max(0.0, min(1.0, 1.0 - (dist / total_bits)))
 
     @classmethod
-    def is_match(cls, hash1: Union[str, int], hash2: Union[str, int], max_distance: int = 10) -> bool:
+    def is_match(cls, hash1: str | int, hash2: str | int, max_distance: int = 10) -> bool:
         """Returns True if Hamming distance between two hashes is within max_distance."""
         return cls.hamming_distance(hash1, hash2) <= max_distance
 
@@ -256,7 +265,7 @@ class PerceptualHashEngine:
 # 3. Canonical Vendor Reference Badges Database
 # ==============================================================================
 
-DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
+DEFAULT_REFERENCE_BADGES: dict[str, dict[str, Any]] = {
     # 1. Microsoft Certified
     "microsoft_certified_voucher": {
         "badge_id": "microsoft_certified_voucher",
@@ -280,7 +289,6 @@ DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
         "aliases": ["microsoft", "azure", "retake", "exam_discount"],
         "metadata": {"source_screenshot": "microsoft-azure-azure-50-off-free-retake.png"},
     },
-
     # 2. Amazon Web Services (AWS) Certified
     "aws_certified_official": {
         "badge_id": "aws_certified_official",
@@ -304,7 +312,6 @@ DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
         "aliases": ["aws", "educate", "student_badge"],
         "metadata": {"source_screenshot": "aws-educate-badges.png"},
     },
-
     # 3. Google Cloud Certified
     "google_cloud_certified": {
         "badge_id": "google_cloud_certified",
@@ -328,7 +335,6 @@ DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
         "aliases": ["gcp", "skills_boost", "arcade"],
         "metadata": {"source_screenshot": "gcp-cloud-skills-boost.png"},
     },
-
     # 4. Oracle Certified
     "oracle_mylearn_certified": {
         "badge_id": "oracle_mylearn_certified",
@@ -352,7 +358,6 @@ DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
         "aliases": ["oracle", "oci", "genai", "ai_cert"],
         "metadata": {"source_screenshot": "oracle-oci-generative-ai-cert.png"},
     },
-
     # 5. Cisco Certified
     "cisco_netacad_cyberops": {
         "badge_id": "cisco_netacad_cyberops",
@@ -376,7 +381,6 @@ DEFAULT_REFERENCE_BADGES: Dict[str, Dict[str, Any]] = {
         "aliases": ["cisco", "rev_up", "recert", "continuing_education"],
         "metadata": {"source_screenshot": "cisco-rev-up-recert.png"},
     },
-
     # 6. Kubernetes CKA/CKAD (Linux Foundation / CNCF)
     "kubernetes_cka_ckad": {
         "badge_id": "kubernetes_cka_ckad",
@@ -411,15 +415,16 @@ for _badge_entry in DEFAULT_REFERENCE_BADGES.values():
 # 4. Badge Registry Implementation
 # ==============================================================================
 
+
 class BadgeRegistry:
     """
     Catalog and matching engine for authentic vendor emblems and certification badges.
     Supports in-memory storage, JSON disk persistence, and fuzzy Hamming distance lookup.
     """
 
-    def __init__(self, storage_path: Optional[Union[str, Path]] = None) -> None:
+    def __init__(self, storage_path: str | Path | None = None) -> None:
         self.storage_path = Path(storage_path) if storage_path else None
-        self._badges: Dict[str, BadgeRecord] = {}
+        self._badges: dict[str, BadgeRecord] = {}
         self._load_defaults()
         if self.storage_path and self.storage_path.exists():
             self.load_from_json(self.storage_path)
@@ -438,25 +443,25 @@ class BadgeRegistry:
             badge = BadgeRecord(**badge_data)
             self._badges[badge.badge_id] = badge
 
-    def register_badge(self, badge: Union[BadgeRecord, Dict[str, Any]]) -> BadgeRecord:
+    def register_badge(self, badge: BadgeRecord | dict[str, Any]) -> BadgeRecord:
         """Registers or updates a badge record in the catalog."""
         if isinstance(badge, dict):
             badge = BadgeRecord(**badge)
         self._badges[badge.badge_id] = badge
         return badge
 
-    def get_badge(self, badge_id: str) -> Optional[BadgeRecord]:
+    def get_badge(self, badge_id: str) -> BadgeRecord | None:
         """Retrieves a badge by its unique slug."""
         return self._badges.get(badge_id)
 
-    def list_badges(self, provider: Optional[str] = None) -> List[BadgeRecord]:
+    def list_badges(self, provider: str | None = None) -> list[BadgeRecord]:
         """Lists all registered badges, optionally filtered by provider."""
         if provider:
             p_clean = provider.strip().lower()
             return [b for b in self._badges.values() if p_clean in b.provider.lower()]
         return list(self._badges.values())
 
-    def list_vendors(self) -> List[str]:
+    def list_vendors(self) -> list[str]:
         """Returns unique sorted list of recognized providers."""
         return sorted(list({b.provider for b in self._badges.values()}))
 
@@ -468,10 +473,11 @@ class BadgeRegistry:
         if not badge.recommended_refresh_after:
             return True
         try:
-            from datetime import datetime, timezone
+            from datetime import datetime
+
             dt_str = badge.recommended_refresh_after.replace("Z", "+00:00")
             expiry = datetime.fromisoformat(dt_str)
-            now = datetime.now(timezone.utc)
+            now = datetime.now(UTC)
             if now > expiry:
                 logger.warning(
                     f"[BADGE HASH STALE] Reference badge '{badge.badge_id}' ({badge.badge_title}) "
@@ -482,7 +488,7 @@ class BadgeRegistry:
             logger.debug(f"Error checking freshness for badge '{badge.badge_id}': {e}")
         return True
 
-    def get_stale_badges(self) -> List[BadgeRecord]:
+    def get_stale_badges(self) -> list[BadgeRecord]:
         """Returns all registered badges whose hash has exceeded recommended_refresh_after."""
         return [b for b in self._badges.values() if not self.check_badge_freshness(b)]
 
@@ -491,8 +497,8 @@ class BadgeRegistry:
         target_hash: str,
         hash_type: str = "phash",
         max_distance: int = 10,
-        provider_filter: Optional[str] = None,
-    ) -> Optional[BadgeMatchResult]:
+        provider_filter: str | None = None,
+    ) -> BadgeMatchResult | None:
         """
         Finds the closest registered badge matching the target hash within max_distance.
         Returns BadgeMatchResult or None if no badge is within tolerance.
@@ -510,12 +516,12 @@ class BadgeRegistry:
         target_hash: str,
         hash_type: str = "phash",
         max_distance: int = 10,
-        provider_filter: Optional[str] = None,
-    ) -> List[BadgeMatchResult]:
+        provider_filter: str | None = None,
+    ) -> list[BadgeMatchResult]:
         """
         Returns all registered badges within max_distance sorted by ascending Hamming distance.
         """
-        results: List[BadgeMatchResult] = []
+        results: list[BadgeMatchResult] = []
         candidates = self.list_badges(provider=provider_filter)
 
         for badge in candidates:
@@ -532,7 +538,7 @@ class BadgeRegistry:
                 conf = PerceptualHashEngine.similarity(target_hash, ref_hash)
                 notes = (
                     f"Authentic {badge.provider} emblem verified: "
-                    f"'{badge.badge_title}' (Hamming distance {dist}/{tolerance}, {conf*100:.1f}% confidence)"
+                    f"'{badge.badge_title}' (Hamming distance {dist}/{tolerance}, {conf * 100:.1f}% confidence)"
                 )
                 results.append(
                     BadgeMatchResult(
@@ -552,9 +558,9 @@ class BadgeRegistry:
 
     def match_image(
         self,
-        image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+        image_input: str | Path | bytes | BinaryIO | Image.Image,
         max_distance: int = 10,
-        provider_filter: Optional[str] = None,
+        provider_filter: str | None = None,
     ) -> BadgeMatchResult:
         """
         Computes both dHash and pHash on the input image and evaluates against the badge registry.
@@ -635,7 +641,7 @@ class BadgeRegistry:
             ),
         )
 
-    def save_to_json(self, target_path: Optional[Union[str, Path]] = None) -> Path:
+    def save_to_json(self, target_path: str | Path | None = None) -> Path:
         """Serializes the badge catalog to a formatted JSON file."""
         dest = Path(target_path or self.storage_path or "data/reference_badges.json")
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -644,12 +650,12 @@ class BadgeRegistry:
             json.dump(serialized, f, indent=2, ensure_ascii=False)
         return dest
 
-    def load_from_json(self, source_path: Union[str, Path]) -> int:
+    def load_from_json(self, source_path: str | Path) -> int:
         """Loads and merges badges from a JSON file into the registry."""
         src = Path(source_path)
         if not src.exists():
             raise FileNotFoundError(f"Badge catalog file not found: {src}")
-        with open(src, "r", encoding="utf-8") as f:
+        with open(src, encoding="utf-8") as f:
             data = json.load(f)
         count = 0
         for badge_id, raw_record in data.items():
@@ -664,7 +670,8 @@ class BadgeRegistry:
 # 5. Global Singleton Accessors & Convenience Functions
 # ==============================================================================
 
-_GLOBAL_REGISTRY: Optional[BadgeRegistry] = None
+_GLOBAL_REGISTRY: BadgeRegistry | None = None
+
 
 def get_badge_registry() -> BadgeRegistry:
     """Returns the process-wide singleton BadgeRegistry instance."""
@@ -674,34 +681,34 @@ def get_badge_registry() -> BadgeRegistry:
     return _GLOBAL_REGISTRY
 
 
-def compute_dhash(image_input: Union[str, Path, bytes, BinaryIO, Image.Image], hash_size: int = 8) -> str:
+def compute_dhash(image_input: str | Path | bytes | BinaryIO | Image.Image, hash_size: int = 8) -> str:
     """Convenience helper to compute 64-bit dHash string."""
     return PerceptualHashEngine.compute_dhash(image_input, hash_size=hash_size)
 
 
-def compute_phash(image_input: Union[str, Path, bytes, BinaryIO, Image.Image], hash_size: int = 8) -> str:
+def compute_phash(image_input: str | Path | bytes | BinaryIO | Image.Image, hash_size: int = 8) -> str:
     """Convenience helper to compute 64-bit pHash string."""
     return PerceptualHashEngine.compute_phash(image_input, hash_size=hash_size)
 
 
-def hamming_distance(hash1: Union[str, int], hash2: Union[str, int]) -> int:
+def hamming_distance(hash1: str | int, hash2: str | int) -> int:
     """Convenience helper to compute bitwise Hamming distance."""
     return PerceptualHashEngine.hamming_distance(hash1, hash2)
 
 
 def match_badge(
-    image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+    image_input: str | Path | bytes | BinaryIO | Image.Image,
     max_distance: int = 10,
-    provider: Optional[str] = None,
+    provider: str | None = None,
 ) -> BadgeMatchResult:
     """Convenience helper to match an image against the global BadgeRegistry."""
     return get_badge_registry().match_image(image_input, max_distance=max_distance, provider_filter=provider)
 
 
 def match_badge_phash(
-    image_path: Optional[Union[str, Path]] = None,
-    image_bytes: Optional[bytes] = None,
-    platform: Optional[str] = None,
+    image_path: str | Path | None = None,
+    image_bytes: bytes | None = None,
+    platform: str | None = None,
     max_distance: int = 10,
 ) -> bool:
     """
@@ -719,7 +726,7 @@ def match_badge_phash(
 
 
 def is_blank_or_invalid_screenshot(
-    image_input: Union[str, Path, bytes, BinaryIO, Image.Image],
+    image_input: str | Path | bytes | BinaryIO | Image.Image,
     min_size_bytes: int = 6000,
     min_std_dev: float = 2.0,
     min_unique_colors: int = 4,
@@ -778,21 +785,18 @@ def is_blank_or_invalid_screenshot(
 
         # Check unique colors count
         colors = img.getcolors(maxcolors=16)
-        if colors is not None and len(colors) <= min_unique_colors:
-            return True
-
-        return False
+        return bool(colors is not None and len(colors) <= min_unique_colors)
     except Exception:
         return True
 
 
 def should_skip_screenshot_write(
-    new_image: Union[str, Path, bytes, BinaryIO, Image.Image],
-    existing_screenshot_path: Union[str, Path],
+    new_image: str | Path | bytes | BinaryIO | Image.Image,
+    existing_screenshot_path: str | Path,
     old_status: str,
     new_status: str,
     delta_threshold: float = 0.05,
-) -> Tuple[bool, float, int]:
+) -> tuple[bool, float, int]:
     """
     Evaluates whether writing a new screenshot to disk should be skipped via perceptual hash diffing.
 
@@ -846,4 +850,3 @@ def should_skip_screenshot_write(
     # 4. Threshold check: skip write only if delta is strictly below threshold
     should_skip = delta < delta_threshold
     return should_skip, delta, dist
-

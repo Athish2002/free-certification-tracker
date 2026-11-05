@@ -19,10 +19,12 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Dict, Any, List, Tuple, Optional, Union
+from typing import Any
 from urllib.parse import urlparse
+
+from pydantic import BaseModel, ConfigDict, Field
 
 logger = logging.getLogger("certpulse.truth_oracle")
 
@@ -38,23 +40,31 @@ POLICY_FREE_UNPROCTORED_BADGE = "free_unproctored_badge"
 POLICY_RETIRED_CREDENTIAL = "retired_credential"
 POLICY_EVENT_TIED_SCHOLARSHIP = "event_tied_scholarship"
 
-# Authoritative Curated Policy Overrides for tracked offers
-CURATED_POLICY_OVERRIDES: Dict[str, Dict[str, Any]] = {
-    # Tier 1: Proctored Exams
-    "isc2-one-million-cc": {
-        "provider": "ISC2",
-        "exam_name": "Certified in Cybersecurity (CC)",
-        "policy_type": POLICY_ANNUAL_WINDOW_CLOSED,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "ISC2 One Million CC Official Program",
-        "truth_source_url": "https://www.isc2.org/landing/1mcc",
-        "verdict_notes": "ISC2 1MCC enrollment reached 1M capacity and closed new enrollments May 20, 2026. Pre-enrolled candidates have until December 31, 2026 to take their free Pearson VUE proctored exam.",
-        "enforce_status": "Registrations Closed",
-        "zero_dollar_confirmed": False,
-        "valid_through_utc": "2026-12-31T23:59:59Z",
-        "review_due_utc": "2026-11-01T00:00:00Z",
-    },
+CURATED_POLICIES_PATH = Path(__file__).resolve().parent.parent / "data" / "curated_policies.json"
+
+
+class CuratedPolicyModel(BaseModel):
+    """Schema invariant model for authoritative vendor policy overrides."""
+
+    model_config = ConfigDict(extra="allow")
+
+    provider: str = Field(..., description="Certification vendor/provider")
+    exam_name: str = Field(..., description="Certification or exam title")
+    policy_type: str = Field(..., description="Truth policy classification enum")
+    real_exam_cost_usd: float = 0.0
+    verified_discount_pct: int | float = 100
+    truth_source_name: str | None = None
+    truth_source_url: str | None = None
+    verdict_notes: str | None = None
+    enforce_status: str | None = None
+    zero_dollar_confirmed: bool = True
+    valid_through_utc: str | None = None
+    review_due_utc: str | None = None
+    canonical_direct_url: str | None = None
+    is_historical_archive: bool = False
+
+
+_EMBEDDED_POLICY_FALLBACK: dict[str, dict[str, Any]] = {
     "oracle-oci-free-cert": {
         "provider": "Oracle Cloud",
         "exam_name": "OCI Foundations & Associate Certifications",
@@ -63,479 +73,56 @@ CURATED_POLICY_OVERRIDES: Dict[str, Dict[str, Any]] = {
         "verified_discount_pct": 100,
         "truth_source_name": "Oracle University MyLearn Portal",
         "truth_source_url": "https://mylearn.oracle.com/",
-        "verdict_notes": "Oracle University provides 100% free digital learning paths and embedded free proctored online exam attempts for OCI Foundations directly through Oracle MyLearn SSO.",
+        "verdict_notes": "Oracle University provides 100% free digital learning paths and embedded free proctored online exam attempts.",
         "enforce_status": "Active",
         "zero_dollar_confirmed": True,
         "canonical_direct_url": "https://www.oracle.com/education/certification/",
     },
-    "oracle-oci-generative-ai-cert": {
-        "provider": "Oracle Cloud",
-        "exam_name": "OCI Generative AI / Agentic AI Foundations Associate (1Z0-1157)",
-        "policy_type": POLICY_VERIFIED_100PCT_FREE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Oracle University AI Skilling Initiative",
-        "truth_source_url": "https://mylearn.oracle.com/",
-        "verdict_notes": "Oracle University offers free digital learning paths and free proctored exam attempts for OCI Generative AI & Agentic AI Foundations Associate on Oracle MyLearn.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-        "canonical_direct_url": "https://www.oracle.com/artificial-intelligence/generative-ai/",
-    },
-    "linux-foundation-lift": {
-        "provider": "Linux Foundation / CNCF",
-        "exam_name": "LiFT Scholarships (CKA, CKAD, LFCS)",
+    "isc2-one-million-cc": {
+        "provider": "ISC2",
+        "exam_name": "Certified in Cybersecurity (CC)",
         "policy_type": POLICY_ANNUAL_WINDOW_CLOSED,
         "real_exam_cost_usd": 0.0,
         "verified_discount_pct": 100,
-        "truth_source_name": "Linux Foundation LiFT Scholarships Policy",
-        "truth_source_url": "https://www.linuxfoundation.org/about/lift-scholarships",
-        "verdict_notes": "The Linux Foundation LiFT scholarship application window is strictly annual (April 1 to April 30). The 2026 cycle is officially closed. Next application window opens April 2027.",
+        "truth_source_name": "ISC2 One Million CC Official Program",
+        "truth_source_url": "https://www.isc2.org/landing/1mcc",
+        "verdict_notes": "ISC2 1MCC enrollment reached capacity and closed new enrollments. Pre-enrolled candidates have until December 31, 2026.",
         "enforce_status": "Registrations Closed",
         "zero_dollar_confirmed": False,
-    },
-    "juniper-open-learning": {
-        "provider": "Juniper Networks",
-        "exam_name": "JNCIA Associate Certifications (JN0-104, Cloud, SEC)",
-        "policy_type": POLICY_PARTIAL_DISCOUNT_COPAY,
-        "real_exam_cost_usd": 50.0,
-        "verified_discount_pct": 75,
-        "truth_source_name": "Juniper Open Learning Voucher Policy",
-        "truth_source_url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478",
-        "verdict_notes": "Juniper Open Learning provides a 75% discount exam voucher upon scoring 70%+ on the Voucher Assessment Test. Candidate must pay ~$50 USD at Pearson VUE checkout. It is NOT a 100% free ($0.00) voucher.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-        "cart_balance_clarification": "$0.00 (75% Official Discount Applied - $50 Pearson VUE Co-Pay)",
-    },
-    "github-foundations-cert-wave": {
-        "provider": "GitHub",
-        "exam_name": "GitHub Foundations (GH-101 / GH-900)",
-        "policy_type": POLICY_STUDENT_VERIFIED_ONLY,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "GitHub Student Developer Pack & DataCamp Integration",
-        "truth_source_url": "https://education.github.com/pack",
-        "verdict_notes": "100% free $99 exam voucher is available exclusively to verified students via the GitHub Student Developer Pack and DataCamp track completion. General public pays $99.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-        "eligibility_clarification": "Verified Students (GitHub Student Developer Pack)",
-    },
-    "github-student-foundations": {
-        "provider": "GitHub",
-        "exam_name": "GitHub Foundations via Student Pack",
-        "policy_type": POLICY_STUDENT_VERIFIED_ONLY,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "GitHub Education Student Pack",
-        "truth_source_url": "https://education.github.com/pack",
-        "verdict_notes": "Dedicated student portal tile for GitHub Foundations 100% free exam vouchers. Requires verified academic email or student enrollment proof.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "hashicorp-terraform-associate-community": {
-        "provider": "HashiCorp",
-        "exam_name": "Terraform Associate (003)",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 70.50,
-        "verified_discount_pct": 0,
-        "truth_source_name": "HashiCorp Official Certification Program",
-        "truth_source_url": "https://developer.hashicorp.com/certifications/terraform-associate",
-        "verdict_notes": "HashiCorp standard exam fee is $70.50 USD. HashiCorp does not offer evergreen open free vouchers; free seats occur strictly during HashiConf or partner training webinars. Community wave concluded.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "mongodb-developer-cert": {
-        "provider": "MongoDB",
-        "exam_name": "MongoDB Associate Developer Exam",
-        "policy_type": POLICY_STUDENT_VERIFIED_ONLY,
-        "real_exam_cost_usd": 150.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "MongoDB Learn Portal & GitHub Student Pack",
-        "truth_source_url": "https://learn.mongodb.com/pages/certification",
-        "verdict_notes": "MongoDB offers official developer certification paths and 100% free exam vouchers to verified students through GitHub Student Developer Pack on learn.mongodb.com.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-        "canonical_direct_url": "https://learn.mongodb.com/pages/certification",
-    },
-    "salesforce-trailhead-quests": {
-        "provider": "Salesforce",
-        "exam_name": "Salesforce Trailhead Quests Voucher Sweepstakes",
-        "policy_type": POLICY_PROMOTIONAL_SWEEPSTAKES,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Salesforce Trailhead Quests Program",
-        "truth_source_url": "https://trailhead.salesforce.com/quests",
-        "verdict_notes": "Monthly sweepstakes where completing specified Trailhead trails grants raffle entry to win a $200-$400 certification exam voucher. Not a guaranteed voucher for all participants.",
-        "enforce_status": "Review Needed",
-        "zero_dollar_confirmed": False,
-    },
-    "cncf-dan-kohn-scholarship": {
-        "provider": "Linux Foundation / CNCF",
-        "exam_name": "Dan Kohn Diversity & Inclusion Scholarships (CKA/CKAD/KCNA)",
-        "policy_type": POLICY_EVENT_TIED_SCHOLARSHIP,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "CNCF Scholarships Program",
-        "truth_source_url": "https://www.cncf.io/scholarships/",
-        "verdict_notes": "CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines. Active landing page at cncf.io/scholarships.",
-        "enforce_status": "Registrations Closed",
-        "zero_dollar_confirmed": False,
-        "canonical_direct_url": "https://www.cncf.io/scholarships/",
-    },
-
-    # Tier 2: Skill Badges, Hands-on Labs & Continuing Education
-    "cisco-rev-up-recert": {
-        "provider": "Cisco",
-        "exam_name": "Cisco U. Rev Up to Recert (Free CE Credits)",
-        "policy_type": POLICY_CE_RECERTIFICATION_CREDITS,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Cisco Learning Network Community",
-        "truth_source_url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community",
-        "verdict_notes": "Cisco Rev Up to Recert awards free Continuing Education (CE) credits to recertify active CCNA, CCNP, and CCIE credentials without paying for written Pearson VUE exams. Not a new exam voucher.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "ms-applied-skills": {
-        "provider": "Microsoft Azure",
-        "exam_name": "Microsoft Applied Skills Credentials",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Microsoft Learn Credentials Registry",
-        "truth_source_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/",
-        "verdict_notes": "Free unproctored interactive scenario-based lab credentials verified on Microsoft Learn. Distinct from paid proctored Microsoft Certifications (AZ-900/AZ-104).",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "gcp-cloud-skills-boost": {
-        "provider": "Google Cloud",
-        "exam_name": "Google Cloud Innovators & Skills Boost Badges",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Google Cloud Innovators Program",
-        "truth_source_url": "https://cloud.google.com/innovators",
-        "verdict_notes": "Free hands-on lab quests and digital skill badges via Google Cloud Skills Boost. Formal proctored ACE and PCA certification exams require separate paid Webassessor registration.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "snowflake-hands-on-essentials": {
-        "provider": "Snowflake",
-        "exam_name": "Snowflake Hands-on Essentials Digital Badges",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Snowflake Learn Essentials Track",
-        "truth_source_url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
-        "verdict_notes": "Free interactive Snowflake workshop track with Accredible verified digital badges. SnowPro Core proctored exam is $175 Pearson VUE.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "postman-api-expert": {
-        "provider": "Postman",
-        "exam_name": "Postman API Fundamentals Student Expert",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Postman Academy Student Programs",
-        "truth_source_url": "https://academy.postman.com/",
-        "verdict_notes": "Free verified digital credential awarded upon passing the API Fundamentals assessment on Postman Academy.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "qualys-certified-specialist": {
-        "provider": "Qualys",
-        "exam_name": "Qualys Certified Specialist (VMDR, Policy Compliance, EDR)",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Qualys Training Official Portal",
-        "truth_source_url": "https://www.qualys.com/training",
-        "verdict_notes": "100% free official self-paced courses and online exams hosted directly on Qualys Training portal with free verifiable certificates.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "databricks-genai-fundamentals": {
-        "provider": "Databricks",
-        "exam_name": "Generative AI Fundamentals Accreditation",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Databricks Academy Accreditations",
-        "truth_source_url": "https://www.databricks.com/learn/training/certification",
-        "verdict_notes": "Free online training and accreditation quiz on Databricks Academy awarding verifiable digital badge.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "fortinet-cybersecurity-fundamentals": {
-        "provider": "Fortinet",
-        "exam_name": "Fortinet Certified Fundamentals (FCF) in Cybersecurity",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Fortinet Training Institute",
-        "truth_source_url": "https://training.fortinet.com/",
-        "verdict_notes": "Free digital cybersecurity fundamentals (FCF) training and verified digital badges via Fortinet Training Institute.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-        "canonical_direct_url": "https://training.fortinet.com/",
-    },
-    "aws-educate-badges": {
-        "provider": "Amazon Web Services",
-        "exam_name": "AWS Educate Badges & Hands-on Labs",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "AWS Educate Program",
-        "truth_source_url": "https://aws.amazon.com/education/awseducate/",
-        "verdict_notes": "Free hands-on cloud labs and Credly badges for learners. AWS formal certification exams (CLF-C02, SAA-C03) require paid Pearson VUE registration.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "redhat-skills-assessment-rhel": {
-        "provider": "Red Hat",
-        "exam_name": "Red Hat Enterprise Linux & OpenShift Accreditations",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Red Hat Developer Program",
-        "truth_source_url": "https://developers.redhat.com/",
-        "verdict_notes": "Free developer subscription, hands-on tutorials, and skills assessment badges. Formal RHCSA / RHCE practical exams cost $400 USD.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "paloalto-pccet-cybersecurity": {
-        "provider": "Palo Alto Networks",
-        "exam_name": "PCCET Cybersecurity Entry-Level Technician",
-        "policy_type": POLICY_RETIRED_CREDENTIAL,
-        "real_exam_cost_usd": 110.0,
-        "verified_discount_pct": 0,
-        "truth_source_name": "Palo Alto Networks Beacon",
-        "truth_source_url": "https://learn.paloaltonetworks.com/learn",
-        "verdict_notes": "PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, Pearson VUE proctored exam retired.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-    },
-    "gitlab-certified-associate": {
-        "provider": "GitLab",
-        "exam_name": "GitLab Certified Associate",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "GitLab University",
-        "truth_source_url": "https://university.gitlab.com/",
-        "verdict_notes": "Free self-paced training courses and verifiable completion certificates on GitLab University.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "splunk-certified-defense-analyst": {
-        "provider": "Splunk",
-        "exam_name": "Splunk Lantern Observability & Defense Specialist",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Splunk Lantern & Training",
-        "truth_source_url": "https://lantern.splunk.com/",
-        "verdict_notes": "Free self-paced learning paths and knowledge assessments on Splunk Lantern. Formal Pearson VUE exams are $130 USD.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "ibm-skillsbuild-cybersecurity": {
-        "provider": "IBM",
-        "exam_name": "IBM SkillsBuild Cybersecurity & AI Fundamentals",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "IBM SkillsBuild Global Initiative",
-        "truth_source_url": "https://skillsbuild.org/",
-        "verdict_notes": "100% free global education program providing digital learning and Credly-backed verified credentials.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "databricks-lakehouse-fundamentals": {
-        "provider": "Databricks",
-        "exam_name": "Lakehouse Fundamentals Accreditation",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Databricks Academy",
-        "truth_source_url": "https://www.databricks.com/learn/training/certification",
-        "verdict_notes": "Free self-paced accreditation on Databricks Academy with verifiable digital badge.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-    "cisco-netacad-cyberops": {
-        "provider": "Cisco",
-        "exam_name": "NetAcad Junior Cybersecurity Analyst & CyberOps",
-        "policy_type": POLICY_FREE_UNPROCTORED_BADGE,
-        "real_exam_cost_usd": 0.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Cisco Networking Academy",
-        "truth_source_url": "https://www.netacad.com/",
-        "verdict_notes": "Free interactive course and digital credential on Cisco NetAcad / Skills for All.",
-        "enforce_status": "Active",
-        "zero_dollar_confirmed": True,
-    },
-
-    # Historical Wave Archives
-    "hist-msft-build-2024": {
-        "provider": "Microsoft Azure",
-        "exam_name": "Microsoft Build 2024 Cloud Skills Challenge",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 165.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Microsoft Build Cloud Skills Challenge",
-        "truth_source_url": "https://learn.microsoft.com/en-us/training/challenges",
-        "verdict_notes": "Concluded June 2024. Eligible challenge completers received 100% free Pearson VUE exam vouchers.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-msft-ignite-2023": {
-        "provider": "Microsoft Azure",
-        "exam_name": "Microsoft Ignite 2023 Challenge",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 165.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Microsoft Ignite Challenge",
-        "truth_source_url": "https://learn.microsoft.com/en-us/training/challenges",
-        "verdict_notes": "Concluded January 2024. Vouchers were redeemable for AZ-104, AZ-204, MS-102.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-oracle-race-cert-2024": {
-        "provider": "Oracle Cloud",
-        "exam_name": "Oracle Race to Certification 2024",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 245.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Oracle University Race to Certification",
-        "truth_source_url": "https://education.oracle.com/oracle-cloud-infrastructure",
-        "verdict_notes": "Concluded July 2024. Two free exam attempts were provided for associate & professional levels.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-cisco-rev-up-devnae": {
-        "provider": "Cisco",
-        "exam_name": "Rev Up to Recert: Enterprise Network Automation (DevNet)",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 300.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Cisco U. Learning",
-        "truth_source_url": "https://u.cisco.com/",
-        "verdict_notes": "Concluded wave awarding 16 CE credits upon course completion.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-aws-ai-practitioner-early": {
-        "provider": "Amazon Web Services",
-        "exam_name": "AWS Certified AI Practitioner (AIF-C01) Beta Promo",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 100.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "AWS Training & Certification",
-        "truth_source_url": "https://aws.amazon.com/certification/certified-ai-practitioner/",
-        "verdict_notes": "Concluded beta registration wave for early AI practitioner candidates.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-gcp-ace-challenge": {
-        "provider": "Google Cloud",
-        "exam_name": "Google Cloud Associate Cloud Engineer Challenge",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 125.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Google Cloud Skills Boost",
-        "truth_source_url": "https://www.cloudskillsboost.google/",
-        "verdict_notes": "Concluded challenge providing free Webassessor exam seats to top finishers.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-databricks-genai-2024": {
-        "provider": "Databricks",
-        "exam_name": "Databricks Generative AI Wave 2024",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 75.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Databricks Academy",
-        "truth_source_url": "https://www.databricks.com/learn/training/certification",
-        "verdict_notes": "Concluded introductory accreditation campaign.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-github-universe-2024": {
-        "provider": "GitHub",
-        "exam_name": "GitHub Universe 2024 Certification Wave",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 99.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "GitHub Universe Official",
-        "truth_source_url": "https://githubuniverse.com/",
-        "verdict_notes": "Concluded conference wave providing free exam codes to virtual attendees.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-redhat-summit-2024": {
-        "provider": "Red Hat",
-        "exam_name": "Red Hat Summit 2024: Free EX200 / RHCSA Certification Promo",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 400.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Red Hat Summit Official",
-        "truth_source_url": "https://developers.redhat.com/",
-        "verdict_notes": "Concluded May 2024. In-person and virtual summit promo codes expired.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-terraform-challenge-2023": {
-        "provider": "HashiCorp",
-        "exam_name": "HashiCorp Cloud Engineer Challenge: Free Terraform Voucher",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 70.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "HashiCorp Developer Hub",
-        "truth_source_url": "https://developer.hashicorp.com/",
-        "verdict_notes": "Concluded 2023 challenge wave providing free Kryterion voucher codes.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-paloalto-ignite-2023": {
-        "provider": "Palo Alto Networks",
-        "exam_name": "Palo Alto Networks Ignite: PCNSA Free In-Person Exam Wave",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 175.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Palo Alto Networks Ignite",
-        "truth_source_url": "https://learn.paloaltonetworks.com/learn",
-        "verdict_notes": "Concluded December 2023 onsite testing room wave.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
-    },
-    "hist-splunk-conf-2024": {
-        "provider": "Splunk",
-        "exam_name": ".conf24 Free Splunk Core Certified User / Power User Exams",
-        "policy_type": POLICY_HISTORICAL_EVENT_WAVE,
-        "real_exam_cost_usd": 130.0,
-        "verified_discount_pct": 100,
-        "truth_source_name": "Splunk .conf24 Official",
-        "truth_source_url": "https://lantern.splunk.com/",
-        "verdict_notes": "Concluded June 2024. Exam voucher codes expired August 2024.",
-        "enforce_status": "Expired",
-        "zero_dollar_confirmed": False,
-        "is_historical_archive": True,
+        "valid_through_utc": "2026-12-31T23:59:59Z",
+        "review_due_utc": "2026-11-01T00:00:00Z",
     },
 }
+
+
+def load_curated_policies() -> dict[str, dict[str, Any]]:
+    """
+    Loads authoritative curated policy overrides from data/curated_policies.json
+    with Pydantic validation and defensive embedded fallback.
+    """
+    if CURATED_POLICIES_PATH.exists():
+        try:
+            with open(CURATED_POLICIES_PATH, encoding="utf-8") as f:
+                raw_data = json.load(f)
+            if isinstance(raw_data, dict):
+                validated: dict[str, dict[str, Any]] = {}
+                for k, v in raw_data.items():
+                    try:
+                        model = CuratedPolicyModel.model_validate(v)
+                        validated[k] = model.model_dump(exclude_unset=False)
+                    except Exception as val_err:
+                        logger.warning("Curated policy validation warning for '%s': %s", k, val_err)
+                        if isinstance(v, dict):
+                            validated[k] = v
+                return validated
+        except (OSError, json.JSONDecodeError) as e:
+            logger.warning("Failed loading %s: %s. Using embedded fallback.", CURATED_POLICIES_PATH, e)
+    return dict(_EMBEDDED_POLICY_FALLBACK)
+
+
+# Authoritative Curated Policy Overrides for tracked offers (loaded from decoupled JSON)
+CURATED_POLICY_OVERRIDES: dict[str, dict[str, Any]] = load_curated_policies()
+
 
 for _policy_key, _policy_entry in CURATED_POLICY_OVERRIDES.items():
     if _policy_entry.get("is_historical_archive") or _policy_entry.get("policy_type") == POLICY_HISTORICAL_EVENT_WAVE:
@@ -549,7 +136,7 @@ for _policy_key, _policy_entry in CURATED_POLICY_OVERRIDES.items():
         _policy_entry.setdefault("review_due_utc", "2026-11-01T00:00:00Z")
 
 
-def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
+def derive_truth_policy(offer: dict[str, Any]) -> dict[str, Any]:
     """
     Derives truth policy dictionary dynamically from offer metadata.
     Extracts official URL, terms URL, domain, authority rules, category,
@@ -595,7 +182,9 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
         "zero_dollar_expected": bool(visual_proof.get("zero_dollar_confirmed", True)),
         "proctoring_type": offer.get("proctoring_type", "unproctored"),
         "credential_tier": credential_tier,
-        "cart_balance_pattern": offer.get("cart_balance_verified", redemption_guide.get("verified_cart_balance", "$0.00")),
+        "cart_balance_pattern": offer.get(
+            "cart_balance_verified", redemption_guide.get("verified_cart_balance", "$0.00")
+        ),
         "eligibility": offer.get("eligibility", "Global"),
     }
 
@@ -612,7 +201,10 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
         policy_type = POLICY_HISTORICAL_EVENT_WAVE
     elif status == "Registrations Closed" or "annual" in str(offer.get("seasonality", "")).lower():
         policy_type = POLICY_ANNUAL_WINDOW_CLOSED
-    elif "co-pay" in str(offer.get("cart_balance_verified", "")).lower() or "copay" in str(offer.get("cart_balance_verified", "")).lower():
+    elif (
+        "co-pay" in str(offer.get("cart_balance_verified", "")).lower()
+        or "copay" in str(offer.get("cart_balance_verified", "")).lower()
+    ):
         policy_type = POLICY_PARTIAL_DISCOUNT_COPAY
     elif "student" in str(offer.get("eligibility", "")).lower() or "student" in oid.lower():
         policy_type = POLICY_STUDENT_VERIFIED_ONLY
@@ -624,7 +216,10 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
         policy_type = POLICY_CE_RECERTIFICATION_CREDITS
     elif is_proctored:
         policy_type = POLICY_VERIFIED_100PCT_FREE
-    elif credential_tier in ("skill_badge_lab", "unproctored_lab") or offer.get("proctoring_type") in ("skill_badge_lab", "unproctored_lab"):
+    elif credential_tier in ("skill_badge_lab", "unproctored_lab") or offer.get("proctoring_type") in (
+        "skill_badge_lab",
+        "unproctored_lab",
+    ):
         policy_type = "skill_badge_lab"
     else:
         policy_type = POLICY_FREE_UNPROCTORED_BADGE
@@ -671,7 +266,11 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
     truth_source_url = (
         override.get("truth_source_url")
         or tv.get("truth_source_url")
-        or (official_url if official_url.startswith("https://") else (f"https://{domain}" if domain else "https://certpulse.org/truth"))
+        or (
+            official_url
+            if official_url.startswith("https://")
+            else (f"https://{domain}" if domain else "https://certpulse.org/truth")
+        )
     )
 
     # Verdict notes
@@ -683,11 +282,10 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
 
     enforce_status = override.get("enforce_status", status)
     zero_dollar_confirmed = override.get(
-        "zero_dollar_confirmed",
-        policy_type in [POLICY_VERIFIED_100PCT_FREE, POLICY_FREE_UNPROCTORED_BADGE]
+        "zero_dollar_confirmed", policy_type in [POLICY_VERIFIED_100PCT_FREE, POLICY_FREE_UNPROCTORED_BADGE]
     )
 
-    policy: Dict[str, Any] = {
+    policy: dict[str, Any] = {
         "provider": provider,
         "exam_name": exam_name,
         "policy_type": policy_type,
@@ -708,7 +306,14 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     # Propagate special override keys if present
-    for k in ["cart_balance_clarification", "eligibility_clarification", "canonical_direct_url", "is_historical_archive", "valid_through_utc", "review_due_utc"]:
+    for k in [
+        "cart_balance_clarification",
+        "eligibility_clarification",
+        "canonical_direct_url",
+        "is_historical_archive",
+        "valid_through_utc",
+        "review_due_utc",
+    ]:
         if k in override:
             policy[k] = override[k]
         elif k in offer:
@@ -717,12 +322,12 @@ def derive_truth_policy(offer: Dict[str, Any]) -> Dict[str, Any]:
     return policy
 
 
-def build_dynamic_policy_registry(offers_file: Optional[Union[str, Path]] = None) -> Dict[str, Any]:
+def build_dynamic_policy_registry(offers_file: str | Path | None = None) -> dict[str, Any]:
     """
     Dynamically constructs the Truth Policy Registry from data/offers.json,
     corroborating against authoritative metadata and curated ground truth overrides.
     """
-    registry: Dict[str, Dict[str, Any]] = {}
+    registry: dict[str, dict[str, Any]] = {}
 
     # 1. Determine offers file path
     target_path = Path(offers_file) if offers_file else Path(__file__).resolve().parent.parent / "data" / "offers.json"
@@ -730,7 +335,7 @@ def build_dynamic_policy_registry(offers_file: Optional[Union[str, Path]] = None
     # 2. Load offers and dynamically derive policies
     if target_path.exists():
         try:
-            with open(target_path, "r", encoding="utf-8") as f:
+            with open(target_path, encoding="utf-8") as f:
                 data = json.load(f)
             offers = data.get("offers", [])
             for offer in offers:
@@ -749,10 +354,10 @@ def build_dynamic_policy_registry(offers_file: Optional[Union[str, Path]] = None
 
 
 # Backward compatibility: dynamically initialize registry upon module load
-TRUTH_POLICY_REGISTRY: Dict[str, Dict[str, Any]] = build_dynamic_policy_registry()
+TRUTH_POLICY_REGISTRY: dict[str, dict[str, Any]] = build_dynamic_policy_registry()
 
 
-def get_truth_policy(offer_id: str, offer: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def get_truth_policy(offer_id: str, offer: dict[str, Any] | None = None) -> dict[str, Any]:
     """
     Retrieves truth policy from dynamic registry, falling back to dynamic derivation.
     """
@@ -776,12 +381,12 @@ def get_truth_policy(offer_id: str, offer: Optional[Dict[str, Any]] = None) -> D
     }
 
 
-def register_truth_policy(offer_id: str, policy: Dict[str, Any]) -> None:
+def register_truth_policy(offer_id: str, policy: dict[str, Any]) -> None:
     """Explicitly registers or updates a ground-truth policy entry in TRUTH_POLICY_REGISTRY."""
     TRUTH_POLICY_REGISTRY[offer_id] = policy
 
 
-def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
+def corroborate_offer(offer: dict[str, Any]) -> dict[str, Any]:
     """
     Corroborates a single offer against the authoritative Truth Policy Registry.
     Attaches truth_verification payload and rectifies misleading statuses, copay terms,
@@ -789,12 +394,12 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
     """
     oid = offer.get("id", "")
     policy_entry = TRUTH_POLICY_REGISTRY.get(oid) or CURATED_POLICY_OVERRIDES.get(oid) or derive_truth_policy(offer)
-    now_iso = datetime.now(timezone.utc).isoformat()
+    now_iso = datetime.now(UTC).isoformat()
 
     if not policy_entry:
         # Fallback for unknown / incoming offers
         is_proctored = offer.get("credential_tier") == "proctored_exam"
-        val = float(offer.get("value_usd") or 0.0)
+        float(offer.get("value_usd") or 0.0)
         return {
             "policy_type": POLICY_VERIFIED_100PCT_FREE if is_proctored else POLICY_FREE_UNPROCTORED_BADGE,
             "real_exam_cost_usd": 0.0,
@@ -822,7 +427,7 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
     if valid_through_str:
         try:
             vt_dt = datetime.fromisoformat(valid_through_str.replace("Z", "+00:00"))
-            if datetime.now(timezone.utc) > vt_dt:
+            if datetime.now(UTC) > vt_dt:
                 is_stale_policy = True
                 logger.warning(
                     f"[TRUTH ORACLE STALE OVERRIDE] Policy override for '{oid}' has expired "
@@ -845,7 +450,9 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
         cart_bal = offer.get("cart_balance_verified", "")
         if "100% Free" in cart_bal and "Co-Pay" not in cart_bal and "$50" not in cart_bal:
             is_misleading = True
-            misleading_reasons.append(f"Claimed 100% Free while official policy requires ${real_cost:.2f} candidate fee")
+            misleading_reasons.append(
+                f"Claimed 100% Free while official policy requires ${real_cost:.2f} candidate fee"
+            )
 
     # 3. Misleading Active status for historical event wave
     if policy_type == POLICY_HISTORICAL_EVENT_WAVE and offer.get("status") == "Active":
@@ -874,16 +481,15 @@ def corroborate_offer(offer: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def audit_and_enrich_offers(
-    offers: List[Dict[str, Any]],
-    strict_enforcement: bool = True
-) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    offers: list[dict[str, Any]], strict_enforcement: bool = True
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """
     Audits every offer against online truth sources, attaches the truth_verification payload,
     and if strict_enforcement is True, auto-corrects misleading representations.
     """
-    enriched: List[Dict[str, Any]] = []
+    enriched: list[dict[str, Any]] = []
     corrections_applied = 0
-    policy_counts: Dict[str, int] = {}
+    policy_counts: dict[str, int] = {}
 
     for raw_offer in offers:
         offer = dict(raw_offer)
@@ -966,7 +572,7 @@ def audit_and_enrich_offers(
     return enriched, summary
 
 
-def verify_truth_invariants(offers: List[Dict[str, Any]]) -> List[str]:
+def verify_truth_invariants(offers: list[dict[str, Any]]) -> list[str]:
     """
     Rigorously validates that no offer in the provided collection violates truth invariants:
     1. Zero deceptive $0.00 claims on partial discount programs.
@@ -975,7 +581,7 @@ def verify_truth_invariants(offers: List[Dict[str, Any]]) -> List[str]:
     4. Every offer must have an authoritative truth_verification payload.
     5. No unproctored lab badge is classified as a proctored exam.
     """
-    violations: List[str] = []
+    violations: list[str] = []
 
     for offer in offers:
         oid = offer.get("id", "")
@@ -1001,7 +607,9 @@ def verify_truth_invariants(offers: List[Dict[str, Any]]) -> List[str]:
         if ptype == POLICY_PARTIAL_DISCOUNT_COPAY and real_cost > 0.0:
             cart_bal = offer.get("cart_balance_verified", "")
             if "Co-Pay" not in cart_bal and "$50" not in cart_bal:
-                violations.append(f"Deceptive: Offer {oid} requires ${real_cost:.2f} fee but cart_balance does not disclose copay")
+                violations.append(
+                    f"Deceptive: Offer {oid} requires ${real_cost:.2f} fee but cart_balance does not disclose copay"
+                )
 
         # Invariant 4: Truth source URL must be valid HTTPS
         ts_url = tv.get("truth_source_url", "")

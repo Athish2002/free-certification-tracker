@@ -11,19 +11,19 @@ cookie consent storage presets (< 50ms), and computes continuous Proof Quality S
 
 from __future__ import annotations
 
-import re
 import ipaddress
 import logging
-from enum import Enum
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from enum import StrEnum
+from typing import Any
 from urllib.parse import urlparse
-from typing import Dict, Any, List, Tuple, Optional
 
 logger = logging.getLogger("certpulse.adaptive_verifier")
 
 
-class PlatformCluster(str, Enum):
+class PlatformCluster(StrEnum):
     """The 4 canonical enterprise platform verification clusters."""
+
     CLUSTER_A_LMS = "Cluster A: Enterprise LMS Portal"
     CLUSTER_B_SCHOLARSHIP = "Cluster B: Time-Bounded Scholarship"
     CLUSTER_C_CE_COMMUNITY = "Cluster C: CE Recertification Community"
@@ -33,18 +33,20 @@ class PlatformCluster(str, Enum):
 @dataclass(frozen=True)
 class ClusterProfile:
     """Operational verification profile tailored to a platform cluster."""
+
     cluster: PlatformCluster
     code: str
     name: str
     primary_gatekeeper: str
     wait_condition: str
-    target_selectors: List[str]
+    target_selectors: list[str]
     assertion_focus: str
 
 
 @dataclass(frozen=True)
 class DualPhaseTargets:
     """Resolved verification URLs separating deep curriculum proof from authority root."""
+
     deep_claim_url: str
     authority_root_url: str
     primary_nav_target: str
@@ -55,6 +57,7 @@ class DualPhaseTargets:
 @dataclass(frozen=True)
 class PQSResult:
     """Proof Quality Scoring (PQS 0-100) confidence assessment."""
+
     score: float
     tier: str  # HIGH_CONFIDENCE_VERIFIED, MODERATE_CONFIDENCE_SSO_GATE, LOW_CONFIDENCE_REVIEW_NEEDED
     url_score: float
@@ -67,6 +70,7 @@ class PQSResult:
 @dataclass(frozen=True)
 class SecurityValidationResult:
     """SSRF and URI safety verification result."""
+
     is_safe: bool
     reason: str
     normalized_url: str
@@ -74,14 +78,14 @@ class SecurityValidationResult:
 
 # Private IP network ranges to reject for SSRF defense
 _BLOCKED_NETWORKS = [
-    ipaddress.ip_network("127.0.0.0/8"),      # Loopback
-    ipaddress.ip_network("10.0.0.0/8"),       # RFC 1918 Private
-    ipaddress.ip_network("172.16.0.0/12"),    # RFC 1918 Private
-    ipaddress.ip_network("192.168.0.0/16"),   # RFC 1918 Private
-    ipaddress.ip_network("169.254.0.0/16"),   # Link-Local / AWS Metadata
-    ipaddress.ip_network("::1/128"),          # IPv6 Loopback
-    ipaddress.ip_network("fc00::/7"),         # IPv6 Unique Local
-    ipaddress.ip_network("fe80::/10"),        # IPv6 Link-Local
+    ipaddress.ip_network("127.0.0.0/8"),  # Loopback
+    ipaddress.ip_network("10.0.0.0/8"),  # RFC 1918 Private
+    ipaddress.ip_network("172.16.0.0/12"),  # RFC 1918 Private
+    ipaddress.ip_network("192.168.0.0/16"),  # RFC 1918 Private
+    ipaddress.ip_network("169.254.0.0/16"),  # Link-Local / AWS Metadata
+    ipaddress.ip_network("::1/128"),  # IPv6 Loopback
+    ipaddress.ip_network("fc00::/7"),  # IPv6 Unique Local
+    ipaddress.ip_network("fe80::/10"),  # IPv6 Link-Local
 ]
 
 # Blacklisted generic catalog root paths that indicate a downgraded redirect
@@ -117,11 +121,17 @@ def validate_target_url(url: str, allow_local_file: bool = True) -> SecurityVali
     # Allow local file fixtures for test suites
     if parsed.scheme == "file":
         if allow_local_file:
-            return SecurityValidationResult(is_safe=True, reason="Local file fixture permitted", normalized_url=url_clean)
-        return SecurityValidationResult(is_safe=False, reason="File scheme disallowed in live environment", normalized_url=url_clean)
+            return SecurityValidationResult(
+                is_safe=True, reason="Local file fixture permitted", normalized_url=url_clean
+            )
+        return SecurityValidationResult(
+            is_safe=False, reason="File scheme disallowed in live environment", normalized_url=url_clean
+        )
 
     if parsed.scheme not in ("http", "https"):
-        return SecurityValidationResult(is_safe=False, reason=f"Unsupported or dangerous scheme: {parsed.scheme}", normalized_url=url_clean)
+        return SecurityValidationResult(
+            is_safe=False, reason=f"Unsupported or dangerous scheme: {parsed.scheme}", normalized_url=url_clean
+        )
 
     hostname = parsed.hostname
     if not hostname:
@@ -129,14 +139,20 @@ def validate_target_url(url: str, allow_local_file: bool = True) -> SecurityVali
 
     # Check for localhost / loopback aliases
     if hostname.lower() in ("localhost", "127.0.0.1", "::1", "metadata.google.internal", "169.254.169.254"):
-        return SecurityValidationResult(is_safe=False, reason=f"Access to internal host '{hostname}' is blocked (SSRF defense)", normalized_url=url_clean)
+        return SecurityValidationResult(
+            is_safe=False,
+            reason=f"Access to internal host '{hostname}' is blocked (SSRF defense)",
+            normalized_url=url_clean,
+        )
 
     # Try resolving if hostname is raw IP
     try:
         ip = ipaddress.ip_address(hostname)
         for net in _BLOCKED_NETWORKS:
             if ip in net:
-                return SecurityValidationResult(is_safe=False, reason=f"Access to private IP range {net} is blocked", normalized_url=url_clean)
+                return SecurityValidationResult(
+                    is_safe=False, reason=f"Access to private IP range {net} is blocked", normalized_url=url_clean
+                )
     except ValueError:
         pass  # Hostname is a standard domain name, proceed
 
@@ -153,7 +169,11 @@ def classify_platform_cluster(platform: str, url: str) -> ClusterProfile:
     path = parsed.path
 
     # Cluster B: Scholarships & Annual Cohorts
-    if any(k in path for k in ["scholarship", "pack", "1mcc", "lift"]) or "cncf.io" in domain or "isc2.org/landing/1mcc" in url_lower:
+    if (
+        any(k in path for k in ["scholarship", "pack", "1mcc", "lift"])
+        or "cncf.io" in domain
+        or "isc2.org/landing/1mcc" in url_lower
+    ):
         return ClusterProfile(
             cluster=PlatformCluster.CLUSTER_B_SCHOLARSHIP,
             code="SCHOLARSHIP",
@@ -161,7 +181,7 @@ def classify_platform_cluster(platform: str, url: str) -> ClusterProfile:
             primary_gatekeeper="Cohort / Capacity Closure Wall",
             wait_condition="domcontentloaded",
             target_selectors=[".application-form", ".scholarship-header", "button:has-text('Apply')"],
-            assertion_focus="Scan for 'capacity reached', 'cohort full', or application date windows"
+            assertion_focus="Scan for 'capacity reached', 'cohort full', or application date windows",
         )
 
     # Cluster C: Continuous Education (CE) Communities
@@ -173,11 +193,13 @@ def classify_platform_cluster(platform: str, url: str) -> ClusterProfile:
             primary_gatekeeper="Community Forum Thread Expiration",
             wait_condition="networkidle",
             target_selectors=[".cforum-topic", ".feed-item", ".discussion-thread"],
-            assertion_focus="Scan for active 30-day challenge thread & CE credit eligibility"
+            assertion_focus="Scan for active 30-day challenge thread & CE credit eligibility",
         )
 
     # Cluster D: Event-Tied Fast Challenges (Historical Archive)
-    if any(k in domain for k in ["githubuniverse", "conf", "summit"]) or any(k in path for k in ["challenges", "summit"]):
+    if any(k in domain for k in ["githubuniverse", "conf", "summit"]) or any(
+        k in path for k in ["challenges", "summit"]
+    ):
         return ClusterProfile(
             cluster=PlatformCluster.CLUSTER_D_EVENT_WAVE,
             code="EVENT_WAVE",
@@ -185,7 +207,7 @@ def classify_platform_cluster(platform: str, url: str) -> ClusterProfile:
             primary_gatekeeper="Promotional Expiration 302 Silent Bounce",
             wait_condition="domcontentloaded",
             target_selectors=[".challenge-card", ".event-hero", ".leaderboard"],
-            assertion_focus="Audit redirect chain against root conference hub downgrade"
+            assertion_focus="Audit redirect chain against root conference hub downgrade",
         )
 
     # Cluster A: Enterprise LMS Portals (Default)
@@ -196,11 +218,11 @@ def classify_platform_cluster(platform: str, url: str) -> ClusterProfile:
         primary_gatekeeper="SPA Hydration Lag + OneTrust / TrustArc Cookie Shield",
         wait_condition="networkidle",
         target_selectors=[".learning-path-header", ".course-title", "button:has-text('Enroll')", ".price-badge"],
-        assertion_focus="Inject storage preset, await semantic route hydration, check $0.00 waiver"
+        assertion_focus="Inject storage preset, await semantic route hydration, check $0.00 waiver",
     )
 
 
-def resolve_dual_phase_targets(offer: Dict[str, Any]) -> DualPhaseTargets:
+def resolve_dual_phase_targets(offer: dict[str, Any]) -> DualPhaseTargets:
     """
     Resolves verification targets:
     - Primary Nav Target: Prioritizes deep claim URL (e.g. mylearn.oracle.com/.../127177)
@@ -232,11 +254,11 @@ def resolve_dual_phase_targets(offer: Dict[str, Any]) -> DualPhaseTargets:
         authority_root_url=authority_root_url,
         primary_nav_target=primary_nav_target,
         is_divergent=is_divergent,
-        divergence_reason=divergence_reason
+        divergence_reason=divergence_reason,
     )
 
 
-def get_pre_navigation_storage(url: str) -> Dict[str, Any]:
+def get_pre_navigation_storage(url: str) -> dict[str, Any]:
     """
     Returns pre-baked localStorage and cookie presets to dismiss OneTrust, TrustArc,
     and Cookiebot consent banners before initial DOM render (< 50ms).
@@ -244,7 +266,7 @@ def get_pre_navigation_storage(url: str) -> Dict[str, Any]:
     parsed = urlparse(url.lower())
     domain = parsed.netloc
 
-    local_storage: Dict[str, str] = {
+    local_storage: dict[str, str] = {
         "OptanonAlertBoxClosed": "2026-01-01T00:00:00.000Z",
         "cookie_consent": "true",
         "cookie_banner_dismissed": "true",
@@ -267,7 +289,7 @@ def get_pre_navigation_storage(url: str) -> Dict[str, Any]:
     }
 
 
-def audit_redirect_degradation(initial_url: str, final_url: str, expected_slug: str = "") -> Tuple[bool, str, float]:
+def audit_redirect_degradation(initial_url: str, final_url: str, expected_slug: str = "") -> tuple[bool, str, float]:
     """
     Audits whether a redirect chain preserved the deep syllabus slug or degraded
     into a generic marketing hub (catching silent 302 campaign expirations).
@@ -309,10 +331,7 @@ def audit_redirect_degradation(initial_url: str, final_url: str, expected_slug: 
 
 
 def calculate_proof_quality_score(
-    url_score: float,
-    dom_score: float,
-    visual_score: float,
-    corroboration_score: float
+    url_score: float, dom_score: float, visual_score: float, corroboration_score: float
 ) -> PQSResult:
     """
     Calculates the continuous Proof Quality Score (PQS 0-100) using the standard weights:
@@ -338,5 +357,5 @@ def calculate_proof_quality_score(
         dom_score=dom_score,
         visual_score=visual_score,
         corroboration_score=corroboration_score,
-        summary=summary
+        summary=summary,
     )

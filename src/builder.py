@@ -8,38 +8,36 @@ and CLI invocation:
   python -m src.builder
 """
 
-from pathlib import Path
-from typing import Dict, Any, List, Optional
-from datetime import datetime
+from typing import Any
 
 from src.builders import (
-    build_all,
-    generate_readme as _generate_readme,
-    generate_web_dashboard as _generate_web_dashboard,
-    format_4_timezones,
-    load_offers,
-    load_news,
-    compute_build_fingerprint,
-    SUMMARY_FILE,
-    FINGERPRINT_FILE,
     DATA_FILE,
-    NEWS_FILE,
-    README_FILE,
+    DEFAULT_THEME,
     DOCS_DIR,
     DOCS_HTML,
+    FINGERPRINT_FILE,
+    NEWS_FILE,
+    README_FILE,
     STATUS_BADGES,
+    SUMMARY_FILE,
     THEMES,
-    DEFAULT_THEME,
+    build_all,
+    compute_build_fingerprint,
+    format_4_timezones,
+    generate_client_bundle,
     generate_css_variables,
-    generate_zero_foit_script,
+    generate_readme as _generate_readme,
     generate_theme_dropdown_options,
+    generate_web_dashboard as _generate_web_dashboard,
+    generate_zero_foit_script,
     get_theme_by_id,
     get_theme_json,
-    generate_client_bundle,
+    load_news,
+    load_offers,
 )
 
 
-def compute_kpis(offers: List[Dict[str, Any]]) -> Dict[str, Any]:
+def compute_kpis(offers: list[dict[str, Any]]) -> dict[str, Any]:
     """
     Computes dynamic KPI counts and financial savings directly from offers datastore.
     Preserves raw source text invariants audited by adversarial test suites:
@@ -64,7 +62,7 @@ def compute_kpis(offers: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def generate_readme(data: Any, news_data: Optional[Any] = None, *args, **kwargs) -> str:
+def generate_readme(data: Any, news_data: Any | None = None, *args, **kwargs) -> str:
     """
     Delegates to src.builders.readme_builder.generate_readme.
     Calculates active cohorts dynamically:
@@ -77,36 +75,36 @@ def generate_readme(data: Any, news_data: Optional[Any] = None, *args, **kwargs)
     return _generate_readme(data, news_data, *args, **kwargs)
 
 
-def generate_web_dashboard(data: Any, news_data: Optional[Any] = None, *args, **kwargs) -> str:
+def generate_web_dashboard(data: Any, news_data: Any | None = None, *args, **kwargs) -> str:
     """Delegates to src.builders.html_builder.generate_web_dashboard."""
     return _generate_web_dashboard(data, news_data, *args, **kwargs)
 
 
 __all__ = [
-    "build_all",
-    "compute_build_fingerprint",
-    "SUMMARY_FILE",
-    "FINGERPRINT_FILE",
-    "generate_readme",
-    "generate_web_dashboard",
-    "format_4_timezones",
-    "load_offers",
-    "load_news",
     "DATA_FILE",
-    "NEWS_FILE",
-    "README_FILE",
+    "DEFAULT_THEME",
     "DOCS_DIR",
     "DOCS_HTML",
+    "FINGERPRINT_FILE",
+    "NEWS_FILE",
+    "README_FILE",
     "STATUS_BADGES",
+    "SUMMARY_FILE",
     "THEMES",
-    "DEFAULT_THEME",
+    "build_all",
+    "compute_build_fingerprint",
+    "compute_kpis",
+    "format_4_timezones",
+    "generate_client_bundle",
     "generate_css_variables",
-    "generate_zero_foit_script",
+    "generate_readme",
     "generate_theme_dropdown_options",
+    "generate_web_dashboard",
+    "generate_zero_foit_script",
     "get_theme_by_id",
     "get_theme_json",
-    "generate_client_bundle",
-    "compute_kpis",
+    "load_news",
+    "load_offers",
 ]
 
 if __name__ == "__main__":

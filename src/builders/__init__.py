@@ -7,47 +7,49 @@ Deconstructs monolithic builder into focused modules:
 - html_builder: Semantic HTML5 canvas and responsive view shell
 """
 
-import os
-import time
-import tempfile
-import json
 import hashlib
-from datetime import datetime, timezone
-from typing import Dict, Any, Optional
+import json
+import logging
+import os
+import tempfile
+import time
+from datetime import UTC, datetime
 from pathlib import Path
 
+from src.builders.client_bundle import generate_client_bundle as generate_client_bundle
+from src.builders.html_builder import generate_web_dashboard
+from src.builders.readme_builder import (
+    DATA_FILE,
+    DOCS_DIR,
+    DOCS_HTML,
+    NEWS_FILE,
+    README_FILE,
+    STATUS_BADGES,
+    format_4_timezones,
+    generate_readme,
+    load_news,
+    load_offers,
+)
 from src.builders.theme_engine import (
-    THEMES,
     DEFAULT_THEME,
+    THEMES,
     generate_css_variables,
-    generate_zero_foit_script,
     generate_theme_dropdown_html,
     generate_theme_dropdown_options,
+    generate_zero_foit_script,
     get_theme_by_id,
     get_theme_json,
 )
-from src.builders.client_bundle import generate_client_bundle
-from src.builders.readme_builder import (
-    generate_readme,
-    format_4_timezones,
-    load_offers,
-    load_news,
-    DATA_FILE,
-    NEWS_FILE,
-    README_FILE,
-    DOCS_DIR,
-    DOCS_HTML,
-    STATUS_BADGES,
-)
-from src.builders.html_builder import generate_web_dashboard
+
+logger = logging.getLogger(__name__)
 
 FINGERPRINT_FILE = DATA_FILE.parent / ".build_fingerprint"
 SUMMARY_FILE = DATA_FILE.parent / "summary.json"
 
 
 def compute_build_fingerprint(
-    offers_path: Optional[Path] = None,
-    news_path: Optional[Path] = None,
+    offers_path: Path | None = None,
+    news_path: Path | None = None,
 ) -> str:
     """Computes SHA-256 fingerprint over data/offers.json and data/news.json bytes."""
     o_file = Path(offers_path) if offers_path else DATA_FILE
@@ -64,19 +66,19 @@ def _atomic_write_text(path: Path, content: str) -> None:
     """Atomically writes text using NamedTemporaryFile and os.replace with Windows lock retry."""
     path = Path(path).resolve()
     path.parent.mkdir(parents=True, exist_ok=True)
-    temp_file = tempfile.NamedTemporaryFile(
-        mode="w",
-        delete=False,
-        dir=str(path.parent),
-        prefix=f".{path.name}.",
-        suffix=".tmp",
-        encoding="utf-8",
-    )
-    temp_path = Path(temp_file.name)
+    temp_path = None
     try:
-        temp_file.write(content)
-        temp_file.flush()
-        temp_file.close()
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            delete=False,
+            dir=str(path.parent),
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            encoding="utf-8",
+        ) as temp_file:
+            temp_path = Path(temp_file.name)
+            temp_file.write(content)
+            temp_file.flush()
 
         # On Windows, concurrent pytest processes holding read handles can cause transient WinError 5/32
         for attempt in range(10):
@@ -91,27 +93,22 @@ def _atomic_write_text(path: Path, content: str) -> None:
                         if temp_path.exists():
                             temp_path.unlink(missing_ok=True)
                         break
-                    except Exception:
-                        raise e
+                    except OSError as write_err:
+                        raise e from write_err
                 time.sleep(0.05)
     except Exception:
-        if not temp_file.closed:
+        if temp_path and temp_path.exists():
             try:
-                temp_file.close()
-            except Exception:
-                pass
-        if temp_path.exists():
-            try:
-                temp_path.unlink()
-            except Exception:
-                pass
+                temp_path.unlink(missing_ok=True)
+            except OSError as unlink_err:
+                logger.debug("Temp file cleanup failed: %s", unlink_err)
         raise
 
 
 def build_all(
-    readme_path: Optional[Path] = None,
-    html_path: Optional[Path] = None,
-    summary_path: Optional[Path] = None,
+    readme_path: Path | None = None,
+    html_path: Path | None = None,
+    summary_path: Path | None = None,
     force: bool = False,
     skip_if_unchanged: bool = False,
 ) -> bool:
@@ -130,15 +127,22 @@ def build_all(
     is_default_run = readme_path is None and html_path is None and summary_path is None
     current_fp = compute_build_fingerprint()
 
-    if skip_if_unchanged and is_default_run and not force and target_readme.exists() and target_html.exists() and target_summary.exists():
-        if FINGERPRINT_FILE.exists():
-            try:
-                stored_fp = FINGERPRINT_FILE.read_text(encoding="utf-8").strip()
-                if stored_fp == current_fp:
-                    print(f"[OK] Data unchanged; build up to date (fingerprint {current_fp[:8]}). Skipping rebuild.")
-                    return True
-            except Exception:
-                pass
+    if (
+        skip_if_unchanged
+        and is_default_run
+        and not force
+        and target_readme.exists()
+        and target_html.exists()
+        and target_summary.exists()
+        and FINGERPRINT_FILE.exists()
+    ):
+        try:
+            stored_fp = FINGERPRINT_FILE.read_text(encoding="utf-8").strip()
+            if stored_fp == current_fp:
+                print(f"[OK] Data unchanged; build up to date (fingerprint {current_fp[:8]}). Skipping rebuild.")
+                return True
+        except (OSError, UnicodeDecodeError) as fp_err:
+            logger.debug("Failed reading build fingerprint: %s", fp_err)
 
     data = load_offers()
     news = load_news()
@@ -159,13 +163,22 @@ def build_all(
     review_count = sum(1 for o in offers_list if str(o.get("status", "")).strip().lower() == "review needed")
     expired_count = sum(1 for o in offers_list if str(o.get("status", "")).strip().lower() == "expired")
     total_count = len(offers_list)
-    last_updated = data.get("last_updated") if isinstance(data, dict) else datetime.now(timezone.utc).isoformat()
+    last_updated = data.get("last_updated") if isinstance(data, dict) else datetime.now(UTC).isoformat()
 
-    now_iso = datetime.now(timezone.utc).isoformat()
-    dom_count = sum(1 for o in offers_list if "dom" in str(o.get("inspection_method", "")).lower() or "playwright" in str(o.get("inspection_method", "")).lower())
+    now_iso = datetime.now(UTC).isoformat()
+    dom_count = sum(
+        1
+        for o in offers_list
+        if "dom" in str(o.get("inspection_method", "")).lower()
+        or "playwright" in str(o.get("inspection_method", "")).lower()
+    )
     oracle_count = sum(1 for o in offers_list if o.get("truth_verification"))
     authentic_count = sum(1 for o in offers_list if o.get("is_authentic_vendor"))
-    zero_dollar_count = sum(1 for o in offers_list if (o.get("visual_proof") or {}).get("zero_dollar_confirmed") or o.get("cart_balance_verified"))
+    zero_dollar_count = sum(
+        1
+        for o in offers_list
+        if (o.get("visual_proof") or {}).get("zero_dollar_confirmed") or o.get("cart_balance_verified")
+    )
     historical_count = sum(1 for o in offers_list if o.get("is_historical_archive"))
 
     summary_data = {
@@ -206,27 +219,27 @@ def build_all(
 
 
 __all__ = [
-    "build_all",
-    "compute_build_fingerprint",
-    "SUMMARY_FILE",
-    "FINGERPRINT_FILE",
-    "generate_readme",
-    "generate_web_dashboard",
-    "format_4_timezones",
-    "load_offers",
-    "load_news",
     "DATA_FILE",
-    "NEWS_FILE",
-    "README_FILE",
+    "DEFAULT_THEME",
     "DOCS_DIR",
     "DOCS_HTML",
+    "FINGERPRINT_FILE",
+    "NEWS_FILE",
+    "README_FILE",
     "STATUS_BADGES",
+    "SUMMARY_FILE",
     "THEMES",
-    "DEFAULT_THEME",
+    "build_all",
+    "compute_build_fingerprint",
+    "format_4_timezones",
     "generate_css_variables",
-    "generate_zero_foit_script",
+    "generate_readme",
     "generate_theme_dropdown_html",
     "generate_theme_dropdown_options",
+    "generate_web_dashboard",
+    "generate_zero_foit_script",
     "get_theme_by_id",
     "get_theme_json",
+    "load_news",
+    "load_offers",
 ]

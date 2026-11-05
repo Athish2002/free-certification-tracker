@@ -20,8 +20,8 @@ REDEMPTION_MAP = {
             "Log into your ISC2 Candidate profile and complete the free CC self-paced course.",
             "Retrieve your unique 100% discount promo voucher code from the candidate dashboard.",
             "Navigate to Pearson VUE (home.pearsonvue.com/isc2) and select the Certified in Cybersecurity exam.",
-            "On the Payment Step, click 'Add Voucher or Promo Code', paste the voucher, and verify balance drops from $199 to $0.00."
-        ]
+            "On the Payment Step, click 'Add Voucher or Promo Code', paste the voucher, and verify balance drops from $199 to $0.00.",
+        ],
     },
     "oracle-oci-free-cert": {
         "voucher_code": "ORACLE_MYLEARN_SSO_WAIVER",
@@ -34,8 +34,8 @@ REDEMPTION_MAP = {
             "Sign in to Oracle MyLearn with a free Oracle Single Sign-On (SSO) account.",
             "Complete the designated OCI Foundations or Associate learning path training modules.",
             "Click Schedule Certification Exam directly within the course navigation bar.",
-            "Confirm your exam appointment via the integrated proctoring engine with $0.00 cart balance."
-        ]
+            "Confirm your exam appointment via the integrated proctoring engine with $0.00 cart balance.",
+        ],
     },
     "cisco-rev-up-recert": {
         "voucher_code": "CISCO_CE_CREDIT_TOKEN",
@@ -48,8 +48,8 @@ REDEMPTION_MAP = {
             "Complete the active Rev Up to Recert learning challenge on Cisco U (u.cisco.com).",
             "Receive confirmation email validating eligible 15-30 Continuing Education credits.",
             "Log into the Cisco CE portal (ce.cisco.com) and click Submit Items to record completed modules.",
-            "Credits automatically recertify your active CCNA/CCNP credentials for 3 years without examination fees ($0.00)."
-        ]
+            "Credits automatically recertify your active CCNA/CCNP credentials for 3 years without examination fees ($0.00).",
+        ],
     },
     "ms-applied-skills": {
         "voucher_code": "MICROSOFT_ZERO_DOLLAR_LAB",
@@ -62,8 +62,8 @@ REDEMPTION_MAP = {
             "Navigate to Microsoft Applied Skills credential catalog on Microsoft Learn.",
             "Sign in with your personal Microsoft account (MSA).",
             "Click Take assessment lab on the verified scenario of your choice.",
-            "The browser-based interactive cloud lab launches instantly with zero credit card entry and zero checkout fee ($0.00)."
-        ]
+            "The browser-based interactive cloud lab launches instantly with zero credit card entry and zero checkout fee ($0.00).",
+        ],
     },
     "gcp-cloud-skills-boost": {
         "voucher_code": "GCP_INNOVATOR_MONTHLY_PASS",
@@ -76,8 +76,8 @@ REDEMPTION_MAP = {
             "Join Google Cloud Innovators community (free membership) at cloud.google.com/innovators.",
             "Activate your complimentary 35 monthly learning credits benefit via Cloud Skills Boost.",
             "Enroll in any Skill Badge or certification quest learning path.",
-            "Apply credits at checkout to drop lab balance to $0.00 and earn verifiable digital badges."
-        ]
+            "Apply credits at checkout to drop lab balance to $0.00 and earn verifiable digital badges.",
+        ],
     },
     "linux-foundation-lift": {
         "voucher_code": "LIFT_SCHOLARSHIP_AWARD_CODE",
@@ -90,8 +90,8 @@ REDEMPTION_MAP = {
             "Submit application during the active Linux Foundation LiFT scholarship window.",
             "Upon award notification, retrieve your personalized 100% scholarship code from the award dispatch.",
             "Add CKA, CKAD, or LFCS exam registration to your cart at training.linuxfoundation.org.",
-            "Enter your scholarship code in the Coupon Code input and verify total balance adjusts from $395 to $0.00."
-        ]
+            "Enter your scholarship code in the Coupon Code input and verify total balance adjusts from $395 to $0.00.",
+        ],
     },
     "snowflake-hands-on-essentials": {
         "voucher_code": "SNOWFLAKE_FREE_WORKSHOP_GRANT",
@@ -104,8 +104,8 @@ REDEMPTION_MAP = {
             "Register for a free Snowflake University account at learn.snowflake.com.",
             "Select Hands-On Essentials (Data Warehousing, Data Applications, or Data Engineering).",
             "Complete the guided labs inside a free 30-day Snowflake trial instance.",
-            "Submit validation queries; passing grade instantly issues verifiable Credly badge at $0.00."
-        ]
+            "Submit validation queries; passing grade instantly issues verifiable Credly badge at $0.00.",
+        ],
     },
     "mongodb-developer-cert": {
         "voucher_code": "MONGODB_STUDENT_DEV_WAIVER",
@@ -118,8 +118,8 @@ REDEMPTION_MAP = {
             "Complete the developer curriculum path on MongoDB University.",
             "Claim your 100% student voucher via GitHub Student Developer Pack or academic partner link.",
             "Proceed to schedule Associate Developer exam registration.",
-            "Paste voucher into 'Have a coupon or voucher?' field to drop $150 registration fee to $0.00."
-        ]
+            "Paste voucher into 'Have a coupon or voucher?' field to drop $150 registration fee to $0.00.",
+        ],
     },
     "salesforce-trailhead-quests": {
         "voucher_code": "TRAILHEAD_QUEST_SWEEPSTAKES_CODE",
@@ -132,8 +132,8 @@ REDEMPTION_MAP = {
             "Complete the eligible monthly Trailhead Quest badges before the calendar deadline.",
             "Winners receive an official Salesforce certification voucher code via registered email.",
             "Log in to Webassessor (webassessor.com/salesforce) and select your Administrator or Developer exam.",
-            "Paste the code into 'Coupon/Voucher Code' and apply; balance drops from $200/$400 to $0.00."
-        ]
+            "Paste the code into 'Coupon/Voucher Code' and apply; balance drops from $200/$400 to $0.00.",
+        ],
     },
     "postman-api-expert": {
         "voucher_code": "POSTMAN_STUDENT_EXPERT_GRANT",
@@ -146,8 +146,8 @@ REDEMPTION_MAP = {
             "Fork the official Postman API Fundamentals training collection to your workspace.",
             "Complete the interactive API request testing challenges.",
             "Submit your public workspace URL to the validation form.",
-            "Automated test suite verifies passes and issues official Badgr/Credly credential at $0.00."
-        ]
+            "Automated test suite verifies passes and issues official Badgr/Credly credential at $0.00.",
+        ],
     },
     "juniper-open-learning": {
         "voucher_code": "JUNIPER_PEARSON_DISCOUNT_CODE",
@@ -160,8 +160,8 @@ REDEMPTION_MAP = {
             "Enroll in the Juniper Open Learning track for JNCIA-Junos, JNCIA-Cloud, or JNCIA-SEC.",
             "Complete the modular webcast training series and score 70%+ on the voucher assessment test.",
             "Juniper emails your official Pearson VUE discounted/100% voucher code.",
-            "Apply code at Pearson VUE checkout to reduce the $200 exam fee to $0.00."
-        ]
+            "Apply code at Pearson VUE checkout to reduce the $200 exam fee to $0.00.",
+        ],
     },
     "qualys-certified-specialist": {
         "voucher_code": "QUALYS_TRAINING_DIRECT_ENROLL",
@@ -174,8 +174,8 @@ REDEMPTION_MAP = {
             "Create a free Qualys Training account at qualys.com/training.",
             "Complete any self-paced training module (Vulnerability Management, Cloud Security, Policy Compliance).",
             "Click Take Exam in the exam tab of your student dashboard.",
-            "Complete proctored multiple-choice assessment online with immediate certificate generation ($0.00)."
-        ]
+            "Complete proctored multiple-choice assessment online with immediate certificate generation ($0.00).",
+        ],
     },
     "databricks-genai-fundamentals": {
         "voucher_code": "DATABRICKS_ACADEMY_COMPLIMENTARY",
@@ -188,8 +188,8 @@ REDEMPTION_MAP = {
             "Sign in to Databricks Academy with company or personal credentials.",
             "Enroll in the Generative AI Fundamentals curriculum.",
             "Pass the knowledge accreditation assessment.",
-            "Verifiable digital credential badge automatically unlocked on Credly at $0.00."
-        ]
+            "Verifiable digital credential badge automatically unlocked on Credly at $0.00.",
+        ],
     },
     "fortinet-cybersecurity-fundamentals": {
         "voucher_code": "FORTINET_NSE_ACADEMY_GRANT",
@@ -202,8 +202,8 @@ REDEMPTION_MAP = {
             "Create a free account on the Fortinet Training Institute (training.fortinet.com).",
             "Enroll in the Fortinet Certified Fundamentals (FCF) cybersecurity track.",
             "Complete the self-paced courses: Introduction to the Threat Landscape and Getting Started in Cybersecurity.",
-            "Passing the embedded final quiz automatically grants the FCF certification badge ($0.00)."
-        ]
+            "Passing the embedded final quiz automatically grants the FCF certification badge ($0.00).",
+        ],
     },
     "github-student-foundations": {
         "voucher_code": "GH_STUDENT_PACK_EXAM_WAIVER",
@@ -216,8 +216,8 @@ REDEMPTION_MAP = {
             "Verify active student status through GitHub Education at education.github.com/pack.",
             "Navigate to the certification benefit tab and claim your single-use Pearson VUE exam waiver.",
             "Schedule your GitHub Foundations or GitHub Actions certification on Pearson VUE.",
-            "Paste the single-use token into the voucher input; cart total updates from $99 to $0.00."
-        ]
+            "Paste the single-use token into the voucher input; cart total updates from $99 to $0.00.",
+        ],
     },
     "aws-educate-badges": {
         "voucher_code": "AWS_EDUCATE_COMMUNITY_PASS",
@@ -230,8 +230,8 @@ REDEMPTION_MAP = {
             "Sign up for AWS Educate with any valid personal email (no university address required).",
             "Choose any pathway: Cloud Computing 101, Machine Learning Foundations, Serverless, or Security.",
             "Complete the hands-on lab sandboxes provided directly inside the AWS browser console.",
-            "Achieve 70%+ on final assessment to earn verified Credly badges at $0.00 cost."
-        ]
+            "Achieve 70%+ on final assessment to earn verified Credly badges at $0.00 cost.",
+        ],
     },
     "redhat-skills-assessment-rhel": {
         "voucher_code": "REDHAT_DEVELOPER_SKILLS_TOKEN",
@@ -244,8 +244,8 @@ REDEMPTION_MAP = {
             "Sign in with a free Red Hat Developer account at developers.redhat.com.",
             "Navigate to the Skills Assessment catalog for Red Hat Enterprise Linux (RHEL) or OpenShift.",
             "Launch the scenario-based practical knowledge assessment.",
-            "Receive official proficiency evaluation report and digital skills record at $0.00."
-        ]
+            "Receive official proficiency evaluation report and digital skills record at $0.00.",
+        ],
     },
     "hashicorp-terraform-associate-community": {
         "voucher_code": "HASHICORP_WEBINAR_PROMO_CODE",
@@ -258,8 +258,8 @@ REDEMPTION_MAP = {
             "Register and attend official HashiCorp Community Days / Developer webinar sessions.",
             "Claim attendee voucher code distributed during promotional windows.",
             "Log into HashiCorp Webassessor portal and select Terraform Associate.",
-            "Enter voucher code in the payment screen to drop fee from $70.50 to $0.00."
-        ]
+            "Enter voucher code in the payment screen to drop fee from $70.50 to $0.00.",
+        ],
     },
     "paloalto-pccet-cybersecurity": {
         "voucher_code": "PALOALTO_BEACON_ACADEMY_GRANT",
@@ -272,8 +272,8 @@ REDEMPTION_MAP = {
             "Register on Palo Alto Networks Beacon platform (beacon.paloaltonetworks.com).",
             "Complete the digital learning modules for Cybersecurity Fundamentals / Cloud Security.",
             "Click Accreditation Exam at the end of the module.",
-            "Complete the unproctored online exam to receive official digital badge at $0.00."
-        ]
+            "Complete the unproctored online exam to receive official digital badge at $0.00.",
+        ],
     },
     "gitlab-certified-associate": {
         "voucher_code": "GITLAB_UNIVERSITY_EXAM_TOKEN",
@@ -286,8 +286,8 @@ REDEMPTION_MAP = {
             "Create an account on GitLab University (university.gitlab.com).",
             "Enroll in GitLab Certified Associate or Git Associate certification courses.",
             "Apply community campaign promo codes during quarterly learning events.",
-            "Verify cart balance drops to $0.00 and launch practical lab assessment."
-        ]
+            "Verify cart balance drops to $0.00 and launch practical lab assessment.",
+        ],
     },
     "splunk-certified-defense-analyst": {
         "voucher_code": "SPLUNK_LANTERN_DEFENSE_PASS",
@@ -300,8 +300,8 @@ REDEMPTION_MAP = {
             "Access Splunk Lantern and Splunk Education with a free Splunk ID.",
             "Enroll in the Cybersecurity Defense, Observability, or SIEM fundamentals tracks.",
             "Complete interactive search and reporting exercises.",
-            "Passing score mints official Splunk digital credential at $0.00."
-        ]
+            "Passing score mints official Splunk digital credential at $0.00.",
+        ],
     },
     "ibm-skillsbuild-cybersecurity": {
         "voucher_code": "IBM_SKILLSBUILD_FREE_CREDENTIAL",
@@ -314,8 +314,8 @@ REDEMPTION_MAP = {
             "Enroll in IBM SkillsBuild (skillsbuild.org) as an adult learner or student.",
             "Complete the Cybersecurity Fundamentals or Artificial Intelligence Practitioner learning path.",
             "Complete the capstone assessment modules.",
-            "Verifiable Credly badge issued with full enterprise accreditation at $0.00."
-        ]
+            "Verifiable Credly badge issued with full enterprise accreditation at $0.00.",
+        ],
     },
     "cncf-dan-kohn-scholarship": {
         "voucher_code": "CNCF_DIVERSITY_SCHOLARSHIP_CODE",
@@ -328,8 +328,8 @@ REDEMPTION_MAP = {
             "Apply for Dan Kohn Diversity Scholarship via CNCF portal before event deadlines.",
             "Approved recipients receive an official 100% voucher code for CKA/CKAD/KCNA.",
             "Go to training.linuxfoundation.org, select the target exam, and enter cart checkout.",
-            "Paste scholarship code in Coupon Code box; price drops from $395 to $0.00."
-        ]
+            "Paste scholarship code in Coupon Code box; price drops from $395 to $0.00.",
+        ],
     },
     "databricks-lakehouse-fundamentals": {
         "voucher_code": "DATABRICKS_ACADEMY_FREE_PASS",
@@ -342,8 +342,8 @@ REDEMPTION_MAP = {
             "Log into Databricks Academy (academy.databricks.com).",
             "Select Lakehouse Fundamentals Accreditation or Generative AI Fundamentals.",
             "Complete the comprehensive multimedia course.",
-            "Take the 20-question accreditation assessment; 80%+ score immediately issues verifiable Credly badge ($0.00)."
-        ]
+            "Take the 20-question accreditation assessment; 80%+ score immediately issues verifiable Credly badge ($0.00).",
+        ],
     },
     "oracle-oci-generative-ai-cert": {
         "voucher_code": "ORACLE_GENAI_WAVE_FREE_ATTEMPT",
@@ -356,8 +356,8 @@ REDEMPTION_MAP = {
             "Sign into Oracle University MyLearn with your Oracle SSO profile.",
             "Complete the OCI Generative AI Professional learning path.",
             "Click the integrated exam scheduling button during promotional cycle waves.",
-            "The exam booking registers through Oracle proctoring provider at $0.00 total fee."
-        ]
+            "The exam booking registers through Oracle proctoring provider at $0.00 total fee.",
+        ],
     },
     "cisco-netacad-cyberops": {
         "voucher_code": "NETACAD_QUALIFICATION_WAIVER",
@@ -370,8 +370,8 @@ REDEMPTION_MAP = {
             "Enroll in the Cisco NetAcad CyberOps Associate training path.",
             "Score 70%+ on first attempt of final course exam.",
             "Receive qualifying voucher request link from course instructor / dashboard.",
-            "Redeem voucher at Pearson VUE for discount / waiver on official 200-201 CBROPS exam."
-        ]
+            "Redeem voucher at Pearson VUE for discount / waiver on official 200-201 CBROPS exam.",
+        ],
     },
     "github-foundations-cert-wave": {
         "voucher_code": "GITHUB_FOUNDATIONS_WAVE_TOKEN",
@@ -384,13 +384,14 @@ REDEMPTION_MAP = {
             "Participate in official Microsoft Learn Cloud Skills Challenge or GitHub Days event.",
             "Complete all collection modules before the challenge deadline.",
             "Voucher code delivered to registered event email within 7-10 business days.",
-            "Book GitHub Foundations on Pearson VUE and apply promo code to zero out $99 fee ($0.00)."
-        ]
-    }
+            "Book GitHub Foundations on Pearson VUE and apply promo code to zero out $99 fee ($0.00).",
+        ],
+    },
 }
 
+
 def enrich_offers():
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     for o in data["offers"]:
@@ -408,7 +409,7 @@ def enrich_offers():
                 "field_location": meta["checkout_field"],
                 "flow_type": meta["application_flow_type"],
                 "verified_cart_balance": meta["cart_balance_verified"],
-                "instructions": meta["instructions"]
+                "instructions": meta["instructions"],
             }
         else:
             is_hist = o.get("is_historical_archive", False)
@@ -417,7 +418,9 @@ def enrich_offers():
             o["redemption_portal"] = o.get("url")
             o["checkout_field"] = "Official Exam Booking Screen -> Promo / Voucher Code box"
             o["application_flow_type"] = "Event Voucher Code" if is_hist else "Automated Account Link Waiver"
-            o["cart_balance_verified"] = "$0.00 (Historical Zero-Dollar Promotion)" if is_hist else "$0.00 (100% Free / Waiver Confirmed)"
+            o["cart_balance_verified"] = (
+                "$0.00 (Historical Zero-Dollar Promotion)" if is_hist else "$0.00 (100% Free / Waiver Confirmed)"
+            )
             o["redemption_guide"] = {
                 "portal_name": f"{platform} Official Portal",
                 "portal_url": o.get("url"),
@@ -428,14 +431,15 @@ def enrich_offers():
                     f"Navigate to {platform} official certification portal.",
                     "Complete the associated event, challenge, or learning milestone.",
                     "Apply the promotional voucher code or SSO entitlement on the checkout review page.",
-                    "Verify the balance drops to $0.00 before finalizing your examination registration."
-                ]
+                    "Verify the balance drops to $0.00 before finalizing your examination registration.",
+                ],
             }
 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
     print(f"Successfully enriched {len(data['offers'])} offers in {DATA_FILE}")
+
 
 if __name__ == "__main__":
     enrich_offers()

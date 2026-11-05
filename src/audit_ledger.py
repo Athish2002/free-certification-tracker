@@ -6,13 +6,14 @@ captured screenshot PNGs to an append-only JSONL ledger (data/audit_log.jsonl).
 
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import logging
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Any
+
+from pydantic import BaseModel, ConfigDict, Field
 
 logger = logging.getLogger("certpulse.audit_ledger")
 
@@ -24,40 +25,21 @@ class AuditReceipt(BaseModel):
     """
     Cryptographic verification receipt for an inspected offer.
     """
+
     model_config = ConfigDict(extra="ignore")
 
-    timestamp_utc: str = Field(
-        ...,
-        description="ISO 8601 UTC timestamp of the audit pass."
+    timestamp_utc: str = Field(..., description="ISO 8601 UTC timestamp of the audit pass.")
+    offer_id: str = Field(..., description="Unique offer slug identifier.")
+    url: str = Field(..., description="Destination URL inspected.")
+    sha256_dom: str = Field(..., description="SHA-256 hexadecimal hash of the rendered DOM text.")
+    sha256_screenshot: str | None = Field(
+        default=None, description="SHA-256 hexadecimal hash of the viewport screenshot PNG."
     )
-    offer_id: str = Field(
-        ...,
-        description="Unique offer slug identifier."
+    actionability_verdict: str | None = Field(default=None, description="Outcome from semantic accessibility scanner.")
+    cart_balance_verified: str | None = Field(
+        default=None, description="Outcome from synthetic cart balance assertion."
     )
-    url: str = Field(
-        ...,
-        description="Destination URL inspected."
-    )
-    sha256_dom: str = Field(
-        ...,
-        description="SHA-256 hexadecimal hash of the rendered DOM text."
-    )
-    sha256_screenshot: Optional[str] = Field(
-        default=None,
-        description="SHA-256 hexadecimal hash of the viewport screenshot PNG."
-    )
-    actionability_verdict: Optional[str] = Field(
-        default=None,
-        description="Outcome from semantic accessibility scanner."
-    )
-    cart_balance_verified: Optional[str] = Field(
-        default=None,
-        description="Outcome from synthetic cart balance assertion."
-    )
-    status_assigned: str = Field(
-        default="Active",
-        description="Status assigned by the inspection engine."
-    )
+    status_assigned: str = Field(default="Active", description="Status assigned by the inspection engine.")
 
 
 def compute_sha256_text(text: str) -> str:
@@ -65,7 +47,7 @@ def compute_sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def compute_sha256_file(file_path: Path) -> Optional[str]:
+def compute_sha256_file(file_path: Path) -> str | None:
     """Computes SHA-256 hex digest of a binary file on disk."""
     if not file_path.exists():
         return None
@@ -80,11 +62,11 @@ def record_audit_entry(
     offer_id: str,
     url: str,
     dom_text: str,
-    screenshot_path: Optional[str] = None,
+    screenshot_path: str | None = None,
     status: str = "Active",
-    actionability_verdict: Optional[str] = None,
-    cart_balance_verified: Optional[str] = None,
-    ledger_path: Optional[Path] = None
+    actionability_verdict: str | None = None,
+    cart_balance_verified: str | None = None,
+    ledger_path: Path | None = None,
 ) -> AuditReceipt:
     """
     Generates cryptographic digests and appends a tamper-evident audit receipt
@@ -93,7 +75,7 @@ def record_audit_entry(
     target_ledger = ledger_path or LEDGER_FILE
     target_ledger.parent.mkdir(parents=True, exist_ok=True)
 
-    now_utc = datetime.now(timezone.utc).isoformat()
+    now_utc = datetime.now(UTC).isoformat()
     dom_hash = compute_sha256_text(dom_text)
 
     shot_hash = None
@@ -109,7 +91,7 @@ def record_audit_entry(
         sha256_screenshot=shot_hash,
         actionability_verdict=actionability_verdict,
         cart_balance_verified=cart_balance_verified,
-        status_assigned=status
+        status_assigned=status,
     )
 
     with open(target_ledger, "a", encoding="utf-8") as f:
@@ -118,32 +100,28 @@ def record_audit_entry(
     return receipt
 
 
-def read_audit_entries(
-    limit: int = 100,
-    ledger_path: Optional[Path] = None
-) -> List[AuditReceipt]:
+def read_audit_entries(limit: int = 100, ledger_path: Path | None = None) -> list[AuditReceipt]:
     """Reads the most recent audit receipts from the append-only JSONL ledger."""
     target_ledger = ledger_path or LEDGER_FILE
     if not target_ledger.exists():
         return []
 
-    entries: List[AuditReceipt] = []
-    with open(target_ledger, "r", encoding="utf-8") as f:
+    entries: list[AuditReceipt] = []
+    with open(target_ledger, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
                 try:
                     data = json.loads(line)
                     entries.append(AuditReceipt(**data))
-                except Exception:
+                except (json.JSONDecodeError, ValueError, TypeError) as parse_err:
+                    logger.debug("Skipping invalid audit receipt line: %s", parse_err)
                     continue
 
     return entries[-limit:]
 
 
-def verify_ledger_integrity(
-    ledger_path: Optional[Path] = None
-) -> Dict[str, Any]:
+def verify_ledger_integrity(ledger_path: Path | None = None) -> dict[str, Any]:
     """
     Verifies that all entries in the ledger have valid SHA-256 format
     and that referenced screenshots still match their recorded digests.
@@ -163,16 +141,13 @@ def verify_ledger_integrity(
         "total_receipts": total,
         "valid_dom_hashes": valid_hashes,
         "valid_screenshot_hashes": screenshot_matches,
-        "integrity_rate": 1.0 if total == 0 else valid_hashes / total
+        "integrity_rate": 1.0 if total == 0 else valid_hashes / total,
     }
 
 
 def compact_audit_log(
-    ledger_path: Optional[Path] = None,
-    archive_path: Optional[Path] = None,
-    keep_recent: int = 500,
-    archive_gz: bool = True
-) -> Dict[str, Any]:
+    ledger_path: Path | None = None, archive_path: Path | None = None, keep_recent: int = 500, archive_gz: bool = True
+) -> dict[str, Any]:
     """
     Compacts the audit ledger:
     1. Retains the most recent `keep_recent` entries verbatim in data/audit_log.jsonl.
@@ -180,8 +155,8 @@ def compact_audit_log(
     3. Atomically rewrites data/audit_log.jsonl.
     """
     import gzip
-    import tempfile
     import os
+    import tempfile
 
     target_ledger = Path(ledger_path) if ledger_path else LEDGER_FILE
     target_archive = Path(archive_path) if archive_path else (target_ledger.parent / "audit_log_archive.jsonl.gz")
@@ -189,8 +164,8 @@ def compact_audit_log(
     if not target_ledger.exists():
         return {"total_before": 0, "retained": 0, "archived": 0}
 
-    lines: List[str] = []
-    with open(target_ledger, "r", encoding="utf-8") as f:
+    lines: list[str] = []
+    with open(target_ledger, encoding="utf-8") as f:
         for line in f:
             stripped = line.strip()
             if stripped:
@@ -212,35 +187,29 @@ def compact_audit_log(
                 gz.write(item + "\n")
 
     # Atomically rewrite target_ledger with retained lines
-    temp_file = tempfile.NamedTemporaryFile(
-        mode="w",
-        delete=False,
-        dir=str(target_ledger.parent),
-        prefix=f".{target_ledger.name}.",
-        suffix=".tmp",
-        encoding="utf-8"
-    )
-    temp_path = Path(temp_file.name)
     try:
-        for item in to_retain:
-            temp_file.write(item + "\n")
-        temp_file.flush()
-        temp_file.close()
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            delete=False,
+            dir=str(target_ledger.parent),
+            prefix=f".{target_ledger.name}.",
+            suffix=".tmp",
+            encoding="utf-8",
+        ) as temp_file:
+            temp_path = Path(temp_file.name)
+            for item in to_retain:
+                temp_file.write(item + "\n")
+            temp_file.flush()
         os.replace(temp_path, target_ledger)
     finally:
-        if temp_path.exists():
+        if "temp_path" in locals() and temp_path.exists():
             try:
                 temp_path.unlink()
-            except Exception:
-                pass
+            except OSError as unlink_err:
+                logger.debug("Failed unlinking temp ledger file: %s", unlink_err)
 
     logger.info(
         f"Compacted audit ledger: {total_count} -> {len(to_retain)} entries "
         f"({len(to_archive)} archived to {target_archive.name})."
     )
-    return {
-        "total_before": total_count,
-        "retained": len(to_retain),
-        "archived": len(to_archive)
-    }
-
+    return {"total_before": total_count, "retained": len(to_retain), "archived": len(to_archive)}

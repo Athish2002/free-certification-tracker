@@ -35,9 +35,7 @@ SCREENSHOTS_DIR = ROOT_DIR / "docs" / "screenshots"
 
 
 def apply_self_healing(
-    offer: dict[str, Any],
-    inspection_res: dict[str, Any],
-    proof_path: str | None = None
+    offer: dict[str, Any], inspection_res: dict[str, Any], proof_path: str | None = None
 ) -> dict[str, Any]:
     """
     Self-Healing Recovery & Flapping Status Hysteresis Engine:
@@ -50,22 +48,21 @@ def apply_self_healing(
 
     insp_vp = inspection_res.get("visual_proof") if isinstance(inspection_res.get("visual_proof"), dict) else {}
     zero_dollar = inspection_res.get(
-        "zero_dollar_confirmed",
-        insp_vp.get("zero_dollar_confirmed", True if new_status == "Active" else False)
+        "zero_dollar_confirmed", insp_vp.get("zero_dollar_confirmed", new_status == "Active")
     )
-    maintenance = inspection_res.get(
-        "maintenance_detected",
-        insp_vp.get("maintenance_detected", False)
-    )
-    paid_catalog = inspection_res.get(
-        "paid_catalog_detected",
-        insp_vp.get("paid_catalog_detected", False)
-    )
+    maintenance = inspection_res.get("maintenance_detected", insp_vp.get("maintenance_detected", False))
+    paid_catalog = inspection_res.get("paid_catalog_detected", insp_vp.get("paid_catalog_detected", False))
     reason = inspection_res.get("reason", "")
     http_status = inspection_res.get("http_status", 200)
 
     triage_statuses = ["Review Needed", "Registrations Closed", "Broken Link", "Expired"]
-    if old_status in triage_statuses and new_status == "Active" and zero_dollar and not maintenance and not paid_catalog:
+    if (
+        old_status in triage_statuses
+        and new_status == "Active"
+        and zero_dollar
+        and not maintenance
+        and not paid_catalog
+    ):
         now_iso = datetime.now(UTC).isoformat()
         today = datetime.now(UTC).strftime("%Y-%m-%d")
         offer_id = updated.get("id", "healed-offer")
@@ -111,27 +108,35 @@ def apply_self_healing(
             f"'{old_status}' to 'Active'. Fresh visual proof attached at {shot_path}."
         )
     elif new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed", "Server Error"]:
-        is_hard_closure = (
-            new_status in ["Registrations Closed", "Expired"]
-            or any(pat.lower() in reason.lower() for pat in REGISTRATION_CLOSED_PATTERNS + COUPON_EXPIRED_PATTERNS + CAPACITY_PATTERNS)
+        is_hard_closure = new_status in ["Registrations Closed", "Expired"] or any(
+            pat.lower() in reason.lower()
+            for pat in REGISTRATION_CLOSED_PATTERNS + COUPON_EXPIRED_PATTERNS + CAPACITY_PATTERNS
         )
 
         is_transient = (
             maintenance
             or (isinstance(http_status, int) and 500 <= http_status <= 599)
-            or "500" in reason or "502" in reason or "503" in reason or "504" in reason
+            or "500" in reason
+            or "502" in reason
+            or "503" in reason
+            or "504" in reason
             or "timeout" in reason.lower()
             or "connection" in reason.lower()
             or "maintenance" in reason.lower()
             or new_status == "Server Error"
-            or (new_status == "Review Needed" and ("rate limit" in reason.lower() or "bot protect" in reason.lower() or "gateway" in reason.lower()))
+            or (
+                new_status == "Review Needed"
+                and ("rate limit" in reason.lower() or "bot protect" in reason.lower() or "gateway" in reason.lower())
+            )
         )
 
         consecutive_transient = updated.get("consecutive_transient_failures", updated.get("consecutive_failures", 0))
 
         if is_hard_closure:
             # Fast-path: immediately demote on Strike 1
-            updated["status"] = new_status if new_status in ["Registrations Closed", "Expired"] else "Registrations Closed"
+            updated["status"] = (
+                new_status if new_status in ["Registrations Closed", "Expired"] else "Registrations Closed"
+            )
             updated["consecutive_transient_failures"] = 0
             updated["consecutive_failures"] = 0
             updated.pop("in_grace_period", None)
@@ -144,9 +149,15 @@ def apply_self_healing(
             if consecutive_transient < 2:
                 updated["status"] = "Active"
                 updated["in_grace_period"] = True
-                warning_note = f"Active (Warning: Transient Outage Strike 1): {reason}" if reason else "Active (Warning: Transient Outage Strike 1)"
+                warning_note = (
+                    f"Active (Warning: Transient Outage Strike 1): {reason}"
+                    if reason
+                    else "Active (Warning: Transient Outage Strike 1)"
+                )
                 updated["inspection_notes"] = warning_note
-                logger.warning("Active (Warning: Transient Outage Strike 1) for '%s': %s", updated.get("title"), warning_note)
+                logger.warning(
+                    "Active (Warning: Transient Outage Strike 1) for '%s': %s", updated.get("title"), warning_note
+                )
             else:
                 updated["status"] = "Broken Link" if http_status in [404, 410] else "Review Needed"
                 updated.pop("in_grace_period", None)
@@ -161,12 +172,18 @@ def apply_self_healing(
                     if consecutive_transient < 2:
                         updated["status"] = "Active"
                         updated["in_grace_period"] = True
-                        warning_note = f"Active (Warning: Transient Outage Strike 1): {reason}" if reason else "Active (Warning: Transient Outage Strike 1)"
+                        warning_note = (
+                            f"Active (Warning: Transient Outage Strike 1): {reason}"
+                            if reason
+                            else "Active (Warning: Transient Outage Strike 1)"
+                        )
                         updated["inspection_notes"] = warning_note
                     else:
                         updated["status"] = "Review Needed"
                         updated.pop("in_grace_period", None)
-                        updated["inspection_notes"] = reason or "Inspection did not confirm affirmative zero-dollar terms"
+                        updated["inspection_notes"] = (
+                            reason or "Inspection did not confirm affirmative zero-dollar terms"
+                        )
                 else:
                     updated["status"] = "Review Needed"
                     updated["inspection_notes"] = reason or "Inspection did not confirm affirmative zero-dollar terms"
@@ -194,6 +211,7 @@ def normalize_url(url: str) -> str:
         return ""
     try:
         from urllib.parse import urlparse
+
         p = urlparse(url.strip())
         netloc = p.netloc.lower()
         netloc = netloc.removeprefix("www.")
@@ -206,10 +224,7 @@ def normalize_url(url: str) -> str:
         return url.strip().rstrip("/")
 
 
-def ingest_and_vet_candidates(
-    candidates_file: Path | None = None,
-    offers_file: Path | None = None
-) -> tuple[int, int]:
+def ingest_and_vet_candidates(candidates_file: Path | None = None, offers_file: Path | None = None) -> tuple[int, int]:
     """
     Autonomous Candidate Vetting Loop:
     1. Loads discovered community leads from data/candidates.json.
@@ -218,18 +233,18 @@ def ingest_and_vet_candidates(
        to an Offer in data/offers.json with appropriate credential_tier (proctored_exam vs skill_badge_lab).
     4. If lead fails verification (maintenance page, paid catalog, soft-404, or unverified),
        rejects it and logs the audit reason directly in data/candidates.json.
-       
+
     Returns: (promoted_count, rejected_count)
     """
     c_file = candidates_file or CANDIDATES_FILE
     o_file = offers_file or DATA_FILE
-    
+
     if not c_file.exists() or c_file.stat().st_size == 0:
         logger.info(f"Empty or missing candidates file at {c_file}. Skipping candidate vetting.")
         return 0, 0
-        
+
     try:
-        with open(c_file, "r", encoding="utf-8") as f:
+        with open(c_file, encoding="utf-8") as f:
             cand_data = json.load(f)
     except (json.JSONDecodeError, ValueError) as err:
         logger.error(f"Corrupted candidates file at {c_file}: {err}")
@@ -238,30 +253,30 @@ def ingest_and_vet_candidates(
     if not isinstance(cand_data, dict):
         logger.warning(f"Invalid format in candidates file {c_file}: expected JSON object.")
         return 0, 0
-        
+
     leads = cand_data.get("leads", [])
     if not leads or not isinstance(leads, list):
         logger.info("No candidate leads present to vet.")
         return 0, 0
-        
+
     offers_data = {"offers": []}
     if o_file.exists():
-        with open(o_file, "r", encoding="utf-8") as f:
+        with open(o_file, encoding="utf-8") as f:
             offers_data = json.load(f)
-            
+
     existing_urls = set()
     for o in offers_data.get("offers", []):
         for u in [o.get("url"), o.get("verified_vendor_url"), o.get("direct_verified_url")]:
             if u:
                 existing_urls.add(u.rstrip("/"))
                 existing_urls.add(normalize_url(u))
-    
+
     logger.info(f"Running autonomous candidate vetting loop on {len(leads)} community leads...")
     promoted_offers, audit_log = vet_candidates(leads, existing_urls)
-    
+
     promoted_count = len(promoted_offers)
     rejected_count = len(audit_log) - promoted_count
-    
+
     # Ingest promoted offers into offers database with idempotency check
     if promoted_count > 0:
         logger.info(f"Promoting {promoted_count} verified zero-dollar certification offers to {o_file.name}...")
@@ -278,7 +293,7 @@ def ingest_and_vet_candidates(
             existing_offer_ids.add(new_offer.get("id"))
             seen_promoted.add(norm_u)
             actually_promoted += 1
-            
+
         now_iso = datetime.now(UTC).isoformat()
         if "last_updated" not in offers_data:
             offers_data["last_updated"] = now_iso
@@ -288,15 +303,15 @@ def ingest_and_vet_candidates(
 
         schema_to_validate = SCHEMA_FILE if SCHEMA_FILE.exists() else None
         atomic_write_json(o_file, offers_data, schema_path=schema_to_validate)
-        
+
     # Persist updated vetting status and audit records to candidates.json
     cand_data["total_candidates"] = len(leads)
     cand_data["last_vetted"] = datetime.now(UTC).isoformat()
     cand_data["vetted_promoted_count"] = promoted_count
     cand_data["vetted_rejected_count"] = rejected_count
-    
+
     atomic_write_json(c_file, cand_data, schema_path=None)
-    
+
     logger.info(
         f"Candidate vetting finished: {promoted_count} promoted to Active, "
         f"{rejected_count} rejected with logged audit reasons."
@@ -309,15 +324,17 @@ def run_self_healing_refresh(use_headless: bool = True) -> tuple[int, int]:
     Executes the scheduled site inspection pass, monitoring for portal recovery
     and executing self-healing visual proof capture.
     """
-    logger.info("Running headless Playwright DOM inspection, capacity checks, and self-healing engine across tracked URLs...")
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    logger.info(
+        "Running headless Playwright DOM inspection, capacity checks, and self-healing engine across tracked URLs..."
+    )
+    with open(DATA_FILE, encoding="utf-8") as f:
         initial_data = json.load(f)
-        
+
     previous_statuses = {o.get("id"): o.get("status") for o in initial_data.get("offers", [])}
-    
+
     # Run the comprehensive inspection suite
     updated_offers = run_inspection(use_headless=use_headless)
-    
+
     # Audit for self-healed transitions
     healed_count = 0
     total_active = 0
@@ -325,21 +342,18 @@ def run_self_healing_refresh(use_headless: bool = True) -> tuple[int, int]:
         oid = offer.get("id")
         old_status = previous_statuses.get(oid, "Active")
         cur_status = offer.get("status")
-        
+
         if cur_status == "Active":
             total_active += 1
             if old_status in ["Review Needed", "Registrations Closed", "Broken Link", "Expired"]:
                 healed_count += 1
                 logger.warning(f"Self-healed offer confirmed: {offer.get('title')} ({old_status} -> Active)")
-                
+
     return healed_count, total_active
 
 
 def run_pipeline(
-    dry_run: bool = False,
-    skip_leads: bool = False,
-    skip_inspection: bool = False,
-    vet_only: bool = False
+    dry_run: bool = False, skip_leads: bool = False, skip_inspection: bool = False, vet_only: bool = False
 ) -> None:
     """
     Executes the complete CertPulse Autonomous Pipeline:
@@ -357,6 +371,7 @@ def run_pipeline(
     if not skip_leads and not dry_run:
         logger.info("Scanning public community feeds and vendor blogs for new certification vouchers...")
         from src.collector import fetch_reddit_leads, fetch_vendor_blog_leads
+
         leads = fetch_reddit_leads()
         try:
             blog_leads = fetch_vendor_blog_leads()
@@ -371,10 +386,10 @@ def run_pipeline(
                 json.dump({"total_candidates": len(leads), "leads": leads}, f, indent=2)
 
     # 2. Autonomous Candidate Vetting Loop
-    promoted_count, rejected_count = 0, 0
+    promoted_count, _rejected_count = 0, 0
     if not dry_run:
         logger.info("Evaluating candidate leads against dual visual ground-truth gate...")
-        promoted_count, rejected_count = ingest_and_vet_candidates()
+        promoted_count, _rejected_count = ingest_and_vet_candidates()
 
     if vet_only:
         logger.info("Vet-only requested. Skipping full site inspection and build.")
@@ -394,8 +409,9 @@ def run_pipeline(
         import concurrent.futures
 
         from src.truth_oracle import audit_and_enrich_offers
+
         if DATA_FILE.exists():
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
+            with open(DATA_FILE, encoding="utf-8") as f:
                 o_data = json.load(f)
             initial_offers = o_data.get("offers", [])
             corrections_applied = 0
@@ -416,16 +432,24 @@ def run_pipeline(
             def _has_substantive_changes(old_list, new_list):
                 if len(old_list) != len(new_list):
                     return True
-                keys = ("id", "status", "url", "direct_verified_url", "verified_vendor_url", "price", "inspection_notes")
+                keys = (
+                    "id",
+                    "status",
+                    "url",
+                    "direct_verified_url",
+                    "verified_vendor_url",
+                    "price",
+                    "inspection_notes",
+                )
                 old_map = {o["id"]: {k: o.get(k) for k in keys} for o in old_list if "id" in o}
                 new_map = {o["id"]: {k: o.get(k) for k in keys} for o in new_list if "id" in o}
                 return old_map != new_map
 
             has_changes = (
-                promoted_count > 0 or
-                healed_count > 0 or
-                corrections_applied > 0 or
-                _has_substantive_changes(initial_offers, o_data.get("offers", []))
+                promoted_count > 0
+                or healed_count > 0
+                or corrections_applied > 0
+                or _has_substantive_changes(initial_offers, o_data.get("offers", []))
             )
 
             if has_changes:
@@ -446,6 +470,7 @@ def run_pipeline(
     if not dry_run:
         try:
             from src.audit_ledger import compact_audit_log
+
             compact_audit_log()
         except Exception as cl_err:
             logger.warning(f"Audit log compaction failed: {cl_err}")
@@ -454,6 +479,7 @@ def run_pipeline(
     if not dry_run:
         logger.info("Ingesting verified engineering and research dispatches...")
         from src.news_collector import update_news_feed
+
         update_news_feed()
     else:
         logger.info("[DRY RUN] Skipping news feed update.")
@@ -481,35 +507,30 @@ Examples:
   python -m src.main --vet-only         # Only execute autonomous candidate lead vetting
   python -m src.main --skip-leads       # Skip scraping Reddit feeds, run vetting on existing
   python -m src.main --skip-inspection  # Ingest feeds and compile without re-inspecting URLs
-        """
+        """,
     )
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Simulate execution without mutating JSON datasets, screenshots, or dashboard."
+        help="Simulate execution without mutating JSON datasets, screenshots, or dashboard.",
     )
     parser.add_argument(
         "--skip-leads",
         action="store_true",
-        help="Skip fetching new Reddit Atom leads; process existing candidates only."
+        help="Skip fetching new Reddit Atom leads; process existing candidates only.",
     )
     parser.add_argument(
-        "--skip-inspection",
-        action="store_true",
-        help="Skip headless Playwright DOM inspection of existing offers."
+        "--skip-inspection", action="store_true", help="Skip headless Playwright DOM inspection of existing offers."
     )
     parser.add_argument(
         "--vet-only",
         action="store_true",
-        help="Only run autonomous candidate lead vetting loop, skipping site inspection."
+        help="Only run autonomous candidate lead vetting loop, skipping site inspection.",
     )
 
     args = parser.parse_args()
     run_pipeline(
-        dry_run=args.dry_run,
-        skip_leads=args.skip_leads,
-        skip_inspection=args.skip_inspection,
-        vet_only=args.vet_only
+        dry_run=args.dry_run, skip_leads=args.skip_leads, skip_inspection=args.skip_inspection, vet_only=args.vet_only
     )
 
 

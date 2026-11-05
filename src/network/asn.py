@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import datetime
 import ipaddress
+import logging
 import re
 import socket
 from typing import Any
@@ -21,6 +22,7 @@ except ImportError:
     PLATFORM_DOMAINS = {}
     ACCREDITED_PARTNER_DOMAINS = []
 
+logger = logging.getLogger(__name__)
 
 # ==============================================================================
 # Canonical Constants & Dictionaries
@@ -146,17 +148,42 @@ DOH_ENDPOINTS: list[str] = [
 ]
 
 GENERIC_CORP_TOKENS: set[str] = {
-    "corporation", "corp", "inc", "inc.", "llc", "ltd", "limited",
-    "gmbh", "technologies", "technology", "systems", "system",
-    "network", "networks", "services", "service", "company", "co",
-    "the", "and", "or", "/", "&", "-", "corporate", "group", "sas",
-    "com", "enterprise",
+    "corporation",
+    "corp",
+    "inc",
+    "inc.",
+    "llc",
+    "ltd",
+    "limited",
+    "gmbh",
+    "technologies",
+    "technology",
+    "systems",
+    "system",
+    "network",
+    "networks",
+    "services",
+    "service",
+    "company",
+    "co",
+    "the",
+    "and",
+    "or",
+    "/",
+    "&",
+    "-",
+    "corporate",
+    "group",
+    "sas",
+    "com",
+    "enterprise",
 }
 
 
 # ==============================================================================
 # Helper Functions
 # ==============================================================================
+
 
 def clean_hostname(url_or_host: str) -> str:
     """Extracts lowercase FQDN hostname or IPv6/IPv4 address without protocol, userinfo, port, path, or query."""
@@ -172,10 +199,7 @@ def clean_hostname(url_or_host: str) -> str:
     except ValueError:
         pass
 
-    if "://" not in target:
-        target_with_scheme = f"http://{target}"
-    else:
-        target_with_scheme = target
+    target_with_scheme = f"http://{target}" if "://" not in target else target
 
     try:
         parsed = urlparse(target_with_scheme)
@@ -218,6 +242,7 @@ def is_whitelisted_domain(hostname: str, platform: str = "") -> bool:
 # ==============================================================================
 # ASN / BGP Route Origin Verifier
 # ==============================================================================
+
 
 class ASNVerificationResult:
     """Result of BGP route origin and ASN verification."""
@@ -358,7 +383,8 @@ class ASNRouteVerifier:
                                     resolved_ips.append(ip_candidate)
                 if resolved_ips:
                     return list(dict.fromkeys(resolved_ips))
-            except Exception:
+            except Exception as doh_err:
+                logger.debug("DoH IP resolution probe fallback: %s", doh_err)
                 continue
 
         try:
@@ -420,7 +446,8 @@ class ASNRouteVerifier:
                         "registry": parts[3] if len(parts) > 3 else None,
                         "allocated": parts[4] if len(parts) > 4 else None,
                     }
-            except Exception:
+            except Exception as doh_err:
+                logger.debug("DoH IP resolution probe fallback: %s", doh_err)
                 continue
 
         return None
@@ -443,7 +470,8 @@ class ASNRouteVerifier:
                             parts = [p.strip() for p in raw_txt.split("|")]
                             if len(parts) >= 5 and parts[4]:
                                 return parts[4].strip()
-            except Exception:
+            except Exception as doh_err:
+                logger.debug("DoH IP resolution probe fallback: %s", doh_err)
                 continue
         return None
 
@@ -534,10 +562,7 @@ class ASNRouteVerifier:
 
         now_utc = datetime.datetime.now(datetime.UTC).isoformat()
 
-        if ip_override:
-            ips = [ip_override]
-        else:
-            ips = self.resolve_ip(host)
+        ips = [ip_override] if ip_override else self.resolve_ip(host)
 
         if not ips:
             if is_whitelisted_domain(host, platform):
@@ -614,7 +639,8 @@ class ASNRouteVerifier:
                         v_name_clean = v_name.lower().replace(",", " ").replace("/", " ").replace(".", " ")
                         tokens = [tok.strip(".,/-") for tok in v_name_clean.split()]
                         distinctive = [
-                            tok for tok in tokens
+                            tok
+                            for tok in tokens
                             if tok not in GENERIC_CORP_TOKENS and (len(tok) >= 3 or tok in {"ibm", "aws", "vue"})
                         ]
                         phrase = " ".join(distinctive)

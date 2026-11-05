@@ -8,7 +8,7 @@ import base64
 import json
 import logging
 import re
-from typing import Any, Dict, Optional
+from typing import Any
 
 from src.vlm.models import VLM_SYSTEM_INSTRUCTION
 
@@ -33,8 +33,8 @@ def build_vlm_user_prompt(
     title: str,
     platform: str,
     url: str,
-    ocr_snippet: Optional[str] = None,
-    badge_phash_matched: bool = False
+    ocr_snippet: str | None = None,
+    badge_phash_matched: bool = False,
 ) -> str:
     """Builds structured contextual user prompt with explicit boundary isolation."""
     prompt = (
@@ -66,8 +66,8 @@ class VLMProviderAdapters:
         screenshot_bytes: bytes,
         user_prompt: str,
         system_instruction: str = VLM_SYSTEM_INSTRUCTION,
-        model: str = "claude-3-5-sonnet-20241022"
-    ) -> Dict[str, Any]:
+        model: str = "claude-3-5-sonnet-20241022",
+    ) -> dict[str, Any]:
         """Constructs Anthropic Messages API multimodal payload."""
         b64_img = base64.b64encode(screenshot_bytes).decode("utf-8")
         return {
@@ -79,18 +79,11 @@ class VLMProviderAdapters:
                 {
                     "role": "user",
                     "content": [
-                        {
-                            "type": "image",
-                            "source": {
-                                "type": "base64",
-                                "media_type": "image/png",
-                                "data": b64_img
-                            }
-                        },
-                        {"type": "text", "text": user_prompt}
-                    ]
+                        {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": b64_img}},
+                        {"type": "text", "text": user_prompt},
+                    ],
                 }
-            ]
+            ],
         }
 
     @staticmethod
@@ -98,8 +91,8 @@ class VLMProviderAdapters:
         screenshot_bytes: bytes,
         user_prompt: str,
         system_instruction: str = VLM_SYSTEM_INSTRUCTION,
-        model: str = "gpt-4o"
-    ) -> Dict[str, Any]:
+        model: str = "gpt-4o",
+    ) -> dict[str, Any]:
         """Constructs OpenAI Chat Completions multimodal payload with JSON object mode."""
         b64_img = base64.b64encode(screenshot_bytes).decode("utf-8")
         return {
@@ -111,17 +104,14 @@ class VLMProviderAdapters:
                     "content": [
                         {"type": "text", "text": user_prompt},
                         {
-                            "image_url": {
-                                "url": f"data:image/png;base64,{b64_img}",
-                                "detail": "high"
-                            },
-                            "type": "image_url"
-                        }
-                    ]
-                }
+                            "image_url": {"url": f"data:image/png;base64,{b64_img}", "detail": "high"},
+                            "type": "image_url",
+                        },
+                    ],
+                },
             ],
             "response_format": {"type": "json_object"},
-            "temperature": 0.0
+            "temperature": 0.0,
         }
 
     @staticmethod
@@ -129,34 +119,19 @@ class VLMProviderAdapters:
         screenshot_bytes: bytes,
         user_prompt: str,
         system_instruction: str = VLM_SYSTEM_INSTRUCTION,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Constructs Google Gemini Generative Language API payload with isolated system instruction."""
         b64_img = base64.b64encode(screenshot_bytes).decode("utf-8")
         return {
-            "system_instruction": {
-                "parts": [{"text": system_instruction}]
-            },
+            "system_instruction": {"parts": [{"text": system_instruction}]},
             "contents": [
-                {
-                    "parts": [
-                        {"text": user_prompt},
-                        {
-                            "inline_data": {
-                                "data": b64_img,
-                                "mime_type": "image/png"
-                            }
-                        }
-                    ]
-                }
+                {"parts": [{"text": user_prompt}, {"inline_data": {"data": b64_img, "mime_type": "image/png"}}]}
             ],
-            "generationConfig": {
-                "response_mime_type": "application/json",
-                "temperature": 0.0
-            }
+            "generationConfig": {"response_mime_type": "application/json", "temperature": 0.0},
         }
 
     @staticmethod
-    def clean_json_response(raw_text: str) -> Dict[str, Any]:
+    def clean_json_response(raw_text: str) -> dict[str, Any]:
         """
         Sanitizes model output by stripping markdown fences, extracting outermost JSON
         braces, and handling conversational preamble/postamble commentary.
@@ -178,8 +153,8 @@ class VLMProviderAdapters:
                             res = json.loads(m.group(1).strip())
                             if isinstance(res, dict):
                                 return res
-                        except Exception:
-                            pass
+                        except (json.JSONDecodeError, ValueError, TypeError) as sub_err:
+                            logger.debug("Balanced JSON regex candidate parse failed: %s", sub_err)
 
         # 2. Extract outermost balanced JSON object {...}
         json_match = re.search(r"(\{[\s\S]*\})", text)
@@ -188,8 +163,8 @@ class VLMProviderAdapters:
                 res = json.loads(json_match.group(1).strip())
                 if isinstance(res, dict):
                     return res
-            except Exception:
-                pass
+            except (json.JSONDecodeError, ValueError, TypeError) as fb_err:
+                logger.debug("Direct JSON load fallback failed: %s", fb_err)
 
         # 3. Fallback direct load
         res = json.loads(text)

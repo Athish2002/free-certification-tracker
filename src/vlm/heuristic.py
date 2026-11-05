@@ -7,23 +7,40 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 from src.vlm.models import RegistrationStatus, VLMSemanticVerdict
 
 logger = logging.getLogger("certpulse.vlm.heuristic")
 
 KNOWN_BRANDS = [
-    "Microsoft", "Azure", "Amazon Web Services", "AWS", "Google Cloud", "GCP",
-    "Oracle", "Oracle Cloud", "Cisco", "Linux Foundation", "CNCF", "ISC2",
-    "Juniper Networks", "Databricks", "Postman", "Qualys", "Snowflake",
-    "MongoDB", "GitHub", "Red Hat", "HashiCorp"
+    "Microsoft",
+    "Azure",
+    "Amazon Web Services",
+    "AWS",
+    "Google Cloud",
+    "GCP",
+    "Oracle",
+    "Oracle Cloud",
+    "Cisco",
+    "Linux Foundation",
+    "CNCF",
+    "ISC2",
+    "Juniper Networks",
+    "Databricks",
+    "Postman",
+    "Qualys",
+    "Snowflake",
+    "MongoDB",
+    "GitHub",
+    "Red Hat",
+    "HashiCorp",
 ]
 
 
-def extract_detected_brand(text: str) -> Optional[str]:
+def extract_detected_brand(text: str) -> str | None:
     """Extracts prominent cloud vendor brand from content."""
     text_lower = text.lower()
     for brand in KNOWN_BRANDS:
@@ -32,11 +49,18 @@ def extract_detected_brand(text: str) -> Optional[str]:
     return None
 
 
-def extract_cta(text: str) -> Optional[str]:
+def extract_cta(text: str) -> str | None:
     """Extracts call to action from text."""
     ctas = [
-        "Register Now", "Claim Voucher", "Start Challenge", "Enroll for Free",
-        "Join Waitlist", "Schedule Exam", "Add to Cart", "Buy Exam", "Sign In"
+        "Register Now",
+        "Claim Voucher",
+        "Start Challenge",
+        "Enroll for Free",
+        "Join Waitlist",
+        "Schedule Exam",
+        "Add to Cart",
+        "Buy Exam",
+        "Sign In",
     ]
     for cta in ctas:
         if cta.lower() in text.lower():
@@ -49,13 +73,13 @@ def evaluate_visual_semantics_heuristic(
     url: str = "",
     dom_text: str = "",
     dom_title: str = "",
-    screenshot_path: Optional[str] = None,
-    screenshot_bytes: Optional[bytes] = None,
-    ocr_text: Optional[str] = None,
+    screenshot_path: str | None = None,
+    screenshot_bytes: bytes | None = None,
+    ocr_text: str | None = None,
     badge_phash_matched: bool = False,
     is_vendor_domain: bool = True,
     platform: str = "",
-    offer_data: Optional[Dict[str, Any]] = None
+    offer_data: dict[str, Any] | None = None,
 ) -> VLMSemanticVerdict:
     """
     Deterministic Heuristic Fallback Evaluator.
@@ -63,23 +87,23 @@ def evaluate_visual_semantics_heuristic(
     and authoritative truth policies to construct a 100% compliant VLMSemanticVerdict.
     Guarantees 100% green test passes offline without external VLM API keys.
     """
+    from src.dom_inspector import (
+        AFFIRMATIVE_OFFER_SIGNALS,
+        CAPACITY_PATTERNS,
+        CONFIRMED_ZERO_DOLLAR_CART,
+        COUPON_EXPIRED_PATTERNS,
+        DEAD_END_PATTERNS,
+        MAINTENANCE_PATTERNS,
+        PAID_CATALOG_PATTERNS,
+        REGISTRATION_CLOSED_PATTERNS,
+        ZERO_DOLLAR_SIGNALS,
+    )
     from src.truth_oracle import (
-        TRUTH_POLICY_REGISTRY,
-        POLICY_PARTIAL_DISCOUNT_COPAY,
         POLICY_ANNUAL_WINDOW_CLOSED,
         POLICY_HISTORICAL_EVENT_WAVE,
+        POLICY_PARTIAL_DISCOUNT_COPAY,
         POLICY_RETIRED_CREDENTIAL,
-    )
-    from src.dom_inspector import (
-        MAINTENANCE_PATTERNS,
-        DEAD_END_PATTERNS,
-        CAPACITY_PATTERNS,
-        COUPON_EXPIRED_PATTERNS,
-        REGISTRATION_CLOSED_PATTERNS,
-        PAID_CATALOG_PATTERNS,
-        ZERO_DOLLAR_SIGNALS,
-        CONFIRMED_ZERO_DOLLAR_CART,
-        AFFIRMATIVE_OFFER_SIGNALS,
+        TRUTH_POLICY_REGISTRY,
     )
 
     ocr_snippet = ocr_text.strip()[:500] if ocr_text else None
@@ -89,6 +113,7 @@ def evaluate_visual_semantics_heuristic(
     is_official_vendor = is_vendor_domain or badge_phash_matched
     if not is_official_vendor and url:
         from urllib.parse import urlparse
+
         host = urlparse(url).netloc.lower()
         if any(v in host for v in ["microsoft", "amazon", "google", "oracle", "cisco", "linuxfoundation", "isc2"]):
             is_official_vendor = True
@@ -173,7 +198,9 @@ def evaluate_visual_semantics_heuristic(
             primary_evidence = "Closure Invariant: Promo code expired or campaign ended."
 
         # E. Paid Commercial Catalog without Zero-Dollar Terms
-        elif any(re.search(pat, combined_content) for pat in PAID_CATALOG_PATTERNS) and not any(sig in combined_content for sig in CONFIRMED_ZERO_DOLLAR_CART):
+        elif any(re.search(pat, combined_content) for pat in PAID_CATALOG_PATTERNS) and not any(
+            sig in combined_content for sig in CONFIRMED_ZERO_DOLLAR_CART
+        ):
             has_zero_dollar_waiver = False
             requires_payment_or_copay = True
             fee_match = re.search(r"\$(\d{2,3})(?:\.00)?", combined_content)
@@ -235,5 +262,5 @@ def evaluate_visual_semantics_heuristic(
         detected_call_to_action=detected_cta,
         primary_evidence=primary_evidence,
         model_used="heuristic_fallback",
-        evaluated_at_utc=datetime.now(timezone.utc).isoformat(),
+        evaluated_at_utc=datetime.now(UTC).isoformat(),
     )

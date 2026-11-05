@@ -6,11 +6,10 @@ from __future__ import annotations
 
 import math
 import re
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Literal, Optional
+from datetime import UTC, datetime
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-
 
 # ==============================================================================
 # 1. OCR Data Models & Status Literals
@@ -25,75 +24,59 @@ class OCRResult(BaseModel):
     Structured outcome of the 3-Tier Progressive OCR Engine.
     Strictly type-safe Pydantic V2 model enforcing downstream schema contracts.
     """
+
     model_config = ConfigDict(extra="ignore")
 
-    method: OCRMethod = Field(
-        ...,
-        description="The specific progressive OCR tier that generated this verdict."
-    )
+    method: OCRMethod = Field(..., description="The specific progressive OCR tier that generated this verdict.")
     status: OCRStatus = Field(
         default="success",
-        description="Execution status: success | fallback | empty | error | corrupt_image | decompression_bomb"
+        description="Execution status: success | fallback | empty | error | corrupt_image | decompression_bomb",
     )
-    text: str = Field(
-        default="",
-        description="Complete raw extracted or heuristic text stream."
-    )
+    text: str = Field(default="", description="Complete raw extracted or heuristic text stream.")
     snippet: str = Field(
         default="",
         max_length=500,
-        description="Normalized and truncated text snippet for audit logging and UI display (<= 500 chars)."
+        description="Normalized and truncated text snippet for audit logging and UI display (<= 500 chars).",
     )
-    key_phrases: List[str] = Field(
+    key_phrases: list[str] = Field(
         default_factory=list,
-        description="Domain key phrases detected (zero-dollar, voucher application, maintenance, copay)."
+        description="Domain key phrases detected (zero-dollar, voucher application, maintenance, copay).",
     )
-    voucher_codes: List[str] = Field(
-        default_factory=list,
-        description="Extracted promotional and voucher codes (e.g. 'PROMO100', 'FREE-CERT-2026')."
+    voucher_codes: list[str] = Field(
+        default_factory=list, description="Extracted promotional and voucher codes (e.g. 'PROMO100', 'FREE-CERT-2026')."
     )
     has_zero_dollar_phrase: bool = Field(
         default=False,
-        description="True if affirmative 100% discount, zero-dollar, or free certification terms were detected."
+        description="True if affirmative 100% discount, zero-dollar, or free certification terms were detected.",
     )
     has_voucher_applied: bool = Field(
-        default=False,
-        description="True if coupon/voucher application confirmation was detected."
+        default=False, description="True if coupon/voucher application confirmation was detected."
     )
     has_maintenance_phrase: bool = Field(
-        default=False,
-        description="True if portal downtime or scheduled maintenance language was detected."
+        default=False, description="True if portal downtime or scheduled maintenance language was detected."
     )
     has_copay_phrase: bool = Field(
-        default=False,
-        description="True if partial discount, copay, or administrative booking fee was detected."
+        default=False, description="True if partial discount, copay, or administrative booking fee was detected."
     )
-    copay_amount_usd: Optional[float] = Field(
-        default=None,
-        description="Detected copay or examination fee in USD (e.g. 50.0 for Juniper)."
+    copay_amount_usd: float | None = Field(
+        default=None, description="Detected copay or examination fee in USD (e.g. 50.0 for Juniper)."
     )
     visual_text_present: bool = Field(
-        default=False,
-        description="True if PIL edge analysis confirms high-contrast visual glyphs in the screenshot."
+        default=False, description="True if PIL edge analysis confirms high-contrast visual glyphs in the screenshot."
     )
     edge_density: float = Field(
-        default=0.0,
-        description="Mean edge gradient density computed via PIL ImageFilter.FIND_EDGES."
+        default=0.0, description="Mean edge gradient density computed via PIL ImageFilter.FIND_EDGES."
     )
     contrast_variance: float = Field(
-        default=0.0,
-        description="Grayscale luminance variance computed via PIL ImageStat."
+        default=0.0, description="Grayscale luminance variance computed via PIL ImageStat."
     )
     confidence: float = Field(
         default=0.5,
         ge=0.0,
         le=1.0,
-        description="Confidence rating of text extraction and visual corroboration (0.0 to 1.0)."
+        description="Confidence rating of text extraction and visual corroboration (0.0 to 1.0).",
     )
-    execution_time_ms: float = Field(
-        default=0.0,
-        description="Total processing time in milliseconds."
-    )
+    execution_time_ms: float = Field(default=0.0, description="Total processing time in milliseconds.")
 
 
 # Regex matching promotional voucher codes while filtering common English stopwords
@@ -102,10 +85,21 @@ VOUCHER_CODE_REGEX = re.compile(
 )
 
 VOUCHER_STOPWORDS = {
-    "free", "voucher", "discount", "exam", "wave", "promo", "cert", "code", "offer", "test", "http", "https"
+    "free",
+    "voucher",
+    "discount",
+    "exam",
+    "wave",
+    "promo",
+    "cert",
+    "code",
+    "offer",
+    "test",
+    "http",
+    "https",
 }
 
-KEY_PHRASE_PATTERNS: Dict[str, List[str]] = {
+KEY_PHRASE_PATTERNS: dict[str, list[str]] = {
     "zero_dollar_discount": [
         r"100%\s*(?:discount|off|free)",
         r"free\s+certification\s+exam",
@@ -144,7 +138,7 @@ KEY_PHRASE_PATTERNS: Dict[str, List[str]] = {
         r"administrative\s+fee",
         r"booking\s+fee",
         r"seat\s+fee",
-    ]
+    ],
 }
 
 PRICE_REGEX = re.compile(r"\$(?:0(?:\.00)?|[1-9]\d{0,3}(?:\.\d{2})?)\b")
@@ -163,6 +157,7 @@ class VLMSemanticVerdict(BaseModel):
     Validates whether visual screenshot and DOM confirm an authentic,
     zero-dollar waiver certification opportunity without stealth copays.
     """
+
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     is_official_vendor: bool = Field(
@@ -196,19 +191,19 @@ class VLMSemanticVerdict(BaseModel):
         default=False,
         description="True if official vendor emblem was matched in the screenshot via pHash/dHash.",
     )
-    ocr_text_snippet: Optional[str] = Field(
+    ocr_text_snippet: str | None = Field(
         default=None,
         description="Extracted OCR text snippet from hero viewport or graphical canvas.",
     )
-    detected_brand: Optional[str] = Field(
+    detected_brand: str | None = Field(
         default=None,
         description="Vendor brand or platform visually detected in banner/logo.",
     )
-    detected_call_to_action: Optional[str] = Field(
+    detected_call_to_action: str | None = Field(
         default=None,
         description="Main CTA button text (e.g. 'Claim Free Voucher', 'Register Now').",
     )
-    primary_evidence: Optional[str] = Field(
+    primary_evidence: str | None = Field(
         default=None,
         description="Verbatim text quote from screenshot or DOM corroborating verdict.",
     )
@@ -217,7 +212,7 @@ class VLMSemanticVerdict(BaseModel):
         description="VLM model identifier (e.g. 'claude-3-5-sonnet', 'gpt-4o', 'gemini-2.0-flash', or 'heuristic_fallback').",
     )
     evaluated_at_utc: str = Field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        default_factory=lambda: datetime.now(UTC).isoformat(),
         description="ISO 8601 UTC timestamp of evaluation.",
     )
 

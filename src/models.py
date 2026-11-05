@@ -55,11 +55,13 @@ VisualProofStatus = Literal["verified", "missing", "failed", "placeholder"]
 
 # --- 2. Visual Proof Schema ---
 
+
 class VisualProof(BaseModel):
     """
     Metadata for visual screenshot proof captured via Headless Playwright.
     Enforces dual visual ground-truth gating requirements (R2, R3).
     """
+
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     screenshot_path: str = Field(
@@ -132,8 +134,10 @@ class VisualProof(BaseModel):
 
 # --- 3. Structured Redemption Guide Schema ---
 
+
 class RedemptionGuide(BaseModel):
     """Structured zero-dollar checkout instructions and portal details."""
+
     model_config = ConfigDict(extra="ignore")
 
     portal_name: str
@@ -153,18 +157,22 @@ class RedemptionGuide(BaseModel):
 
 # --- 3B. Network Provenance & Temporal Longevity Schemas (Tier 1 & Tier 2) ---
 
+
 class NetworkProvenance(BaseModel):
     """
     Tier 1 Network Provenance & Cryptographic Verification Payload.
     Enforces ASN BGP route origin, TLS X.509 SCT Certificate Transparency,
     and DNSSEC/CAA domain integrity invariants.
     """
+
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     asn: int | None = Field(default=None, description="Autonomous System Number (e.g. 8075 for Microsoft)")
     asn_org: str | None = Field(default=None, description="BGP route origin organization handle")
     ip_address: str | None = Field(default=None, description="Resolved IPv4/IPv6 host address")
-    is_vendor_infra: bool = Field(default=True, description="True if IP maps to authorized vendor ASN or enterprise CDN")
+    is_vendor_infra: bool = Field(
+        default=True, description="True if IP maps to authorized vendor ASN or enterprise CDN"
+    )
     tls_ct_verified: bool = Field(default=True, description="True if certificate carries valid embedded RFC 6962 SCTs")
     sct_count: int = Field(default=0, ge=0, description="Count of embedded Signed Certificate Timestamps")
     dnssec_valid: bool = Field(default=False, description="True if DNSSEC AD flag confirms cryptographic trust")
@@ -187,6 +195,7 @@ class TemporalLongevity(BaseModel):
     Enforces Wayback CDX historical archive durability, Anti-Fly-by-Night
     domain age scoring (<60 days penalized), and seasonal recurrence classification.
     """
+
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     first_seen_archive_utc: str | None = Field(
@@ -233,12 +242,14 @@ class TemporalLongevity(BaseModel):
 
 # --- 4. Canonical Offer Schema ---
 
+
 class Offer(BaseModel):
     """
     Canonical Offer Schema for CertPulse.
     Enforces strict distinction between formal proctored exam vouchers (Tier 1)
     and unproctored skill badges & labs (Tier 2).
     """
+
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     # Core identification
@@ -351,6 +362,7 @@ class Offer(BaseModel):
             return v
         if isinstance(v, str):
             from src.authenticity import parse_powershell_hash_str
+
             return parse_powershell_hash_str(v)
         return v
 
@@ -381,7 +393,7 @@ class Offer(BaseModel):
         if self.last_verified is None:
             self.last_verified = self.verification_date or "2026-10-23"
         if self.badge_eligible is None:
-            self.badge_eligible = (self.credential_tier == "skill_badge_lab")
+            self.badge_eligible = self.credential_tier == "skill_badge_lab"
         if self.verification_state is None:
             if self.authenticity_details and isinstance(self.authenticity_details, dict):
                 self.verification_state = self.authenticity_details.get("verdict", "VERIFIED_AUTHENTIC")
@@ -427,11 +439,13 @@ class Offer(BaseModel):
 
 # --- 5. Candidate Lead Schema ---
 
+
 class CandidateLead(BaseModel):
     """
     Schema for unverified incoming community leads from Reddit, forums, or vendor blogs.
     Must pass domain authenticity and dual DOM/screenshot verification gates before promotion.
     """
+
     model_config = ConfigDict(extra="ignore")
 
     source: str = Field(..., description="Community source: e.g. 'Reddit r/AzureCertification'")
@@ -449,7 +463,7 @@ class CandidateLead(BaseModel):
         self,
         offer_id: str,
         credential_tier: CredentialTier = "proctored_exam",
-        authenticity_result: dict[str, Any] | None = None
+        authenticity_result: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Converts candidate lead into a draft offer payload ready for inspection."""
         now_iso = datetime.now(UTC).date().isoformat()
@@ -485,8 +499,10 @@ class CandidateLead(BaseModel):
 
 # --- 6. Offers Database Container Schema ---
 
+
 class OffersDatabase(BaseModel):
     """Complete schema for data/offers.json database file."""
+
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     schema_version: str | None = Field(default="./schema.json", alias="$schema")
@@ -500,12 +516,14 @@ class OffersDatabase(BaseModel):
 
 # --- 7. Offers Data Dictionary Helper ---
 
+
 class OfferDataDict(dict):
     """
     Mapping and container helper for CertPulse offers data.
     Provides clean dictionary and list access without mutating the standard library json module.
     Preserves all standard Python dictionary invariants (e.g. list(d) == list(d.keys())).
     """
+
     @property
     def offers(self) -> list[dict[str, Any]]:
         """Returns the list of raw offer dictionaries."""
@@ -521,6 +539,6 @@ class OfferDataDict(dict):
         if hasattr(fp_or_path, "read"):
             data = json.load(fp_or_path)
         else:
-            with open(fp_or_path, "r", encoding="utf-8") as f:
+            with open(fp_or_path, encoding="utf-8") as f:
                 data = json.load(f)
         return cls(data)

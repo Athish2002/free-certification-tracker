@@ -16,21 +16,22 @@ Capabilities:
 
 from __future__ import annotations
 
-import os
-import re
 import json
 import logging
-from datetime import datetime, timezone
+import os
+from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 from urllib.parse import urlparse
-from typing import Any, Dict, List, Optional, Tuple, Union
 
 import httpx
+
 from src.models import TemporalLongevity
 
 # Import domain authorization directories from authenticity engine
 try:
-    from src.authenticity import PLATFORM_DOMAINS, ACCREDITED_PARTNER_DOMAINS
+    from src.authenticity import ACCREDITED_PARTNER_DOMAINS, PLATFORM_DOMAINS
+
     def is_domain_authorized(host: str, platform: str = "") -> bool:
         if not host:
             return False
@@ -43,15 +44,14 @@ try:
             for dom in plat_doms:
                 if clean == dom or clean.endswith(f".{dom}"):
                     return True
-        for partner in ACCREDITED_PARTNER_DOMAINS:
-            if clean == partner or clean.endswith(f".{partner}"):
-                return True
-        return False
+        return any(clean == partner or clean.endswith(f".{partner}") for partner in ACCREDITED_PARTNER_DOMAINS)
 except ImportError:
     PLATFORM_DOMAINS = {}
     ACCREDITED_PARTNER_DOMAINS = []
+
     def is_domain_authorized(host: str, platform: str = "") -> bool:
         return False
+
 
 logger = logging.getLogger(__name__)
 
@@ -60,11 +60,13 @@ logger = logging.getLogger(__name__)
 # 1. Wayback Machine CDX API Client
 # ==============================================================================
 
+
 class WaybackCDXClient:
     """
     Resilient client for the Internet Archive Wayback Machine CDX API.
     Enforces a strict 3.0s timeout and handles 503/429/connection errors gracefully.
     """
+
     DEFAULT_BASE_URL: str = "https://web.archive.org/cdx/search/cdx"
     DEFAULT_TIMEOUT: float = 3.0
     DEFAULT_USER_AGENT: str = "CertPulse-Verifier/2.0 (+https://github.com/athishpranav/certpulse)"
@@ -79,7 +81,7 @@ class WaybackCDXClient:
         self.timeout = timeout
         self.user_agent = user_agent
 
-    def clean_target(self, target: Optional[str]) -> str:
+    def clean_target(self, target: str | None) -> str:
         """Normalizes a URL or hostname into clean CDX query format."""
         if not target or not isinstance(target, str):
             return ""
@@ -95,11 +97,11 @@ class WaybackCDXClient:
 
     def query_snapshots(
         self,
-        url_or_domain: Optional[str],
+        url_or_domain: str | None,
         collapse: str = "timestamp:4",
         limit: int = 20,
-        match_type: Optional[str] = None,
-    ) -> List[Dict[str, str]]:
+        match_type: str | None = None,
+    ) -> list[dict[str, str]]:
         """
         Queries Wayback CDX API for snapshots.
         Returns parsed list of snapshot dictionaries with keys: timestamp, original, statuscode, digest.
@@ -109,7 +111,7 @@ class WaybackCDXClient:
         if not clean_url:
             return []
 
-        params: Dict[str, Union[str, int]] = {
+        params: dict[str, str | int] = {
             "url": clean_url,
             "output": "json",
             "fl": "timestamp,original,statuscode,digest",
@@ -140,10 +142,10 @@ class WaybackCDXClient:
                     return []
 
                 headers_row = [str(h).lower() for h in raw_data[0]]
-                snapshots: List[Dict[str, str]] = []
+                snapshots: list[dict[str, str]] = []
                 for row in raw_data[1:]:
                     if isinstance(row, list) and len(row) == len(headers_row):
-                        snapshots.append(dict(zip(headers_row, [str(c) for c in row])))
+                        snapshots.append(dict(zip(headers_row, [str(c) for c in row], strict=False)))
                 return snapshots
 
         except (httpx.TimeoutException, httpx.ConnectError, httpx.HTTPStatusError, httpx.RequestError) as exc:
@@ -153,14 +155,14 @@ class WaybackCDXClient:
             logger.error("Unexpected error querying Wayback CDX for %s: %s", clean_url, exc)
             return []
 
-    def get_earliest_snapshot(self, url_or_domain: Optional[str]) -> Optional[Dict[str, str]]:
+    def get_earliest_snapshot(self, url_or_domain: str | None) -> dict[str, str] | None:
         """Retrieves the single earliest snapshot for a domain or URL."""
         if not url_or_domain:
             return None
         snapshots = self.query_snapshots(url_or_domain, collapse="timestamp:4", limit=1)
         return snapshots[0] if snapshots else None
 
-    def get_yearly_snapshot_years(self, url_or_domain: Optional[str]) -> List[int]:
+    def get_yearly_snapshot_years(self, url_or_domain: str | None) -> list[int]:
         """Extracts sorted distinct calendar years recorded in CDX snapshots."""
         if not url_or_domain:
             return []
@@ -187,23 +189,25 @@ class WaybackCDXClient:
 # 2. Local Persistent Cache
 # ==============================================================================
 
+
 class TemporalLongevityCache:
     """
     Manages thread- and process-safe disk caching in data/temporal_longevity_cache.json.
     Uses atomic temporary file write and replacement to prevent corrupted state.
     """
+
     DEFAULT_CACHE_PATH = Path("data/temporal_longevity_cache.json")
 
-    def __init__(self, cache_path: Optional[Path] = None) -> None:
+    def __init__(self, cache_path: Path | None = None) -> None:
         self.cache_path = cache_path or self.DEFAULT_CACHE_PATH
-        self._cache: Dict[str, Any] = {}
+        self._cache: dict[str, Any] = {}
         self.load()
 
-    def load(self) -> Dict[str, Any]:
+    def load(self) -> dict[str, Any]:
         """Loads cache records from disk. Initializes empty cache if file does not exist or is corrupted."""
         if self.cache_path.exists():
             try:
-                with open(self.cache_path, "r", encoding="utf-8") as f:
+                with open(self.cache_path, encoding="utf-8") as f:
                     content = f.read().strip()
                     parsed = json.loads(content) if content else {}
                     self._cache = parsed if isinstance(parsed, dict) else {}
@@ -214,7 +218,7 @@ class TemporalLongevityCache:
             self._cache = {}
         return self._cache
 
-    def get(self, key: Optional[str]) -> Optional[Dict[str, Any]]:
+    def get(self, key: str | None) -> dict[str, Any] | None:
         """Retrieves a cached entry by canonical key."""
         if not key or not isinstance(key, str):
             return None
@@ -222,7 +226,7 @@ class TemporalLongevityCache:
             self._cache = {}
         return self._cache.get(key.lower().strip())
 
-    def set(self, key: str, data: Dict[str, Any]) -> None:
+    def set(self, key: str, data: dict[str, Any]) -> None:
         """Sets a cached entry and synchronizes to persistent disk storage."""
         if not key or not isinstance(key, str):
             return
@@ -259,7 +263,7 @@ class TemporalLongevityCache:
 
         try:
             audited_dt = datetime.fromisoformat(last_audited.replace("Z", "+00:00"))
-            age = (datetime.now(timezone.utc) - audited_dt).days
+            age = (datetime.now(UTC) - audited_dt).days
             return age <= max_age_days
         except Exception:
             return False
@@ -286,6 +290,7 @@ class TemporalLongevityCache:
 # 3. Anti-Fly-by-Night Longevity Scorer
 # ==============================================================================
 
+
 class LongevityScorer:
     """
     Evaluates domain historical age and enforces Anti-Fly-by-Night defense rules.
@@ -293,7 +298,7 @@ class LongevityScorer:
     """
 
     @staticmethod
-    def parse_cdx_timestamp(ts: Optional[str]) -> Optional[datetime]:
+    def parse_cdx_timestamp(ts: str | None) -> datetime | None:
         """Parses CDX 14-digit timestamp YYYYMMDDhhmmss or ISO string into UTC datetime."""
         if not ts:
             return None
@@ -304,10 +309,10 @@ class LongevityScorer:
                 clean_iso = ts.replace("Z", "+00:00")
                 dt = datetime.fromisoformat(clean_iso)
                 if dt.tzinfo is None:
-                    dt = dt.replace(tzinfo=timezone.utc)
+                    dt = dt.replace(tzinfo=UTC)
                 return dt
-            except Exception:
-                pass
+            except (ValueError, TypeError) as iso_err:
+                logger.debug("CDX timestamp parse fallback: %s", iso_err)
         # Handle 14-digit numeric string
         if len(ts) < 8 or not ts[:8].isdigit():
             return None
@@ -318,25 +323,25 @@ class LongevityScorer:
             hour = int(ts[8:10]) if len(ts) >= 10 and ts[8:10].isdigit() else 0
             minute = int(ts[10:12]) if len(ts) >= 12 and ts[10:12].isdigit() else 0
             second = int(ts[12:14]) if len(ts) >= 14 and ts[12:14].isdigit() else 0
-            return datetime(year, month, day, hour, minute, second, tzinfo=timezone.utc)
+            return datetime(year, month, day, hour, minute, second, tzinfo=UTC)
         except (ValueError, TypeError):
             return None
 
-    def calculate_domain_age(self, first_seen_ts: Optional[str]) -> Optional[int]:
+    def calculate_domain_age(self, first_seen_ts: str | None) -> int | None:
         """Calculates domain age in days from first seen CDX timestamp."""
         dt = self.parse_cdx_timestamp(first_seen_ts)
         if not dt:
             return None
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         age_days = (now - dt).days
         return max(0, age_days)
 
     def score_domain_longevity(
         self,
         domain: str,
-        first_seen_ts: Optional[str],
+        first_seen_ts: str | None,
         platform: str = "",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Computes the longevity score (0-100), pass/fail verdict, and warning flags.
         Enforces strict mathematical invariant:
@@ -350,7 +355,7 @@ class LongevityScorer:
         """
         clean_domain = (domain or "").strip().lower()
         platform = platform or ""
-        warning_flags: List[str] = []
+        warning_flags: list[str] = []
 
         # 1. Whitelist Invariant Check
         if is_domain_authorized(clean_domain, platform):
@@ -433,6 +438,7 @@ class LongevityScorer:
 # 4. Seasonal Promotion Recurrence Classifier
 # ==============================================================================
 
+
 class SeasonalRecurrenceClassifier:
     """
     Classifies promotional seasonality based on historical snapshot temporal distribution:
@@ -455,9 +461,9 @@ class SeasonalRecurrenceClassifier:
 
     def classify_recurrence(
         self,
-        url: Optional[str],
-        snapshots: List[Dict[str, str]],
-    ) -> Dict[str, Any]:
+        url: str | None,
+        snapshots: list[dict[str, str]],
+    ) -> dict[str, Any]:
         """Evaluates snapshot timeline and returns recurrence classification."""
         url_lower = (url or "").lower()
         # Fast catalog check for known annual program tokens in path
@@ -480,7 +486,7 @@ class SeasonalRecurrenceClassifier:
 
         years: set[int] = set()
         year_months: set[str] = set()
-        timestamps: List[datetime] = []
+        timestamps: list[datetime] = []
         ok_snapshots = 0
 
         for s in snapshots:
@@ -565,6 +571,7 @@ class SeasonalRecurrenceClassifier:
 # 5. Master Temporal Analyzer
 # ==============================================================================
 
+
 class TemporalAnalyzer:
     """
     Master orchestrator for CertPulse Temporal Longevity Engine.
@@ -574,7 +581,7 @@ class TemporalAnalyzer:
 
     def __init__(
         self,
-        cache_path: Optional[Path] = None,
+        cache_path: Path | None = None,
         timeout: float = 3.0,
     ) -> None:
         self.cdx_client = WaybackCDXClient(timeout=timeout)
@@ -582,7 +589,7 @@ class TemporalAnalyzer:
         self.longevity_scorer = LongevityScorer()
         self.recurrence_classifier = SeasonalRecurrenceClassifier()
 
-    def _extract_hostname(self, url_or_host: Optional[str]) -> str:
+    def _extract_hostname(self, url_or_host: str | None) -> str:
         """Extracts lowercase FQDN hostname."""
         if not url_or_host or not isinstance(url_or_host, str):
             return ""
@@ -593,12 +600,12 @@ class TemporalAnalyzer:
             host = url_or_host.split("/")[0]
         return host.split(":")[0].strip().lower()
 
-    def analyze_url(self, url: Optional[str], platform: str = "") -> TemporalLongevity:
+    def analyze_url(self, url: str | None, platform: str = "") -> TemporalLongevity:
         """
         Executes full temporal verification pipeline for a target URL.
         Guarantees resilient fallback so builds and tests never fail on external 503s.
         """
-        now_utc = datetime.now(timezone.utc).isoformat()
+        now_utc = datetime.now(UTC).isoformat()
         if not url or not isinstance(url, str) or not url.strip():
             return TemporalLongevity(
                 first_seen_archive_utc=None,
@@ -632,10 +639,7 @@ class TemporalAnalyzer:
         cached_entry = self.cache.get(hostname)
         if cached_entry and isinstance(cached_entry, dict) and self.cache.has_valid_entry(hostname):
             first_seen = cached_entry.get("first_seen_utc")
-            raw_ts = (
-                str(first_seen).replace("-", "").replace(":", "").replace("T", "")[:14]
-                if first_seen else None
-            )
+            raw_ts = str(first_seen).replace("-", "").replace(":", "").replace("T", "")[:14] if first_seen else None
             score_data = self.longevity_scorer.score_domain_longevity(
                 domain=hostname,
                 first_seen_ts=raw_ts,
@@ -685,8 +689,7 @@ class TemporalAnalyzer:
         # Step 2: Live CDX Query with 3.0s Timeout Protection
         snapshots = self.cdx_client.query_snapshots(hostname, collapse="timestamp:4", limit=15)
         path_snapshots = (
-            self.cdx_client.query_snapshots(url, collapse="timestamp:4", limit=10)
-            if url != hostname else snapshots
+            self.cdx_client.query_snapshots(url, collapse="timestamp:4", limit=10) if url != hostname else snapshots
         )
 
         # Step 3: Handle External CDX Failure / 503 / Offline Fallback
@@ -763,7 +766,7 @@ class TemporalAnalyzer:
             warning_flags=scorer_res.get("warning_flags", []),
         )
 
-    def audit_offer_longevity(self, offer: Dict[str, Any]) -> Dict[str, Any]:
+    def audit_offer_longevity(self, offer: dict[str, Any]) -> dict[str, Any]:
         """Audits an offer dictionary and returns serializable dict for database storage."""
         if not isinstance(offer, dict):
             return {}

@@ -17,18 +17,18 @@ Capabilities:
    Falls back to standard HTTP multi-layer verification if browser automation is restricted or in offline environments.
 """
 
-import re
 import logging
+import re
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
+from typing import Any
 from urllib.parse import urlparse
-from typing import Dict, Any, List, Tuple, Optional
 
-from src.authenticity import audit_offer_authenticity
-from src.vlm_engine import evaluate_vlm_semantic_gate, VLMSemanticVerdict
-from src.accessibility_scanner import scan_accessibility_elements, ActionabilityReport
-from src.cart_emulator import assert_cart_balance, CartAssertionVerdict
+from src.accessibility_scanner import scan_accessibility_elements
 from src.audit_ledger import record_audit_entry
+from src.authenticity import audit_offer_authenticity
+from src.cart_emulator import assert_cart_balance
+from src.vlm_engine import evaluate_vlm_semantic_gate
 
 logger = logging.getLogger("certpulse.dom_inspector")
 
@@ -55,7 +55,7 @@ CAPACITY_PATTERNS = [
     "sessions are full",
     "no seats remaining",
     "no seats left",
-    "sold out"
+    "sold out",
 ]
 
 # Heuristic phrases indicating expired coupon / promo code / redemption limit
@@ -82,7 +82,7 @@ COUPON_EXPIRED_PATTERNS = [
     "discount code is invalid",
     "invalid discount code",
     "coupon code is not valid",
-    "promotion is no longer available"
+    "promotion is no longer available",
 ]
 
 # Heuristic phrases indicating registration is closed or campaign concluded
@@ -117,7 +117,7 @@ REGISTRATION_CLOSED_PATTERNS = [
     "campaign has concluded",
     "offer ended",
     "offer is over",
-    "milestone achieved"
+    "milestone achieved",
 ]
 
 # Heuristic phrases indicating redundant or broken promotional links
@@ -134,7 +134,7 @@ REDUNDANT_LINK_PATTERNS = [
     "link expired",
     "link is broken",
     "link is inactive",
-    "link is no longer available"
+    "link is no longer available",
 ]
 
 # Soft 404 & Dead-End Redirection Patterns
@@ -156,8 +156,9 @@ DEAD_END_PATTERNS = [
     "sorry, we can't find that page",
     "access denied",
     "403 forbidden",
-    "unauthorized"
-] + REDUNDANT_LINK_PATTERNS
+    "unauthorized",
+    *REDUNDANT_LINK_PATTERNS,
+]
 
 # Specific heuristic phrases indicating downtime or scheduled maintenance
 MAINTENANCE_PATTERNS = [
@@ -183,22 +184,22 @@ MAINTENANCE_PATTERNS = [
     "page is currently unavailable",
     "system downtime",
     "portal is currently unavailable",
-    "maintenance in progress"
+    "maintenance in progress",
 ]
 
 # Patterns detecting standard commercial checkout catalogs and exam fees lacking zero-dollar waivers
 PAID_CATALOG_PATTERNS = [
-    r"\$245(?:\.00)?\b",   # Oracle standard exam fee
-    r"\$165(?:\.00)?\b",   # Microsoft standard associate fee
-    r"\$150(?:\.00)?\b",   # AWS Associate exam fee
-    r"\$300(?:\.00)?\b",   # AWS Professional / Cisco fee
-    r"\$375(?:\.00)?\b",   # CKA / LFCS exam fee
-    r"\$395(?:\.00)?\b",   # Linux Foundation standard catalog fee
-    r"\$99(?:\.00)?\b",    # Fundamental cert standard price
+    r"\$245(?:\.00)?\b",  # Oracle standard exam fee
+    r"\$165(?:\.00)?\b",  # Microsoft standard associate fee
+    r"\$150(?:\.00)?\b",  # AWS Associate exam fee
+    r"\$300(?:\.00)?\b",  # AWS Professional / Cisco fee
+    r"\$375(?:\.00)?\b",  # CKA / LFCS exam fee
+    r"\$395(?:\.00)?\b",  # Linux Foundation standard catalog fee
+    r"\$99(?:\.00)?\b",  # Fundamental cert standard price
     r"\badd to cart\b",
     r"\bbuy exam\b",
     r"\bpurchase exam\b",
-    r"\benter credit card to purchase\b"
+    r"\benter credit card to purchase\b",
 ]
 
 # Signals affirmatively proving a zero-dollar waiver or 100% discount
@@ -218,23 +219,29 @@ ZERO_DOLLAR_SIGNALS = [
     "no cost",
     "complimentary voucher",
     "waiver code",
-    "sponsored seat"
+    "sponsored seat",
 ]
 
 # Strict confirmed zero-dollar checkout signals required to override paid catalog pricing
-CONFIRMED_ZERO_DOLLAR_CART = [
-    "$0.00",
-    "0.00 usd",
-    "100% discount",
-    "100% off",
-    "fee waiver",
-    "waiver code"
-]
+CONFIRMED_ZERO_DOLLAR_CART = ["$0.00", "0.00 usd", "100% discount", "100% off", "fee waiver", "waiver code"]
 
 AFFIRMATIVE_OFFER_SIGNALS = [
-    "free", "voucher", "scholarship", "challenge", "no cost",
-    "waiver", "discount", "reward", "credits", "badge", "grant",
-    "complimentary", "100%", "level up", "applied skills", "$0.00"
+    "free",
+    "voucher",
+    "scholarship",
+    "challenge",
+    "no cost",
+    "waiver",
+    "discount",
+    "reward",
+    "credits",
+    "badge",
+    "grant",
+    "complimentary",
+    "100%",
+    "level up",
+    "applied skills",
+    "$0.00",
 ]
 
 # Patterns indicating corporate enterprise marketing, sales-pitch, or lead-capture landing pages
@@ -258,7 +265,7 @@ MARKETING_LEAD_PATTERNS = [
     "forrester wave",
     "see what analysts are saying",
     "contact us for enterprise pricing",
-    "book a sales meeting"
+    "book a sales meeting",
 ]
 
 # Signals indicating genuine actionable educational or certification fulfillment
@@ -284,7 +291,7 @@ ACTIONABLE_FULFILLMENT_SIGNALS = [
     "mylearn",
     "course curriculum",
     "learning path",
-    "exam details"
+    "exam details",
 ]
 
 # Chromium launch arguments optimized for sandboxed headless execution
@@ -293,7 +300,7 @@ PLAYWRIGHT_LAUNCH_ARGS = [
     "--disable-dev-shm-usage",
     "--dns-result-order=ipv4first",
     "--no-first-run",
-    "--no-zygote"
+    "--no-zygote",
 ]
 
 # Allow images and webfonts so screenshots render faithfully; block only heavy audio/video media
@@ -301,7 +308,7 @@ BLOCKED_RESOURCE_TYPES = {"media"}
 
 BLOCKED_URL_REGEX = re.compile(
     r"(analytics|googletagmanager|hotjar|segment|telemetry|doubleclick|clarity\.ms|facebook\.net|adservice)",
-    re.IGNORECASE
+    re.IGNORECASE,
 )
 
 
@@ -310,8 +317,8 @@ def inspect_rendered_dom(
     rendered_title: str = "",
     final_url: str = "",
     original_url: str = "",
-    interactive_elements: Optional[List[str]] = None
-) -> Dict[str, Any]:
+    interactive_elements: list[str] | None = None,
+) -> dict[str, Any]:
     """
     Analyzes dynamically rendered DOM text, page title, and URL navigation
     against five invariant categories:
@@ -340,7 +347,7 @@ def inspect_rendered_dom(
         "paid_catalog_detected": False,
         "zero_dollar_confirmed": True,
         "matched_phrase": None,
-        "category": "active"
+        "category": "active",
     }
 
     # Empty text guard
@@ -417,16 +424,19 @@ def inspect_rendered_dom(
     if original_url and final_url:
         orig_parsed = urlparse(original_url)
         final_parsed = urlparse(final_url)
-        orig_parts = [p for p in orig_parsed.path.split('/') if p]
-        final_parts = [p for p in final_parsed.path.split('/') if p]
-        if len(orig_parts) >= 2 and len(final_parts) <= 1:
-            if any(kw in original_url.lower() for kw in ["promo", "challenge", "voucher", "free", "lift"]):
-                result["status"] = "Registrations Closed"
-                result["reason"] = f"Silent Reroute: Navigated from deep promo to root ({final_url})"
-                result["zero_dollar_confirmed"] = False
-                result["matched_phrase"] = "silent_reroute_to_root"
-                result["category"] = "silent_reroute"
-                return result
+        orig_parts = [p for p in orig_parsed.path.split("/") if p]
+        final_parts = [p for p in final_parsed.path.split("/") if p]
+        if (
+            len(orig_parts) >= 2
+            and len(final_parts) <= 1
+            and any(kw in original_url.lower() for kw in ["promo", "challenge", "voucher", "free", "lift"])
+        ):
+            result["status"] = "Registrations Closed"
+            result["reason"] = f"Silent Reroute: Navigated from deep promo to root ({final_url})"
+            result["zero_dollar_confirmed"] = False
+            result["matched_phrase"] = "silent_reroute_to_root"
+            result["category"] = "silent_reroute"
+            return result
 
     # 5b. Marketing Funnel & Sales Lead Trap Invariant
     has_marketing_lead = any(pat in combined_content for pat in MARKETING_LEAD_PATTERNS)
@@ -439,7 +449,9 @@ def inspect_rendered_dom(
         if not has_actionable:
             matched_pat = next(pat for pat in MARKETING_LEAD_PATTERNS if pat in combined_content)
             result["status"] = "Review Needed"
-            result["reason"] = f"Marketing Funnel Invariant: Page is a corporate marketing/sales lead portal ('{matched_pat}') without actionable course enrollment or exam scheduling CTAs"
+            result["reason"] = (
+                f"Marketing Funnel Invariant: Page is a corporate marketing/sales lead portal ('{matched_pat}') without actionable course enrollment or exam scheduling CTAs"
+            )
             result["is_marketing_lead"] = True
             result["marketing_lead_detected"] = True
             result["zero_dollar_confirmed"] = False
@@ -452,7 +464,9 @@ def inspect_rendered_dom(
     has_confirmed_zero = any(sig in combined_content for sig in CONFIRMED_ZERO_DOLLAR_CART)
     if has_paid_terms and not has_confirmed_zero:
         result["status"] = "Review Needed"
-        result["reason"] = "Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms"
+        result["reason"] = (
+            "Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms"
+        )
         result["is_paid_catalog"] = True
         result["paid_catalog_detected"] = True
         result["zero_dollar_confirmed"] = False
@@ -478,8 +492,8 @@ def evaluate_dual_gate(
     screenshot_valid: bool,
     auth_score: int = 95,
     http_status: int = 200,
-    vlm_verdict: Optional[Any] = None
-) -> Tuple[str, str]:
+    vlm_verdict: Any | None = None,
+) -> tuple[str, str]:
     """
     Evaluates the dual visual ground-truth gate:
     An offer is Active iff G_DOM (affirmative zero-dollar terms, no maintenance, no paid catalog)
@@ -493,7 +507,10 @@ def evaluate_dual_gate(
     if auth_score < 80:
         return "Review Needed", f"Authenticity score below threshold ({auth_score}/100)"
     if not screenshot_valid:
-        return "Review Needed", "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
+        return (
+            "Review Needed",
+            "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid",
+        )
 
     if vlm_verdict is not None:
         if isinstance(vlm_verdict, dict):
@@ -512,7 +529,10 @@ def evaluate_dual_gate(
             evidence = getattr(vlm_verdict, "primary_evidence", "") or ""
 
         if reg_status in ["closed", "cohort_full", "waitlist"]:
-            return "Registrations Closed", f"VLM Semantic Gate: {evidence or 'Registration concluded, cohort full, or waitlist active'}"
+            return (
+                "Registrations Closed",
+                f"VLM Semantic Gate: {evidence or 'Registration concluded, cohort full, or waitlist active'}",
+            )
         if req_copay:
             copay_msg = f" (${copay_usd:.2f} USD)" if copay_usd > 0.0 else ""
             return "Review Needed", f"VLM Semantic Gate: Copay or fee required{copay_msg}"
@@ -521,7 +541,10 @@ def evaluate_dual_gate(
         if conf < 0.60:
             return "Review Needed", f"VLM Semantic Gate: Low visual confidence ({conf:.2f} < 0.60)"
 
-    return "Active", f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
+    return (
+        "Active",
+        f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof",
+    )
 
 
 class HeadlessDOMInspector:
@@ -537,7 +560,7 @@ class HeadlessDOMInspector:
         self.timeout_ms = timeout_ms
         self._playwright = None
         self._browser = None
-        self._routes: Dict[str, Any] = {}
+        self._routes: dict[str, Any] = {}
 
     def route(self, url_or_pattern: str, handler: Any):
         """Registers a route handler for request interception/mocking."""
@@ -553,11 +576,9 @@ class HeadlessDOMInspector:
     def start(self):
         try:
             from playwright.sync_api import sync_playwright
+
             self._playwright = sync_playwright().start()
-            self._browser = self._playwright.chromium.launch(
-                headless=self.headless,
-                args=PLAYWRIGHT_LAUNCH_ARGS
-            )
+            self._browser = self._playwright.chromium.launch(headless=self.headless, args=PLAYWRIGHT_LAUNCH_ARGS)
             logger.info("Headless Chromium DOM Inspector initialized successfully.")
         except Exception as e:
             logger.warning(f"Could not initialize Playwright Chromium: {e}. Fallback to HTTP inspection active.")
@@ -567,14 +588,14 @@ class HeadlessDOMInspector:
         if self._browser:
             try:
                 self._browser.close()
-            except Exception:
-                pass
+            except Exception as close_err:
+                logger.debug("Headless browser close notice: %s", close_err)
             self._browser = None
         if self._playwright:
             try:
                 self._playwright.stop()
-            except Exception:
-                pass
+            except Exception as stop_err:
+                logger.debug("Headless playwright stop notice: %s", stop_err)
             self._playwright = None
 
     @property
@@ -588,7 +609,7 @@ class HeadlessDOMInspector:
         old_status: str = "Active",
         new_status: str = "Active",
         **kwargs: Any,
-    ) -> Tuple[bool, str]:
+    ) -> tuple[bool, str]:
         """
         Captures 1280x800 hero viewport screenshot into docs/screenshots/<offer_id>.png.
         Performs perceptual hash delta-skipping (< 5% delta and status unchanged) to avoid
@@ -609,8 +630,8 @@ class HeadlessDOMInspector:
                 text_len = len(page.evaluate("() => document.body ? document.body.innerText.trim() : ''"))
                 if text_len < 100:
                     page.wait_for_timeout(2000)
-            except Exception:
-                pass
+            except Exception as wait_err:
+                logger.debug("Text length wait timeout notice: %s", wait_err)
 
             screenshot_bytes = page.screenshot(path=str(temp_path), full_page=False)
             if (not screenshot_bytes or not isinstance(screenshot_bytes, bytes)) and temp_path.exists():
@@ -621,16 +642,25 @@ class HeadlessDOMInspector:
                 if header == b"\x89PNG\r\n\x1a\n":
                     new_size = temp_path.stat().st_size
                     from src.visual_hasher import is_blank_or_invalid_screenshot, should_skip_screenshot_write
+
                     # Anti-blank & anti-spinner protection: never overwrite an existing rich screenshot
                     # with a blank, unhydrated, or tiny loading spinner capture
-                    if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
-                        if is_blank_or_invalid_screenshot(temp_path) or (target_path.stat().st_size >= 30000 and new_size < 18000):
-                            logger.info(f"Preserving existing substantive screenshot for {offer_id} ({target_path.stat().st_size} bytes vs {new_size} bytes / blank={is_blank_or_invalid_screenshot(temp_path)})")
-                            try:
-                                temp_path.unlink()
-                            except Exception:
-                                pass
-                            return True, rel_path
+                    if (
+                        target_path.exists()
+                        and not is_blank_or_invalid_screenshot(target_path)
+                        and (
+                            is_blank_or_invalid_screenshot(temp_path)
+                            or (target_path.stat().st_size >= 30000 and new_size < 18000)
+                        )
+                    ):
+                        logger.info(
+                            f"Preserving existing substantive screenshot for {offer_id} ({target_path.stat().st_size} bytes vs {new_size} bytes / blank={is_blank_or_invalid_screenshot(temp_path)})"
+                        )
+                        try:
+                            temp_path.unlink()
+                        except OSError as unlink_err:
+                            logger.debug("Temp path unlink notice: %s", unlink_err)
+                        return True, rel_path
 
                     # Check perceptual hash delta skipping
                     should_skip, delta, dist = should_skip_screenshot_write(
@@ -643,8 +673,8 @@ class HeadlessDOMInspector:
                         )
                         try:
                             temp_path.unlink()
-                        except Exception:
-                            pass
+                        except OSError as unlink_err:
+                            logger.debug("Temp path unlink notice: %s", unlink_err)
                         return True, rel_path
 
                     temp_path.replace(target_path)
@@ -652,8 +682,8 @@ class HeadlessDOMInspector:
             if temp_path.exists():
                 try:
                     temp_path.unlink()
-                except Exception:
-                    pass
+                except OSError as unlink_err:
+                    logger.debug("Temp path unlink notice: %s", unlink_err)
             # If target already exists and is valid, preserve it
             if target_path.exists() and target_path.stat().st_size >= 4096:
                 header = target_path.read_bytes()[:8]
@@ -664,18 +694,14 @@ class HeadlessDOMInspector:
             if temp_path.exists():
                 try:
                     temp_path.unlink()
-                except Exception:
-                    pass
+                except OSError as unlink_err:
+                    logger.debug("Temp path unlink notice: %s", unlink_err)
             logger.warning(f"Failed to capture screenshot for {offer_id}: {e}")
             if target_path.exists() and target_path.stat().st_size >= 4096:
                 return True, rel_path
             return False, rel_path
 
-    def inspect_url(
-        self,
-        url: str,
-        offer: Optional[Dict[str, Any]] = None
-    ) -> Tuple[str, str, str, Dict[str, Any]]:
+    def inspect_url(self, url: str, offer: dict[str, Any] | None = None) -> tuple[str, str, str, dict[str, Any]]:
         """
         Navigates to URL in an isolated context, awaits DOM hydration,
         captures visual screenshot proof, analyzes rendered DOM invariants,
@@ -696,7 +722,7 @@ class HeadlessDOMInspector:
                     "summary": "Non-HTTPS or file scheme rejected by security policy",
                     "domain_verified": False,
                     "ssl_verified": False,
-                }
+                },
             )
 
         if offer is None:
@@ -711,6 +737,7 @@ class HeadlessDOMInspector:
 
         if not self._browser:
             from src.inspector import inspect_url_with_retry
+
             return inspect_url_with_retry(url, offer=offer)
 
         context = None
@@ -723,7 +750,7 @@ class HeadlessDOMInspector:
         try:
             context = self._browser.new_context(
                 viewport={"width": 1280, "height": 800},
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
             )
             page = context.new_page()
 
@@ -735,8 +762,8 @@ class HeadlessDOMInspector:
                         route.abort()
                     else:
                         route.continue_()
-                except Exception:
-                    pass
+                except Exception as route_err:
+                    logger.debug("Route continue notice: %s", route_err)
 
             page.route("**/*", handle_route)
 
@@ -746,12 +773,13 @@ class HeadlessDOMInspector:
 
             # Adaptive Verification: Resolve dual-phase targets (prioritizing deep claim URL for syllabus proof)
             from src.adaptive_verifier import (
-                resolve_dual_phase_targets,
-                classify_platform_cluster,
-                get_pre_navigation_storage,
                 audit_redirect_degradation,
                 calculate_proof_quality_score,
+                classify_platform_cluster,
+                get_pre_navigation_storage,
+                resolve_dual_phase_targets,
             )
+
             dual_targets = resolve_dual_phase_targets(offer)
             cluster_prof = classify_platform_cluster(offer.get("platform", ""), url)
             nav_target = dual_targets.primary_nav_target
@@ -762,12 +790,12 @@ class HeadlessDOMInspector:
             if storage_preset.get("local_storage"):
                 try:
                     storage_items = [
-                        f"window.localStorage.setItem({repr(k)}, {repr(v)});"
+                        f"window.localStorage.setItem({k!r}, {v!r});"
                         for k, v in storage_preset["local_storage"].items()
                     ]
                     page.add_init_script("\n".join(storage_items))
-                except Exception:
-                    pass
+                except Exception as init_err:
+                    logger.debug("Init script injection notice: %s", init_err)
             rendered_title = ""
             rendered_text = ""
             final_url = nav_target
@@ -787,15 +815,17 @@ class HeadlessDOMInspector:
 
                 try:
                     page.wait_for_load_state(cluster_prof.wait_condition, timeout=2500)
-                except Exception:
-                    pass
+                except Exception as load_err:
+                    logger.debug("Cluster wait condition notice: %s", load_err)
                 rendered_title = page.title() or ""
                 rendered_text = page.evaluate("() => document.body ? document.body.innerText : ''")
             except Exception as nav_err:
                 logger.info(f"Playwright direct navigation failed for {url} ({nav_err}). Attempting HTTPX fallback...")
                 import httpx
+
                 try:
                     from src.inspector import BROWSER_HEADERS
+
                     with httpx.Client(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
                         resp = client.get(url)
                         http_status = resp.status_code
@@ -805,8 +835,8 @@ class HeadlessDOMInspector:
                         page.set_content(resp.text, wait_until="domcontentloaded")
                         try:
                             page.wait_for_load_state("networkidle", timeout=1500)
-                        except Exception:
-                            pass
+                        except Exception as idle_err:
+                            logger.debug("Network idle wait notice: %s", idle_err)
                         rendered_title = page.title() or ""
                         rendered_text = page.evaluate("() => document.body ? document.body.innerText : ''")
                 except Exception as fb_err:
@@ -842,9 +872,7 @@ class HeadlessDOMInspector:
 
             # Run Semantic Accessibility Scanner
             actionability_report = scan_accessibility_elements(
-                interactive_elements=interactive_ctas,
-                page_text=rendered_text,
-                page_title=rendered_title
+                interactive_elements=interactive_ctas, page_text=rendered_text, page_title=rendered_title
             )
 
             # Run Synthetic Cart Balance Assertion
@@ -856,7 +884,7 @@ class HeadlessDOMInspector:
                 rendered_title=rendered_title,
                 final_url=final_url,
                 original_url=url,
-                interactive_elements=interactive_ctas
+                interactive_elements=interactive_ctas,
             )
 
             # Read screenshot bytes for VLM analysis
@@ -878,15 +906,11 @@ class HeadlessDOMInspector:
                 screenshot_path=screenshot_path if screenshot_ok else None,
                 screenshot_bytes=screenshot_bytes,
                 platform=offer.get("platform", "") if offer else "",
-                offer_data=offer
+                offer_data=offer,
             )
 
             # Authenticity verification on rendered DOM
-            auth_result = audit_offer_authenticity(
-                offer=offer,
-                body_text=rendered_text,
-                redirect_chain=redirect_chain
-            )
+            auth_result = audit_offer_authenticity(offer=offer, body_text=rendered_text, redirect_chain=redirect_chain)
 
             auth_score = auth_result.get("authenticity_score", 90)
 
@@ -928,7 +952,9 @@ class HeadlessDOMInspector:
 
             if status == "Active" and cart_verdict.is_copay_required and cart_verdict.copay_amount_usd > 0.0:
                 status = "Review Needed"
-                reason = f"Cart Assertion: Copay Required (${cart_verdict.copay_amount_usd:.2f}) - {cart_verdict.reason}"
+                reason = (
+                    f"Cart Assertion: Copay Required (${cart_verdict.copay_amount_usd:.2f}) - {cart_verdict.reason}"
+                )
                 paid_catalog_detected = True
                 zero_dollar_confirmed = False
 
@@ -957,7 +983,9 @@ class HeadlessDOMInspector:
                     zero_dollar_confirmed = False
                 elif vlm_verdict.visual_confidence_score < 0.60:
                     status = "Review Needed"
-                    reason = f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
+                    reason = (
+                        f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
+                    )
                 else:
                     reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
 
@@ -969,8 +997,8 @@ class HeadlessDOMInspector:
             if offer_id and status != old_st:
                 try:
                     self.capture_screenshot(page, offer_id, old_status=old_st, new_status=status)
-                except Exception:
-                    pass
+                except Exception as sc_err:
+                    logger.debug("Screenshot capture notice: %s", sc_err)
 
             # Populate visual_proof metadata on offer
             if offer is not None:
@@ -985,22 +1013,22 @@ class HeadlessDOMInspector:
                     proof_status = "placeholder"
 
                 pqs_res = calculate_proof_quality_score(
-                    url_score=url_score if 'url_score' in locals() else 100.0,
+                    url_score=url_score if "url_score" in locals() else 100.0,
                     dom_score=100.0 if status == "Active" else 50.0,
                     visual_score=100.0 if screenshot_ok else 50.0,
-                    corroboration_score=100.0 if auth_result.get("corroboration_passed") else 50.0
+                    corroboration_score=100.0 if auth_result.get("corroboration_passed") else 50.0,
                 )
                 offer["adaptive_verification"] = {
-                    "cluster": cluster_prof.code if 'cluster_prof' in locals() else "ENTERPRISE_LMS",
+                    "cluster": cluster_prof.code if "cluster_prof" in locals() else "ENTERPRISE_LMS",
                     "pqs_score": pqs_res.score,
                     "pqs_tier": pqs_res.tier,
-                    "dual_phase_divergence": dual_targets.is_divergent if 'dual_targets' in locals() else False,
+                    "dual_phase_divergence": dual_targets.is_divergent if "dual_targets" in locals() else False,
                 }
 
                 offer["visual_proof"] = {
                     "screenshot_path": screenshot_path,
                     "screenshot_url": screenshot_path,
-                    "captured_at": datetime.now(timezone.utc).isoformat(),
+                    "captured_at": datetime.now(UTC).isoformat(),
                     "status": proof_status,
                     "zero_dollar_confirmed": zero_dollar_confirmed,
                     "maintenance_detected": maintenance_detected,
@@ -1023,7 +1051,7 @@ class HeadlessDOMInspector:
                         screenshot_path=screenshot_path if screenshot_ok else None,
                         status=status,
                         actionability_verdict=actionability_report.verdict,
-                        cart_balance_verified=cart_verdict.cart_balance_str
+                        cart_balance_verified=cart_verdict.cart_balance_str,
                     )
                 except Exception as audit_err:
                     logger.debug(f"Audit log recording error for {offer_id}: {audit_err}")
@@ -1033,21 +1061,20 @@ class HeadlessDOMInspector:
         except Exception as e:
             logger.warning(f"Playwright navigation error for {url}: {e}. Falling back to HTTP inspection.")
             from src.inspector import inspect_url_with_retry
+
             return inspect_url_with_retry(url, offer=offer)
 
         finally:
             if context:
                 try:
                     context.close()
-                except Exception:
-                    pass
+                except Exception as ctx_err:
+                    logger.debug("Context close notice: %s", ctx_err)
 
 
 def inspect_url_with_playwright(
-    url: str,
-    offer: Optional[Dict[str, Any]] = None,
-    timeout_ms: int = 15000
-) -> Tuple[str, str, str, Dict[str, Any]]:
+    url: str, offer: dict[str, Any] | None = None, timeout_ms: int = 15000
+) -> tuple[str, str, str, dict[str, Any]]:
     """
     Convenience one-shot inspection function utilizing headless Playwright.
     Launches a dedicated inspector instance and safely evaluates the target URL.
@@ -1058,4 +1085,3 @@ def inspect_url_with_playwright(
 
 # Class alias for DOMInspector
 DOMInspector = HeadlessDOMInspector
-

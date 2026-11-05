@@ -8,7 +8,6 @@ and signal keyword dictionaries across inspector, collector, and DOM verificatio
 from __future__ import annotations
 
 import re
-from typing import Dict, List
 
 # Standard realistic browser headers for HTTP requests
 BROWSER_HEADERS = {
@@ -18,7 +17,7 @@ BROWSER_HEADERS = {
 }
 
 # Playwright launch arguments for headless environments
-PLAYWRIGHT_LAUNCH_ARGS: List[str] = [
+PLAYWRIGHT_LAUNCH_ARGS: list[str] = [
     "--disable-dev-shm-usage",
     "--disable-gpu",
     "--disable-extensions",
@@ -32,7 +31,7 @@ PLAYWRIGHT_LAUNCH_ARGS: List[str] = [
 ]
 
 # Heavy resource types and trackers blocked during DOM inspection
-BLOCKED_RESOURCE_TYPES: List[str] = [
+BLOCKED_RESOURCE_TYPES: list[str] = [
     "media",
     "font",
     "eventsource",
@@ -49,7 +48,7 @@ BLOCKED_URL_REGEX = re.compile(
 )
 
 # Capacity & cohort limits
-CAPACITY_PATTERNS: List[str] = [
+CAPACITY_PATTERNS: list[str] = [
     "capacity has been reached",
     "capacity reached",
     "cohort is full",
@@ -75,7 +74,7 @@ CAPACITY_PATTERNS: List[str] = [
 ]
 
 # Expired coupon / promo code / redemption limits
-COUPON_EXPIRED_PATTERNS: List[str] = [
+COUPON_EXPIRED_PATTERNS: list[str] = [
     "coupon has expired",
     "coupon expired",
     "promo code invalid",
@@ -102,7 +101,7 @@ COUPON_EXPIRED_PATTERNS: List[str] = [
 ]
 
 # Registration closed or campaign concluded
-REGISTRATION_CLOSED_PATTERNS: List[str] = [
+REGISTRATION_CLOSED_PATTERNS: list[str] = [
     "has concluded",
     "closed new enrollments",
     "has closed new enrollments",
@@ -134,7 +133,7 @@ REGISTRATION_CLOSED_PATTERNS: List[str] = [
 ]
 
 # Maintenance and portal downtime
-MAINTENANCE_PATTERNS: List[str] = [
+MAINTENANCE_PATTERNS: list[str] = [
     "down for maintenance",
     "scheduled maintenance",
     "system maintenance",
@@ -149,7 +148,7 @@ MAINTENANCE_PATTERNS: List[str] = [
 ]
 
 # Paid commercial catalog patterns without waivers
-PAID_CATALOG_PATTERNS: List[str] = [
+PAID_CATALOG_PATTERNS: list[str] = [
     "add to cart",
     "proceed to checkout",
     "buy now",
@@ -163,7 +162,7 @@ PAID_CATALOG_PATTERNS: List[str] = [
 ]
 
 # Affirmative signals that page offers something free / waived
-ZERO_DOLLAR_SIGNALS: List[str] = [
+ZERO_DOLLAR_SIGNALS: list[str] = [
     "100% discount",
     "100% off",
     "free certification exam",
@@ -181,7 +180,7 @@ ZERO_DOLLAR_SIGNALS: List[str] = [
     "no cost exam",
 ]
 
-CONFIRMED_ZERO_DOLLAR_CART: List[str] = [
+CONFIRMED_ZERO_DOLLAR_CART: list[str] = [
     "total: $0.00",
     "balance due: $0.00",
     "amount due: $0.00",
@@ -190,9 +189,9 @@ CONFIRMED_ZERO_DOLLAR_CART: List[str] = [
     "$0.00 total",
 ]
 
-CLOSED_PATTERNS: List[str] = list(dict.fromkeys(REGISTRATION_CLOSED_PATTERNS + CAPACITY_PATTERNS))
+CLOSED_PATTERNS: list[str] = list(dict.fromkeys(REGISTRATION_CLOSED_PATTERNS + CAPACITY_PATTERNS))
 
-SOFT_404_PATTERNS: List[str] = [
+SOFT_404_PATTERNS: list[str] = [
     "page not found",
     "we couldn't find that page",
     "page you're looking for doesn't exist",
@@ -201,7 +200,7 @@ SOFT_404_PATTERNS: List[str] = [
     "this page is not available",
 ]
 
-AFFIRMATIVE_OFFER_SIGNALS: List[str] = [
+AFFIRMATIVE_OFFER_SIGNALS: list[str] = [
     "free",
     "voucher",
     "scholarship",
@@ -219,7 +218,7 @@ AFFIRMATIVE_OFFER_SIGNALS: List[str] = [
     "applied skills",
 ]
 
-VOUCHER_KEYWORDS: List[str] = [
+VOUCHER_KEYWORDS: list[str] = [
     "voucher",
     "challenge",
     "free exam",
@@ -231,7 +230,7 @@ VOUCHER_KEYWORDS: List[str] = [
     "discount code",
 ]
 
-NOISE_KEYWORDS: List[str] = [
+NOISE_KEYWORDS: list[str] = [
     "passed az",
     "passed aws",
     "failed",
@@ -244,7 +243,7 @@ NOISE_KEYWORDS: List[str] = [
     "dumps",
 ]
 
-UNPROCTORED_BADGE_KEYWORDS: List[str] = [
+UNPROCTORED_BADGE_KEYWORDS: list[str] = [
     "skill badge",
     "applied skills",
     "arcade",
@@ -264,7 +263,7 @@ UNPROCTORED_BADGE_KEYWORDS: List[str] = [
     "accreditation",
 ]
 
-PROCTORED_EXAM_KEYWORDS: List[str] = [
+PROCTORED_EXAM_KEYWORDS: list[str] = [
     "pearson",
     "vue",
     "kryterion",

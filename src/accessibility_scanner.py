@@ -6,56 +6,44 @@ to distinguish genuine educational fulfillment portals from corporate sales lead
 
 from __future__ import annotations
 
-import re
-from typing import Dict, Any, List, Optional, Literal
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Literal
 
+from pydantic import BaseModel, ConfigDict, Field
 
-ActionabilityVerdict = Literal[
-    "ACTIONABLE_FULFILLMENT_PORTAL",
-    "MARKETING_LEAD_FUNNEL",
-    "NEUTRAL_INFORMATIONAL"
-]
+ActionabilityVerdict = Literal["ACTIONABLE_FULFILLMENT_PORTAL", "MARKETING_LEAD_FUNNEL", "NEUTRAL_INFORMATIONAL"]
 
 
 class ActionabilityReport(BaseModel):
     """
     Structured outcome of semantic accessibility and interactive element analysis.
     """
+
     model_config = ConfigDict(extra="ignore")
 
     fulfillment_score: int = Field(
         ...,
         ge=0,
         le=100,
-        description="Confidence score that the page contains actionable enrollment, exam scheduling, or voucher claim triggers."
+        description="Confidence score that the page contains actionable enrollment, exam scheduling, or voucher claim triggers.",
     )
     marketing_fluff_score: int = Field(
         ...,
         ge=0,
         le=100,
-        description="Intensity score of corporate sales lead capture, marketing forms, and whitepaper downloads."
+        description="Intensity score of corporate sales lead capture, marketing forms, and whitepaper downloads.",
     )
-    detected_ctas: List[str] = Field(
-        default_factory=list,
-        description="Actionable Call-To-Action buttons and links identified on the page."
+    detected_ctas: list[str] = Field(
+        default_factory=list, description="Actionable Call-To-Action buttons and links identified on the page."
     )
-    detected_traps: List[str] = Field(
-        default_factory=list,
-        description="Marketing and sales lead trap phrases identified on the page."
+    detected_traps: list[str] = Field(
+        default_factory=list, description="Marketing and sales lead trap phrases identified on the page."
     )
-    is_actionable: bool = Field(
-        default=False,
-        description="True if fulfillment elements dominate marketing fluff."
-    )
+    is_actionable: bool = Field(default=False, description="True if fulfillment elements dominate marketing fluff.")
     verdict: ActionabilityVerdict = Field(
         default="NEUTRAL_INFORMATIONAL",
-        description="Categorical intent verdict: ACTIONABLE_FULFILLMENT_PORTAL | MARKETING_LEAD_FUNNEL | NEUTRAL_INFORMATIONAL"
+        description="Categorical intent verdict: ACTIONABLE_FULFILLMENT_PORTAL | MARKETING_LEAD_FUNNEL | NEUTRAL_INFORMATIONAL",
     )
-    reason: str = Field(
-        default="",
-        description="Summary explanation of the actionability determination."
-    )
+    reason: str = Field(default="", description="Summary explanation of the actionability determination.")
 
 
 # Curated lists of semantic triggers
@@ -80,7 +68,7 @@ FULFILLMENT_TRIGGERS = [
     "view learning path",
     "sign in to enroll",
     "join challenge",
-    "start challenge"
+    "start challenge",
 ]
 
 MARKETING_TRAPS = [
@@ -102,22 +90,20 @@ MARKETING_TRAPS = [
     "gartner magic quadrant",
     "forrester wave",
     "contact us for enterprise pricing",
-    "book a sales meeting"
+    "book a sales meeting",
 ]
 
 
 def scan_accessibility_elements(
-    interactive_elements: List[str],
-    page_text: str = "",
-    page_title: str = ""
+    interactive_elements: list[str], page_text: str = "", page_title: str = ""
 ) -> ActionabilityReport:
     """
     Analyzes interactive element labels, page text, and document title to determine
     whether a page offers concrete actionable fulfillment or is an informational sales funnel.
     """
     combined = f"{page_title.lower()} {page_text.lower()}"
-    found_ctas: List[str] = []
-    found_traps: List[str] = []
+    found_ctas: list[str] = []
+    found_traps: list[str] = []
 
     # 1. Scan interactive elements (buttons, links, accessible names)
     for el in interactive_elements:
@@ -162,5 +148,5 @@ def scan_accessibility_elements(
         detected_traps=found_traps,
         is_actionable=is_actionable,
         verdict=verdict,
-        reason=reason
+        reason=reason,
     )

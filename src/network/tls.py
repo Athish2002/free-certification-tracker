@@ -7,6 +7,7 @@ RFC 6125 SAN matching, and RFC 6962 embedded SCT extraction.
 from __future__ import annotations
 
 import datetime
+import logging
 import socket
 import ssl
 from typing import Any
@@ -17,6 +18,8 @@ from cryptography.x509 import ExtensionNotFound
 from cryptography.x509.oid import ExtensionOID
 
 from src.network.asn import clean_hostname
+
+logger = logging.getLogger(__name__)
 
 # Well-known Certificate Transparency Logs (prefix matching on 16 hex characters)
 KNOWN_CT_LOGS: dict[str, dict[str, str]] = {
@@ -42,7 +45,7 @@ def match_san(san: str, hostname: str) -> bool:
     if san_lower.startswith("*."):
         suffix = san_lower[1:]
         if host_lower.endswith(suffix):
-            prefix = host_lower[:-len(suffix)]
+            prefix = host_lower[: -len(suffix)]
             if prefix and "." not in prefix:
                 return True
     return False
@@ -93,18 +96,20 @@ class TLSCertificateVerifier:
                 log_info = KNOWN_CT_LOGS.get(prefix, {"name": "Known/RFC6962 Log", "operator": "Public CT Operator"})
                 ts = sct.timestamp
                 ts_iso = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
-                scts.append({
-                    "log_id": log_id_hex,
-                    "log_name": log_info["name"],
-                    "log_operator": log_info["operator"],
-                    "timestamp_utc": ts_iso,
-                    "entry_type": str(sct.entry_type),
-                    "version": getattr(sct.version, "name", str(sct.version)),
-                })
+                scts.append(
+                    {
+                        "log_id": log_id_hex,
+                        "log_name": log_info["name"],
+                        "log_operator": log_info["operator"],
+                        "timestamp_utc": ts_iso,
+                        "entry_type": str(sct.entry_type),
+                        "version": getattr(sct.version, "name", str(sct.version)),
+                    }
+                )
         except ExtensionNotFound:
             pass
-        except Exception:
-            pass
+        except (ValueError, TypeError, KeyError) as sct_err:
+            logger.debug("Embedded SCT parsing notice: %s", sct_err)
         return scts
 
     def verify_san(self, cert: x509.Certificate, hostname: str) -> tuple[bool, list[str]]:
@@ -145,8 +150,8 @@ class TLSCertificateVerifier:
                 if resp.status_code == 200:
                     data = resp.json()
                     return {"status": "success", "count": len(data), "source": "crt.sh"}
-        except Exception:
-            pass
+        except (httpx.HTTPError, OSError, ValueError) as crt_err:
+            logger.debug("crt.sh probe fallback: %s", crt_err)
         return {"status": "circuit_broken_or_offline", "count": 0, "source": "crt.sh"}
 
     def verify_tls(self, url_or_host: str, mock_cert: x509.Certificate | None = None) -> dict[str, Any]:

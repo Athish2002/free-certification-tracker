@@ -36,17 +36,19 @@ from src.dom_inspector import (
     PAID_CATALOG_PATTERNS,
     PLAYWRIGHT_LAUNCH_ARGS,
     REGISTRATION_CLOSED_PATTERNS,
+    ZERO_DOLLAR_SIGNALS as ZERO_DOLLAR_SIGNALS,
+    DOMInspector as DOMInspector,
     HeadlessDOMInspector,
     assert_cart_balance,
     evaluate_dual_gate,
     evaluate_vlm_semantic_gate,
     inspect_rendered_dom,
     inspect_url_with_playwright,
+    record_audit_entry as record_audit_entry,
     scan_accessibility_elements,
 )
 from src.io_utils import atomic_write_json
-from src.visual_hasher import should_skip_screenshot_write
-from src.dom_inspector import DOMInspector, record_audit_entry, ZERO_DOLLAR_SIGNALS
+from src.visual_hasher import should_skip_screenshot_write as should_skip_screenshot_write
 
 try:
     from playwright.async_api import async_playwright
@@ -67,10 +69,7 @@ DATA_FILE = Path(__file__).resolve().parent.parent / "data" / "offers.json"
 SCHEMA_FILE = Path(__file__).resolve().parent.parent / "data" / "schema.json"
 
 
-def check_and_flag_stale_offers(
-    offers: list[dict[str, Any]],
-    threshold_days: int = STALENESS_THRESHOLD_DAYS
-) -> int:
+def check_and_flag_stale_offers(offers: list[dict[str, Any]], threshold_days: int = STALENESS_THRESHOLD_DAYS) -> int:
     """
     Auto-downgrades Active offers whose verification_date exceeds threshold_days
     to 'Review Needed' before the inspection sweep begins.
@@ -94,19 +93,23 @@ def check_and_flag_stale_offers(
                     is_stale = True
             if is_stale:
                 offer["status"] = "Review Needed"
-                offer["inspection_notes"] = f"Stale — last verified {v_date_str or 'unknown'} (> {threshold_days} days ago), pending re-inspection"
+                offer["inspection_notes"] = (
+                    f"Stale — last verified {v_date_str or 'unknown'} (> {threshold_days} days ago), pending re-inspection"
+                )
                 stale_count += 1
                 logger.warning(
                     f"[STALENESS DOWNGRADE] Offer '{offer.get('title')}' flagged as Review Needed (stale > {threshold_days}d)."
                 )
     return stale_count
 
+
 def clean_html(raw_html: str) -> str:
     """Removes scripts, styles, and SVG tags to inspect only user-visible text."""
-    cleaned = re.sub(r'<script.*?</script>', ' ', raw_html, flags=re.DOTALL | re.IGNORECASE)
-    cleaned = re.sub(r'<style.*?</style>', ' ', cleaned, flags=re.DOTALL | re.IGNORECASE)
-    cleaned = re.sub(r'<svg.*?</svg>', ' ', cleaned, flags=re.DOTALL | re.IGNORECASE)
+    cleaned = re.sub(r"<script.*?</script>", " ", raw_html, flags=re.DOTALL | re.IGNORECASE)
+    cleaned = re.sub(r"<style.*?</style>", " ", cleaned, flags=re.DOTALL | re.IGNORECASE)
+    cleaned = re.sub(r"<svg.*?</svg>", " ", cleaned, flags=re.DOTALL | re.IGNORECASE)
     return cleaned.lower()
+
 
 def check_silent_reroute(original_url: str, final_url: str) -> bool:
     """
@@ -115,21 +118,20 @@ def check_silent_reroute(original_url: str, final_url: str) -> bool:
     """
     orig_parsed = urlparse(original_url)
     final_parsed = urlparse(final_url)
-    
+
     # If original had a deep path (more than 1 segment) but final is root or /home
-    orig_parts = [p for p in orig_parsed.path.split('/') if p]
-    final_parts = [p for p in final_parsed.path.split('/') if p]
-    
-    if len(orig_parts) >= 2 and len(final_parts) <= 1:
-        if any(kw in original_url.lower() for kw in ["promo", "challenge", "voucher", "free", "lift"]):
-            return True
-            
-    return False
+    orig_parts = [p for p in orig_parsed.path.split("/") if p]
+    final_parts = [p for p in final_parsed.path.split("/") if p]
+
+    return bool(
+        len(orig_parts) >= 2
+        and len(final_parts) <= 1
+        and any(kw in original_url.lower() for kw in ["promo", "challenge", "voucher", "free", "lift"])
+    )
+
 
 def inspect_url_with_retry(
-    url: str,
-    offer: dict[str, Any] | None = None,
-    max_retries: int = 2
+    url: str, offer: dict[str, Any] | None = None, max_retries: int = 2
 ) -> tuple[str, str, str, dict[str, Any]]:
     """
     Performs deep inspection with transient retry backoff and multi-layer authenticity verification.
@@ -146,22 +148,18 @@ def inspect_url_with_retry(
         return "Review Needed", f"Security Alert: Domain authenticity failed ({pre_auth['summary']})", url, pre_auth
 
     last_err = ""
-    for attempt in range(max_retries):
+    for _attempt in range(max_retries):
         try:
             with httpx.Client(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
                 resp = client.get(url)
                 final_url = str(resp.url)
-                
+
                 # Trace full redirect chain
                 redirect_chain = [str(r.url) for r in resp.history] + [final_url]
                 body_text = clean_html(resp.text)
 
                 # Execute multi-layer authenticity verification
-                auth_result = audit_offer_authenticity(
-                    offer=offer,
-                    body_text=body_text,
-                    redirect_chain=redirect_chain
-                )
+                auth_result = audit_offer_authenticity(offer=offer, body_text=body_text, redirect_chain=redirect_chain)
 
                 # 1. Hard HTTP status codes
                 if resp.status_code in [404, 410]:
@@ -169,26 +167,56 @@ def inspect_url_with_retry(
                 elif resp.status_code >= 500:
                     return "Server Error", f"HTTP {resp.status_code} Host Down", url, auth_result
                 elif resp.status_code == 429:
-                    return "Review Needed", "Rate Limit Invariant: HTTP 429 Too Many Requests / Bot Protection", url, auth_result
+                    return (
+                        "Review Needed",
+                        "Rate Limit Invariant: HTTP 429 Too Many Requests / Bot Protection",
+                        url,
+                        auth_result,
+                    )
                 elif resp.status_code in [401, 403]:
                     # Never blind active on 401/403! Check body for maintenance notices
                     for pat in MAINTENANCE_PATTERNS:
                         if pat in body_text:
-                            return "Review Needed", f"Maintenance Invariant: Portal currently down for maintenance ('{pat}')", url, auth_result
-                    return "Review Needed", f"Restricted Access Gateway: HTTP {resp.status_code} direct GET blocked without verified promotional terms", url, auth_result
+                            return (
+                                "Review Needed",
+                                f"Maintenance Invariant: Portal currently down for maintenance ('{pat}')",
+                                url,
+                                auth_result,
+                            )
+                    return (
+                        "Review Needed",
+                        f"Restricted Access Gateway: HTTP {resp.status_code} direct GET blocked without verified promotional terms",
+                        url,
+                        auth_result,
+                    )
 
                 # 2. Maintenance & Downtime Invariant (evaluated before affirmative signals)
                 for pat in MAINTENANCE_PATTERNS:
                     if pat in body_text:
-                        return "Review Needed", f"Maintenance Invariant: Portal currently down for maintenance ('{pat}')", final_url, auth_result
+                        return (
+                            "Review Needed",
+                            f"Maintenance Invariant: Portal currently down for maintenance ('{pat}')",
+                            final_url,
+                            auth_result,
+                        )
 
                 # 3. Authenticity Failure Gate (Scam / Deceptive / Untrusted Third Party)
                 if not auth_result["is_authentic_vendor"]:
-                    return "Review Needed", f"Authenticity Check Failed: {auth_result['summary']}", final_url, auth_result
+                    return (
+                        "Review Needed",
+                        f"Authenticity Check Failed: {auth_result['summary']}",
+                        final_url,
+                        auth_result,
+                    )
 
                 # 4. Check for Silent Reroutes
                 if check_silent_reroute(url, final_url):
-                    return "Registrations Closed", f"Silent Reroute: Redirected to generic root ({final_url})", final_url, auth_result
+                    return (
+                        "Registrations Closed",
+                        f"Silent Reroute: Redirected to generic root ({final_url})",
+                        final_url,
+                        auth_result,
+                    )
 
                 # 5. Soft 404 Checks
                 for pat in SOFT_404_PATTERNS:
@@ -198,17 +226,32 @@ def inspect_url_with_retry(
                 # 6a. Capacity Limit & Cohort Saturation Invariant
                 for pat in CAPACITY_PATTERNS:
                     if pat in body_text:
-                        return "Registrations Closed", f"Capacity Invariant: Detected capacity limit reached / cohort full ('{pat}')", final_url, auth_result
+                        return (
+                            "Registrations Closed",
+                            f"Capacity Invariant: Detected capacity limit reached / cohort full ('{pat}')",
+                            final_url,
+                            auth_result,
+                        )
 
                 # 6b. Expired Coupon & Promo Code Invariant
                 for pat in COUPON_EXPIRED_PATTERNS:
                     if pat in body_text:
-                        return "Expired", f"Coupon Invariant: Detected expired promo/coupon code ('{pat}')", final_url, auth_result
+                        return (
+                            "Expired",
+                            f"Coupon Invariant: Detected expired promo/coupon code ('{pat}')",
+                            final_url,
+                            auth_result,
+                        )
 
                 # 6c. Explicit Campaign Closure
                 for pat in CLOSED_PATTERNS:
                     if pat in body_text:
-                        return "Registrations Closed", f"Closure Invariant: Detected closure phrase: '{pat}'", final_url, auth_result
+                        return (
+                            "Registrations Closed",
+                            f"Closure Invariant: Detected closure phrase: '{pat}'",
+                            final_url,
+                            auth_result,
+                        )
 
                 # 7. Paid Catalog & Standard Fee Barrier Invariant (evaluated before generic affirmative signals)
                 has_paid_terms = any(re.search(pat, body_text) for pat in PAID_CATALOG_PATTERNS)
@@ -219,12 +262,22 @@ def inspect_url_with_retry(
                             offer["visual_proof"] = {}
                         offer["visual_proof"]["paid_catalog_detected"] = True
                         offer["visual_proof"]["zero_dollar_confirmed"] = False
-                    return "Review Needed", "Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms", final_url, auth_result
+                    return (
+                        "Review Needed",
+                        "Catalog Pricing Invariant: Detected standard paid catalog / cart pricing ($245/checkout) without affirmative zero-dollar waiver terms",
+                        final_url,
+                        auth_result,
+                    )
 
                 # 8. Normal Paid Certification Catalog Check (No free offers on page)
                 has_offer_signal = any(sig in body_text for sig in AFFIRMATIVE_OFFER_SIGNALS)
                 if not has_offer_signal and len(body_text) > 500:
-                    return "Review Needed", "Normal Certification Site: No active free voucher or waiver signal found", final_url, auth_result
+                    return (
+                        "Review Needed",
+                        "Normal Certification Site: No active free voucher or waiver signal found",
+                        final_url,
+                        auth_result,
+                    )
 
                 # 9. Dual Visual Proof Gate: Check for valid screenshot proof
                 offer_id = offer.get("id", "") if offer else ""
@@ -237,12 +290,16 @@ def inspect_url_with_retry(
                         try:
                             if target_path.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n":
                                 screenshot_valid = True
-                        except Exception:
-                            pass
+                        except OSError as sc_read_err:
+                            logger.debug("Screenshot bytes header read notice: %s", sc_read_err)
 
                 # Populate visual_proof metadata
                 if offer is not None and offer_id:
-                    proof_status = "verified" if screenshot_valid else ("failed" if (target_path and target_path.exists()) else "missing")
+                    proof_status = (
+                        "verified"
+                        if screenshot_valid
+                        else ("failed" if (target_path and target_path.exists()) else "missing")
+                    )
                     offer["visual_proof"] = {
                         "screenshot_path": screenshot_path,
                         "screenshot_url": screenshot_path,
@@ -250,7 +307,7 @@ def inspect_url_with_retry(
                         "status": proof_status,
                         "zero_dollar_confirmed": True,
                         "maintenance_detected": False,
-                        "paid_catalog_detected": False
+                        "paid_catalog_detected": False,
                     }
                     offer["screenshot_path"] = screenshot_path
 
@@ -260,7 +317,7 @@ def inspect_url_with_retry(
                         has_zero_dollar=True,
                         screenshot_valid=screenshot_valid,
                         auth_score=auth_result.get("authenticity_score", 100),
-                        http_status=resp.status_code
+                        http_status=resp.status_code,
                     )
                     if gate_status != "Active":
                         if offer is not None and "visual_proof" in offer and isinstance(offer["visual_proof"], dict):
@@ -268,7 +325,7 @@ def inspect_url_with_retry(
                         return gate_status, gate_reason, final_url, auth_result
 
                 return "Active", f"HTTP {resp.status_code} OK (Live Verified & Authenticated)", final_url, auth_result
-                
+
         except (httpx.ConnectTimeout, httpx.ReadTimeout):
             last_err = "Read/Connect Timeout"
             time.sleep(1.5)
@@ -282,7 +339,12 @@ def inspect_url_with_retry(
                 fallback_auth["verdict"] = "SUSPICIOUS_UNTRUSTED"
                 fallback_auth["warning_flags"].append("TLS_CERTIFICATE_VERIFICATION_FAILED")
                 fallback_auth["summary"] = f"0% Authenticity: Untrusted (TLS Handshake Failed: {str(e)[:40]})"
-                return "Review Needed", f"Security Alert: SSL/TLS certificate verification failed ({str(e)[:50]})", url, fallback_auth
+                return (
+                    "Review Needed",
+                    f"Security Alert: SSL/TLS certificate verification failed ({str(e)[:50]})",
+                    url,
+                    fallback_auth,
+                )
             last_err = f"Connect error: {str(e)[:50]}"
             time.sleep(1.5)
         except httpx.RequestError as e:
@@ -295,18 +357,25 @@ def inspect_url_with_retry(
                 fallback_auth["verdict"] = "SUSPICIOUS_UNTRUSTED"
                 fallback_auth["warning_flags"].append("TLS_CERTIFICATE_VERIFICATION_FAILED")
                 fallback_auth["summary"] = f"0% Authenticity: Untrusted (TLS Handshake Failed: {str(e)[:40]})"
-                return "Review Needed", f"Security Alert: SSL/TLS certificate verification failed ({str(e)[:50]})", url, fallback_auth
+                return (
+                    "Review Needed",
+                    f"Security Alert: SSL/TLS certificate verification failed ({str(e)[:50]})",
+                    url,
+                    fallback_auth,
+                )
             last_err = f"Request error: {str(e)[:50]}"
             time.sleep(1.5)
         except Exception as e:
             fallback_auth = audit_offer_authenticity(offer)
             return "Inspection Error", f"Unexpected error: {str(e)[:50]}", url, fallback_auth
-            
+
     fallback_auth = audit_offer_authenticity(offer)
     return "Network Warning", f"Temporary network timeout after {max_retries} attempts: {last_err}", url, fallback_auth
 
+
 # Alias convenience function
 inspect_url_dom = inspect_url_with_playwright
+
 
 class InspectionResult(list):
     """
@@ -315,6 +384,7 @@ class InspectionResult(list):
     while also exposing dictionary keys ('summary', 'results', 'offers')
     and metrics properties for new callers and schema validation.
     """
+
     def __init__(self, offers: list[dict[str, Any]], summary: dict[str, Any] | None = None):
         super().__init__(offers)
         self.summary = summary or {}
@@ -373,10 +443,14 @@ async def run_inspection_async(
     applies perceptual hash delta-skipping, and atomically persists
     data/offers.json with pre-flight schema validation.
     """
-    logger.info("=== Starting Concurrent Playwright DOM Authenticity Engine (concurrency=%d, per_vendor=%d) ===", concurrency, per_vendor_concurrency)
+    logger.info(
+        "=== Starting Concurrent Playwright DOM Authenticity Engine (concurrency=%d, per_vendor=%d) ===",
+        concurrency,
+        per_vendor_concurrency,
+    )
     start_time = time.time()
 
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     offers = data.get("offers", [])
@@ -411,18 +485,15 @@ async def run_inspection_async(
     if use_headless and async_playwright is not None:
         try:
             playwright_mgr = await async_playwright().start()
-            browser = await playwright_mgr.chromium.launch(
-                headless=True,
-                args=PLAYWRIGHT_LAUNCH_ARGS
-            )
+            browser = await playwright_mgr.chromium.launch(headless=True, args=PLAYWRIGHT_LAUNCH_ARGS)
             logger.info("Playwright async Chromium launched successfully.")
         except Exception as pw_err:
             logger.warning("Playwright async launch unavailable (%s). Falling back to HTTP inspection.", pw_err)
             if playwright_mgr is not None:
                 try:
                     await playwright_mgr.stop()
-                except Exception:
-                    pass
+                except Exception as stop_err:
+                    logger.debug("Async playwright stop on launch fail notice: %s", stop_err)
             browser = None
             playwright_mgr = None
 
@@ -439,7 +510,7 @@ async def run_inspection_async(
         try:
             # 1. Historical archive record handling (no browser navigation)
             if offer.get("is_historical_archive"):
-                logger.info("Preserving historical archive record: [%s] %s", offer.get('platform'), title[:40])
+                logger.info("Preserving historical archive record: [%s] %s", offer.get("platform"), title[:40])
                 auth_result = audit_offer_authenticity(offer, body_text="", redirect_chain=[current_url])
                 offer["is_authentic_vendor"] = auth_result["is_authentic_vendor"]
                 offer["authenticity_score"] = auth_result["authenticity_score"]
@@ -476,14 +547,13 @@ async def run_inspection_async(
                 http_status = 200
                 maintenance_detected = False
                 paid_catalog_detected = False
-                zero_dollar_confirmed = (new_status == "Active")
+                zero_dollar_confirmed = new_status == "Active"
 
                 if browser is not None:
                     context = None
                     try:
                         context = await browser.new_context(
-                            viewport={"width": 1280, "height": 800},
-                            user_agent=BROWSER_HEADERS["User-Agent"]
+                            viewport={"width": 1280, "height": 800}, user_agent=BROWSER_HEADERS["User-Agent"]
                         )
                         page = await context.new_page()
 
@@ -495,12 +565,16 @@ async def run_inspection_async(
                                     await route.abort()
                                 else:
                                     await route.continue_()
-                            except Exception:
-                                pass
+                            except Exception as route_err:
+                                logger.debug("Async route continue notice: %s", route_err)
 
                         await page.route("**/*", handle_route)
 
-                        is_valid_https = bool(current_url and isinstance(current_url, str) and current_url.strip().lower().startswith("https://"))
+                        is_valid_https = bool(
+                            current_url
+                            and isinstance(current_url, str)
+                            and current_url.strip().lower().startswith("https://")
+                        )
                         pre_auth = audit_offer_authenticity(offer) if is_valid_https else None
 
                         if not is_valid_https:
@@ -531,7 +605,9 @@ async def run_inspection_async(
                             canonical_url = current_url
                             offer["inspection_method"] = "Playwright Headless DOM"
                         else:
-                            nav_target = offer.get("direct_verified_url") or offer.get("verified_vendor_url") or current_url
+                            nav_target = (
+                                offer.get("direct_verified_url") or offer.get("verified_vendor_url") or current_url
+                            )
                             redirect_chain = [nav_target]
                             rendered_title = ""
                             rendered_text = ""
@@ -539,20 +615,30 @@ async def run_inspection_async(
                             http_status = 200
 
                             try:
-                                response = await page.goto(nav_target, wait_until="domcontentloaded", timeout=timeout_per_offer * 1000)
+                                response = await page.goto(
+                                    nav_target, wait_until="domcontentloaded", timeout=timeout_per_offer * 1000
+                                )
                                 http_status = response.status if response else 200
                                 final_url = page.url
                                 if final_url != current_url:
                                     redirect_chain.append(final_url)
                                 try:
                                     await page.wait_for_load_state("networkidle", timeout=2500)
-                                except Exception:
-                                    pass
+                                except Exception as idle_err:
+                                    logger.debug("Async network idle notice: %s", idle_err)
                                 rendered_title = await page.title() or ""
-                                rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
+                                rendered_text = await page.evaluate(
+                                    "() => document.body ? document.body.innerText : ''"
+                                )
                             except Exception as nav_err:
-                                logger.info("Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...", current_url, nav_err)
-                                async with httpx.AsyncClient(headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True) as client:
+                                logger.info(
+                                    "Playwright direct navigation failed for %s (%s). Attempting HTTPX fallback...",
+                                    current_url,
+                                    nav_err,
+                                )
+                                async with httpx.AsyncClient(
+                                    headers=BROWSER_HEADERS, timeout=12.0, follow_redirects=True
+                                ) as client:
                                     resp = await client.get(current_url)
                                     http_status = resp.status_code
                                     final_url = str(resp.url)
@@ -560,7 +646,9 @@ async def run_inspection_async(
                                         redirect_chain.append(final_url)
                                     await page.set_content(resp.text, wait_until="domcontentloaded")
                                     rendered_title = await page.title() or ""
-                                    rendered_text = await page.evaluate("() => document.body ? document.body.innerText : ''")
+                                    rendered_text = await page.evaluate(
+                                        "() => document.body ? document.body.innerText : ''"
+                                    )
 
                             # Capture screenshot with delta skipping
                             target_path = screenshots_dir / f"{offer_id}.png"
@@ -571,19 +659,33 @@ async def run_inspection_async(
                             if offer_id:
                                 try:
                                     screenshot_bytes = await page.screenshot(full_page=False)
-                                    if screenshot_bytes and len(screenshot_bytes) >= 4096 and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n":
+                                    if (
+                                        screenshot_bytes
+                                        and len(screenshot_bytes) >= 4096
+                                        and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n"
+                                    ):
                                         from src.visual_hasher import (
                                             is_blank_or_invalid_screenshot,
                                             should_skip_screenshot_write,
                                         )
-                                        if target_path.exists() and not is_blank_or_invalid_screenshot(target_path):
-                                            if is_blank_or_invalid_screenshot(screenshot_bytes) or (target_path.stat().st_size >= 30000 and len(screenshot_bytes) < 18000):
-                                                logger.info(
-                                                    "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
-                                                    offer_id
+
+                                        if (
+                                            target_path.exists()
+                                            and not is_blank_or_invalid_screenshot(target_path)
+                                            and (
+                                                is_blank_or_invalid_screenshot(screenshot_bytes)
+                                                or (
+                                                    target_path.stat().st_size >= 30000
+                                                    and len(screenshot_bytes) < 18000
                                                 )
-                                                skipped_write = True
-                                                screenshot_ok = True
+                                            )
+                                        ):
+                                            logger.info(
+                                                "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
+                                                offer_id,
+                                            )
+                                            skipped_write = True
+                                            screenshot_ok = True
                                         if not skipped_write:
                                             should_skip, delta, dist = should_skip_screenshot_write(
                                                 screenshot_bytes, target_path, old_status, old_status
@@ -624,7 +726,7 @@ async def run_inspection_async(
                             actionability_report = scan_accessibility_elements(
                                 interactive_elements=interactive_ctas,
                                 page_text=rendered_text,
-                                page_title=rendered_title
+                                page_title=rendered_title,
                             )
                             cart_verdict = assert_cart_balance(offer)
                             dom_eval = inspect_rendered_dom(
@@ -632,7 +734,7 @@ async def run_inspection_async(
                                 rendered_title=rendered_title,
                                 final_url=final_url,
                                 original_url=current_url,
-                                interactive_elements=interactive_ctas
+                                interactive_elements=interactive_ctas,
                             )
                             vlm_verdict = evaluate_vlm_semantic_gate(
                                 offer_id=offer_id,
@@ -642,13 +744,11 @@ async def run_inspection_async(
                                 screenshot_path=rel_path if screenshot_ok else None,
                                 screenshot_bytes=screenshot_bytes,
                                 platform=offer.get("platform", ""),
-                                offer_data=offer
+                                offer_data=offer,
                             )
 
                             auth_result = audit_offer_authenticity(
-                                offer=offer,
-                                body_text=rendered_text,
-                                redirect_chain=redirect_chain
+                                offer=offer, body_text=rendered_text, redirect_chain=redirect_chain
                             )
 
                             auth_score = auth_result.get("authenticity_score", 90)
@@ -682,7 +782,11 @@ async def run_inspection_async(
                                 reason = actionability_report.reason
                                 zero_dollar_confirmed = False
 
-                            if new_status == "Active" and cart_verdict.is_copay_required and cart_verdict.copay_amount_usd > 0.0:
+                            if (
+                                new_status == "Active"
+                                and cart_verdict.is_copay_required
+                                and cart_verdict.copay_amount_usd > 0.0
+                            ):
                                 new_status = "Review Needed"
                                 reason = f"Cart Assertion: Copay Required (${cart_verdict.copay_amount_usd:.2f}) - {cart_verdict.reason}"
                                 paid_catalog_detected = True
@@ -704,7 +808,9 @@ async def run_inspection_async(
                                     zero_dollar_confirmed = False
                                 elif vlm_verdict.requires_payment_or_copay and vlm_verdict.copay_amount_usd > 0.0:
                                     new_status = "Review Needed"
-                                    reason = f"VLM Semantic Gate: Copay required (${vlm_verdict.copay_amount_usd:.2f} USD)"
+                                    reason = (
+                                        f"VLM Semantic Gate: Copay required (${vlm_verdict.copay_amount_usd:.2f} USD)"
+                                    )
                                     paid_catalog_detected = True
                                     zero_dollar_confirmed = False
                                 elif not vlm_verdict.has_zero_dollar_waiver:
@@ -723,6 +829,7 @@ async def run_inspection_async(
                             # If status changed, ensure screenshot write is refreshed only with a non-blank screenshot
                             if offer_id and new_status != old_status and screenshot_bytes:
                                 from src.visual_hasher import is_blank_or_invalid_screenshot
+
                                 if not is_blank_or_invalid_screenshot(screenshot_bytes):
                                     temp_path = target_path.with_suffix(".tmp.png")
                                     temp_path.write_bytes(screenshot_bytes)
@@ -731,7 +838,7 @@ async def run_inspection_async(
                                 else:
                                     logger.warning(
                                         "Status changed for %s, but candidate screenshot is blank/invalid. Preserving existing screenshot.",
-                                        offer_id
+                                        offer_id,
                                     )
 
                             canonical_url = final_url
@@ -743,8 +850,8 @@ async def run_inspection_async(
                         if context:
                             try:
                                 await context.close()
-                            except Exception:
-                                pass
+                            except Exception as ctx_err:
+                                logger.debug("Async context close notice: %s", ctx_err)
                 else:
                     # Synchronous fallback runner via thread pool
                     fn = globals().get("inspect_url_with_retry", inspect_url_with_retry)
@@ -756,7 +863,7 @@ async def run_inspection_async(
                     skipped_write = False
                     maintenance_detected = "maintenance" in reason.lower()
                     paid_catalog_detected = "catalog" in reason.lower()
-                    zero_dollar_confirmed = (new_status == "Active")
+                    zero_dollar_confirmed = new_status == "Active"
                     http_match = re.search(r"HTTP\s+(\d{3})", reason)
                     if http_match:
                         http_status = int(http_match.group(1))
@@ -788,7 +895,7 @@ async def run_inspection_async(
                         "status": "verified" if new_status == "Active" else "placeholder",
                         "zero_dollar_confirmed": new_status == "Active",
                         "maintenance_detected": "maintenance" in reason.lower(),
-                        "paid_catalog_detected": "catalog" in reason.lower()
+                        "paid_catalog_detected": "catalog" in reason.lower(),
                     }
 
                 # Temporal Expiry Invariant: If stated calendar expiration has passed, override to Expired
@@ -802,16 +909,21 @@ async def run_inspection_async(
                     except ValueError:
                         pass
 
-                logger.info(" -> Result: %s | Reason: %s | Authenticity: %d%%", new_status, reason, auth_result['authenticity_score'])
+                logger.info(
+                    " -> Result: %s | Reason: %s | Authenticity: %d%%",
+                    new_status,
+                    reason,
+                    auth_result["authenticity_score"],
+                )
 
                 # Canonical URL Self-Healing: Update to clean canonical path if permanently redirected
                 if canonical_url != current_url and new_status == "Active":
                     parsed_orig = urlparse(current_url).netloc
                     parsed_canon = urlparse(canonical_url).netloc
                     is_same_vendor_migration = (
-                        parsed_orig in parsed_canon or 
-                        parsed_canon in parsed_orig or 
-                        (parsed_orig.endswith('.google') and parsed_canon.endswith('.google'))
+                        parsed_orig in parsed_canon
+                        or parsed_canon in parsed_orig
+                        or (parsed_orig.endswith(".google") and parsed_canon.endswith(".google"))
                     )
                     if is_same_vendor_migration:
                         logger.info("[URL HEALED] Updating '%s' URL from %s -> %s", title, current_url, canonical_url)
@@ -819,33 +931,48 @@ async def run_inspection_async(
                         url_healed_count += 1
 
                 # State Self-Healing: Re-open offer if portal recovered
-                if old_status in ["Broken Link", "Expired", "Registrations Closed", "Review Needed"] and new_status == "Active":
+                if (
+                    old_status in ["Broken Link", "Expired", "Registrations Closed", "Review Needed"]
+                    and new_status == "Active"
+                ):
                     logger.warning("[SELF-HEALED] Offer '%s' recovered from %s to Active!", title, old_status)
                     healed_count += 1
                     offer["self_healing_event"] = {
                         "previous_status": old_status,
                         "healed_status": "Active",
                         "timestamp": datetime.now(UTC).isoformat(),
-                        "proof_image": offer.get("screenshot_path", f"docs/screenshots/{offer_id}.png")
+                        "proof_image": offer.get("screenshot_path", f"docs/screenshots/{offer_id}.png"),
                     }
 
                 # Update definitive statuses with 2-strike hysteresis & hard-closure fast-path (Option 3A)
-                consecutive_transient = offer.get("consecutive_transient_failures", offer.get("consecutive_failures", 0))
+                consecutive_transient = offer.get(
+                    "consecutive_transient_failures", offer.get("consecutive_failures", 0)
+                )
 
-                is_hard_closure = (
-                    new_status in ["Registrations Closed", "Expired"]
-                    or any(pat.lower() in reason.lower() for pat in REGISTRATION_CLOSED_PATTERNS + COUPON_EXPIRED_PATTERNS + CAPACITY_PATTERNS)
+                is_hard_closure = new_status in ["Registrations Closed", "Expired"] or any(
+                    pat.lower() in reason.lower()
+                    for pat in REGISTRATION_CLOSED_PATTERNS + COUPON_EXPIRED_PATTERNS + CAPACITY_PATTERNS
                 )
 
                 is_transient = (
                     maintenance_detected
                     or (isinstance(http_status, int) and 500 <= http_status <= 599)
-                    or "500" in reason or "502" in reason or "503" in reason or "504" in reason
+                    or "500" in reason
+                    or "502" in reason
+                    or "503" in reason
+                    or "504" in reason
                     or "timeout" in reason.lower()
                     or "connection" in reason.lower()
                     or "maintenance" in reason.lower()
                     or new_status == "Server Error"
-                    or (new_status == "Review Needed" and ("rate limit" in reason.lower() or "bot protect" in reason.lower() or "gateway" in reason.lower()))
+                    or (
+                        new_status == "Review Needed"
+                        and (
+                            "rate limit" in reason.lower()
+                            or "bot protect" in reason.lower()
+                            or "gateway" in reason.lower()
+                        )
+                    )
                 )
 
                 if is_hard_closure:
@@ -875,7 +1002,14 @@ async def run_inspection_async(
                     offer["consecutive_failures"] = 0
                     offer.pop("in_grace_period", None)
 
-                if new_status in ["Active", "Registrations Closed", "Broken Link", "Expired", "Review Needed", "Server Error"]:
+                if new_status in [
+                    "Active",
+                    "Registrations Closed",
+                    "Broken Link",
+                    "Expired",
+                    "Review Needed",
+                    "Server Error",
+                ]:
                     offer["status"] = new_status
                     offer["verification_date"] = today
                     offer["inspection_notes"] = reason
@@ -902,13 +1036,13 @@ async def run_inspection_async(
         if browser:
             try:
                 await browser.close()
-            except Exception:
-                pass
+            except Exception as b_err:
+                logger.debug("Async browser close notice: %s", b_err)
         if playwright_mgr:
             try:
                 await playwright_mgr.stop()
-            except Exception:
-                pass
+            except Exception as p_err:
+                logger.debug("Async playwright stop notice: %s", p_err)
 
     now_iso = datetime.now(UTC).isoformat()
     data["last_inspected"] = now_iso
@@ -922,7 +1056,9 @@ async def run_inspection_async(
     try:
         atomic_write_json(DATA_FILE, data, schema_path=schema_to_validate)
     except Exception as exc:
-        logger.warning("Schema pre-flight validation exception (%s); writing atomically without schema enforcement.", exc)
+        logger.warning(
+            "Schema pre-flight validation exception (%s); writing atomically without schema enforcement.", exc
+        )
         atomic_write_json(DATA_FILE, data, schema_path=None)
 
     duration = round(time.time() - start_time, 2)
@@ -941,8 +1077,14 @@ async def run_inspection_async(
         "=== Deep Inspection Finished: %d offers audited in %.2fs "
         "(%d changes, %d self-healed, %d canonical URLs updated, "
         "%d screenshots skipped via pHash, %d/%d authentic vendors) ===",
-        len(offers), duration, status_changes, healed_count,
-        url_healed_count, screenshots_skipped_phash, authentic_count, len(offers)
+        len(offers),
+        duration,
+        status_changes,
+        healed_count,
+        url_healed_count,
+        screenshots_skipped_phash,
+        authentic_count,
+        len(offers),
     )
     return InspectionResult(offers, summary)
 
@@ -971,7 +1113,7 @@ def run_inspection(
                     concurrency=concurrency,
                     timeout_per_offer=timeout_per_offer,
                     per_vendor_concurrency=per_vendor_concurrency,
-                )
+                ),
             ).result()
     else:
         return asyncio.run(
@@ -984,7 +1126,6 @@ def run_inspection(
         )
 
 
-
 def inspect_offer(offer: Any, capture_screenshot: bool = True) -> dict[str, Any]:
     """
     Interface contract function: inspects a single offer and returns
@@ -993,13 +1134,13 @@ def inspect_offer(offer: Any, capture_screenshot: bool = True) -> dict[str, Any]
     """
     offer_dict = offer.model_dump() if hasattr(offer, "model_dump") else dict(offer)
     url = offer_dict.get("verified_vendor_url") or offer_dict.get("url", "")
-    
+
     with HeadlessDOMInspector(headless=True, timeout_ms=12000) as inspector:
         if inspector.is_available:
             status, reason, canonical_url, auth_result = inspector.inspect_url(url, offer=offer_dict)
         else:
             status, reason, canonical_url, auth_result = inspect_url_with_retry(url, offer=offer_dict)
-            
+
     vp = offer_dict.get("visual_proof", {})
     return {
         "status": status,
@@ -1011,7 +1152,7 @@ def inspect_offer(offer: Any, capture_screenshot: bool = True) -> dict[str, Any]
         "zero_dollar_confirmed": vp.get("zero_dollar_confirmed", False) if isinstance(vp, dict) else False,
         "maintenance_detected": vp.get("maintenance_detected", False) if isinstance(vp, dict) else False,
         "paid_catalog_detected": vp.get("paid_catalog_detected", False) if isinstance(vp, dict) else False,
-        "offer": offer_dict
+        "offer": offer_dict,
     }
 
 

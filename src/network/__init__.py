@@ -116,13 +116,11 @@ class NetworkVerifier:
         3. Queries DoH for DNSSEC AD flag and performs RFC 8659 CAA tree climbing.
         4. Returns validated Pydantic V2 NetworkProvenance contract.
         """
-        now_utc = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_utc = datetime.datetime.now(datetime.UTC).isoformat()
         hostname = clean_hostname(url_or_host)
 
         # 1. ASN Route verification
-        asn_res = self.asn_verifier.verify_route_origin(
-            hostname, platform=platform, ip_override=ip_override
-        )
+        asn_res = self.asn_verifier.verify_route_origin(hostname, platform=platform, ip_override=ip_override)
 
         # 2. TLS & CT verification
         if self.offline_mode and not mock_cert:
@@ -147,17 +145,11 @@ class NetworkVerifier:
                 "flags": ["OFFLINE_DNS_FALLBACK"],
             }
         else:
-            dns_res = self.dns_verifier.verify_dns_security(
-                hostname, cert_issuer=tls_res.get("issuer") or ""
-            )
+            dns_res = self.dns_verifier.verify_dns_security(hostname, cert_issuer=tls_res.get("issuer") or "")
 
         # Combine flags and log operators
-        security_flags = list(dict.fromkeys(
-            asn_res.flags + tls_res.get("flags", []) + dns_res.get("flags", [])
-        ))
-        log_operators = list(dict.fromkeys(
-            [sct.get("log_operator", "Unknown") for sct in tls_res.get("scts", [])]
-        ))
+        security_flags = list(dict.fromkeys(asn_res.flags + tls_res.get("flags", []) + dns_res.get("flags", [])))
+        log_operators = list(dict.fromkeys([sct.get("log_operator", "Unknown") for sct in tls_res.get("scts", [])]))
 
         return NetworkProvenance(
             asn=asn_res.asn,
@@ -207,8 +199,8 @@ __all__ = [
     "ASNRouteVerifier",
     "ASNVerificationResult",
     "CAAVerifier",
-    "DNSSecurityVerifier",
     "DNSSECVerifier",
+    "DNSSecurityVerifier",
     "NetworkProvenance",
     "NetworkVerifier",
     "TLSCertificateVerifier",

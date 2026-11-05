@@ -4,9 +4,6 @@ Compiles interactive state controllers, SVG icon bank, Proof Modal accessibility
 multi-view render engines (Grid, Table, Timeline, Matrix, Redemption), and 4-timezone world telemetry.
 """
 
-from typing import Dict, Any, List
-import json
-
 JS_TEMPLATE = """
         const offersData = __OFFERS_DATA__;
         const newsData = __NEWS_DATA__;
@@ -1575,6 +1572,7 @@ JS_TEMPLATE = """
             }
         });
 """
+
 
 def generate_client_bundle(
     offers_json_str: str = "[]",

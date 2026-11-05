@@ -6,26 +6,24 @@ accessible proof modal lightbox, and integrated theme engine.
 
 import html as html_lib
 import json
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Union
+from datetime import UTC, datetime
+from typing import Any
 
-from src.builders.theme_engine import (
-    DEFAULT_THEME,
-    generate_css_variables,
-    generate_zero_foit_script,
-    generate_theme_dropdown_html,
-)
 from src.builders.client_bundle import generate_client_bundle
 from src.builders.readme_builder import (
-    DOCS_DIR,
     STATUS_BADGES,
     format_4_timezones,
     load_news,
 )
+from src.builders.theme_engine import (
+    DEFAULT_THEME,
+    generate_css_variables,
+    generate_theme_dropdown_html,
+    generate_zero_foit_script,
+)
 
 
-def classify_offer_tier(o: Dict[str, Any]) -> str:
+def classify_offer_tier(o: dict[str, Any]) -> str:
     """Classifies an offer into 'wave' (limited-time exam wave), 'discount' (active ongoing discount/voucher), or 'badge' (skill badge & lab)."""
     tv = o.get("truth_verification") or {}
     otype = (o.get("offer_type") or "").lower()
@@ -44,8 +42,11 @@ def classify_offer_tier(o: Dict[str, Any]) -> str:
     # 2. Exam Waves (Seasonal challenge waves, limited-time cohorts, annual/event windows)
     if (
         seas in ("periodic_challenge_wave", "annual_window", "monthly_sweepstakes", "event_driven")
-        or "wave" in oid or "wave" in title or "challenge" in title
-        or "wave" in rec or "cohort" in rec
+        or "wave" in oid
+        or "wave" in title
+        or "challenge" in title
+        or "wave" in rec
+        or "cohort" in rec
     ):
         return "wave"
 
@@ -53,15 +54,37 @@ def classify_offer_tier(o: Dict[str, Any]) -> str:
     return "badge"
 
 
-def minify_offer_for_client(o: Dict[str, Any]) -> Dict[str, Any]:
+def minify_offer_for_client(o: dict[str, Any]) -> dict[str, Any]:
     """Prunes heavy internal backend diagnostics to optimize inlined client bundle payload while preserving all UI fields."""
     keys = (
-        "id", "title", "platform", "category", "certification_name", "credential_tier",
-        "difficulty_tier", "url", "verified_vendor_url", "direct_verified_url", "status",
-        "value_usd", "time_period", "recurrence_pattern", "voucher_code", "application_flow_type",
-        "cart_balance_verified", "checkout_field", "claim_steps", "redemption_guide",
-        "authenticity_score", "screenshot_path", "visual_proof", "truth_verification",
-        "inspection_notes", "verification_date", "last_zero_dollar_confirmed_date", "is_historical_archive"
+        "id",
+        "title",
+        "platform",
+        "category",
+        "certification_name",
+        "credential_tier",
+        "difficulty_tier",
+        "url",
+        "verified_vendor_url",
+        "direct_verified_url",
+        "status",
+        "value_usd",
+        "time_period",
+        "recurrence_pattern",
+        "voucher_code",
+        "application_flow_type",
+        "cart_balance_verified",
+        "checkout_field",
+        "claim_steps",
+        "redemption_guide",
+        "authenticity_score",
+        "screenshot_path",
+        "visual_proof",
+        "truth_verification",
+        "inspection_notes",
+        "verification_date",
+        "last_zero_dollar_confirmed_date",
+        "is_historical_archive",
     )
     m = {k: o[k] for k in keys if k in o and o[k] is not None}
     if "visual_proof" in m and isinstance(m["visual_proof"], dict):
@@ -71,7 +94,7 @@ def minify_offer_for_client(o: Dict[str, Any]) -> Dict[str, Any]:
     return m
 
 
-def minify_news_for_client(n: Dict[str, Any]) -> Dict[str, Any]:
+def minify_news_for_client(n: dict[str, Any]) -> dict[str, Any]:
     """Prunes non-display news fields to optimize inlined client bundle payload."""
     keys = ("id", "title", "url", "published_date", "category", "company", "source_domain", "summary")
     return {k: n[k] for k in keys if k in n and n[k] is not None}
@@ -80,16 +103,16 @@ def minify_news_for_client(n: Dict[str, Any]) -> Dict[str, Any]:
 def escape_js_attr(val: Any) -> str:
     """Escapes string for safe embedding inside single-quoted JavaScript literal in HTML attribute."""
     s = str(val or "")
-    return s.replace("\\", "\\\\").replace("'", "\\'").replace('"', '&quot;').replace("<", "&lt;").replace(">", "&gt;")
+    return s.replace("\\", "\\\\").replace("'", "\\'").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;")
 
 
 def generate_web_dashboard(
-    data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None,
-    news_data: Optional[Union[Dict[str, Any], List[Dict[str, Any]]]] = None,
-    last_sync: Optional[str] = None,
-    offers: Optional[List[Dict[str, Any]]] = None,
-    news: Optional[List[Dict[str, Any]]] = None,
-    last_sync_iso: Optional[str] = None,
+    data: dict[str, Any] | list[dict[str, Any]] | None = None,
+    news_data: dict[str, Any] | list[dict[str, Any]] | None = None,
+    last_sync: str | None = None,
+    offers: list[dict[str, Any]] | None = None,
+    news: list[dict[str, Any]] | None = None,
+    last_sync_iso: str | None = None,
     **kwargs: Any,
 ) -> str:
     """
@@ -121,14 +144,14 @@ def generate_web_dashboard(
         last_sync = last_sync_iso
     elif last_sync is None and "last_sync_iso" in kwargs:
         last_sync = kwargs["last_sync_iso"]
-        
-    offers: List[Dict[str, Any]] = (
+
+    offers: list[dict[str, Any]] = (
         data if isinstance(data, list) else (data.get("offers", []) if isinstance(data, dict) else [])
     )
-    news_items: List[Dict[str, Any]] = (
+    news_items: list[dict[str, Any]] = (
         news_data if isinstance(news_data, list) else (news_data.get("news", []) if isinstance(news_data, dict) else [])
     )
-    
+
     active_offers = [o for o in offers if o.get("status") == "Active"]
     closed_offers = [o for o in offers if o.get("status") != "Active" and not o.get("is_historical_archive")]
     historical_offers = [o for o in offers if o.get("is_historical_archive")]
@@ -151,7 +174,7 @@ def generate_web_dashboard(
         or (data.get("last_inspected") if isinstance(data, dict) else None)
         or (data.get("last_updated") if isinstance(data, dict) else None)
     )
-    
+
     last_sync_dt = None
     if last_sync_raw:
         try:
@@ -160,38 +183,43 @@ def generate_web_dashboard(
             last_sync_dt = None
     tz_info = format_4_timezones(last_sync_dt)
     last_updated = tz_info["utc"]
-    last_sync_iso_js = last_sync_dt.isoformat() if last_sync_dt else datetime.now(timezone.utc).isoformat()
-    last_updated_date = last_sync_dt.strftime("%Y-%m-%d") if last_sync_dt else datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    
+    last_sync_iso_js = last_sync_dt.isoformat() if last_sync_dt else datetime.now(UTC).isoformat()
+    last_updated_date = last_sync_dt.strftime("%Y-%m-%d") if last_sync_dt else datetime.now(UTC).strftime("%Y-%m-%d")
+
     # Safe minified JSON encoding preventing script breakout / XSS injections (ADR-02 Payload Optimization)
     minified_offers = [minify_offer_for_client(o) for o in offers]
     minified_news = [minify_news_for_client(n) for n in news_items]
     offers_json_str = json.dumps(minified_offers, separators=(",", ":")).replace("<", "\\u003c").replace(">", "\\u003e")
     news_json_str = json.dumps(minified_news, separators=(",", ":")).replace("<", "\\u003c").replace(">", "\\u003e")
-    
+
     cloud_count = sum(1 for o in offers if "Cloud" in (o.get("category") or "") or "Cloud" in (o.get("platform") or ""))
     sec_count = sum(1 for o in offers if "Security" in (o.get("category") or ""))
     devops_count = sum(1 for o in offers if "DevOps" in (o.get("category") or ""))
     ai_count = sum(1 for o in offers if "AI" in (o.get("category") or "") or "Data" in (o.get("category") or ""))
     net_count = sum(1 for o in offers if "Networking" in (o.get("category") or ""))
-    
+
     zero_foit_script = generate_zero_foit_script()
     css_variables = generate_css_variables()
-    theme_dropdown_html = generate_theme_dropdown_html()
+    generate_theme_dropdown_html()
     client_script_bundle = generate_client_bundle(offers_json_str, news_json_str, last_sync_iso_js)
-    
-    closed_offers_markup = "".join([f'''<div class="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2" style="background-color: var(--canvas-inset);">
+
+    closed_offers_markup = "".join(
+        [
+            f'''<div class="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2" style="background-color: var(--canvas-inset);">
         <div>
-            <span class="font-bold" style="color: var(--fg-default);">{html_lib.escape(str(o.get('platform') or ''))}</span> — <span style="color: var(--fg-muted);">{html_lib.escape(str(o.get('certification_name') or o.get('title') or ''))}</span>
+            <span class="font-bold" style="color: var(--fg-default);">{html_lib.escape(str(o.get("platform") or ""))}</span> — <span style="color: var(--fg-muted);">{html_lib.escape(str(o.get("certification_name") or o.get("title") or ""))}</span>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{STATUS_BADGES.get(o.get('status'), o.get('status'))}</span>
-            <span class="text-[11px]" style="color: var(--fg-subtle);">{html_lib.escape(str(o.get('inspection_notes', 'Under continuous review')))}</span>
-            <button type="button" data-proof-id="{escape_js_attr(o.get('id', ''))}" onclick="openProofModal('{escape_js_attr(o.get('id', ''))}')" class="px-2.5 py-1 rounded border text-[11px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96] relative z-10 select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{STATUS_BADGES.get(o.get("status"), o.get("status"))}</span>
+            <span class="text-[11px]" style="color: var(--fg-subtle);">{html_lib.escape(str(o.get("inspection_notes", "Under continuous review")))}</span>
+            <button type="button" data-proof-id="{escape_js_attr(o.get("id", ""))}" onclick="openProofModal('{escape_js_attr(o.get("id", ""))}')" class="px-2.5 py-1 rounded border text-[11px] font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96] relative z-10 select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
                 <span class="pointer-events-none">📸 Proof</span>
             </button>
         </div>
-    </div>''' for o in closed_offers])
+    </div>'''
+            for o in closed_offers
+        ]
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en" data-theme="{DEFAULT_THEME}">
@@ -254,9 +282,9 @@ def generate_web_dashboard(
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background-color: var(--success-fg);"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2" style="background-color: var(--success-fg);"></span>
                     </span>
-                    <span id="navUtcClock" class="tabular-nums font-bold" style="color: var(--fg-default);">{tz_info['utc']}</span>
+                    <span id="navUtcClock" class="tabular-nums font-bold" style="color: var(--fg-default);">{tz_info["utc"]}</span>
                     <span id="navLocalOffset" class="text-[11px] font-medium opacity-80 tabular-nums" style="color: var(--fg-subtle);">• Local</span>
-                    <span id="navTimezoneText" class="sr-only">Last Synced: {tz_info['ticker']}</span>
+                    <span id="navTimezoneText" class="sr-only">Last Synced: {tz_info["ticker"]}</span>
                 </div>
 
                 <!-- Dark / Light Single Theme Toggle Button (GitHub Dark / GitHub Light) -->
@@ -382,10 +410,10 @@ def generate_web_dashboard(
                     </div>
                     <div class="mt-3">
                         <div class="text-xs sm:text-sm font-extrabold tracking-tight tabular-nums font-mono" style="color: var(--fg-default);">
-                            <span id="heroCadenceUtc">{tz_info['utc_short']}</span> &bull; <span id="heroCadenceIst" style="color: var(--accent-fg);">{tz_info['ist']}</span>
+                            <span id="heroCadenceUtc">{tz_info["utc_short"]}</span> &bull; <span id="heroCadenceIst" style="color: var(--accent-fg);">{tz_info["ist"]}</span>
                         </div>
                         <div class="text-[11px] font-mono mt-1 tabular-nums" style="color: var(--fg-muted);">
-                            <span id="heroCadenceEt">{tz_info['et']}</span> &bull; <span id="heroCadenceCet">{tz_info['cet']}</span>
+                            <span id="heroCadenceEt">{tz_info["et"]}</span> &bull; <span id="heroCadenceCet">{tz_info["cet"]}</span>
                         </div>
                         <p class="text-[11px] mt-1 text-pretty" style="color: var(--fg-muted);">Automated Audit Timestamp across UTC, IST, EDT, CEST</p>
                     </div>

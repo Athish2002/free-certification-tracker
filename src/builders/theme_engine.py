@@ -7,11 +7,11 @@ Generates CSS custom properties and provides inline Zero-FOIT styling scripts.
 """
 
 import json
-from typing import Dict, Any, List
+from typing import Any
 
 DEFAULT_THEME = "github-dark"
 
-THEMES: List[Dict[str, Any]] = [
+THEMES: list[dict[str, Any]] = [
     {
         "id": "github-dark",
         "name": "GitHub Dark",
@@ -99,7 +99,7 @@ for _t in THEMES:
 
 def generate_css_variables() -> str:
     """Generates the unified CSS custom properties for GitHub Dark and GitHub Light."""
-    lines: List[str] = [
+    lines: list[str] = [
         ":root {",
         "    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);",
         "    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);",
@@ -233,7 +233,7 @@ def generate_theme_dropdown_html() -> str:
     return ""
 
 
-def get_theme_by_id(theme_id: str) -> Dict[str, Any]:
+def get_theme_by_id(theme_id: str) -> dict[str, Any]:
     """Retrieve theme dictionary by ID, falling back to GitHub Dark / Light."""
     for theme in THEMES:
         if theme["id"] == theme_id:

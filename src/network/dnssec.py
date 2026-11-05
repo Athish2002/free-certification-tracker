@@ -5,11 +5,14 @@ Implements RFC 8484 DNS-over-HTTPS Authenticated Data (AD) flag validation.
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 import httpx
 
 from src.network.asn import DOH_ENDPOINTS, clean_hostname
+
+logger = logging.getLogger(__name__)
 
 
 def query_doh_record(
@@ -38,7 +41,8 @@ def query_doh_record(
                     if cache is not None:
                         cache[cache_key] = data
                     return data
-        except Exception:
+        except Exception as doh_err:
+            logger.debug("DNSSEC DoH query probe fallback: %s", doh_err)
             continue
     return None
 

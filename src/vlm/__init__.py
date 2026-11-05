@@ -8,19 +8,25 @@ from __future__ import annotations
 import logging
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
+from src.vlm.heuristic import (
+    KNOWN_BRANDS,
+    evaluate_visual_semantics_heuristic,
+    extract_cta,
+    extract_detected_brand,
+)
 from src.vlm.models import (
-    OCRMethod,
-    OCRResult,
-    OCRStatus,
-    RegistrationStatus,
-    VLMSemanticVerdict,
     KEY_PHRASE_PATTERNS,
     PRICE_REGEX,
     VLM_SYSTEM_INSTRUCTION,
     VOUCHER_CODE_REGEX,
     VOUCHER_STOPWORDS,
+    OCRMethod,
+    OCRResult,
+    OCRStatus,
+    RegistrationStatus,
+    VLMSemanticVerdict,
 )
 from src.vlm.ocr_engine import (
     ProgressiveOCREngine,
@@ -31,12 +37,6 @@ from src.vlm.provider_adapters import (
     VLMProviderAdapters,
     build_vlm_user_prompt,
 )
-from src.vlm.heuristic import (
-    KNOWN_BRANDS,
-    evaluate_visual_semantics_heuristic,
-    extract_cta,
-    extract_detected_brand,
-)
 
 logger = logging.getLogger("certpulse.vlm")
 
@@ -46,11 +46,11 @@ def evaluate_vlm_semantic_gate(
     url: str = "",
     dom_text: str = "",
     dom_title: str = "",
-    screenshot_path: Optional[str] = None,
-    screenshot_bytes: Optional[bytes] = None,
+    screenshot_path: str | None = None,
+    screenshot_bytes: bytes | None = None,
     platform: str = "",
-    offer_data: Optional[Dict[str, Any]] = None,
-    timeout_seconds: float = 10.0
+    offer_data: dict[str, Any] | None = None,
+    timeout_seconds: float = 10.0,
 ) -> VLMSemanticVerdict:
     """
     Main Entry Point: Evaluates visual semantics of a captured screenshot and DOM.
@@ -71,26 +71,22 @@ def evaluate_vlm_semantic_gate(
                 logger.debug(f"Could not read screenshot {screenshot_path}: {e}")
 
     # 2. Extract OCR snippet and badge pHash match if components are available
-    ocr_snippet: Optional[str] = None
+    ocr_snippet: str | None = None
     badge_phash_matched: bool = False
 
     try:
         from src.visual_hasher import match_badge_phash
+
         if screenshot_path or screenshot_bytes:
             badge_phash_matched = match_badge_phash(
-                image_path=screenshot_path,
-                image_bytes=screenshot_bytes,
-                platform=platform
+                image_path=screenshot_path, image_bytes=screenshot_bytes, platform=platform
             )
     except Exception:
         badge_phash_matched = False
 
     try:
         if screenshot_path or screenshot_bytes or dom_text:
-            ocr_res = extract_ocr_text(
-                image_source=screenshot_bytes or screenshot_path,
-                rendered_dom=dom_text
-            )
+            ocr_res = extract_ocr_text(image_source=screenshot_bytes or screenshot_path, rendered_dom=dom_text)
             ocr_snippet = ocr_res.snippet or None
     except Exception:
         ocr_snippet = None
@@ -112,7 +108,7 @@ def evaluate_vlm_semantic_gate(
             platform=platform,
             url=url,
             ocr_snippet=ocr_snippet,
-            badge_phash_matched=badge_phash_matched
+            badge_phash_matched=badge_phash_matched,
         )
 
         import httpx
@@ -124,7 +120,7 @@ def evaluate_vlm_semantic_gate(
                 headers = {
                     "x-api-key": anthropic_key,
                     "anthropic-version": "2023-06-01",
-                    "content-type": "application/json"
+                    "content-type": "application/json",
                 }
                 with httpx.Client(timeout=timeout_seconds) as client:
                     resp = client.post("https://api.anthropic.com/v1/messages", json=payload, headers=headers)
@@ -143,10 +139,7 @@ def evaluate_vlm_semantic_gate(
         elif openai_key:
             try:
                 payload = VLMProviderAdapters.build_gpt4o_payload(screenshot_bytes, user_prompt)
-                headers = {
-                    "Authorization": f"Bearer {openai_key}",
-                    "Content-Type": "application/json"
-                }
+                headers = {"Authorization": f"Bearer {openai_key}", "Content-Type": "application/json"}
                 with httpx.Client(timeout=timeout_seconds) as client:
                     resp = client.post("https://api.openai.com/v1/chat/completions", json=payload, headers=headers)
                     if resp.status_code == 200:
@@ -190,29 +183,29 @@ def evaluate_vlm_semantic_gate(
         ocr_text=ocr_snippet,
         badge_phash_matched=badge_phash_matched,
         platform=platform,
-        offer_data=offer_data
+        offer_data=offer_data,
     )
 
 
 __all__ = [
-    "evaluate_vlm_semantic_gate",
-    "VLMSemanticVerdict",
-    "OCRResult",
-    "OCRMethod",
-    "OCRStatus",
-    "RegistrationStatus",
-    "ProgressiveOCREngine",
-    "get_ocr_engine",
-    "extract_ocr_text",
-    "build_vlm_user_prompt",
-    "VLMProviderAdapters",
-    "evaluate_visual_semantics_heuristic",
-    "extract_detected_brand",
-    "extract_cta",
-    "KNOWN_BRANDS",
-    "VLM_SYSTEM_INSTRUCTION",
     "KEY_PHRASE_PATTERNS",
+    "KNOWN_BRANDS",
+    "PRICE_REGEX",
+    "VLM_SYSTEM_INSTRUCTION",
     "VOUCHER_CODE_REGEX",
     "VOUCHER_STOPWORDS",
-    "PRICE_REGEX",
+    "OCRMethod",
+    "OCRResult",
+    "OCRStatus",
+    "ProgressiveOCREngine",
+    "RegistrationStatus",
+    "VLMProviderAdapters",
+    "VLMSemanticVerdict",
+    "build_vlm_user_prompt",
+    "evaluate_visual_semantics_heuristic",
+    "evaluate_vlm_semantic_gate",
+    "extract_cta",
+    "extract_detected_brand",
+    "extract_ocr_text",
+    "get_ocr_engine",
 ]

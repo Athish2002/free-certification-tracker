@@ -20,14 +20,17 @@ Capabilities:
    structured verification flags for tracking in offers.json and dashboard visualizations.
 """
 
-import json
-import re
 import ipaddress
-from urllib.parse import urlparse, parse_qs
-from typing import Dict, Any, List, Tuple, Optional, Union
+import json
+import logging
+import re
+from typing import Any
+from urllib.parse import parse_qs, urlparse
+
+logger = logging.getLogger(__name__)
 
 
-def parse_powershell_hash_str(raw: Union[str, Dict[str, Any], Any]) -> Dict[str, Any]:
+def parse_powershell_hash_str(raw: str | dict[str, Any] | Any) -> dict[str, Any]:
     """
     Defensively parses a PowerShell stringified hashtable `@{Key=Val; ...}`
     or JSON string into a clean Python dictionary.
@@ -49,8 +52,8 @@ def parse_powershell_hash_str(raw: Union[str, Dict[str, Any], Any]) -> Dict[str,
             parsed = json.loads(raw)
             if isinstance(parsed, dict):
                 return parsed
-        except Exception:
-            pass
+        except (json.JSONDecodeError, ValueError, TypeError) as json_err:
+            logger.debug("PowerShell/JSON raw parse attempt fallback: %s", json_err)
 
     if not (raw.startswith("@{") and raw.endswith("}")):
         return {}
@@ -91,12 +94,12 @@ def parse_powershell_hash_str(raw: Union[str, Dict[str, Any], Any]) -> Dict[str,
             pass
         return v_str
 
-    result: Dict[str, Any] = {}
+    result: dict[str, Any] = {}
     depth = 0
     in_quote = False
     quote_char = ""
-    current_key: Optional[str] = None
-    buffer: List[str] = []
+    current_key: str | None = None
+    buffer: list[str] = []
 
     for ch in content:
         if in_quote:
@@ -129,8 +132,9 @@ def parse_powershell_hash_str(raw: Union[str, Dict[str, Any], Any]) -> Dict[str,
 
     return result
 
+
 # Canonical platform-to-domain mapping
-PLATFORM_DOMAINS: Dict[str, List[str]] = {
+PLATFORM_DOMAINS: dict[str, list[str]] = {
     "Microsoft Azure": [
         "microsoft.com",
         "azure.com",
@@ -138,7 +142,7 @@ PLATFORM_DOMAINS: Dict[str, List[str]] = {
         "azure.microsoft.com",
         "events.microsoft.com",
         "msft.com",
-        "microsoftonline.com"
+        "microsoftonline.com",
     ],
     "Amazon Web Services": [
         "amazon.com",
@@ -146,7 +150,7 @@ PLATFORM_DOMAINS: Dict[str, List[str]] = {
         "awseducate.com",
         "skillbuilder.aws",
         "aws.training",
-        "aws"
+        "aws",
     ],
     "Google Cloud": [
         "google.com",
@@ -156,102 +160,31 @@ PLATFORM_DOMAINS: Dict[str, List[str]] = {
         "grow.google",
         "withgoogle.com",
         "qwiklabs.com",
-        "google"
+        "google",
     ],
-    "Oracle Cloud": [
-        "oracle.com",
-        "education.oracle.com",
-        "mylearn.oracle.com",
-        "blogs.oracle.com"
-    ],
-    "Cisco": [
-        "cisco.com",
-        "u.cisco.com",
-        "learningnetwork.cisco.com",
-        "blogs.cisco.com",
-        "netacad.com"
-    ],
-    "ISC2": [
-        "isc2.org",
-        "www.isc2.org"
-    ],
-    "Linux Foundation / CNCF": [
-        "linuxfoundation.org",
-        "cncf.io",
-        "training.linuxfoundation.org"
-    ],
-    "Snowflake": [
-        "snowflake.com",
-        "learn.snowflake.com"
-    ],
-    "MongoDB": [
-        "mongodb.com",
-        "learn.mongodb.com"
-    ],
-    "Salesforce": [
-        "salesforce.com",
-        "trailhead.salesforce.com"
-    ],
-    "Postman": [
-        "postman.com",
-        "academy.postman.com"
-    ],
-    "Juniper Networks": [
-        "juniper.net",
-        "learningportal.juniper.net"
-    ],
-    "Qualys": [
-        "qualys.com",
-        "www.qualys.com"
-    ],
-    "Databricks": [
-        "databricks.com",
-        "academy.databricks.com"
-    ],
-    "Fortinet": [
-        "fortinet.com",
-        "training.fortinet.com"
-    ],
-    "GitHub": [
-        "github.com",
-        "education.github.com",
-        "githubuniverse.com",
-        "github.blog"
-    ],
-    "Red Hat": [
-        "redhat.com",
-        "learn.redhat.com",
-        "access.redhat.com",
-        "developers.redhat.com"
-    ],
-    "HashiCorp": [
-        "hashicorp.com",
-        "developer.hashicorp.com",
-        "learn.hashicorp.com"
-    ],
-    "Palo Alto Networks": [
-        "paloaltonetworks.com",
-        "beacon.paloaltonetworks.com"
-    ],
-    "GitLab": [
-        "gitlab.com",
-        "university.gitlab.com",
-        "about.gitlab.com"
-    ],
-    "Splunk": [
-        "splunk.com",
-        "lantern.splunk.com",
-        "education.splunk.com"
-    ],
-    "IBM": [
-        "ibm.com",
-        "skillsbuild.org",
-        "yourlearning.ibm.com"
-    ]
+    "Oracle Cloud": ["oracle.com", "education.oracle.com", "mylearn.oracle.com", "blogs.oracle.com"],
+    "Cisco": ["cisco.com", "u.cisco.com", "learningnetwork.cisco.com", "blogs.cisco.com", "netacad.com"],
+    "ISC2": ["isc2.org", "www.isc2.org"],
+    "Linux Foundation / CNCF": ["linuxfoundation.org", "cncf.io", "training.linuxfoundation.org"],
+    "Snowflake": ["snowflake.com", "learn.snowflake.com"],
+    "MongoDB": ["mongodb.com", "learn.mongodb.com"],
+    "Salesforce": ["salesforce.com", "trailhead.salesforce.com"],
+    "Postman": ["postman.com", "academy.postman.com"],
+    "Juniper Networks": ["juniper.net", "learningportal.juniper.net"],
+    "Qualys": ["qualys.com", "www.qualys.com"],
+    "Databricks": ["databricks.com", "academy.databricks.com"],
+    "Fortinet": ["fortinet.com", "training.fortinet.com"],
+    "GitHub": ["github.com", "education.github.com", "githubuniverse.com", "github.blog"],
+    "Red Hat": ["redhat.com", "learn.redhat.com", "access.redhat.com", "developers.redhat.com"],
+    "HashiCorp": ["hashicorp.com", "developer.hashicorp.com", "learn.hashicorp.com"],
+    "Palo Alto Networks": ["paloaltonetworks.com", "beacon.paloaltonetworks.com"],
+    "GitLab": ["gitlab.com", "university.gitlab.com", "about.gitlab.com"],
+    "Splunk": ["splunk.com", "lantern.splunk.com", "education.splunk.com"],
+    "IBM": ["ibm.com", "skillsbuild.org", "yourlearning.ibm.com"],
 }
 
 # Accredited Exam Delivery Providers & Digital Credential Registries
-ACCREDITED_PARTNER_DOMAINS: List[str] = [
+ACCREDITED_PARTNER_DOMAINS: list[str] = [
     "pearsonvue.com",
     "webassessor.com",
     "kryteriononline.com",
@@ -262,11 +195,11 @@ ACCREDITED_PARTNER_DOMAINS: List[str] = [
     "certmetrics.com",
     "coursera.org",
     "edx.org",
-    "classcentral.com"
+    "classcentral.com",
 ]
 
 # Accredited University & Academic Suffixes / TLDs
-ACCREDITED_UNIVERSITY_SUFFIXES: List[str] = [
+ACCREDITED_UNIVERSITY_SUFFIXES: list[str] = [
     ".edu",
     ".ac.uk",
     ".edu.au",
@@ -275,11 +208,11 @@ ACCREDITED_UNIVERSITY_SUFFIXES: List[str] = [
     ".edu.sg",
     ".ac.jp",
     ".edu.cn",
-    ".edu.br"
+    ".edu.br",
 ]
 
 # Banned URL shorteners & affiliate cloaking services
-BANNED_URL_SHORTENERS: List[str] = [
+BANNED_URL_SHORTENERS: list[str] = [
     "bit.ly",
     "tinyurl.com",
     "cutt.ly",
@@ -298,11 +231,11 @@ BANNED_URL_SHORTENERS: List[str] = [
     "trib.al",
     "lnkd.in",
     "snip.ly",
-    "rebrand.ly"
+    "rebrand.ly",
 ]
 
 # Known affiliate aggregators & ad network redirectors
-KNOWN_AFFILIATE_NETWORKS: List[str] = [
+KNOWN_AFFILIATE_NETWORKS: list[str] = [
     "awin1.com",
     "cj.com",
     "impact.com",
@@ -314,18 +247,32 @@ KNOWN_AFFILIATE_NETWORKS: List[str] = [
     "flexoffers.com",
     "viglink.com",
     "skimresources.com",
-    "adservice.google.com"
+    "adservice.google.com",
 ]
 
 # Suspicious TLDs heavily correlated with voucher scam / ad-farming sites
-SUSPICIOUS_TLDS: List[str] = [
-    ".xyz", ".top", ".buzz", ".cam", ".click", ".stream",
-    ".bid", ".loan", ".win", ".men", ".cfd", ".icu",
-    ".rest", ".gq", ".ml", ".tk", ".ga"
+SUSPICIOUS_TLDS: list[str] = [
+    ".xyz",
+    ".top",
+    ".buzz",
+    ".cam",
+    ".click",
+    ".stream",
+    ".bid",
+    ".loan",
+    ".win",
+    ".men",
+    ".cfd",
+    ".icu",
+    ".rest",
+    ".gq",
+    ".ml",
+    ".tk",
+    ".ga",
 ]
 
 # Scam & exam braindump patterns in domain names
-SCAM_DOMAIN_KEYWORDS: List[str] = [
+SCAM_DOMAIN_KEYWORDS: list[str] = [
     "dumps",
     "braindump",
     "examdump",
@@ -349,11 +296,11 @@ SCAM_DOMAIN_KEYWORDS: List[str] = [
     "killtest",
     "surepass",
     "dumpsexpert",
-    "validexamdumps"
+    "validexamdumps",
 ]
 
 # Deceptive typo-squatting patterns targeting primary enterprise cloud vendors
-TYPOSQUATTING_PATTERNS: List[re.Pattern] = [
+TYPOSQUATTING_PATTERNS: list[re.Pattern] = [
     re.compile(r"m[i1l!]cr[o0]s[o0]ft|microsft|micro-soft", re.IGNORECASE),
     re.compile(r"am[a4]z[o0]n|amazn|amzon|aws-voucher|aws-exam", re.IGNORECASE),
     re.compile(r"g[o0]{2}gl[e]?|g[o0]g[l1]e|googl", re.IGNORECASE),
@@ -371,17 +318,28 @@ TYPOSQUATTING_PATTERNS: List[re.Pattern] = [
     re.compile(r"h[a4]sh[i1]c[o0]rp|hashic0rp|hashi-corp", re.IGNORECASE),
     re.compile(r"p[a4]l[o0][a4]lt[o0]|palo-alto", re.IGNORECASE),
     re.compile(r"g[i1]tl[a4]b|g1tlab|git-lab", re.IGNORECASE),
-    re.compile(r"spl[u0]nk|sp1unk|spl-unk", re.IGNORECASE)
+    re.compile(r"spl[u0]nk|sp1unk|spl-unk", re.IGNORECASE),
 ]
 
 # Common query parameter names used for URL redirection / destination targets
 OPEN_REDIRECT_PARAM_KEYS = {
-    "redirect", "redirect_url", "redirect_uri", "returnurl", "return_url",
-    "goto", "target", "dest", "destination", "url", "link", "next", "out"
+    "redirect",
+    "redirect_url",
+    "redirect_uri",
+    "returnurl",
+    "return_url",
+    "goto",
+    "target",
+    "dest",
+    "destination",
+    "url",
+    "link",
+    "next",
+    "out",
 }
 
 # Deceptive & scam indicators in web page body text
-DECEPTIVE_CONTENT_PATTERNS: List[re.Pattern] = [
+DECEPTIVE_CONTENT_PATTERNS: list[re.Pattern] = [
     # Braindump & exam fraud patterns
     re.compile(r"\bbraindump(s)?\b", re.IGNORECASE),
     re.compile(r"\bexam dumps?\b", re.IGNORECASE),
@@ -406,11 +364,11 @@ DECEPTIVE_CONTENT_PATTERNS: List[re.Pattern] = [
     re.compile(r"\bcoupon (code )?(is )?(invalid|expired|has expired|no longer valid)\b", re.IGNORECASE),
     re.compile(r"\bvoucher code (is )?(invalid|expired|no longer valid)\b", re.IGNORECASE),
     re.compile(r"\bclick here to reveal (the )?(promo|coupon|voucher) code\b", re.IGNORECASE),
-    re.compile(r"\bcoupon code revealed\b", re.IGNORECASE)
+    re.compile(r"\bcoupon code revealed\b", re.IGNORECASE),
 ]
 
 # Positive corroboration markers for authentic technical certifications
-POSITIVE_CORROBORATION_SIGNALS: List[str] = [
+POSITIVE_CORROBORATION_SIGNALS: list[str] = [
     "certification",
     "credential",
     "exam",
@@ -428,7 +386,7 @@ POSITIVE_CORROBORATION_SIGNALS: List[str] = [
     "accredited",
     "verify",
     " Pearson ",
-    " PSI "
+    " PSI ",
 ]
 
 
@@ -441,7 +399,7 @@ def clean_hostname(url_or_netloc: str) -> str:
         host = url_or_netloc
         if "@" in host:
             host = host.split("@")[-1]
-    
+
     # Strip port if present
     host = host.split(":")[0].strip().lower()
     return host
@@ -476,7 +434,7 @@ def get_all_authorized_domains() -> set:
     return all_domains
 
 
-def match_domain_to_list(hostname: str, domain_list: List[str]) -> bool:
+def match_domain_to_list(hostname: str, domain_list: list[str]) -> bool:
     """
     Checks if a hostname strictly equals or is a legitimate subdomain
     of any domain in domain_list.
@@ -502,17 +460,14 @@ def is_domain_authorized(host: str, platform: str = "") -> bool:
     if match_domain_to_list(host, ACCREDITED_PARTNER_DOMAINS):
         return True
 
-    if is_university_domain(host):
-        return True
-
-    return False
+    return bool(is_university_domain(host))
 
 
-def check_open_redirect_parameters(url: str, platform: str = "") -> Tuple[bool, List[str]]:
+def check_open_redirect_parameters(url: str, platform: str = "") -> tuple[bool, list[str]]:
     """
     Inspects URL query parameters for open redirect targets pointing to untrusted or scam destinations.
     """
-    flags: List[str] = []
+    flags: list[str] = []
     try:
         parsed = urlparse(url)
         if not parsed.query:
@@ -548,25 +503,27 @@ def check_open_redirect_parameters(url: str, platform: str = "") -> Tuple[bool, 
 
                         # Check destination against authorized domains
                         if not is_domain_authorized(dest_host, platform):
-                            flags.append(f"UNTRUSTED_OPEN_REDIRECT_DESTINATION: '{dest_host}' is outside authorized directory")
+                            flags.append(
+                                f"UNTRUSTED_OPEN_REDIRECT_DESTINATION: '{dest_host}' is outside authorized directory"
+                            )
                             return False, flags
-    except Exception:
-        pass
+    except (ValueError, KeyError, AttributeError) as red_err:
+        logger.debug("Open redirect audit parsing fallback: %s", red_err)
 
     return True, flags
 
 
-def check_domain_authenticity(url: str, platform: str = "") -> Tuple[bool, str, str, List[str]]:
+def check_domain_authenticity(url: str, platform: str = "") -> tuple[bool, str, str, list[str]]:
     """
     Evaluates domain legitimacy against trusted vendor ecosystem, partner whitelist,
     accredited universities, banned shorteners, affiliate networks, typo-squatting,
     and open redirect vulnerabilities.
-    
+
     Returns:
         (is_authentic, trust_tier, reason, flags)
     """
     host = clean_hostname(url)
-    flags: List[str] = []
+    flags: list[str] = []
 
     if not host or "." not in host:
         return False, "Untrusted", "Malformed or missing hostname", ["MALFORMED_HOSTNAME"]
@@ -635,7 +592,12 @@ def check_domain_authenticity(url: str, platform: str = "") -> Tuple[bool, str, 
         for other_platform, other_domains in PLATFORM_DOMAINS.items():
             if other_platform != platform and match_domain_to_list(host, other_domains):
                 flags.append("MISMATCHED_VENDOR_DOMAIN")
-                return False, "Mismatched Vendor", f"Vendor domain mismatch: offer declared as '{platform}', but domain '{host}' belongs to '{other_platform}'", flags
+                return (
+                    False,
+                    "Mismatched Vendor",
+                    f"Vendor domain mismatch: offer declared as '{platform}', but domain '{host}' belongs to '{other_platform}'",
+                    flags,
+                )
 
         flags.append("UNVERIFIED_THIRD_PARTY_DOMAIN")
         return False, "Untrusted", f"Unrecognized domain outside verified {platform} directory: {host}", flags
@@ -658,12 +620,12 @@ def check_domain_authenticity(url: str, platform: str = "") -> Tuple[bool, str, 
     return False, "Untrusted", f"Unrecognized domain outside verified provider directory: {host}", flags
 
 
-def check_ssl_and_protocol(url: str) -> Tuple[bool, List[str]]:
+def check_ssl_and_protocol(url: str) -> tuple[bool, list[str]]:
     """
     Enforces strict HTTPS, canonical URL structure, standard transport ports,
     and rejects userinfo credential injection or raw IP hosts.
     """
-    flags: List[str] = []
+    flags: list[str] = []
     parsed = urlparse(url)
 
     if parsed.scheme.lower() != "https":
@@ -699,7 +661,7 @@ def check_ssl_and_protocol(url: str) -> Tuple[bool, List[str]]:
     return True, flags
 
 
-def check_redirect_chain_security(chain: List[str], platform: str = "") -> Tuple[bool, List[str]]:
+def check_redirect_chain_security(chain: list[str], platform: str = "") -> tuple[bool, list[str]]:
     """
     Audits the entire redirect trail to ensure:
     - Every intermediate hop maintained HTTPS transport security (no SSL downgrades).
@@ -708,7 +670,7 @@ def check_redirect_chain_security(chain: List[str], platform: str = "") -> Tuple
     - No hop routed through untrusted ad-tracking networks.
     - Final destination lands on an authorized vendor, partner, or university domain.
     """
-    flags: List[str] = []
+    flags: list[str] = []
     if not chain:
         return True, ["CLEAN_REDIRECT_CHAIN"]
 
@@ -766,11 +728,8 @@ def check_redirect_chain_security(chain: List[str], platform: str = "") -> Tuple
 
 
 def corroborate_content(
-    body_text: str,
-    platform: str = "",
-    cert_name: str = "",
-    exam_code: str = ""
-) -> Tuple[bool, int, List[str], List[str]]:
+    body_text: str, platform: str = "", cert_name: str = "", exam_code: str = ""
+) -> tuple[bool, int, list[str], list[str]]:
     """
     Performs deep semantic inspection of response body text.
     Returns:
@@ -780,8 +739,8 @@ def corroborate_content(
         return True, 0, ["CONTENT_INSPECTION_BYPASS"], []
 
     lower_text = body_text.lower()
-    positives: List[str] = []
-    warnings: List[str] = []
+    positives: list[str] = []
+    warnings: list[str] = []
     score_delta = 0
 
     # 1. Check for deceptive scam / braindump / paywall / expired patterns
@@ -823,12 +782,12 @@ def corroborate_content(
 
 
 def audit_offer_authenticity(
-    offer: Dict[str, Any],
+    offer: dict[str, Any],
     body_text: str = "",
-    redirect_chain: Optional[List[str]] = None,
-    network_provenance: Optional[Union[Any, Dict[str, Any]]] = None,
-    temporal_longevity: Optional[Union[Any, Dict[str, Any]]] = None,
-) -> Dict[str, Any]:
+    redirect_chain: list[str] | None = None,
+    network_provenance: Any | dict[str, Any] | None = None,
+    temporal_longevity: Any | dict[str, Any] | None = None,
+) -> dict[str, Any]:
     """
     Executes the multi-layer authenticity verification pipeline for an offer.
     Integrates Tier 1 Network Provenance (ASN/BGP, TLS CT, DNSSEC) and
@@ -840,12 +799,12 @@ def audit_offer_authenticity(
     cert_name = offer.get("certification_name", "")
     exam_code = offer.get("exam_code", "")
 
-    checks_passed: List[str] = []
-    warning_flags: List[str] = []
+    checks_passed: list[str] = []
+    warning_flags: list[str] = []
     score = 0
 
     # Layer 1: Domain & Portal Whitelist Check (up to 45 pts)
-    domain_ok, trust_tier, domain_reason, domain_flags = check_domain_authenticity(url, platform)
+    domain_ok, trust_tier, _domain_reason, domain_flags = check_domain_authenticity(url, platform)
     if domain_ok:
         if trust_tier == "Official Vendor Portal":
             score += 45
@@ -882,10 +841,7 @@ def audit_offer_authenticity(
 
     # Layer 4: Content & Accreditation Corroboration (up to 15 pts)
     corr_ok, corr_delta, corr_positives, corr_warnings = corroborate_content(
-        body_text=body_text,
-        platform=platform,
-        cert_name=cert_name,
-        exam_code=exam_code
+        body_text=body_text, platform=platform, cert_name=cert_name, exam_code=exam_code
     )
     score += corr_delta
     checks_passed.extend(corr_positives)
@@ -980,10 +936,7 @@ def audit_offer_authenticity(
         for f in warning_flags
     )
 
-    has_suspicious_flags = any(
-        "FLY_BY_NIGHT" in f or "SUSPICIOUS_NETWORK_ORIGIN" in f
-        for f in warning_flags
-    )
+    has_suspicious_flags = any("FLY_BY_NIGHT" in f or "SUSPICIOUS_NETWORK_ORIGIN" in f for f in warning_flags)
 
     if has_critical_scam_flags:
         verdict = "DECEPTIVE_SCAM"
@@ -1022,4 +975,3 @@ def audit_offer_authenticity(
     if temp_obj:
         res["temporal_longevity"] = temp_obj.model_dump() if hasattr(temp_obj, "model_dump") else temp_obj
     return res
-
