@@ -1,6 +1,24 @@
 {
-  "total_candidates": 4,
+  "total_candidates": 5,
   "leads": [
+    {
+      "source": "Reddit r/AzureCertification",
+      "title": "Can we use a Microsoft DP-700 exam voucher (100% discount) for AZ-104? Has anyone tried this?",
+      "url": "https://www.reddit.com/r/AzureCertification/comments/1xojjt6/can_we_use_a_microsoft_dp700_exam_voucher_100/",
+      "platform": "Microsoft Azure",
+      "timestamp": "2026-11-05T14:08:30+00:00",
+      "keywords": [
+        "voucher",
+        "100%"
+      ],
+      "match_confidence": "High (Title)",
+      "is_authentic_vendor": false,
+      "verified_vendor_url": "",
+      "authenticity_tier": "Community Lead",
+      "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
+      "vetted_at": "2026-11-05T19:48:35.750923+00:00"
+    },
     {
       "source": "Reddit r/AzureCertification",
       "title": "MS Employee Here -- I've got vouchers for database certification exams to give away",
@@ -16,7 +34,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-11-05T10:14:14.093856+00:00"
+      "vetted_at": "2026-11-05T19:48:35.751029+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -34,7 +52,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-11-05T10:14:14.093922+00:00"
+      "vetted_at": "2026-11-05T19:48:35.751126+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -52,7 +70,7 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-11-05T10:14:14.093981+00:00"
+      "vetted_at": "2026-11-05T19:48:35.751205+00:00"
     },
     {
       "source": "Reddit r/AzureCertification",
@@ -70,10 +88,10 @@
       "authenticity_tier": "Community Lead",
       "vetting_status": "Rejected: UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
       "rejection_reason": "UNTRUSTED_VENDOR: Destination domain is not an authentic vendor portal",
-      "vetted_at": "2026-11-05T10:14:14.094012+00:00"
+      "vetted_at": "2026-11-05T19:48:35.751270+00:00"
     }
   ],
-  "last_vetted": "2026-11-05T10:14:14.094032+00:00",
+  "last_vetted": "2026-11-05T19:48:35.751318+00:00",
   "vetted_promoted_count": 0,
-  "vetted_rejected_count": 4
+  "vetted_rejected_count": 5
 }
