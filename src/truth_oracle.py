@@ -109,7 +109,7 @@ def load_curated_policies() -> dict[str, dict[str, Any]]:
                 for k, v in raw_data.items():
                     try:
                         model = CuratedPolicyModel.model_validate(v)
-                        validated[k] = model.model_dump(exclude_unset=False)
+                        validated[k] = model.model_dump(exclude_none=True)
                     except Exception as val_err:
                         logger.warning("Curated policy validation warning for '%s': %s", k, val_err)
                         if isinstance(v, dict):
@@ -314,9 +314,9 @@ def derive_truth_policy(offer: dict[str, Any]) -> dict[str, Any]:
         "valid_through_utc",
         "review_due_utc",
     ]:
-        if k in override:
+        if override.get(k) is not None:
             policy[k] = override[k]
-        elif k in offer:
+        elif offer.get(k) is not None:
             policy[k] = offer[k]
 
     return policy
@@ -534,7 +534,7 @@ def audit_and_enrich_offers(
                     offer["visual_proof"] = vp
 
             # Enforce cart balance clarity
-            if "cart_balance_clarification" in reg_entry:
+            if reg_entry.get("cart_balance_clarification"):
                 offer["cart_balance_verified"] = reg_entry["cart_balance_clarification"]
                 rg = offer.get("redemption_guide")
                 if isinstance(rg, dict):
@@ -542,13 +542,16 @@ def audit_and_enrich_offers(
                     offer["redemption_guide"] = rg
 
             # Enforce eligibility clarity
-            if "eligibility_clarification" in reg_entry:
+            if reg_entry.get("eligibility_clarification"):
                 offer["eligibility"] = reg_entry["eligibility_clarification"]
 
             # Enforce canonical direct URL if provided
-            if "canonical_direct_url" in reg_entry:
-                offer["direct_verified_url"] = reg_entry["canonical_direct_url"]
-                offer["verified_vendor_url"] = reg_entry["canonical_direct_url"]
+            canonical_direct_url = reg_entry.get("canonical_direct_url")
+            if canonical_direct_url:
+                offer["direct_verified_url"] = canonical_direct_url
+                offer["verified_vendor_url"] = canonical_direct_url
+            elif not offer.get("direct_verified_url") and offer.get("verified_vendor_url"):
+                offer["direct_verified_url"] = offer["verified_vendor_url"]
 
         enriched.append(offer)
 

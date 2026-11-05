@@ -200,7 +200,8 @@
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-11-01T00:00:00Z",
+    "canonical_direct_url": "https://go.cloudskillsboost.google/arcade"
   },
   "snowflake-hands-on-essentials": {
     "provider": "Snowflake",

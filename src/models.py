@@ -375,9 +375,11 @@ class Offer(BaseModel):
 
     @model_validator(mode="after")
     def populate_defaults_and_proof(self) -> Offer:
-        # Default verified_vendor_url to url if not explicitly provided
+        # Default verified_vendor_url and direct_verified_url to prevent unexpected None values
         if not self.verified_vendor_url:
             self.verified_vendor_url = self.direct_verified_url or self.url
+        if not self.direct_verified_url:
+            self.direct_verified_url = self.verified_vendor_url or self.url
 
         # Populate schema alignment fields if not explicitly supplied
         if self.company is None:
