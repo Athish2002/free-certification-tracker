@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-05T19:49:07.163838+00:00",
-  "last_sync": "2026-11-05T19:49:07.163838+00:00",
+  "last_updated": "2026-11-06T05:38:12.656646+00:00",
+  "last_sync": "2026-11-06T05:38:12.656646+00:00",
   "news": [
+    {
+      "id": "github-inside-github-s-new-git-storag",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "Inside GitHub's new Git storage architecture",
+      "summary": "GitHub's new Git storage architecture is built so thousands of agents can push to a single repository at once. Here's how it works. The post Inside GitHub&#8217;s new Git storage architecture appeared first on The GitHub Blog.",
+      "published_date": "2026-11-05",
+      "date": "2026-11-05",
+      "url": "https://github.blog/engineering/architecture-optimization/inside-githubs-new-git-storage-architecture/",
+      "impact_badge": "Developer Tooling",
+      "content_fingerprint": "31a77f02fdf49f1b78ba575d7b32ad9eb14d7bbaa3ad7cbdfc87f2b70bdaa242"
+    },
+    {
+      "id": "google-cloud-gemini-omni-1-2-flash-fast-c",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Gemini Omni 1.2 Flash: Fast, cost-effective, and reliable video generation and editing now generally available",
+      "summary": "Today, Gemini Omni 1.2 Flash is generally available on Google Cloud. Built for the everyday videos businesses make in volume - like product videos, virtual try-ons, and ads - this model is fast, cost-effective, and follows your image, video...",
+      "published_date": "2026-11-05",
+      "date": "2026-11-05",
+      "url": "https://cloud.google.com/blog/products/ai-machine-learning/gemini-omni-1-2-flash-generally-available/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "c01d2fdabaee6d1f19e55dd885c1c01f29146bd581fd8344d4c01888bfbb0cd3"
+    },
+    {
+      "id": "amazon-web-services-how-orderserv-achieved-up-to-6",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How OrderServ achieved up to 64% cost savings with multi-tenant ECS",
+      "summary": "See how Cognizant and AWS Professional Services transformed the OrderServ food-ordering platform into a multi-tenant SaaS offering on shared Amazon ECS, cutting compute costs up to 64%, reducing scaling time from minutes to seconds, and low...",
+      "published_date": "2026-11-06",
+      "date": "2026-11-06",
+      "url": "https://aws.amazon.com/blogs/architecture/how-orderserv-achieved-up-to-64-cost-savings-with-multi-tenant-ecs/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "827c5e96a75f86fcd47fb94ed08a7bbd4bc5be99a9bde7050ae1a4a3552099cd"
+    },
     {
       "id": "cisco-firewalling-the-ai-era-why-th",
       "company": "Cisco",
@@ -1358,48 +1400,6 @@
       "impact_badge": "Cloud Platform",
       "date": "2024-08-01",
       "content_fingerprint": "22e68ec8c77fb258b6e5921a1f002b29294b1dc2a1ed9c06127cfa7f8b20aa14"
-    },
-    {
-      "id": "google-cloud-what-s-new-with-google-cloud",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "What's new with Google Cloud",
-      "summary": "Want to know the latest from Google Cloud? Find it here in one handy location. Check back regularly for our newest updates, announcements, resources, events, learning opportunities, and more. Tip: Not sure where to find what you're looking ...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/topics/inside-google-cloud/whats-new-google-cloud/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "b91bec6440f509b01244a2379be3f530cc96699668c6186d75d77de34b7ff90f"
-    },
-    {
-      "id": "cisco-accelerating-decision-superior",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Accelerating Decision Superiority: Discover Cisco's Solutions at AFCEA TechNet Indo-Pacific 2026",
-      "summary": "Join Cisco at AFCEA TechNet Indo-Pacific 2026 (Booth 401) to explore how our AI-powered defense and zero-trust solutions secure the tactical edge, accelerate allied interoperability, and advance mission readiness.",
-      "published_date": "2024-08-01",
-      "url": "https://blogs.cisco.com/industries/accelerating-decision-superiority-discover-ciscos-solutions-at-afcea-technet-indo-pacific-2026",
-      "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01",
-      "content_fingerprint": "6c8dbf9f3cec1732b3045f99d7869e577840563c1f71276da1af0d5b747fc3bc"
-    },
-    {
-      "id": "google-cloud-architecting-autonomy-a-desig",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Architecting autonomy: A design pattern for high-compute, governed agents in biotech",
-      "summary": "In production systems today, most AI agents operate as lightweight dispatchers. They parse a prompt, make an API call, retrieve a record, and hand back control. Their execution is fast, stateless and cheap. Biotechnology does not work this ...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/topics/healthcare-life-sciences/architecting-scalable-agentic-biotech-workloads/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "907b331538b51f89b2b0d56a32321e66e19c4f8f9ae3ff7603a87022e039917f"
     }
   ],
   "total_items": 100
