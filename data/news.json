@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-06T05:38:12.656646+00:00",
-  "last_sync": "2026-11-06T05:38:12.656646+00:00",
+  "last_updated": "2026-11-06T19:02:43.823722+00:00",
+  "last_sync": "2026-11-06T19:02:43.823722+00:00",
   "news": [
+    {
+      "id": "cisco-building-a-future-ready-infras",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Building a future-ready infrastructure at Gillette Stadium",
+      "summary": "Cisco is expanding its partnership with the New England Patriots and The Kraft Group. With AI-ready infrastructure and Cisco Wi-Fi 7, we are powering a more connected, secure and intelligent Gillette Stadium experience.",
+      "published_date": "2026-11-06",
+      "date": "2026-11-06",
+      "url": "https://blogs.cisco.com/industries/building-a-future-ready-infrastructure-at-gillette-stadium",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "3bbeda216b32de5c95e478a8c097a34b79b8eb31c08cfbf7f44d320a0271573e"
+    },
+    {
+      "id": "google-cloud-introducing-z4m-storage-optim",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Introducing Z4M: storage-optimized compute for AI/ML and parallel file systems",
+      "summary": "Today, we're excited to announce the general availability of our next-generation Storage-optimized Z4M machine series in Google Compute Engine, available as both Virtual Machine (VM) and bare-metal instances. We built Z4M to provide storage...",
+      "published_date": "2026-11-06",
+      "date": "2026-11-06",
+      "url": "https://cloud.google.com/blog/products/compute/storage-optimized-z4m-machine-series-are-ga/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "321a7260e07c1b8888831218709abf2199ce1a08484e4badb9b0908edb68c58f"
+    },
+    {
+      "id": "google-cloud-the-blueprint-orchestrating-5",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "The Blueprint: Orchestrating 5,000+ AI assets for a World Cup TV spot",
+      "summary": "Welcome back to The Blueprint, a regular feature where we highlight how Google Cloud customers are tackling unique and common challenges across industries using the latest AI and cloud technologies. We hope to inspire others looking to inno...",
+      "published_date": "2026-11-06",
+      "date": "2026-11-06",
+      "url": "https://cloud.google.com/blog/products/media-entertainment/how-mito-orchestrated-5000-plus-ai-assets-for-a-world-cup-tv-spot/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "fc81600d139e35c4eb896c1edfd4b2729d3acb062d74458c237a780e23feaa85"
+    },
     {
       "id": "github-inside-github-s-new-git-storag",
       "company": "GitHub",
@@ -1358,48 +1400,6 @@
       "impact_badge": "Enterprise Networking",
       "date": "2024-08-01",
       "content_fingerprint": "1a311d28e7ce0bd1ace7f4f04ebebd1a16cea0dccb2e56eb0334b571cf076a4e"
-    },
-    {
-      "id": "github-how-to-continue-a-github-copil",
-      "company": "GitHub",
-      "source": "GitHub Engineering Blog",
-      "source_domain": "github.blog",
-      "category": "Tech Development",
-      "title": "How to continue a GitHub Copilot app session in VS Code",
-      "summary": "Learn how to move an agent session from the GitHub Copilot app into VS Code without losing the conversation, code changes, or working context. The post How to continue a GitHub Copilot app session in VS Code appeared first on The GitHub Blo...",
-      "published_date": "2024-08-01",
-      "url": "https://github.blog/ai-and-ml/github-copilot/how-to-continue-a-github-copilot-app-session-in-vs-code/",
-      "impact_badge": "Developer Tooling",
-      "date": "2024-08-01",
-      "content_fingerprint": "a021913016e1fa26215bd8dfc107c49787a6a0db1c216cc2ed7646375e7c0300"
-    },
-    {
-      "id": "google-cloud-how-to-use-python-udf-logging",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "How to Use Python UDF Logging for Pipeline Observability",
-      "summary": "We are announcing a new logging feature that is now available in Python User-Defined Function (UDF) in BigQuery. Developers can now use Python's standard logging library directly inside BigQuery UDFs to emit structured logs seamlessly into ...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/products/data-analytics/python-udf-logging-for-pipeline-observability-in-bigquery/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "537ff7521aadf34dec5cc88b56fb20d74f65c343b2bfccd08df10e4a012a4eaa"
-    },
-    {
-      "id": "google-cloud-building-full-virtual-vehicles",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Building full virtual vehicles on Google Cloud: From AAOS to the smallest MCU",
-      "summary": "Imagining traditional gearheads getting their hands on software-defined vehicles is an amusing thought experiment. With their socket wrenches and air compressors at the ready, they might be confused to encounter core functions more likely t...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/topics/manufacturing/building-full-virtual-vehicles-on-google-cloud-from-aaos-to-the-smallest-mcu/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "22e68ec8c77fb258b6e5921a1f002b29294b1dc2a1ed9c06127cfa7f8b20aa14"
     }
   ],
   "total_items": 100
