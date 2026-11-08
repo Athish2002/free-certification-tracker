@@ -5,20 +5,19 @@ Enforces mathematical invariants, online ground-truth alignment, and anti-mislea
 
 import json
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
 
 import pytest
 
 from src.truth_oracle import (
-    TRUTH_POLICY_REGISTRY,
-    POLICY_VERIFIED_100PCT_FREE,
-    POLICY_STUDENT_VERIFIED_ONLY,
-    POLICY_PARTIAL_DISCOUNT_COPAY,
     POLICY_ANNUAL_WINDOW_CLOSED,
     POLICY_HISTORICAL_EVENT_WAVE,
-    POLICY_FREE_UNPROCTORED_BADGE,
-    corroborate_offer,
+    POLICY_PARTIAL_DISCOUNT_COPAY,
+    POLICY_STUDENT_VERIFIED_ONLY,
+    POLICY_VERIFIED_100PCT_FREE,
+    TRUTH_POLICY_REGISTRY,
     audit_and_enrich_offers,
+    corroborate_offer,
     verify_truth_invariants,
 )
 
@@ -29,9 +28,9 @@ DOCS_HTML = ROOT / "docs" / "index.html"
 
 
 @pytest.fixture(scope="module")
-def offers_data() -> List[Dict[str, Any]]:
+def offers_data() -> list[dict[str, Any]]:
     assert DATA_OFFERS.exists(), "data/offers.json missing"
-    with open(DATA_OFFERS, "r", encoding="utf-8") as f:
+    with open(DATA_OFFERS, encoding="utf-8") as f:
         data = json.load(f)
     return data.get("offers", [])
 
@@ -45,6 +44,7 @@ class TestTruthOracleRegistry:
             oid = offer["id"]
             if oid not in TRUTH_POLICY_REGISTRY:
                 from src.truth_oracle import corroborate_offer
+
                 corroborate_offer(offer)
             assert oid in TRUTH_POLICY_REGISTRY, f"Offer '{oid}' missing from TRUTH_POLICY_REGISTRY"
 
@@ -127,7 +127,7 @@ class TestAuditAndEnrichPipeline:
 
     def test_audit_idempotency(self, offers_data):
         """Running audit_and_enrich_offers multiple times produces zero subsequent mutations."""
-        first_pass, summary1 = audit_and_enrich_offers(offers_data, strict_enforcement=True)
+        first_pass, _ = audit_and_enrich_offers(offers_data, strict_enforcement=True)
         second_pass, summary2 = audit_and_enrich_offers(first_pass, strict_enforcement=True)
         assert summary2["corrections_applied"] == 0, "Second audit pass should require 0 corrections"
         assert len(first_pass) == len(second_pass)
@@ -137,6 +137,15 @@ class TestAuditAndEnrichPipeline:
         enriched, _ = audit_and_enrich_offers(offers_data, strict_enforcement=True)
         violations = verify_truth_invariants(enriched)
         assert not violations, f"Truth invariant violations detected in database: {violations}"
+
+    def test_audit_and_enrich_preserves_verified_urls(self, offers_data):
+        """Enrichment must never null out populated direct_verified_url or verified_vendor_url."""
+        enriched, _ = audit_and_enrich_offers(offers_data, strict_enforcement=True)
+        for orig, enr in zip(offers_data, enriched, strict=True):
+            if orig.get("direct_verified_url"):
+                assert enr.get("direct_verified_url") is not None, f"direct_verified_url became None for {orig['id']}"
+            if orig.get("verified_vendor_url"):
+                assert enr.get("verified_vendor_url") is not None, f"verified_vendor_url became None for {orig['id']}"
 
     def test_adversarial_detection_of_fake_active_lift(self):
         """Corroboration engine must flag LiFT as misleading if falsely marked Active."""
