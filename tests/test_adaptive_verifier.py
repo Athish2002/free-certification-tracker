@@ -4,15 +4,14 @@ Ensures SSRF defense, dual-phase target resolution, platform cluster classificat
 redirect degradation detection, and Proof Quality Scoring (PQS).
 """
 
-import pytest
 from src.adaptive_verifier import (
     PlatformCluster,
-    validate_target_url,
-    classify_platform_cluster,
-    resolve_dual_phase_targets,
-    get_pre_navigation_storage,
     audit_redirect_degradation,
     calculate_proof_quality_score,
+    classify_platform_cluster,
+    get_pre_navigation_storage,
+    resolve_dual_phase_targets,
+    validate_target_url,
 )
 
 
@@ -122,7 +121,10 @@ class TestDualPhaseTargetResolution:
         }
         targets = resolve_dual_phase_targets(offer)
         # Deep claim URL must be chosen as the primary browser navigation target
-        assert targets.primary_nav_target == "https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177"
+        assert (
+            targets.primary_nav_target
+            == "https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177"
+        )
         # Authority root must preserve the corporate marketing root
         assert targets.authority_root_url == "https://www.oracle.com/education/certification/"
         # Divergence must be detected
@@ -155,8 +157,7 @@ class TestPreNavigationStorage:
 class TestRedirectDegradationAudit:
     def test_detects_degradation_to_generic_hub(self):
         is_deg, reason, score = audit_redirect_degradation(
-            "https://mylearn.oracle.com/ou/learning-path/oci-genai/136227",
-            "https://mylearn.oracle.com/ou"
+            "https://mylearn.oracle.com/ou/learning-path/oci-genai/136227", "https://mylearn.oracle.com/ou"
         )
         assert is_deg is True
         assert score == 0.0
@@ -164,16 +165,14 @@ class TestRedirectDegradationAudit:
 
     def test_detects_path_depth_collapse(self):
         is_deg, reason, score = audit_redirect_degradation(
-            "https://www.linuxfoundation.org/about/lift-scholarships/2024",
-            "https://www.linuxfoundation.org/"
+            "https://www.linuxfoundation.org/about/lift-scholarships/2024", "https://www.linuxfoundation.org/"
         )
         assert is_deg is True
         assert score <= 10.0
 
     def test_healthy_redirect_across_trusted_subdomain(self):
         is_deg, reason, score = audit_redirect_degradation(
-            "https://cloud.google.com/innovators",
-            "https://go.cloudskillsboost.google/arcade"
+            "https://cloud.google.com/innovators", "https://go.cloudskillsboost.google/arcade"
         )
         assert is_deg is False
         assert score >= 80.0
@@ -181,7 +180,9 @@ class TestRedirectDegradationAudit:
 
 class TestProofQualityScoring:
     def test_high_confidence_score(self):
-        res = calculate_proof_quality_score(url_score=100.0, dom_score=100.0, visual_score=100.0, corroboration_score=100.0)
+        res = calculate_proof_quality_score(
+            url_score=100.0, dom_score=100.0, visual_score=100.0, corroboration_score=100.0
+        )
         assert res.score == 100.0
         assert res.tier == "HIGH_CONFIDENCE_VERIFIED"
 

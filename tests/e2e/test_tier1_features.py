@@ -10,17 +10,17 @@ import asyncio
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List
-import pytest
+from typing import Any
 
-from PIL import Image
+import pytest
 
 # ---------------------------------------------------------------------------
 # Feature 1: authenticity_details Serialization & Deserialization Invariant
 # ---------------------------------------------------------------------------
 
+
 def test_f01_authenticity_details_serialization_deserialization_and_live_invariants(
-    live_offers_data: Dict[str, Any], sample_offer_dict: Dict[str, Any], parse_powershell_dict
+    live_offers_data: dict[str, Any], sample_offer_dict: dict[str, Any], parse_powershell_dict
 ):
     """
     F01 Invariant: Authenticity details must:
@@ -35,13 +35,17 @@ def test_f01_authenticity_details_serialization_deserialization_and_live_invaria
 
     # 1. No raw PowerShell string in live data
     ps_string_violations = [
-        o.get("id", "unknown") for o in offers
+        o.get("id", "unknown")
+        for o in offers
         if isinstance(o.get("authenticity_details"), str) and "@{" in o["authenticity_details"]
     ]
-    assert len(ps_string_violations) == 0, f"Found PowerShell stringified authenticity_details in offers: {ps_string_violations}"
+    assert len(ps_string_violations) == 0, (
+        f"Found PowerShell stringified authenticity_details in offers: {ps_string_violations}"
+    )
 
     # 2. Pydantic deserialization
     from src.models import Offer
+
     offer = Offer.model_validate(sample_offer_dict)
     assert offer.authenticity_details is not None and isinstance(offer.authenticity_details, dict)
     assert offer.authenticity_details.get("is_authentic_vendor") is True
@@ -49,6 +53,7 @@ def test_f01_authenticity_details_serialization_deserialization_and_live_invaria
 
     # 3. Authenticity audit returns clean dict structure
     from src.authenticity import audit_offer_authenticity
+
     result = audit_offer_authenticity(sample_offer_dict)
     assert isinstance(result, dict) and "is_authentic_vendor" in result and "verdict" in result
     assert isinstance(result.get("authenticity_score"), int) and 0 <= result["authenticity_score"] <= 100
@@ -75,8 +80,9 @@ def test_f01_authenticity_details_serialization_deserialization_and_live_invaria
 # Feature 2: Synchronize News Date Keys (date + published_date) Invariant
 # ---------------------------------------------------------------------------
 
+
 def test_f02_news_date_synchronization_and_iso_compliance_invariant(
-    live_news_data: Any, sample_news_articles: List[Dict[str, Any]]
+    live_news_data: Any, sample_news_articles: list[dict[str, Any]]
 ):
     """
     F02 Invariant: News articles must:
@@ -86,7 +92,11 @@ def test_f02_news_date_synchronization_and_iso_compliance_invariant(
     4. Sorting by date must be deterministic and chronologically descending.
     5. Dashboard consumer routines must cleanly format date labels without null errors.
     """
-    articles = live_news_data if isinstance(live_news_data, list) else live_news_data.get("news", live_news_data.get("articles", []))
+    articles = (
+        live_news_data
+        if isinstance(live_news_data, list)
+        else live_news_data.get("news", live_news_data.get("articles", []))
+    )
     assert len(articles) > 0, "news.json must contain news articles"
 
     # 1 & 2. Date presence and ISO compliance
@@ -130,8 +140,9 @@ def test_f02_news_date_synchronization_and_iso_compliance_invariant(
 # Feature 3: JSON Schema Pre-Flight Write Protection & Atomic I/O Invariant
 # ---------------------------------------------------------------------------
 
+
 def test_f03_atomic_write_and_schema_validation_invariants(
-    tmp_path: Path, sample_offer_dict: Dict[str, Any], canonical_offers_schema: Dict[str, Any], fallback_io_utils: Any
+    tmp_path: Path, sample_offer_dict: dict[str, Any], canonical_offers_schema: dict[str, Any], fallback_io_utils: Any
 ):
     """
     F03 Invariant: Atomic storage operations must:
@@ -143,6 +154,7 @@ def test_f03_atomic_write_and_schema_validation_invariants(
     """
     try:
         from src import io_utils
+
         writer = io_utils.atomic_write_json
         validator = io_utils.validate_payload
     except (ImportError, AttributeError):
@@ -156,7 +168,7 @@ def test_f03_atomic_write_and_schema_validation_invariants(
     target_file = tmp_path / "sub" / "offers_atomic.json"
     writer(target_file, {"offers": [sample_offer_dict]})
     assert target_file.exists()
-    with open(target_file, "r", encoding="utf-8") as f:
+    with open(target_file, encoding="utf-8") as f:
         loaded = json.load(f)
     assert loaded["offers"][0]["id"] == sample_offer_dict["id"]
 
@@ -175,10 +187,10 @@ def test_f03_atomic_write_and_schema_validation_invariants(
     # 5. Atomic overwrite preserves read integrity
     concurrent_file = tmp_path / "concurrent.json"
     writer(concurrent_file, {"version": 1, "offers": [sample_offer_dict]})
-    with open(concurrent_file, "r", encoding="utf-8") as f:
+    with open(concurrent_file, encoding="utf-8") as f:
         assert json.load(f)["version"] == 1
     writer(concurrent_file, {"version": 2, "offers": [sample_offer_dict]})
-    with open(concurrent_file, "r", encoding="utf-8") as f:
+    with open(concurrent_file, encoding="utf-8") as f:
         assert json.load(f)["version"] == 2
 
 
@@ -186,8 +198,9 @@ def test_f03_atomic_write_and_schema_validation_invariants(
 # Feature 4: Expiry Date Sentinel Coalescing ("Rolling") Invariant
 # ---------------------------------------------------------------------------
 
+
 def test_f04_expiry_coalescing_and_rolling_invariants(
-    live_offers_data: Dict[str, Any], sample_offer_dict: Dict[str, Any], sample_offers_list: List[Dict[str, Any]]
+    live_offers_data: dict[str, Any], sample_offer_dict: dict[str, Any], sample_offers_list: list[dict[str, Any]]
 ):
     """
     F04 Invariant: Expiry date management must:
@@ -202,7 +215,7 @@ def test_f04_expiry_coalescing_and_rolling_invariants(
         assert o.get("expiry_date") is not None, f"Offer {o.get('id')} has null expiry_date"
 
     # 2. Coalescing contract
-    def coalesce_expiry(o: Dict[str, Any]) -> str:
+    def coalesce_expiry(o: dict[str, Any]) -> str:
         exp = o.get("expiry_date")
         if not exp or str(exp).strip().lower() in ("null", "none", ""):
             return "Rolling"
@@ -214,6 +227,7 @@ def test_f04_expiry_coalescing_and_rolling_invariants(
 
     # 3. Pydantic validation
     from src.models import Offer
+
     sample_offer_dict["expiry_date"] = "Rolling"
     model = Offer.model_validate(sample_offer_dict)
     assert model.expiry_date == "Rolling"
@@ -236,6 +250,7 @@ def test_f04_expiry_coalescing_and_rolling_invariants(
 # Feature 5: Screenshot Perceptual Hash Delta-Skipping Invariant
 # ---------------------------------------------------------------------------
 
+
 def test_f05_perceptual_hash_and_visual_delta_skipping_invariants(tmp_path: Path, mock_png_bytes):
     """
     F05 Invariant: Perceptual hash and delta-skipping engine must:
@@ -245,7 +260,7 @@ def test_f05_perceptual_hash_and_visual_delta_skipping_invariants(tmp_path: Path
     4. Compute deterministic perceptual hashes for identical image inputs.
     5. Force screenshot refresh when existing file is corrupt or undersized (<4096 bytes).
     """
-    from src.visual_hasher import should_skip_screenshot_write, PerceptualHashEngine
+    from src.visual_hasher import PerceptualHashEngine, should_skip_screenshot_write
 
     big_png = mock_png_bytes(size=(600, 600), color=(255, 255, 255))
     existing_file = tmp_path / "existing.png"
@@ -303,7 +318,8 @@ def test_f05_perceptual_hash_and_visual_delta_skipping_invariants(tmp_path: Path
 # Feature 6: Modular Architectural Package for Builder Invariant
 # ---------------------------------------------------------------------------
 
-def test_f06_builders_modularity_and_generation_invariants(sample_offer_dict: Dict[str, Any]):
+
+def test_f06_builders_modularity_and_generation_invariants(sample_offer_dict: dict[str, Any]):
     """
     F06 Invariant: Builders architectural package must:
     1. Expose callable build_all from src.builders and facade src.builder.
@@ -313,35 +329,36 @@ def test_f06_builders_modularity_and_generation_invariants(sample_offer_dict: Di
     5. Maintain clean sub-builder module isolation without cyclic import crashes.
     """
     from src.builders import build_all
+
     assert callable(build_all)
 
     # 2. README generation
     from src.builders.readme_builder import generate_readme
+
     content = generate_readme({"offers": [sample_offer_dict]})
     assert isinstance(content, str) and "CertPulse" in content and sample_offer_dict["title"] in content
 
     # 3. HTML generation
     from src.builders.html_builder import generate_web_dashboard
+
     html = generate_web_dashboard({"offers": [sample_offer_dict]})
     assert "<!DOCTYPE html>" in html or "<!doctype html>" in html.lower()
     assert "<head>" in html and "viewport" in html
 
     # 4. Client bundle generation
     from src.builders.client_bundle import generate_client_bundle
+
     bundle = generate_client_bundle()
     assert isinstance(bundle, str) and len(bundle) > 50
 
     # 5. Import isolation
-    import src.builders.theme_engine
-    import src.builders.client_bundle
-    import src.builders.readme_builder
-    import src.builders.html_builder
     assert True
 
 
 # ---------------------------------------------------------------------------
 # Feature 7: 10 Developer Color Palettes & Zero-FOIT Theme Engine Invariant
 # ---------------------------------------------------------------------------
+
 
 def test_f07_theme_engine_palettes_and_zero_foit_invariants():
     """
@@ -352,7 +369,7 @@ def test_f07_theme_engine_palettes_and_zero_foit_invariants():
     4. Generate inline zero-FOIT script checking localStorage before paint.
     5. Maintain a healthy balance of light and dark palettes.
     """
-    from src.builders.theme_engine import THEMES, DEFAULT_THEME, generate_css_variables, generate_zero_foit_script
+    from src.builders.theme_engine import DEFAULT_THEME, THEMES, generate_css_variables, generate_zero_foit_script
 
     assert len(THEMES) >= 2
     theme_ids = {t["id"] for t in THEMES}
@@ -377,6 +394,7 @@ def test_f07_theme_engine_palettes_and_zero_foit_invariants():
 # Feature 8: Backward-Compatible Builder Facade & CLI Invariant
 # ---------------------------------------------------------------------------
 
+
 def test_f08_builder_facade_and_cli_invariants():
     """
     F08 Invariant: Builder facade and CLI contracts must:
@@ -386,6 +404,7 @@ def test_f08_builder_facade_and_cli_invariants():
     4. Delegate calls cleanly without deprecation crashes or breaking public callers.
     """
     import src.builder
+
     assert hasattr(src.builder, "build_all") and callable(src.builder.build_all)
 
     # Dynamic KPI verification
@@ -406,7 +425,8 @@ def test_f08_builder_facade_and_cli_invariants():
 # Feature 9: Dynamic Truth Policy Derivation Invariant
 # ---------------------------------------------------------------------------
 
-def test_f09_truth_policy_derivation_invariants(sample_offer_dict: Dict[str, Any]):
+
+def test_f09_truth_policy_derivation_invariants(sample_offer_dict: dict[str, Any]):
     """
     F09 Invariant: Truth policy engine must:
     1. Derive structured policies dynamically from offer metadata.
@@ -456,7 +476,8 @@ def test_f09_truth_policy_derivation_invariants(sample_offer_dict: Dict[str, Any
 # Feature 10: Primary News Feed Expansion & Anti-Clickbait Filtering Invariant
 # ---------------------------------------------------------------------------
 
-def test_f10_news_feeds_and_anti_clickbait_invariants(sample_news_articles: List[Dict[str, Any]]):
+
+def test_f10_news_feeds_and_anti_clickbait_invariants(sample_news_articles: list[dict[str, Any]]):
     """
     F10 Invariant: News feed curation engine must:
     1. Track expanded enterprise vendor feeds (Azure, HashiCorp, Databricks, Snowflake, Red Hat).
@@ -498,6 +519,7 @@ def test_f10_news_feeds_and_anti_clickbait_invariants(sample_news_articles: List
 # Feature 11: Concurrent Inspection Engine & CI Modernization Invariant
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_f11_async_inspector_and_ci_matrix_invariants():
     """
@@ -516,6 +538,7 @@ async def test_f11_async_inspector_and_ci_matrix_invariants():
 
     # 2. Wrapper callable
     from src.inspector import run_inspection
+
     assert callable(run_inspection)
 
     # 3. Telemetry dictionary structure

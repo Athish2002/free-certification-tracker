@@ -7,9 +7,11 @@ Verifies:
 """
 
 import json
-from datetime import datetime, UTC
-import pytest
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock, MagicMock, patch
+
+import pytest
+
 from src.inspector import run_inspection_async
 
 
@@ -40,7 +42,7 @@ async def test_insecure_http_scheme_is_demoted_to_review_needed(tmp_path):
                 "expiry_date": None,
                 "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
             }
-        ]
+        ],
     }
 
     data_file = tmp_path / "offers.json"
@@ -99,7 +101,7 @@ async def test_deceptive_scam_domain_is_demoted_to_review_needed(tmp_path):
                 "expiry_date": None,
                 "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
             }
-        ]
+        ],
     }
 
     data_file = tmp_path / "offers.json"

@@ -15,55 +15,44 @@ from __future__ import annotations
 import asyncio
 import io
 import json
-import os
-import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import patch
 
+import httpx
 import jsonschema
 import numpy as np
-from PIL import Image
 import pytest
-import httpx
+from PIL import Image
 
-from src.models import Offer, OffersDatabase
-from src.io_utils import validate_payload, atomic_write_json
-from src.truth_oracle import (
-    derive_truth_policy,
-    build_dynamic_policy_registry,
-    get_truth_policy,
-    POLICY_VERIFIED_100PCT_FREE,
-    POLICY_STUDENT_VERIFIED_ONLY,
-    POLICY_PARTIAL_DISCOUNT_COPAY,
-    POLICY_ANNUAL_WINDOW_CLOSED,
-    POLICY_HISTORICAL_EVENT_WAVE,
-    POLICY_PROMOTIONAL_SWEEPSTAKES,
-    POLICY_CE_RECERTIFICATION_CREDITS,
-    POLICY_FREE_UNPROCTORED_BADGE,
-)
+import src.builder as builder_facade
+import src.inspector as inspector_facade
 from src.builders.theme_engine import (
-    THEMES,
     DEFAULT_THEME,
+    THEMES,
     generate_css_variables,
+    generate_theme_dropdown_options,
     generate_zero_foit_script,
     get_theme_by_id,
     get_theme_json,
-    generate_theme_dropdown_options,
+)
+from src.inspector import (
+    InspectionResult,
+    run_inspection_async,
+)
+from src.io_utils import atomic_write_json, validate_payload
+from src.models import Offer
+from src.truth_oracle import (
+    POLICY_ANNUAL_WINDOW_CLOSED,
+    POLICY_PARTIAL_DISCOUNT_COPAY,
+    build_dynamic_policy_registry,
+    derive_truth_policy,
+    get_truth_policy,
 )
 from src.visual_hasher import (
     PerceptualHashEngine,
     should_skip_screenshot_write,
 )
-from src.inspector import (
-    InspectionResult,
-    run_inspection,
-    run_inspection_async,
-    inspect_offer,
-)
-import src.builder as builder_facade
-import src.inspector as inspector_facade
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
@@ -76,6 +65,7 @@ NEWS_SCHEMA_FILE = DATA_DIR / "news_schema.json"
 # ==============================================================================
 # Helper Utilities & Fixtures
 # ==============================================================================
+
 
 def _generate_synthetic_png(seed: int = 42, size: tuple = (200, 200)) -> bytes:
     """Generates pseudo-random PNG bytes >= 4096 bytes with valid PNG magic bytes."""
@@ -94,6 +84,7 @@ def _generate_synthetic_png(seed: int = 42, size: tuple = (200, 200)) -> bytes:
 # 1. Schema Validation Invariants (Offers & News)
 # ==============================================================================
 
+
 class TestSchemaValidationInvariants:
     """Adversarial stress testing of schema enforcement across offers and news datasets."""
 
@@ -101,9 +92,9 @@ class TestSchemaValidationInvariants:
         """Verify all 75 articles in data/news.json strictly conform to data/news_schema.json."""
         assert NEWS_FILE.exists()
         assert NEWS_SCHEMA_FILE.exists()
-        with open(NEWS_FILE, "r", encoding="utf-8") as f:
+        with open(NEWS_FILE, encoding="utf-8") as f:
             news_data = json.load(f)
-        with open(NEWS_SCHEMA_FILE, "r", encoding="utf-8") as f:
+        with open(NEWS_SCHEMA_FILE, encoding="utf-8") as f:
             news_schema = json.load(f)
 
         validate_payload(news_data, news_schema)
@@ -123,7 +114,7 @@ class TestSchemaValidationInvariants:
     def test_all_39_offers_instantiate_pydantic_model(self):
         """Verify all 39 offers in data/offers.json cleanly instantiate Pydantic Offer model."""
         assert OFFERS_FILE.exists()
-        with open(OFFERS_FILE, "r", encoding="utf-8") as f:
+        with open(OFFERS_FILE, encoding="utf-8") as f:
             offers_data = json.load(f)
 
         offers = offers_data.get("offers", [])
@@ -142,21 +133,18 @@ class TestSchemaValidationInvariants:
 
     def test_schema_preflight_rejection_of_invalid_payloads(self):
         """Ensure validate_payload strictly rejects invalid schemas, bad types, and missing fields."""
-        with open(NEWS_SCHEMA_FILE, "r", encoding="utf-8") as f:
+        with open(NEWS_SCHEMA_FILE, encoding="utf-8") as f:
             news_schema = json.load(f)
 
         # 1. Missing required field
-        bad_payload_missing = {
-            "last_updated": "2026-10-23T00:00:00Z",
-            "news": [{"title": "Missing fields item"}]
-        }
+        bad_payload_missing = {"last_updated": "2026-10-23T00:00:00Z", "news": [{"title": "Missing fields item"}]}
         with pytest.raises(jsonschema.ValidationError):
             validate_payload(bad_payload_missing, news_schema)
 
         # 2. Invalid field type
         bad_payload_type = {
             "last_updated": 1234567,  # Should be string
-            "news": []
+            "news": [],
         }
         with pytest.raises(jsonschema.ValidationError):
             validate_payload(bad_payload_type, news_schema)
@@ -182,12 +170,13 @@ class TestSchemaValidationInvariants:
 # 2. Dynamic Truth Oracle Derivation Consistency & HTTPS Policy Compliance
 # ==============================================================================
 
+
 class TestTruthOracleAdversarialConsistency:
     """Stress testing dynamic truth policy derivation, policy registry, and HTTPS enforcement."""
 
     def test_all_39_offers_derive_truth_policies(self):
         """Assert that every tracked offer derives a valid policy with HTTPS and cost boundaries."""
-        with open(OFFERS_FILE, "r", encoding="utf-8") as f:
+        with open(OFFERS_FILE, encoding="utf-8") as f:
             offers_data = json.load(f)
 
         for offer in offers_data.get("offers", []):
@@ -214,7 +203,7 @@ class TestTruthOracleAdversarialConsistency:
         registry = build_dynamic_policy_registry(OFFERS_FILE)
         assert len(registry) == 39
 
-        with open(OFFERS_FILE, "r", encoding="utf-8") as f:
+        with open(OFFERS_FILE, encoding="utf-8") as f:
             offers = json.load(f)["offers"]
 
         for offer in offers:
@@ -230,7 +219,7 @@ class TestTruthOracleAdversarialConsistency:
             "title": "Vendor Copay Challenge",
             "platform": "Juniper",
             "cart_balance_verified": "$50.00 Pearson VUE Co-Pay required",
-            "url": "https://learningportal.juniper.net/test"
+            "url": "https://learningportal.juniper.net/test",
         }
         copay_policy = derive_truth_policy(copay_offer)
         assert copay_policy["policy_type"] == POLICY_PARTIAL_DISCOUNT_COPAY
@@ -243,7 +232,7 @@ class TestTruthOracleAdversarialConsistency:
             "title": "Concluded Scholarship Wave",
             "platform": "Linux Foundation",
             "status": "Registrations Closed",
-            "url": "https://www.linuxfoundation.org/test"
+            "url": "https://www.linuxfoundation.org/test",
         }
         closed_policy = derive_truth_policy(closed_offer)
         assert closed_policy["policy_type"] == POLICY_ANNUAL_WINDOW_CLOSED
@@ -257,6 +246,7 @@ class TestTruthOracleAdversarialConsistency:
 # ==============================================================================
 # 3. Builder Theme Palette Variables, CSS Generation & Zero-FOIT Script
 # ==============================================================================
+
 
 class TestBuilderThemeEngineAdversarial:
     """Stress testing 10 developer color palettes, CSS token completeness, and Zero-FOIT script."""
@@ -273,16 +263,31 @@ class TestBuilderThemeEngineAdversarial:
     def test_theme_tokens_contract(self):
         """Assert all 10 themes define the complete set of required CSS variables."""
         required_tokens = {
-            "--canvas-default", "--canvas-subtle", "--canvas-inset",
-            "--border-default", "--border-muted",
-            "--fg-default", "--fg-muted", "--fg-subtle",
-            "--accent-fg", "--accent-emphasis", "--accent-subtle",
-            "--success-fg", "--success-emphasis", "--success-subtle",
-            "--attention-fg", "--attention-subtle",
-            "--danger-fg", "--danger-subtle",
-            "--btn-default-bg", "--btn-default-hover",
-            "--btn-primary-bg", "--btn-primary-hover",
-            "--card-shadow", "--card-shadow-hover", "--specular-rim"
+            "--canvas-default",
+            "--canvas-subtle",
+            "--canvas-inset",
+            "--border-default",
+            "--border-muted",
+            "--fg-default",
+            "--fg-muted",
+            "--fg-subtle",
+            "--accent-fg",
+            "--accent-emphasis",
+            "--accent-subtle",
+            "--success-fg",
+            "--success-emphasis",
+            "--success-subtle",
+            "--attention-fg",
+            "--attention-subtle",
+            "--danger-fg",
+            "--danger-subtle",
+            "--btn-default-bg",
+            "--btn-default-hover",
+            "--btn-primary-bg",
+            "--btn-primary-hover",
+            "--card-shadow",
+            "--card-shadow-hover",
+            "--specular-rim",
         }
 
         for theme in THEMES:
@@ -296,8 +301,8 @@ class TestBuilderThemeEngineAdversarial:
         """Verify CSS generation and Zero-FOIT inline initialization script."""
         css = generate_css_variables()
         assert ":root" in css
-        assert "[data-theme=\"github-dark\"]" in css
-        assert "[data-theme=\"github-light\"]" in css
+        assert '[data-theme="github-dark"]' in css
+        assert '[data-theme="github-light"]' in css
 
         script = generate_zero_foit_script()
         assert "<script>" in script and "</script>" in script
@@ -321,13 +326,14 @@ class TestBuilderThemeEngineAdversarial:
 
         # Dropdown options
         opts = generate_theme_dropdown_options()
-        assert "value=\"github-dark\"" in opts
+        assert 'value="github-dark"' in opts
         assert "selected" in opts
 
 
 # ==============================================================================
 # 4. Visual Delta-Skipping Invariant Boundaries
 # ==============================================================================
+
 
 class TestVisualDeltaSkippingBoundaries:
     """Stress testing pHash Hamming distance boundaries and skip-write logic."""
@@ -343,7 +349,7 @@ class TestVisualDeltaSkippingBoundaries:
             existing_screenshot_path=sc_file,
             old_status="Active",
             new_status="Active",
-            delta_threshold=0.05
+            delta_threshold=0.05,
         )
         assert should_skip is True
         assert dist == 0
@@ -369,7 +375,7 @@ class TestVisualDeltaSkippingBoundaries:
                 existing_screenshot_path=sc_file,
                 old_status="Active",
                 new_status="Active",
-                delta_threshold=0.05
+                delta_threshold=0.05,
             )
             assert dist == 3
             assert delta == 3 / 64.0
@@ -385,7 +391,7 @@ class TestVisualDeltaSkippingBoundaries:
                 existing_screenshot_path=sc_file,
                 old_status="Active",
                 new_status="Active",
-                delta_threshold=0.05
+                delta_threshold=0.05,
             )
             assert dist == 4
             assert delta == 4 / 64.0
@@ -403,7 +409,7 @@ class TestVisualDeltaSkippingBoundaries:
             existing_screenshot_path=sc_file,
             old_status="Active",
             new_status="Registrations Closed",
-            delta_threshold=0.05
+            delta_threshold=0.05,
         )
         assert should_skip is False
         assert delta == 1.0
@@ -439,6 +445,7 @@ class TestVisualDeltaSkippingBoundaries:
 # 5. Async Concurrency Semaphore Bounding & Task Isolation Under Chaos
 # ==============================================================================
 
+
 @pytest.mark.asyncio
 class TestAsyncConcurrencyAndChaosIsolation:
     """Stress testing concurrency semaphore bounds and error resilience under network chaos."""
@@ -456,15 +463,11 @@ class TestAsyncConcurrencyAndChaosIsolation:
                 "credential_tier": "certification_exam",
                 "url": f"https://learn.microsoft.com/credentials/{i}",
                 "status": "Active",
-                "expiry_date": "2026-12-31"
+                "expiry_date": "2026-12-31",
             }
             for i in range(10)
         ]
-        offers_data = {
-            "$schema": "./schema.json",
-            "last_updated": "2026-10-23T00:00:00Z",
-            "offers": synthetic_offers
-        }
+        offers_data = {"$schema": "./schema.json", "last_updated": "2026-10-23T00:00:00Z", "offers": synthetic_offers}
         offers_file.write_text(json.dumps(offers_data, indent=2), encoding="utf-8")
 
         max_in_flight = 0
@@ -472,7 +475,13 @@ class TestAsyncConcurrencyAndChaosIsolation:
         lock = asyncio.Lock()
 
         def mock_sync_inspector(url, offer=None, max_retries=3):
-            auth_mock = {"is_authentic_vendor": True, "authenticity_score": 95, "verdict": "VERIFIED_AUTHENTIC", "summary": "OK", "warning_flags": []}
+            auth_mock = {
+                "is_authentic_vendor": True,
+                "authenticity_score": 95,
+                "verdict": "VERIFIED_AUTHENTIC",
+                "summary": "OK",
+                "warning_flags": [],
+            }
             return "Active", "HTTP 200 OK", url, auth_mock
 
         async def tracked_to_thread(fn, *args, **kwargs):
@@ -488,10 +497,11 @@ class TestAsyncConcurrencyAndChaosIsolation:
                 async with lock:
                     current_in_flight -= 1
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.inspect_url_with_retry", side_effect=mock_sync_inspector), \
-             patch("asyncio.to_thread", side_effect=tracked_to_thread):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.inspect_url_with_retry", side_effect=mock_sync_inspector),
+            patch("asyncio.to_thread", side_effect=tracked_to_thread),
+        ):
             result = await run_inspection_async(use_headless=False, concurrency=3)
 
         assert len(result) == 10
@@ -510,15 +520,11 @@ class TestAsyncConcurrencyAndChaosIsolation:
                 "credential_tier": "certification_exam",
                 "url": f"https://aws.amazon.com/certification/{i}",
                 "status": "Active",
-                "expiry_date": "2026-12-31"
+                "expiry_date": "2026-12-31",
             }
             for i in range(8)
         ]
-        offers_data = {
-            "$schema": "./schema.json",
-            "last_updated": "2026-10-23T00:00:00Z",
-            "offers": synthetic_offers
-        }
+        offers_data = {"$schema": "./schema.json", "last_updated": "2026-10-23T00:00:00Z", "offers": synthetic_offers}
         offers_file.write_text(json.dumps(offers_data, indent=2), encoding="utf-8")
 
         def mock_chaos_inspector(url, offer=None, max_retries=3):
@@ -531,12 +537,19 @@ class TestAsyncConcurrencyAndChaosIsolation:
             elif idx % 4 == 3:
                 raise ConnectionResetError(f"Simulated ConnectionReset on {url}")
             else:
-                auth_mock = {"is_authentic_vendor": True, "authenticity_score": 90, "verdict": "VERIFIED_AUTHENTIC", "summary": "OK", "warning_flags": []}
+                auth_mock = {
+                    "is_authentic_vendor": True,
+                    "authenticity_score": 90,
+                    "verdict": "VERIFIED_AUTHENTIC",
+                    "summary": "OK",
+                    "warning_flags": [],
+                }
                 return "Active", "HTTP 200 OK", url, auth_mock
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.inspect_url_with_retry", side_effect=mock_chaos_inspector):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.inspect_url_with_retry", side_effect=mock_chaos_inspector),
+        ):
             # Entire async batch must succeed without aborting
             result = await run_inspection_async(use_headless=False, concurrency=4)
 
@@ -550,17 +563,26 @@ class TestAsyncConcurrencyAndChaosIsolation:
 # 6. Backward-Compatibility Facade Integrity (builder.py & inspector.py)
 # ==============================================================================
 
+
 class TestBackwardCompatibilityFacades:
     """Verifies that src/builder.py and src/inspector.py preserve all legacy imports and signatures."""
 
     def test_builder_facade_exports(self):
         """Assert builder facade re-exports all required functions, paths, and constants."""
         required_callables = [
-            "build_all", "generate_readme", "generate_web_dashboard",
-            "format_4_timezones", "load_offers", "load_news", "compute_kpis",
-            "generate_css_variables", "generate_zero_foit_script",
-            "get_theme_by_id", "get_theme_json", "generate_theme_dropdown_options",
-            "generate_client_bundle"
+            "build_all",
+            "generate_readme",
+            "generate_web_dashboard",
+            "format_4_timezones",
+            "load_offers",
+            "load_news",
+            "compute_kpis",
+            "generate_css_variables",
+            "generate_zero_foit_script",
+            "get_theme_by_id",
+            "get_theme_json",
+            "generate_theme_dropdown_options",
+            "generate_client_bundle",
         ]
         for name in required_callables:
             attr = getattr(builder_facade, name, None)

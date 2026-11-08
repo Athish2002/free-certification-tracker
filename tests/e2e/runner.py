@@ -14,12 +14,13 @@ import argparse
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any
+
 import pytest
 
 E2E_DIR = Path(__file__).resolve().parent
 
-TIER_FILES: Dict[str, Tuple[str, Path]] = {
+TIER_FILES: dict[str, tuple[str, Path]] = {
     "Tier 1": ("Feature Isolation", E2E_DIR / "test_tier1_features.py"),
     "Tier 2": ("Boundary & Corner Cases", E2E_DIR / "test_tier2_boundaries.py"),
     "Tier 3": ("Cross-Feature Combinations", E2E_DIR / "test_tier3_combinations.py"),
@@ -52,7 +53,9 @@ class TierResultCollector:
         return self.passed + self.failed + self.skipped + self.errors
 
 
-def run_single_tier(tier_key: str, tier_name: str, file_path: Path, verbose: bool = False) -> Tuple[int, TierResultCollector, float]:
+def run_single_tier(
+    tier_key: str, tier_name: str, file_path: Path, verbose: bool = False
+) -> tuple[int, TierResultCollector, float]:
     """Runs a single test tier via pytest and collects execution telemetry."""
     collector = TierResultCollector()
     args = [str(file_path), "-q" if not verbose else "-v"]
@@ -71,7 +74,7 @@ def print_banner():
     print("=" * 80)
 
 
-def print_summary(tier_metrics: List[Dict[str, Any]], total_duration: float) -> int:
+def print_summary(tier_metrics: list[dict[str, Any]], total_duration: float) -> int:
     """Prints formatted summary table and determines overall exit code."""
     print("\n" + "-" * 80)
     print(f"{'Tier':<10} | {'Scope / Description':<32} | {'Passed':<8} | {'Failed':<8} | {'Duration':<10}")
@@ -96,7 +99,9 @@ def print_summary(tier_metrics: List[Dict[str, Any]], total_duration: float) -> 
 
     print("-" * 80)
     pass_rate = (total_passed / total_count * 100.0) if total_count > 0 else 0.0
-    print(f"Total Tests Executed: {total_count}  |  Passed: {total_passed}  |  Failed: {total_failed}  |  Pass Rate: {pass_rate:.1f}%")
+    print(
+        f"Total Tests Executed: {total_count}  |  Passed: {total_passed}  |  Failed: {total_failed}  |  Pass Rate: {pass_rate:.1f}%"
+    )
     print(f"Overall Suite Wall Time: {total_duration:.2f} seconds")
     print("=" * 80)
 
@@ -132,15 +137,17 @@ def main() -> int:
         print(f"\n>> Executing {tier_key}: {tier_desc} ({file_path.name})...")
         code, collector, dur = run_single_tier(tier_key, tier_desc, file_path, verbose=args.verbose)
 
-        tier_metrics.append({
-            "tier": tier_key,
-            "name": tier_desc,
-            "passed": collector.passed,
-            "failed": collector.failed,
-            "total": collector.total,
-            "duration": dur,
-            "exit_code": code,
-        })
+        tier_metrics.append(
+            {
+                "tier": tier_key,
+                "name": tier_desc,
+                "passed": collector.passed,
+                "failed": collector.failed,
+                "total": collector.total,
+                "duration": dur,
+                "exit_code": code,
+            }
+        )
 
     overall_duration = time.perf_counter() - overall_start
     return print_summary(tier_metrics, overall_duration)

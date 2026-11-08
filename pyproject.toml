@@ -38,9 +38,24 @@ ignore = [
 known-first-party = ["src"]
 combine-as-imports = true
 
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "B017",
+    "RUF059",
+    "RUF001",
+    "F401",
+    "F841",
+    "E741",
+    "SIM102",
+    "SIM118",
+]
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "browser: Playwright headless browser UI interaction tests",
+]

@@ -5,18 +5,16 @@ Verifies all Milestone 1 invariants and Pydantic V2 validations.
 
 import json
 from pathlib import Path
+
 import pytest
 from pydantic import ValidationError
 
 from src.models import (
-    Offer,
-    VisualProof,
     CandidateLead,
-    OffersDatabase,
-    CredentialTier,
-    ProctoringType,
-    Seasonality,
+    Offer,
     OfferDataDict,
+    OffersDatabase,
+    VisualProof,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -26,7 +24,7 @@ CANDIDATES_FILE = ROOT / "data" / "candidates.json"
 
 def test_offers_json_clean_parsing():
     """Validates that all offers in data/offers.json parse without error."""
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     total_count = len(data["offers"])
@@ -52,7 +50,7 @@ def test_offers_json_clean_parsing():
 
 def test_credential_tier_distribution():
     """Asserts that every offer belongs to a valid credential tier dynamically."""
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     offers = [Offer(**o) for o in data["offers"]]
@@ -74,7 +72,7 @@ def test_credential_tier_distribution():
 
 def test_visual_proof_metadata():
     """Asserts that visual_proof is initialized correctly on every offer."""
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     offers = [Offer(**o) for o in data["offers"]]
@@ -89,7 +87,7 @@ def test_visual_proof_metadata():
 
 def test_url_repairs_verified():
     """Asserts all audited repaired URLs are active and non-misleading."""
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     offer_map = {o["id"]: Offer(**o) for o in data["offers"]}
@@ -99,7 +97,9 @@ def test_url_repairs_verified():
     assert "oracle.com" in offer_map["oracle-oci-generative-ai-cert"].url
 
     # Databricks Lakehouse repaired from dead DNS academy.databricks.com
-    assert offer_map["databricks-lakehouse-fundamentals"].url == "https://www.databricks.com/learn/training/certification"
+    assert (
+        offer_map["databricks-lakehouse-fundamentals"].url == "https://www.databricks.com/learn/training/certification"
+    )
 
     # Google Cloud Skills Boost repaired from misleading skills.google root
     assert offer_map["gcp-cloud-skills-boost"].url == "https://cloud.google.com/innovators"
@@ -159,10 +159,10 @@ def test_visual_proof_verification_logic():
 
 def test_candidate_lead_parsing_and_stub():
     """Asserts that CandidateLead parses candidate leads from candidates.json."""
-    with open(CANDIDATES_FILE, "r", encoding="utf-8") as f:
+    with open(CANDIDATES_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
-    leads = [CandidateLead(**l) for l in data.get("leads", [])]
+    leads = [CandidateLead(**lead_dict) for lead_dict in data.get("leads", [])]
     assert len(leads) > 0
 
     valid_platforms = {"Microsoft Azure", "Amazon Web Services", "Multi-Cloud", "Google Cloud", "Oracle Cloud", "Cisco"}
@@ -214,7 +214,7 @@ def test_offer_strict_validation_rejections():
 
 def test_offers_database_container():
     """Tests OffersDatabase container model."""
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         data = json.load(f)
 
     db = OffersDatabase(**data)

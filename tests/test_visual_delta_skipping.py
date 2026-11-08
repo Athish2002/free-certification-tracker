@@ -19,10 +19,9 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import numpy as np
-import pytest
 from PIL import Image
 
-from src.dom_inspector import HeadlessDOMInspector, DOMInspector
+from src.dom_inspector import DOMInspector, HeadlessDOMInspector
 from src.visual_hasher import (
     PerceptualHashEngine,
     should_skip_screenshot_write,
@@ -276,10 +275,7 @@ class TestDOMInspectorScreenshotIntegration:
         inspector = HeadlessDOMInspector(headless=True)
         try:
             ok, path = inspector.capture_screenshot(
-                page=mock_page,
-                offer_id="synthetic-skip-test",
-                old_status="Active",
-                new_status="Active"
+                page=mock_page, offer_id="synthetic-skip-test", old_status="Active", new_status="Active"
             )
 
             assert ok is True
@@ -292,7 +288,6 @@ class TestDOMInspectorScreenshotIntegration:
                     target_path.unlink()
                 except Exception:
                     pass
-
 
     def test_capture_screenshot_writes_when_status_changes(self, tmp_path: Path):
         """capture_screenshot writes fresh file when status changes."""
@@ -309,10 +304,7 @@ class TestDOMInspectorScreenshotIntegration:
         inspector = HeadlessDOMInspector(headless=True)
         try:
             ok, path = inspector.capture_screenshot(
-                page=mock_page,
-                offer_id="synthetic-status-change-test",
-                old_status="Active",
-                new_status="Expired"
+                page=mock_page, offer_id="synthetic-status-change-test", old_status="Active", new_status="Expired"
             )
             assert ok is True
             assert target_path.exists()
@@ -329,6 +321,7 @@ class TestBlankScreenshotShield:
 
     def test_blank_white_image_detected(self):
         from src.visual_hasher import is_blank_or_invalid_screenshot
+
         # Pure white image
         white_img = Image.new("RGB", (1280, 800), (255, 255, 255))
         buf = io.BytesIO()
@@ -340,12 +333,12 @@ class TestBlankScreenshotShield:
 
     def test_substantive_image_passes(self):
         from src.visual_hasher import is_blank_or_invalid_screenshot
+
         data = _generate_png_bytes(seed=777)
         assert is_blank_or_invalid_screenshot(data) is False
 
     def test_capture_screenshot_preserves_substantive_when_candidate_is_blank(self):
         """DOMInspector must preserve existing substantive screenshot if newly captured screenshot is blank."""
-        from src.visual_hasher import is_blank_or_invalid_screenshot
         # Create a valid substantive existing screenshot
         substantive_data = _generate_png_bytes(seed=888)
         screenshots_dir = Path("docs/screenshots")
@@ -367,10 +360,7 @@ class TestBlankScreenshotShield:
         inspector = HeadlessDOMInspector(headless=True)
         try:
             ok, path = inspector.capture_screenshot(
-                page=mock_page,
-                offer_id="synthetic-blank-shield-test",
-                old_status="Active",
-                new_status="Active"
+                page=mock_page, offer_id="synthetic-blank-shield-test", old_status="Active", new_status="Active"
             )
             assert ok is True
             # Verify file on disk was preserved and NOT overwritten by the blank image

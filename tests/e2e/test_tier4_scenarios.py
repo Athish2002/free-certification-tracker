@@ -8,32 +8,30 @@ atomic rollback under corruption, and CLI backward-compatibility.
 from __future__ import annotations
 
 import asyncio
-import io
 import json
-import os
 import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
-import pytest
+from typing import Any
 
-from PIL import Image
+import pytest
 
 # ---------------------------------------------------------------------------
 # S01: Full End-to-End Ingestion to Dashboard Pipeline
 # ---------------------------------------------------------------------------
 
+
 def test_scenario_01_full_ingestion_to_dashboard_pipeline(
-    tmp_path: Path, sample_offer_dict: Dict[str, Any], canonical_offers_schema: Dict[str, Any], fallback_io_utils: Any
+    tmp_path: Path, sample_offer_dict: dict[str, Any], canonical_offers_schema: dict[str, Any], fallback_io_utils: Any
 ):
     """
     Scenario 1: End-to-End Pipeline
     Data Ingestion -> Schema Pre-Flight -> Truth Policy Derivation ->
     Authenticity Audit -> Model Validation -> Builder Documentation & Canvas.
     """
-    from src.models import Offer
     from src.authenticity import audit_offer_authenticity
+    from src.models import Offer
 
     # 1. Ingestion & Pre-flight validation
     schema_file = tmp_path / "schema.json"
@@ -41,6 +39,7 @@ def test_scenario_01_full_ingestion_to_dashboard_pipeline(
 
     try:
         from src import io_utils
+
         writer = io_utils.atomic_write_json
     except (ImportError, AttributeError):
         writer = fallback_io_utils.atomic_write_json
@@ -53,6 +52,7 @@ def test_scenario_01_full_ingestion_to_dashboard_pipeline(
     # 2. Dynamic Truth Policy Derivation
     try:
         from src.truth_oracle import derive_truth_policy
+
         policy = derive_truth_policy(sample_offer_dict)
     except (ImportError, AttributeError):
         policy = {"policy_type": "proctored_exam", "required_keywords": ["oracle", "exam"]}
@@ -71,12 +71,14 @@ def test_scenario_01_full_ingestion_to_dashboard_pipeline(
 
     # 5. Builder Artifact Generation
     try:
-        from src.builders.readme_builder import generate_readme
         from src.builders.html_builder import generate_web_dashboard
+        from src.builders.readme_builder import generate_readme
+
         readme_md = generate_readme({"offers": [sample_offer_dict]})
         dashboard_html = generate_web_dashboard({"offers": [sample_offer_dict]})
     except (ImportError, ModuleNotFoundError):
         from src.builder import build_all
+
         build_all()
         readme_md = Path("README.md").read_text(encoding="utf-8")
         dashboard_html = Path("docs/index.html").read_text(encoding="utf-8")
@@ -90,8 +92,9 @@ def test_scenario_01_full_ingestion_to_dashboard_pipeline(
 # S02: Atomic Pre-Flight Protection & Rollback on Failure
 # ---------------------------------------------------------------------------
 
+
 def test_scenario_02_atomic_preflight_protection_rollback_on_failure(
-    tmp_path: Path, sample_offer_dict: Dict[str, Any], canonical_offers_schema: Dict[str, Any], fallback_io_utils: Any
+    tmp_path: Path, sample_offer_dict: dict[str, Any], canonical_offers_schema: dict[str, Any], fallback_io_utils: Any
 ):
     """
     Scenario 2: Data Protection & Atomic Rollback
@@ -100,6 +103,7 @@ def test_scenario_02_atomic_preflight_protection_rollback_on_failure(
     """
     try:
         from src import io_utils
+
         writer = io_utils.atomic_write_json
     except (ImportError, AttributeError):
         writer = fallback_io_utils.atomic_write_json
@@ -139,14 +143,16 @@ def test_scenario_02_atomic_preflight_protection_rollback_on_failure(
 # S03: Multi-Theme Canvas & Zero-FOIT Invariant Verification
 # ---------------------------------------------------------------------------
 
-def test_scenario_03_multi_theme_canvas_and_zero_foit_compilation(sample_offers_list: List[Dict[str, Any]]):
+
+def test_scenario_03_multi_theme_canvas_and_zero_foit_compilation(sample_offers_list: list[dict[str, Any]]):
     """
     Scenario 3: Presentation & Theme Engine
     Verifies that the compiled web canvas integrates 10 developer color palettes,
     the zero-FOIT script, and CSS variables without missing token errors.
     """
     try:
-        from src.builders.theme_engine import THEMES, DEFAULT_THEME, generate_css_variables, generate_zero_foit_script
+        from src.builders.theme_engine import DEFAULT_THEME, THEMES, generate_css_variables, generate_zero_foit_script
+
         themes = THEMES
         default_theme = DEFAULT_THEME
         css_vars = generate_css_variables()
@@ -165,9 +171,11 @@ def test_scenario_03_multi_theme_canvas_and_zero_foit_compilation(sample_offers_
     # Build and verify HTML artifact
     try:
         from src.builders.html_builder import generate_web_dashboard
+
         html = generate_web_dashboard({"offers": sample_offers_list})
     except (ImportError, ModuleNotFoundError):
         from src.builder import build_all
+
         build_all()
         html = Path("docs/index.html").read_text(encoding="utf-8")
 
@@ -179,8 +187,9 @@ def test_scenario_03_multi_theme_canvas_and_zero_foit_compilation(sample_offers_
 # S04: High-Velocity Feed Aggregation, Filtering, and Serialization
 # ---------------------------------------------------------------------------
 
+
 def test_scenario_04_high_velocity_feed_intelligence_aggregation(
-    tmp_path: Path, sample_news_articles: List[Dict[str, Any]], fallback_io_utils: Any
+    tmp_path: Path, sample_news_articles: list[dict[str, Any]], fallback_io_utils: Any
 ):
     """
     Scenario 4: News Intelligence Pipeline
@@ -216,13 +225,14 @@ def test_scenario_04_high_velocity_feed_intelligence_aggregation(
         },
     ]
 
-    filtered_and_synchronized: List[Dict[str, Any]] = []
+    filtered_and_synchronized: list[dict[str, Any]] = []
     for item in raw_incoming_stream:
         # 1. Clickbait check
         if any(re.search(pat, item["title"], re.IGNORECASE) for pat in BANNED_CLICKBAIT_PATTERNS):
             continue
         # 2. Domain check
         from urllib.parse import urlparse
+
         host = urlparse(item["url"]).hostname or ""
         if not any(host == d or host.endswith("." + d) for d in APPROVED_NEWS_DOMAINS):
             continue
@@ -239,6 +249,7 @@ def test_scenario_04_high_velocity_feed_intelligence_aggregation(
     # Atomic write to news storage
     try:
         from src import io_utils
+
         writer = io_utils.atomic_write_json
     except (ImportError, AttributeError):
         writer = fallback_io_utils.atomic_write_json
@@ -251,6 +262,7 @@ def test_scenario_04_high_velocity_feed_intelligence_aggregation(
 # ---------------------------------------------------------------------------
 # S05: High-Concurrency Inspection Lifecycle with Visual Delta-Skipping
 # ---------------------------------------------------------------------------
+
 
 @pytest.mark.asyncio
 async def test_scenario_05_high_concurrency_inspection_with_phash_skipping(tmp_path: Path, mock_png_bytes):
@@ -265,7 +277,10 @@ async def test_scenario_05_high_concurrency_inspection_with_phash_skipping(tmp_p
     try:
         from src.visual_hasher import should_skip_screenshot_write
     except (ImportError, AttributeError):
-        def should_skip_screenshot_write(new_image, existing_screenshot_path, old_status, new_status, delta_threshold=0.05):
+
+        def should_skip_screenshot_write(
+            new_image, existing_screenshot_path, old_status, new_status, delta_threshold=0.05
+        ):
             path = Path(existing_screenshot_path)
             if not path.exists() or path.stat().st_size < 4096:
                 return False, 1.0, 64
@@ -327,6 +342,7 @@ async def test_scenario_05_high_concurrency_inspection_with_phash_skipping(tmp_p
 # S06: CLI Backward-Compatibility & Artifact Generation
 # ---------------------------------------------------------------------------
 
+
 def test_scenario_06_cli_backward_compatibility_execution(project_root: Path):
     """
     Scenario 6: CLI Facade Execution
@@ -337,8 +353,7 @@ def test_scenario_06_cli_backward_compatibility_execution(project_root: Path):
     res = subprocess.run(
         cmd,
         cwd=project_root,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         text=True,
         timeout=45,
     )

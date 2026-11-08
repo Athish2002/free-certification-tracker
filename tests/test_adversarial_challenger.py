@@ -7,7 +7,6 @@ boundary breakouts, and adversarial corner cases.
 from __future__ import annotations
 
 import json
-import os
 import re
 import sys
 import tempfile
@@ -27,6 +26,7 @@ if str(ROOT) not in sys.path:
 # VULN-01: Adversarial XSS Payloads & Attribute Breakouts
 # ==============================================================================
 
+
 class TestAdversarialVuln01Xss:
     """Stress-tests XSS defense in client_bundle and html_builder against real payloads."""
 
@@ -36,11 +36,11 @@ class TestAdversarialVuln01Xss:
         '"><svg/onload=alert(1)>',
         '<iframe src="javascript:alert(1)"></iframe>',
         '<<SCRIPT>alert("XSS");//<</SCRIPT>',
-        '<body onload=alert(1)>',
-        '<input onfocus=alert(1) autofocus>',
-        '<details open ontoggle=alert(1)>',
-        '&#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;',
-        'javascript:/*--></title></style></textarea></script></xmp><svg/onload=\'+/"/+/onmouseover=1/+/[*/[]/+alert(1)//\'>',
+        "<body onload=alert(1)>",
+        "<input onfocus=alert(1) autofocus>",
+        "<details open ontoggle=alert(1)>",
+        "&#x3C;script&#x3E;alert(1)&#x3C;/script&#x3E;",
+        "javascript:/*--></title></style></textarea></script></xmp><svg/onload='+/\"/+/onmouseover=1/+/[*/[]/+alert(1)//'>",
     ]
 
     DANGEROUS_URL_SCHEMES = [
@@ -80,7 +80,7 @@ class TestAdversarialVuln01Xss:
             "exploit'); alert(1); //",
             "'; alert(document.cookie); //",
             '\\"); alert(1); //',
-            '</button><script>alert(1)</script>',
+            "</button><script>alert(1)</script>",
             'foo" onmouseover="alert(1)"',
             "normal-id-123",
             "",
@@ -98,10 +98,10 @@ class TestAdversarialVuln01Xss:
                 assert "\\'" in escaped or "&#39;" in escaped or "'" not in escaped
             if '"' in raw_s:
                 assert '"' not in escaped
-            if '<' in raw_s:
-                assert '<' not in escaped
-            if '>' in raw_s:
-                assert '>' not in escaped
+            if "<" in raw_s:
+                assert "<" not in escaped
+            if ">" in raw_s:
+                assert ">" not in escaped
 
     def test_html_builder_renders_safe_markup_with_malicious_closed_offers(self):
         """Renders closed offers with hostile payloads and checks the full output HTML."""
@@ -114,7 +114,7 @@ class TestAdversarialVuln01Xss:
                 "platform": "Hacker Platform",
                 "status": "Closed",
                 "inspection_notes": payload,
-                "url": "javascript:alert(1)"
+                "url": "javascript:alert(1)",
             }
             for payload in self.ADVERSARIAL_XSS_PAYLOADS
         ]
@@ -134,6 +134,7 @@ class TestAdversarialVuln01Xss:
 # ==============================================================================
 # VULN-02: Local File Read & Non-HTTPS URL Rejection
 # ==============================================================================
+
 
 class TestAdversarialVuln02UrlScheme:
     """Stress-tests HeadlessDOMInspector against file:// variations, UNC paths, and non-HTTPS protocols."""
@@ -170,7 +171,9 @@ class TestAdversarialVuln02UrlScheme:
                 assert status == "Review Needed", f"URL {bad_url} was not marked 'Review Needed'!"
                 assert "Security Alert" in reason, f"URL {bad_url} did not trigger a Security Alert!"
                 assert auth_result.get("authenticity_score") == 0, f"URL {bad_url} did not have authenticity_score 0!"
-                assert auth_result.get("verdict") == "SUSPICIOUS_UNTRUSTED", f"URL {bad_url} verdict was not SUSPICIOUS_UNTRUSTED!"
+                assert auth_result.get("verdict") == "SUSPICIOUS_UNTRUSTED", (
+                    f"URL {bad_url} verdict was not SUSPICIOUS_UNTRUSTED!"
+                )
 
     def test_empty_or_none_or_malformed_urls_rejected(self):
         """Verifies empty, non-string, or malformed URLs are rejected cleanly without crashes."""
@@ -187,13 +190,14 @@ class TestAdversarialVuln02UrlScheme:
 # VULN-03: Chromium Launch Arguments Sandboxing
 # ==============================================================================
 
+
 class TestAdversarialVuln03SandboxFlags:
     """Verifies that Chromium launch arguments do not disable the OS-level sandbox."""
 
     def test_playwright_launch_args_invariants(self):
         """Ensures --no-sandbox and --disable-setuid-sandbox are completely absent."""
-        from src.dom_inspector import PLAYWRIGHT_LAUNCH_ARGS as DOM_ARGS
         from src.constants import PLAYWRIGHT_LAUNCH_ARGS as CONST_ARGS
+        from src.dom_inspector import PLAYWRIGHT_LAUNCH_ARGS as DOM_ARGS
 
         forbidden_flags = {"--no-sandbox", "--disable-setuid-sandbox"}
 
@@ -220,6 +224,7 @@ class TestAdversarialVuln03SandboxFlags:
 # VULN-04: News Feed Domain & Protocol Validation
 # ==============================================================================
 
+
 class TestAdversarialVuln04DomainValidation:
     """Stress-tests the news collector domain and protocol validation logic against spoofing variations."""
 
@@ -233,7 +238,6 @@ class TestAdversarialVuln04DomainValidation:
             ("https://hashicorp.com:443/article", "hashicorp.com", True),
             ("https://aws.amazon.com/blogs/aws/new-post", "aws.amazon.com", True),
             ("https://sub.aws.amazon.com/post", "aws.amazon.com", True),
-
             # Adversarial domain spoofing attempts
             ("https://evil-hashicorp.com/article", "hashicorp.com", False),
             ("https://hashicorp.com.attacker.com/article", "hashicorp.com", False),
@@ -244,7 +248,6 @@ class TestAdversarialVuln04DomainValidation:
             ("https://hashicorp.com@attacker.com/path", "hashicorp.com", False),
             ("https://attacker.com/fake?target=hashicorp.com", "hashicorp.com", False),
             ("https://attacker.com#hashicorp.com", "hashicorp.com", False),
-
             # Protocol bypass attempts
             ("http://hashicorp.com/article", "hashicorp.com", False),
             ("javascript:alert('hashicorp.com')", "hashicorp.com", False),
@@ -252,7 +255,7 @@ class TestAdversarialVuln04DomainValidation:
             ("data:text/html;hashicorp.com", "hashicorp.com", False),
             ("ftp://hashicorp.com/file", "hashicorp.com", False),
             ("", "hashicorp.com", False),
-        ]
+        ],
     )
     def test_domain_and_protocol_validation(self, link: str, allowed: str, expected: bool):
         """Simulates the exact VULN-04 validation gate from src/news_collector.py."""
@@ -265,12 +268,15 @@ class TestAdversarialVuln04DomainValidation:
             allowed_clean = allowed.lower()
             result = bool(hostname and (hostname == allowed_clean or hostname.endswith("." + allowed_clean)))
 
-        assert result == expected, f"Validation mismatch for link '{link}' with allowed '{allowed}': got {result}, expected {expected}"
+        assert result == expected, (
+            f"Validation mismatch for link '{link}' with allowed '{allowed}': got {result}, expected {expected}"
+        )
 
 
 # ==============================================================================
 # VULN-05: Malicious XML & Billion Laughs Expansion Bomb
 # ==============================================================================
+
 
 class TestAdversarialVuln05DefusedXml:
     """Stress-tests collector and news_collector XML parsing against entity expansion bombs."""
@@ -308,25 +314,28 @@ class TestAdversarialVuln05DefusedXml:
 
     def test_collector_et_raises_on_billion_laughs(self):
         """collector.ET must raise DefusedXmlException on Billion Laughs payload."""
-        import src.collector as collector
         from defusedxml.common import DefusedXmlException
+
+        import src.collector as collector
 
         with pytest.raises(DefusedXmlException):
             collector.ET.fromstring(self.BILLION_LAUGHS_PAYLOAD)
 
     def test_news_collector_et_raises_on_billion_laughs(self):
         """news_collector.ET must raise DefusedXmlException on Billion Laughs payload."""
-        import src.news_collector as news_collector
         from defusedxml.common import DefusedXmlException
+
+        import src.news_collector as news_collector
 
         with pytest.raises(DefusedXmlException):
             news_collector.ET.fromstring(self.BILLION_LAUGHS_PAYLOAD)
 
     def test_collector_and_news_collector_raise_on_xxe(self):
         """External entity declarations (XXE) must raise DefusedXmlException in both modules."""
+        from defusedxml.common import DefusedXmlException
+
         import src.collector as collector
         import src.news_collector as news_collector
-        from defusedxml.common import DefusedXmlException
 
         with pytest.raises(DefusedXmlException):
             collector.ET.fromstring(self.XXE_FILE_DISCLOSURE_PAYLOAD)
@@ -338,6 +347,7 @@ class TestAdversarialVuln05DefusedXml:
 # ==============================================================================
 # VULN-06: Principle of Least Privilege in GitHub Actions Workflow
 # ==============================================================================
+
 
 class TestAdversarialVuln06WorkflowPermissions:
     """Verifies that .github/workflows/tracker.yml enforces least privilege."""
@@ -379,6 +389,7 @@ class TestAdversarialVuln06WorkflowPermissions:
 # VULN-07: Path Traversal Defense in Candidate ID Vetting
 # ==============================================================================
 
+
 class TestAdversarialVuln07PathTraversal:
     """Stress-tests vet_candidate_lead with malicious IDs and directory traversal payloads."""
 
@@ -416,7 +427,9 @@ class TestAdversarialVuln07PathTraversal:
             }
             res, reason = vet_candidate_lead(lead)
             assert res is None, f"Lead with ID '{bad_id}' was unexpectedly accepted!"
-            assert "INVALID_CANDIDATE_ID" in reason, f"Reason for '{bad_id}' did not indicate INVALID_CANDIDATE_ID: {reason}"
+            assert "INVALID_CANDIDATE_ID" in reason, (
+                f"Reason for '{bad_id}' did not indicate INVALID_CANDIDATE_ID: {reason}"
+            )
 
     def test_vet_candidate_lead_accepts_clean_id(self):
         """A strictly valid ID matching ^[a-z0-9-]+$ must pass ID validation."""
@@ -430,6 +443,7 @@ class TestAdversarialVuln07PathTraversal:
 # ==============================================================================
 # VULN-08: Atomic Write Schema Pre-Flight Validation
 # ==============================================================================
+
 
 class TestAdversarialVuln08AtomicWriteSchema:
     """Stress-tests atomic_write_json schema validation and atomic swap guarantees."""
@@ -445,12 +459,18 @@ class TestAdversarialVuln08AtomicWriteSchema:
     def test_corrupted_payloads_blocked_before_disk_write(self):
         """Invalid schema payloads must raise ValidationError and leave disk untouched."""
         from src.io_utils import atomic_write_json
+
         schema_file = ROOT / "data" / "schema.json"
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             target_path = Path(tmp_dir) / "offers.json"
-            original_content = {"$schema": "./schema.json", "last_updated": "2026-01-01T00:00:00Z", "total_offers": 0, "offers": []}
-            
+            original_content = {
+                "$schema": "./schema.json",
+                "last_updated": "2026-01-01T00:00:00Z",
+                "total_offers": 0,
+                "offers": [],
+            }
+
             # Initial write
             atomic_write_json(target_path, original_content, schema_path=schema_file)
             initial_mtime = target_path.stat().st_mtime_ns
@@ -473,6 +493,7 @@ class TestAdversarialVuln08AtomicWriteSchema:
 # ==============================================================================
 # VULN-09: Prompt Injection Delimiter Breakout & System Isolation
 # ==============================================================================
+
 
 class TestAdversarialVuln09PromptInjection:
     """Stress-tests VLM prompt construction against delimiter breakouts and prompt injection payloads."""
@@ -517,14 +538,12 @@ class TestAdversarialVuln09PromptInjection:
         payload = VLMProviderAdapters.build_gemini_payload(
             screenshot_bytes=b"test",
             user_prompt="User Prompt Text",
-            system_instruction="System Instruction Security Directive"
+            system_instruction="System Instruction Security Directive",
         )
 
         # system_instruction must be at root level
         assert "system_instruction" in payload
-        assert payload["system_instruction"] == {
-            "parts": [{"text": "System Instruction Security Directive"}]
-        }
+        assert payload["system_instruction"] == {"parts": [{"text": "System Instruction Security Directive"}]}
 
         # user prompt contents parts must not merge system_instruction
         parts = payload["contents"][0]["parts"]

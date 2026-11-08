@@ -16,21 +16,17 @@ Integration flows covered:
 from __future__ import annotations
 
 import json
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List
-import jsonschema
-import pytest
-import respx
-import httpx
 
-from src.collector import fetch_reddit_leads, fetch_vendor_blog_leads
+import httpx
+import jsonschema
+import respx
+
 from src.authenticity import audit_offer_authenticity
-from src.truth_oracle import audit_and_enrich_offers, CURATED_POLICY_OVERRIDES
-from src.main import apply_self_healing, ingest_and_vet_candidates, normalize_url
-from src.builders import build_all, load_offers, load_news
-from src.io_utils import atomic_write_json
-from src.models import Offer, OffersDatabase
+from src.builders import build_all, load_news, load_offers
+from src.collector import fetch_vendor_blog_leads
+from src.main import apply_self_healing, normalize_url
+from src.truth_oracle import audit_and_enrich_offers
 
 ROOT = Path(__file__).resolve().parent.parent
 OFFERS_SCHEMA_FILE = ROOT / "data" / "schema.json"
@@ -40,6 +36,7 @@ NEWS_SCHEMA_FILE = ROOT / "data" / "news_schema.json"
 # ==============================================================================
 # 1. Collector -> Authenticity Gate Integration
 # ==============================================================================
+
 
 class TestCollectorAuthenticityIntegration:
     """Verifies candidate collection, URL normalization, and authenticity screening."""
@@ -68,11 +65,7 @@ class TestCollectorAuthenticityIntegration:
         </rss>"""
 
         # Mock all blog GET requests
-        respx.get().respond(
-            status_code=200,
-            headers={"Content-Type": "application/xml"},
-            text=mock_rss
-        )
+        respx.get().respond(status_code=200, headers={"Content-Type": "application/xml"}, text=mock_rss)
 
         leads = fetch_vendor_blog_leads()
         assert len(leads) >= 1
@@ -96,7 +89,11 @@ class TestCollectorAuthenticityIntegration:
         """Verify that spoofed/phishing candidate leads are rejected before inspection."""
         phishing_leads = [
             {"title": "Free AWS Voucher", "url": "https://aws-free-vouchers.scam-portal.ru/claim", "platform": "AWS"},
-            {"title": "Free Oracle Cert", "url": "https://oracle.mylearn.free-certs-discount.com/claim", "platform": "Oracle"},
+            {
+                "title": "Free Oracle Cert",
+                "url": "https://oracle.mylearn.free-certs-discount.com/claim",
+                "platform": "Oracle",
+            },
             {"title": "CompTIA Free Exam", "url": "http://insecure-http-exam.biz/comptia", "platform": "CompTIA"},
         ]
         for lead in phishing_leads:
@@ -109,6 +106,7 @@ class TestCollectorAuthenticityIntegration:
 # 2. HTTP Pre-flight & Canonical URL Self-Healing Integration
 # ==============================================================================
 
+
 class TestHTTPInspectionAndSelfHealingIntegration:
     """Verifies HTTP pre-flight behavior, canonical redirect healing, and soft-404 detection."""
 
@@ -116,12 +114,11 @@ class TestHTTPInspectionAndSelfHealingIntegration:
     def test_canonical_redirect_url_healing(self):
         """Simulate a 301 permanent redirect from old URL to canonical portal URL."""
         respx.get("https://learn.oracle.com/legacy-genai-path").respond(
-            status_code=301,
-            headers={"Location": "https://mylearn.oracle.com/ou/course/generative-ai"}
+            status_code=301, headers={"Location": "https://mylearn.oracle.com/ou/course/generative-ai"}
         )
         respx.get("https://mylearn.oracle.com/ou/course/generative-ai").respond(
             status_code=200,
-            text="<html><body><h1>Oracle Cloud Infrastructure Generative AI</h1><p>Free course and certification attempt included at $0 cost.</p></body></html>"
+            text="<html><body><h1>Oracle Cloud Infrastructure Generative AI</h1><p>Free course and certification attempt included at $0 cost.</p></body></html>",
         )
 
         with httpx.Client(follow_redirects=True) as client:
@@ -149,14 +146,10 @@ class TestHTTPInspectionAndSelfHealingIntegration:
             "id": "test-dead-link",
             "title": "Expired Campaign",
             "url": "https://training.example.com/expired-campaign",
-            "status": "Active"
+            "status": "Active",
         }
         # Inspection result for 404
-        inspection_res = {
-            "status": "Broken Link",
-            "reason": "HTTP 404 Client Error",
-            "zero_dollar_confirmed": False
-        }
+        inspection_res = {"status": "Broken Link", "reason": "HTTP 404 Client Error", "zero_dollar_confirmed": False}
         healed = apply_self_healing(dummy_offer, inspection_res)
         assert healed["status"] == "Broken Link"
         assert "404" in healed["inspection_notes"]
@@ -165,6 +158,7 @@ class TestHTTPInspectionAndSelfHealingIntegration:
 # ==============================================================================
 # 3. Truth Oracle Policy Corroboration Integration
 # ==============================================================================
+
 
 class TestTruthOracleIntegration:
     """Verifies policy corroboration, anti-misleading detection, and expiration audits."""
@@ -185,7 +179,7 @@ class TestTruthOracleIntegration:
                 "platform": "ISC2",
                 "status": "Active",
                 "url": "https://www.isc2.org/landing/1mcc",
-            }
+            },
         ]
 
         enriched, summary = audit_and_enrich_offers(sample_offers, strict_enforcement=True)
@@ -207,7 +201,7 @@ class TestTruthOracleIntegration:
                 "platform": "Red Hat",
                 "status": "Expired",
                 "url": "https://developers.redhat.com/",
-                "is_historical_archive": True
+                "is_historical_archive": True,
             }
         ]
         enriched, _ = audit_and_enrich_offers(expired_policy_offer, strict_enforcement=True)
@@ -218,6 +212,7 @@ class TestTruthOracleIntegration:
 # ==============================================================================
 # 4. Self-Healing State Machine & Zero-Dollar Guard Integration
 # ==============================================================================
+
 
 class TestSelfHealingStateGuardsIntegration:
     """Verifies that offers can only heal to Active when affirmative $0 terms are confirmed."""
@@ -237,7 +232,7 @@ class TestSelfHealingStateGuardsIntegration:
             "zero_dollar_confirmed": False,
             "maintenance_detected": False,
             "paid_catalog_detected": False,
-            "screenshot_path": "docs/screenshots/test.png"
+            "screenshot_path": "docs/screenshots/test.png",
         }
         res = apply_self_healing(stale_offer, unverified_inspection)
         assert res["status"] == "Review Needed"
@@ -257,7 +252,7 @@ class TestSelfHealingStateGuardsIntegration:
             "zero_dollar_confirmed": True,
             "maintenance_detected": False,
             "paid_catalog_detected": False,
-            "screenshot_path": "docs/screenshots/test2.png"
+            "screenshot_path": "docs/screenshots/test2.png",
         }
         res = apply_self_healing(stale_offer, confirmed_inspection)
         assert res["status"] == "Active"
@@ -270,6 +265,7 @@ class TestSelfHealingStateGuardsIntegration:
 # 5. Integrated Build Pipeline & Signals Breakdown Telemetry Contract
 # ==============================================================================
 
+
 class TestIntegratedBuildAndTelemetryContract:
     """Verifies that build_all compiles valid artifacts with observable signals_breakdown."""
 
@@ -278,12 +274,7 @@ class TestIntegratedBuildAndTelemetryContract:
         html_path = tmp_path / "index.html"
         summary_path = tmp_path / "summary.json"
 
-        success = build_all(
-            readme_path=readme_path,
-            html_path=html_path,
-            summary_path=summary_path,
-            force=True
-        )
+        success = build_all(readme_path=readme_path, html_path=html_path, summary_path=summary_path, force=True)
         assert success is True
 
         # 1. Verify README.md exists and is non-empty
@@ -301,17 +292,33 @@ class TestIntegratedBuildAndTelemetryContract:
         assert summary_path.exists()
         summary_data = json.loads(summary_path.read_text(encoding="utf-8"))
 
-        for key in ["active", "review_needed", "expired", "total", "last_updated", "last_successful_run", "signals_breakdown"]:
+        for key in [
+            "active",
+            "review_needed",
+            "expired",
+            "total",
+            "last_updated",
+            "last_successful_run",
+            "signals_breakdown",
+        ]:
             assert key in summary_data, f"Missing key '{key}' in summary.json"
 
         signals = summary_data["signals_breakdown"]
-        for sig_key in ["dom_inspected", "oracle_corroborated", "authentic_vendors", "zero_dollar_confirmed", "historical_archives"]:
+        for sig_key in [
+            "dom_inspected",
+            "oracle_corroborated",
+            "authentic_vendors",
+            "zero_dollar_confirmed",
+            "historical_archives",
+        ]:
             assert sig_key in signals, f"Missing signal counter '{sig_key}' in summary.json['signals_breakdown']"
             assert isinstance(signals[sig_key], int)
             assert signals[sig_key] >= 0
 
         # Invariant: total equals sum of statuses
-        assert summary_data["total"] == summary_data["active"] + summary_data["review_needed"] + summary_data["expired"] + (summary_data["total"] - (summary_data["active"] + summary_data["review_needed"] + summary_data["expired"]))
+        assert summary_data["total"] == summary_data["active"] + summary_data["review_needed"] + summary_data[
+            "expired"
+        ] + (summary_data["total"] - (summary_data["active"] + summary_data["review_needed"] + summary_data["expired"]))
 
     def test_offers_and_news_conform_to_json_schemas(self):
         """Assert current data files strictly validate against their respective schemas."""

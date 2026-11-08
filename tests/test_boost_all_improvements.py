@@ -15,26 +15,23 @@ Consolidated Logical Invariant Suite:
 
 from __future__ import annotations
 
-import gzip
 import json
-import tempfile
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
 import httpx
 
-from src.collector import VendorBlogCollector, fetch_vendor_blog_leads, vet_candidate_lead
-from src.inspector import check_and_flag_stale_offers, inspect_offer
-from src.truth_oracle import corroborate_offer, CURATED_POLICY_OVERRIDES, derive_truth_policy
-from src.audit_ledger import compact_audit_log
-from src.builders import compute_build_fingerprint, build_all, SUMMARY_FILE, FINGERPRINT_FILE
-from src.news_collector import compute_news_fingerprint, update_news_feed
-from src.network_verifier import ASNRouteVerifier, is_whitelisted_domain
-from src.main import apply_self_healing, normalize_url
-import src.vlm_engine as vlm_facade
 import src.vlm as vlm_pkg
+import src.vlm_engine as vlm_facade
+from src.audit_ledger import compact_audit_log
+from src.builders import build_all, compute_build_fingerprint
+from src.collector import VendorBlogCollector
+from src.inspector import check_and_flag_stale_offers
+from src.main import apply_self_healing, normalize_url
+from src.network_verifier import ASNRouteVerifier, is_whitelisted_domain
+from src.news_collector import compute_news_fingerprint
+from src.truth_oracle import CURATED_POLICY_OVERRIDES, corroborate_offer
 
 
 class TestVendorBlogCollector:
@@ -68,12 +65,16 @@ class TestVendorBlogCollector:
     """
 
     def test_vendor_blog_collector_parsing_determinism_and_resilience_invariants(self):
-        collector_aws = VendorBlogCollector(targets=[{
-            "name": "AWS Training Blog",
-            "feed_url": "https://aws.amazon.com/feed/",
-            "platform": "Amazon Web Services",
-            "allowed_domain": "aws.amazon.com",
-        }])
+        collector_aws = VendorBlogCollector(
+            targets=[
+                {
+                    "name": "AWS Training Blog",
+                    "feed_url": "https://aws.amazon.com/feed/",
+                    "platform": "Amazon Web Services",
+                    "allowed_domain": "aws.amazon.com",
+                }
+            ]
+        )
 
         # 1. RSS parsing & determinism
         mock_rss = MagicMock(status_code=200, text=self.RSS_SAMPLE)
@@ -87,12 +88,16 @@ class TestVendorBlogCollector:
         assert leads1[0]["is_authentic_vendor"] is True
 
         # 2. Atom parsing
-        collector_ms = VendorBlogCollector(targets=[{
-            "name": "Microsoft Learn Blog",
-            "feed_url": "https://learn.microsoft.com/rss",
-            "platform": "Microsoft Azure",
-            "allowed_domain": "learn.microsoft.com",
-        }])
+        collector_ms = VendorBlogCollector(
+            targets=[
+                {
+                    "name": "Microsoft Learn Blog",
+                    "feed_url": "https://learn.microsoft.com/rss",
+                    "platform": "Microsoft Azure",
+                    "allowed_domain": "learn.microsoft.com",
+                }
+            ]
+        )
         mock_atom = MagicMock(status_code=200, text=self.ATOM_SAMPLE)
         with patch.object(httpx.Client, "get", return_value=mock_atom):
             atom_leads = collector_ms.fetch_vendor_blog_leads()
@@ -109,15 +114,26 @@ class TestStalenessDowngrade:
     """Verifies check_and_flag_stale_offers auto-downgrades stale Active offers."""
 
     def test_staleness_detection_and_downgrade_invariants(self):
-        today = datetime.now(timezone.utc).date()
+        today = datetime.now(UTC).date()
         stale_date = (today - timedelta(days=20)).strftime("%Y-%m-%d")
         fresh_date = (today - timedelta(days=5)).strftime("%Y-%m-%d")
 
         offers = [
             {"id": "stale-1", "title": "Stale Offer", "status": "Active", "verification_date": stale_date},
             {"id": "fresh-1", "title": "Fresh Offer", "status": "Active", "verification_date": fresh_date},
-            {"id": "closed-1", "title": "Closed Offer", "status": "Registrations Closed", "verification_date": stale_date},
-            {"id": "hist-1", "title": "Historical", "status": "Active", "verification_date": stale_date, "is_historical_archive": True},
+            {
+                "id": "closed-1",
+                "title": "Closed Offer",
+                "status": "Registrations Closed",
+                "verification_date": stale_date,
+            },
+            {
+                "id": "hist-1",
+                "title": "Historical",
+                "status": "Active",
+                "verification_date": stale_date,
+                "is_historical_archive": True,
+            },
             {"id": "bad-date", "title": "Bad Date", "status": "Active", "verification_date": "invalid-date"},
         ]
 
@@ -145,33 +161,53 @@ class TestTruthOracleExpiry:
             "platform": "Oracle Cloud",
             "url": "https://mylearn.oracle.com/cert",
             "status": "Active",
-            "visual_proof": {"zero_dollar_confirmed": True}
+            "visual_proof": {"zero_dollar_confirmed": True},
         }
 
         # 2. Expired policy triggers confidence downgrade
-        past_dt = (datetime.now(timezone.utc) - timedelta(days=10)).isoformat()
-        with patch.dict(CURATED_POLICY_OVERRIDES, {
-            "mock-policy-test": {
-                "provider": "Oracle Cloud", "exam_name": "Mock Cert", "policy_type": "verified_100pct_free",
-                "real_exam_cost_usd": 0.0, "verified_discount_pct": 100, "truth_source_name": "Oracle",
-                "truth_source_url": "https://mylearn.oracle.com/", "verdict_notes": "Notes",
-                "enforce_status": "Active", "zero_dollar_confirmed": True,
-                "valid_through_utc": past_dt, "review_due_utc": past_dt,
-            }
-        }):
+        past_dt = (datetime.now(UTC) - timedelta(days=10)).isoformat()
+        with patch.dict(
+            CURATED_POLICY_OVERRIDES,
+            {
+                "mock-policy-test": {
+                    "provider": "Oracle Cloud",
+                    "exam_name": "Mock Cert",
+                    "policy_type": "verified_100pct_free",
+                    "real_exam_cost_usd": 0.0,
+                    "verified_discount_pct": 100,
+                    "truth_source_name": "Oracle",
+                    "truth_source_url": "https://mylearn.oracle.com/",
+                    "verdict_notes": "Notes",
+                    "enforce_status": "Active",
+                    "zero_dollar_confirmed": True,
+                    "valid_through_utc": past_dt,
+                    "review_due_utc": past_dt,
+                }
+            },
+        ):
             assert corroborate_offer(offer)["confidence_downgraded"] is True
 
         # 3. Fresh policy preserves confidence
-        future_dt = (datetime.now(timezone.utc) + timedelta(days=60)).isoformat()
-        with patch.dict(CURATED_POLICY_OVERRIDES, {
-            "mock-policy-test": {
-                "provider": "Oracle Cloud", "exam_name": "Mock Cert", "policy_type": "verified_100pct_free",
-                "real_exam_cost_usd": 0.0, "verified_discount_pct": 100, "truth_source_name": "Oracle",
-                "truth_source_url": "https://mylearn.oracle.com/", "verdict_notes": "Notes",
-                "enforce_status": "Active", "zero_dollar_confirmed": True,
-                "valid_through_utc": future_dt, "review_due_utc": future_dt,
-            }
-        }):
+        future_dt = (datetime.now(UTC) + timedelta(days=60)).isoformat()
+        with patch.dict(
+            CURATED_POLICY_OVERRIDES,
+            {
+                "mock-policy-test": {
+                    "provider": "Oracle Cloud",
+                    "exam_name": "Mock Cert",
+                    "policy_type": "verified_100pct_free",
+                    "real_exam_cost_usd": 0.0,
+                    "verified_discount_pct": 100,
+                    "truth_source_name": "Oracle",
+                    "truth_source_url": "https://mylearn.oracle.com/",
+                    "verdict_notes": "Notes",
+                    "enforce_status": "Active",
+                    "zero_dollar_confirmed": True,
+                    "valid_through_utc": future_dt,
+                    "review_due_utc": future_dt,
+                }
+            },
+        ):
             assert corroborate_offer(offer)["confidence_downgraded"] is False
 
 
@@ -227,7 +263,7 @@ class TestVLMModularization:
             offer_id="test-heuristic",
             dom_text="Claim your 100% free exam voucher now for AWS AI Practitioner",
             dom_title="AWS Free Exam Voucher Promotion",
-            platform="Amazon Web Services"
+            platform="Amazon Web Services",
         )
         assert verdict.has_zero_dollar_waiver is True and verdict.registration_status == "open"
 
@@ -242,8 +278,16 @@ class TestASNSecondaryValidation:
 
     def test_asn_route_verification_and_whitelist_invariants(self):
         verifier = ASNRouteVerifier()
-        with patch.object(verifier, "query_cymru_asn_doh", return_value={"asn": 16509, "prefix": "52.94.76.0/24", "country": "US", "registry": "arin"}):
-            result = verifier.verify_route_origin("https://phishing-claim-free-certs.xyz/voucher", platform="Amazon Web Services", ip_override="52.94.76.1")
+        with patch.object(
+            verifier,
+            "query_cymru_asn_doh",
+            return_value={"asn": 16509, "prefix": "52.94.76.0/24", "country": "US", "registry": "arin"},
+        ):
+            result = verifier.verify_route_origin(
+                "https://phishing-claim-free-certs.xyz/voucher",
+                platform="Amazon Web Services",
+                ip_override="52.94.76.1",
+            )
         assert "CLOUD_CDN_COINCIDENCE_NON_CANONICAL_DOMAIN" in result.flags
         assert result.is_vendor_infra is False
 
@@ -278,20 +322,34 @@ class TestSelfHealingZeroDollarDate:
 
     def test_self_healing_zero_dollar_date_invariants(self):
         offer = {
-            "id": "oracle-test", "title": "Oracle OCI Foundations",
-            "status": "Review Needed", "verification_date": "2026-09-01"
+            "id": "oracle-test",
+            "title": "Oracle OCI Foundations",
+            "status": "Review Needed",
+            "verification_date": "2026-09-01",
         }
         # Affirmative inspection stamps date
-        healed = apply_self_healing(offer, {
-            "status": "Active", "reason": "DOM confirmed $0.00 cart balance",
-            "zero_dollar_confirmed": True, "maintenance_detected": False, "paid_catalog_detected": False
-        })
+        healed = apply_self_healing(
+            offer,
+            {
+                "status": "Active",
+                "reason": "DOM confirmed $0.00 cart balance",
+                "zero_dollar_confirmed": True,
+                "maintenance_detected": False,
+                "paid_catalog_detected": False,
+            },
+        )
         assert healed["status"] == "Active"
-        assert healed["last_zero_dollar_confirmed_date"] == datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        assert healed["last_zero_dollar_confirmed_date"] == datetime.now(UTC).strftime("%Y-%m-%d")
 
         # Non-zero dollar inspection does NOT heal to Active
-        unhealed = apply_self_healing(offer, {
-            "status": "Active", "reason": "Catalog price found",
-            "zero_dollar_confirmed": False, "maintenance_detected": False, "paid_catalog_detected": True
-        })
+        unhealed = apply_self_healing(
+            offer,
+            {
+                "status": "Active",
+                "reason": "Catalog price found",
+                "zero_dollar_confirmed": False,
+                "maintenance_detected": False,
+                "paid_catalog_detected": True,
+            },
+        )
         assert unhealed["status"] == "Review Needed"

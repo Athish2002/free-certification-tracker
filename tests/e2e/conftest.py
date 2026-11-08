@@ -10,8 +10,9 @@ import json
 import os
 import re
 import tempfile
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, Generator, List, Optional, Tuple, Union
+from typing import Any
 
 import pytest
 from PIL import Image, ImageDraw
@@ -39,21 +40,21 @@ def live_news_path(project_root: Path) -> Path:
 
 
 @pytest.fixture
-def live_offers_data(live_offers_path: Path) -> Dict[str, Any]:
+def live_offers_data(live_offers_path: Path) -> dict[str, Any]:
     """Loads current live offers.json content."""
-    with open(live_offers_path, "r", encoding="utf-8") as f:
+    with open(live_offers_path, encoding="utf-8") as f:
         return json.load(f)
 
 
 @pytest.fixture
-def live_news_data(live_news_path: Path) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+def live_news_data(live_news_path: Path) -> dict[str, Any] | list[dict[str, Any]]:
     """Loads current live news.json content."""
-    with open(live_news_path, "r", encoding="utf-8") as f:
+    with open(live_news_path, encoding="utf-8") as f:
         return json.load(f)
 
 
 @pytest.fixture
-def sample_offer_dict() -> Dict[str, Any]:
+def sample_offer_dict() -> dict[str, Any]:
     """Provides a canonical, schema-compliant offer dictionary."""
     return {
         "id": "e2e-test-offer-oracle",
@@ -107,46 +108,50 @@ def sample_offer_dict() -> Dict[str, Any]:
 
 
 @pytest.fixture
-def sample_offers_list(sample_offer_dict: Dict[str, Any]) -> List[Dict[str, Any]]:
+def sample_offers_list(sample_offer_dict: dict[str, Any]) -> list[dict[str, Any]]:
     """Provides a diverse list of valid offers across proctored, lab, active, and expired."""
     offer1 = dict(sample_offer_dict)
-    
+
     offer2 = dict(sample_offer_dict)
-    offer2.update({
-        "id": "e2e-test-aws-educate",
-        "title": "AWS Educate Cloud Practitioner Badge",
-        "platform": "Amazon Web Services",
-        "category": "Cloud Foundational",
-        "certification_name": "AWS Educate Badge",
-        "credential_tier": "skill_badge_lab",
-        "proctoring_type": "unproctored_lab",
-        "accredited_body": "Amazon Web Services",
-        "url": "https://www.awseducate.com",
-        "status": "Active",
-        "seasonality": "student_restricted_evergreen",
-        "value_usd": 0,
-        "difficulty_tier": "Foundational",
-        "expiry_date": "Rolling",
-    })
+    offer2.update(
+        {
+            "id": "e2e-test-aws-educate",
+            "title": "AWS Educate Cloud Practitioner Badge",
+            "platform": "Amazon Web Services",
+            "category": "Cloud Foundational",
+            "certification_name": "AWS Educate Badge",
+            "credential_tier": "skill_badge_lab",
+            "proctoring_type": "unproctored_lab",
+            "accredited_body": "Amazon Web Services",
+            "url": "https://www.awseducate.com",
+            "status": "Active",
+            "seasonality": "student_restricted_evergreen",
+            "value_usd": 0,
+            "difficulty_tier": "Foundational",
+            "expiry_date": "Rolling",
+        }
+    )
 
     offer3 = dict(sample_offer_dict)
-    offer3.update({
-        "id": "e2e-test-closed-voucher",
-        "title": "Historical Microsoft Ignite 2023 Free Exam",
-        "platform": "Microsoft Azure",
-        "category": "Cloud Architecture",
-        "certification_name": "Azure Solutions Architect Expert",
-        "status": "Registrations Closed",
-        "seasonality": "annual_window",
-        "expiry_date": "2023-12-31",
-        "is_historical_archive": True,
-    })
+    offer3.update(
+        {
+            "id": "e2e-test-closed-voucher",
+            "title": "Historical Microsoft Ignite 2023 Free Exam",
+            "platform": "Microsoft Azure",
+            "category": "Cloud Architecture",
+            "certification_name": "Azure Solutions Architect Expert",
+            "status": "Registrations Closed",
+            "seasonality": "annual_window",
+            "expiry_date": "2023-12-31",
+            "is_historical_archive": True,
+        }
+    )
 
     return [offer1, offer2, offer3]
 
 
 @pytest.fixture
-def sample_news_articles() -> List[Dict[str, Any]]:
+def sample_news_articles() -> list[dict[str, Any]]:
     """Provides valid sample news items."""
     return [
         {
@@ -180,7 +185,7 @@ def sample_news_articles() -> List[Dict[str, Any]]:
 
 
 @pytest.fixture(scope="session")
-def canonical_offers_schema() -> Dict[str, Any]:
+def canonical_offers_schema() -> dict[str, Any]:
     """Returns canonical JSON Schema for data/offers.json."""
     return {
         "$schema": "http://json-schema.org/draft-07/schema#",
@@ -224,7 +229,7 @@ def canonical_offers_schema() -> Dict[str, Any]:
 
 
 @pytest.fixture(scope="session")
-def canonical_news_schema() -> Dict[str, Any]:
+def canonical_news_schema() -> dict[str, Any]:
     """Returns canonical JSON Schema for data/news.json."""
     return {
         "$schema": "http://json-schema.org/draft-07/schema#",
@@ -248,13 +253,14 @@ def canonical_news_schema() -> Dict[str, Any]:
 
 
 @pytest.fixture
-def mock_png_bytes() -> Callable[[Tuple[int, int], Tuple[int, int, int]], bytes]:
+def mock_png_bytes() -> Callable[[tuple[int, int], tuple[int, int, int]], bytes]:
     """Factory fixture returning callable to create PNG image bytes."""
+
     def _create_png(
-        size: Tuple[int, int] = (200, 200),
-        color: Tuple[int, int, int] = (255, 255, 255),
-        box_rect: Optional[Tuple[int, int, int, int]] = (50, 50, 150, 150),
-        box_color: Tuple[int, int, int] = (0, 120, 215),
+        size: tuple[int, int] = (200, 200),
+        color: tuple[int, int, int] = (255, 255, 255),
+        box_rect: tuple[int, int, int, int] | None = (50, 50, 150, 150),
+        box_color: tuple[int, int, int] = (0, 120, 215),
         ensure_min_size: bool = True,
     ) -> bytes:
         img = Image.new("RGB", size, color=color)
@@ -272,12 +278,13 @@ def mock_png_bytes() -> Callable[[Tuple[int, int], Tuple[int, int, int]], bytes]
 
 
 @pytest.fixture
-def parse_powershell_dict() -> Callable[[str], Dict[str, Any]]:
+def parse_powershell_dict() -> Callable[[str], dict[str, Any]]:
     """
     Defensive parser converting stringified PowerShell @{...} structures into valid dicts.
     Implements the R1 parsing requirement.
     """
-    def _parse(ps_str: str) -> Dict[str, Any]:
+
+    def _parse(ps_str: str) -> dict[str, Any]:
         if not isinstance(ps_str, str):
             raise TypeError("Expected string input")
         clean = ps_str.strip()
@@ -285,7 +292,7 @@ def parse_powershell_dict() -> Callable[[str], Dict[str, Any]]:
             raise ValueError("Invalid PowerShell hashtable syntax: must begin with '@{' and end with '}'")
 
         inner = clean[2:-1].strip()
-        result: Dict[str, Any] = {}
+        result: dict[str, Any] = {}
         # Matches key=value; key="value"; key='value'
         pattern = re.compile(r"([a-zA-Z0-9_]+)\s*=\s*(?:'([^']*)'|\"([^\"]*)\"|([^;]+))(?:;|$)")
         for match in pattern.finditer(inner):
@@ -321,22 +328,24 @@ def fallback_io_utils() -> Any:
     Provides standard implementation of io_utils contract conforming to PROJECT.md.
     Uses jsonschema if installed; executes atomic write via tempfile + os.replace.
     """
+
     class IOUtilsContract:
         @staticmethod
-        def validate_payload(data: Any, schema_path: Union[str, Path]) -> None:
+        def validate_payload(data: Any, schema_path: str | Path) -> None:
             schema_file = Path(schema_path)
             if not schema_file.exists():
                 raise FileNotFoundError(f"Schema not found at {schema_file}")
-            with open(schema_file, "r", encoding="utf-8") as f:
+            with open(schema_file, encoding="utf-8") as f:
                 schema = json.load(f)
             import jsonschema
+
             jsonschema.validate(instance=data, schema=schema)
 
         @staticmethod
         def atomic_write_json(
-            target_path: Union[str, Path],
+            target_path: str | Path,
             data: Any,
-            schema_path: Optional[Union[str, Path]] = None,
+            schema_path: str | Path | None = None,
             indent: int = 2,
             ensure_ascii: bool = False,
         ) -> None:
@@ -368,7 +377,7 @@ def fallback_io_utils() -> Any:
 
 
 @pytest.fixture
-def canonical_themes_spec() -> List[Dict[str, Any]]:
+def canonical_themes_spec() -> list[dict[str, Any]]:
     """Returns the 10 canonical developer palettes specified in PROJECT.md."""
     return [
         {"id": "catppuccin-latte", "name": "Catppuccin Latte", "type": "light"},

@@ -8,8 +8,11 @@ Verifies:
 """
 
 import os
+
 import pytest
-from playwright.sync_api import sync_playwright, Page
+from playwright.sync_api import Page, sync_playwright
+
+pytestmark = pytest.mark.browser
 
 
 @pytest.fixture(scope="module")
@@ -39,7 +42,7 @@ class TestThemeModeSwitching:
         """Page must initialize with github-dark by default."""
         theme = browser_page.evaluate("document.documentElement.getAttribute('data-theme')")
         assert theme == "github-dark", f"Expected default theme 'github-dark', got '{theme}'"
-        
+
         meta = browser_page.evaluate("document.querySelector('meta[name=\"theme-color\"]').getAttribute('content')")
         assert meta == "#0d1117", f"Expected dark meta theme color #0d1117, got '{meta}'"
 
@@ -47,7 +50,7 @@ class TestThemeModeSwitching:
         """Clicking the toggle button must switch directly to github-light."""
         toggle_btn = browser_page.query_selector("#themeToggleBtn")
         assert toggle_btn is not None, "Theme toggle button '#themeToggleBtn' must exist"
-        
+
         toggle_btn.click()
         browser_page.wait_for_timeout(200)
 
@@ -71,7 +74,7 @@ class TestThemeModeSwitching:
         # Ensure focus is not on input
         browser_page.keyboard.press("Escape")
         browser_page.wait_for_timeout(100)
-        
+
         # Press T to switch to light
         browser_page.keyboard.press("t")
         browser_page.wait_for_timeout(200)
@@ -150,7 +153,12 @@ class TestSeparationOfWavesAndDiscounts:
 
         card_badges = [c.inner_text() for c in visible_cards]
         for badge_text in card_badges:
-            assert "🏷️ Active Discount" in badge_text or "Discount" in badge_text or "Voucher" in badge_text or "Student" in badge_text
+            assert (
+                "🏷️ Active Discount" in badge_text
+                or "Discount" in badge_text
+                or "Voucher" in badge_text
+                or "Student" in badge_text
+            )
 
     def test_filter_by_skill_badges_shows_only_badges(self, browser_page: Page):
         """Clicking Skill Badges pill filters catalog to digital badges and labs."""
@@ -188,7 +196,9 @@ class TestProofButtonClickabilityAndModalContent:
             browser_page.wait_for_timeout(200)
 
             modal = browser_page.query_selector("#proofModal")
-            assert modal is not None and modal.is_visible(), f"Modal must be visible after clicking button {i} ({target_id})"
+            assert modal is not None and modal.is_visible(), (
+                f"Modal must be visible after clicking button {i} ({target_id})"
+            )
 
             # Verify title is populated and not empty
             title = browser_page.inner_text("#proofModalTitle")
@@ -200,7 +210,9 @@ class TestProofButtonClickabilityAndModalContent:
 
             # Verify tier label is populated
             tier = browser_page.inner_text("#proofModalTier")
-            assert any(t in tier for t in ["Exam Wave", "Active Discount", "Skill Badge", "Proctored Exam"]), f"Invalid tier label '{tier}'"
+            assert any(t in tier for t in ["Exam Wave", "Active Discount", "Skill Badge", "Proctored Exam"]), (
+                f"Invalid tier label '{tier}'"
+            )
 
             # Close via close button
             close_btn = browser_page.query_selector("#closeProofModalBtn")

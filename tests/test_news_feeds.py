@@ -6,35 +6,28 @@ and Multi-Vendor News Feeds Expansion in CertPulse.
 import json
 import re
 from pathlib import Path
-from typing import Dict, Any
-from unittest.mock import patch, MagicMock
+from typing import Any
+from unittest.mock import MagicMock, patch
 
 import jsonschema
 import pytest
 
-from src.truth_oracle import (
-    TRUTH_POLICY_REGISTRY,
-    CURATED_POLICY_OVERRIDES,
-    POLICY_VERIFIED_100PCT_FREE,
-    POLICY_STUDENT_VERIFIED_ONLY,
-    POLICY_PARTIAL_DISCOUNT_COPAY,
-    POLICY_ANNUAL_WINDOW_CLOSED,
-    POLICY_HISTORICAL_EVENT_WAVE,
-    POLICY_FREE_UNPROCTORED_BADGE,
-    derive_truth_policy,
-    build_dynamic_policy_registry,
-    get_truth_policy,
-    corroborate_offer,
-)
+from src.io_utils import validate_payload
 from src.news_collector import (
     VERIFIED_FEEDS,
+    fetch_feed_entries,
     is_clean_headline,
     parse_feed_date,
-    fetch_feed_entries,
     save_news_feed,
-    update_news_feed,
 )
-from src.io_utils import validate_payload
+from src.truth_oracle import (
+    POLICY_FREE_UNPROCTORED_BADGE,
+    POLICY_VERIFIED_100PCT_FREE,
+    TRUTH_POLICY_REGISTRY,
+    build_dynamic_policy_registry,
+    derive_truth_policy,
+    get_truth_policy,
+)
 from tests.test_invariants import APPROVED_NEWS_DOMAINS
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -44,9 +37,9 @@ NEWS_SCHEMA = ROOT / "data" / "news_schema.json"
 
 
 @pytest.fixture(scope="module")
-def canonical_offers() -> list[Dict[str, Any]]:
+def canonical_offers() -> list[dict[str, Any]]:
     assert OFFERS_FILE.exists(), f"Missing canonical offers file: {OFFERS_FILE}"
-    with open(OFFERS_FILE, "r", encoding="utf-8") as f:
+    with open(OFFERS_FILE, encoding="utf-8") as f:
         data = json.load(f)
     return data.get("offers", [])
 
@@ -71,10 +64,20 @@ class TestDynamicTruthPolicyDerivation:
 
             # Required top-level attributes
             for req_key in [
-                "provider", "exam_name", "policy_type", "real_exam_cost_usd",
-                "verified_discount_pct", "truth_source_name", "truth_source_url",
-                "verdict_notes", "category", "official_url", "terms_url", "domain",
-                "authority_rules", "expected_verification_patterns"
+                "provider",
+                "exam_name",
+                "policy_type",
+                "real_exam_cost_usd",
+                "verified_discount_pct",
+                "truth_source_name",
+                "truth_source_url",
+                "verdict_notes",
+                "category",
+                "official_url",
+                "terms_url",
+                "domain",
+                "authority_rules",
+                "expected_verification_patterns",
             ]:
                 assert req_key in policy, f"Offer '{oid}' derived policy missing '{req_key}'"
 
@@ -93,7 +96,9 @@ class TestDynamicTruthPolicyDerivation:
             assert "proctoring_type" in exp_patterns
 
             # Invariant assertions
-            assert policy["truth_source_url"].startswith("https://"), f"Offer '{oid}' truth_source_url not HTTPS: {policy['truth_source_url']}"
+            assert policy["truth_source_url"].startswith("https://"), (
+                f"Offer '{oid}' truth_source_url not HTTPS: {policy['truth_source_url']}"
+            )
             assert "." in policy["truth_source_url"]
             assert len(policy["truth_source_name"].strip()) >= 5
             assert len(policy["verdict_notes"].strip()) >= 15
@@ -117,7 +122,7 @@ class TestDynamicTruthPolicyDerivation:
             "credential_tier": "proctored_exam",
             "url": "https://testcloud.example.com/cert",
             "value_usd": 150.0,
-            "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)"
+            "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
         }
         derived = get_truth_policy("new-test-cloud-provider-exam", unseen_offer)
         assert derived["provider"] == "TestCloud"
@@ -155,7 +160,7 @@ class TestNewsFeedExpansionAndConfigurations:
             "HashiCorp",
             "Databricks",
             "Snowflake",
-            "Red Hat"
+            "Red Hat",
         }
         missing = required_companies - companies
         assert not missing, f"Missing required feed vendors: {missing}"
@@ -168,8 +173,12 @@ class TestNewsFeedExpansionAndConfigurations:
                 assert req_key in feed, f"Feed for '{company}' missing required key '{req_key}'"
                 assert str(feed[req_key]).strip() != "", f"Feed for '{company}' has empty '{req_key}'"
 
-            assert feed["feed_url"].startswith("https://"), f"Feed for '{company}' must have HTTPS URL: {feed['feed_url']}"
-            assert "." in feed["allowed_domain"], f"Feed for '{company}' has invalid allowed_domain: {feed['allowed_domain']}"
+            assert feed["feed_url"].startswith("https://"), (
+                f"Feed for '{company}' must have HTTPS URL: {feed['feed_url']}"
+            )
+            assert "." in feed["allowed_domain"], (
+                f"Feed for '{company}' has invalid allowed_domain: {feed['allowed_domain']}"
+            )
 
     def test_feed_allowed_domains_in_approved_news_domains(self):
         """All feed domains must be recognized by tests/test_invariants.py:APPROVED_NEWS_DOMAINS."""
@@ -239,7 +248,7 @@ class TestFeedIngestionAndDateSynchronization:
             "feed_url": "https://www.hashicorp.com/blog/feed.xml",
             "allowed_domain": "hashicorp.com",
             "source_domain": "hashicorp.com",
-            "impact_badge": "Infrastructure as Code"
+            "impact_badge": "Infrastructure as Code",
         }
 
         mock_resp = MagicMock()
@@ -290,7 +299,7 @@ class TestFeedIngestionAndDateSynchronization:
             "feed_url": "https://www.redhat.com/en/rss/press-releases",
             "allowed_domain": "redhat.com",
             "source_domain": "redhat.com",
-            "impact_badge": "Linux & Enterprise"
+            "impact_badge": "Linux & Enterprise",
         }
 
         mock_resp = MagicMock()
@@ -330,15 +339,15 @@ class TestAtomicSchemaWriteProtection:
                     "published_date": "2024-10-20",
                     "date": "2024-10-20",
                     "url": "https://azure.microsoft.com/en-us/blog/azure-openai-gpt-4o-ga/",
-                    "impact_badge": "Cloud & AI Architecture"
+                    "impact_badge": "Cloud & AI Architecture",
                 }
-            ]
+            ],
         }
 
         save_news_feed(sample_payload, filepath=target_path)
 
         assert target_path.exists()
-        with open(target_path, "r", encoding="utf-8") as f:
+        with open(target_path, encoding="utf-8") as f:
             saved = json.load(f)
 
         assert saved["total_items"] == 1
@@ -361,9 +370,9 @@ class TestAtomicSchemaWriteProtection:
                     # Missing source, category, impact_badge, date!
                     "title": "Missing required fields",
                     "url": "https://test.example.com",
-                    "published_date": "invalid-non-iso-date"
+                    "published_date": "invalid-non-iso-date",
                 }
-            ]
+            ],
         }
 
         with pytest.raises(jsonschema.ValidationError):

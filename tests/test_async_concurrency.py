@@ -31,23 +31,20 @@ def _create_mock_offers_file(tmp_path: Path, count: int = 10) -> Path:
     offers_file = tmp_path / "offers.json"
     offers = []
     for i in range(count):
-        offers.append({
-            "id": f"synthetic-offer-{i+1}",
-            "title": f"Microsoft Azure Certification Offer {i+1}",
-            "platform": "Microsoft Azure",
-            "category": "Cloud Architecture",
-            "certification_name": f"Azure Fundamentals {i+1}",
-            "credential_tier": "certification_exam",
-            "url": f"https://learn.microsoft.com/credentials/certifications/azure-fundamentals-{i+1}",
-            "status": "Active",
-            "expiry_date": "2026-12-31"
-        })
-    data = {
-        "$schema": "./schema.json",
-        "last_updated": "2026-10-23T00:00:00Z",
-        "total_offers": count,
-        "offers": offers
-    }
+        offers.append(
+            {
+                "id": f"synthetic-offer-{i + 1}",
+                "title": f"Microsoft Azure Certification Offer {i + 1}",
+                "platform": "Microsoft Azure",
+                "category": "Cloud Architecture",
+                "certification_name": f"Azure Fundamentals {i + 1}",
+                "credential_tier": "certification_exam",
+                "url": f"https://learn.microsoft.com/credentials/certifications/azure-fundamentals-{i + 1}",
+                "status": "Active",
+                "expiry_date": "2026-12-31",
+            }
+        )
+    data = {"$schema": "./schema.json", "last_updated": "2026-10-23T00:00:00Z", "total_offers": count, "offers": offers}
     offers_file.write_text(json.dumps(data, indent=2), encoding="utf-8")
     return offers_file
 
@@ -63,8 +60,6 @@ def cleanup_synthetic_screenshots():
                 p.unlink()
             except Exception:
                 pass
-
-
 
 
 @pytest.mark.asyncio
@@ -87,7 +82,7 @@ class TestAsyncConcurrencyEngine:
                 "authenticity_score": 95,
                 "verdict": "VERIFIED_AUTHENTIC",
                 "summary": "Mock Authenticity",
-                "warning_flags": []
+                "warning_flags": [],
             }
             return "Active", "HTTP 200 OK (Concurrency Test)", url, auth_mock
 
@@ -104,10 +99,11 @@ class TestAsyncConcurrencyEngine:
                 async with lock:
                     current_in_flight -= 1
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.inspect_url_with_retry", side_effect=mock_worker_sync), \
-             patch("asyncio.to_thread", side_effect=tracked_to_thread):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.inspect_url_with_retry", side_effect=mock_worker_sync),
+            patch("asyncio.to_thread", side_effect=tracked_to_thread),
+        ):
             result = await run_inspection_async(use_headless=False, concurrency=5)
 
         assert len(result) == 15
@@ -123,17 +119,23 @@ class TestAsyncConcurrencyEngine:
                 raise ConnectionResetError("Remote server closed connection")
             if offer_id == "synthetic-offer-4":
                 raise TimeoutError("TCP Handshake timeout after 45s")
-            return "Active", "HTTP 200 OK", url, {
-                "is_authentic_vendor": True,
-                "authenticity_score": 90,
-                "verdict": "VERIFIED_AUTHENTIC",
-                "summary": "Verified",
-                "warning_flags": []
-            }
+            return (
+                "Active",
+                "HTTP 200 OK",
+                url,
+                {
+                    "is_authentic_vendor": True,
+                    "authenticity_score": 90,
+                    "verdict": "VERIFIED_AUTHENTIC",
+                    "summary": "Verified",
+                    "warning_flags": [],
+                },
+            )
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.inspect_url_with_retry", side_effect=mock_inspect_with_isolated_failures):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.inspect_url_with_retry", side_effect=mock_inspect_with_isolated_failures),
+        ):
             result = await run_inspection_async(use_headless=False, concurrency=3)
 
         assert len(result) == 5, "All 5 offers must be retained despite isolated failures"
@@ -153,6 +155,7 @@ class TestAsyncConcurrencyEngine:
         mock_page.evaluate.return_value = "Registration open for free exam certification voucher. Balance: $0.00."
         # Provide valid PNG bytes >= 4096 bytes
         from tests.test_visual_delta_skipping import _generate_png_bytes
+
         mock_page.screenshot.return_value = _generate_png_bytes(seed=777)
         mock_page.route = AsyncMock()
         mock_page.wait_for_load_state = AsyncMock()
@@ -172,9 +175,10 @@ class TestAsyncConcurrencyEngine:
         mock_ap_inst = MagicMock()
         mock_ap_inst.start = AsyncMock(return_value=mock_playwright)
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.async_playwright", return_value=mock_ap_inst):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.async_playwright", return_value=mock_ap_inst),
+        ):
             result = await run_inspection_async(use_headless=True, concurrency=2)
 
         assert len(result) == 3
@@ -191,17 +195,23 @@ class TestSynchronousWrapperAndResultModel:
         offers_file = _create_mock_offers_file(tmp_path, count=4)
 
         def mock_inspect(url, offer=None, max_retries=3):
-            return "Active", "HTTP 200 OK", url, {
-                "is_authentic_vendor": True,
-                "authenticity_score": 95,
-                "verdict": "VERIFIED_AUTHENTIC",
-                "summary": "Mock",
-                "warning_flags": []
-            }
+            return (
+                "Active",
+                "HTTP 200 OK",
+                url,
+                {
+                    "is_authentic_vendor": True,
+                    "authenticity_score": 95,
+                    "verdict": "VERIFIED_AUTHENTIC",
+                    "summary": "Mock",
+                    "warning_flags": [],
+                },
+            )
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.inspect_url_with_retry", side_effect=mock_inspect):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.inspect_url_with_retry", side_effect=mock_inspect),
+        ):
             result = run_inspection(use_headless=False, concurrency=2)
 
         assert isinstance(result, InspectionResult)
@@ -213,7 +223,7 @@ class TestSynchronousWrapperAndResultModel:
         """InspectionResult supports both list iteration/indexing and dict lookup."""
         sample_offers = [
             {"id": "o1", "title": "Offer 1", "status": "Active"},
-            {"id": "o2", "title": "Offer 2", "status": "Expired"}
+            {"id": "o2", "title": "Offer 2", "status": "Expired"},
         ]
         sample_summary = {
             "total_inspected": 2,
@@ -246,8 +256,8 @@ class TestSynchronousWrapperAndResultModel:
         assert "screenshots_skipped_phash" in res["summary"]
 
         # 3. Dict view helpers
-        assert "summary" in res.keys()
-        assert "results" in res.keys()
+        assert "summary" in res
+        assert "results" in res
         d = res.to_dict()
         assert isinstance(d, dict)
         assert d["summary"]["active_confirmed"] == 1
@@ -258,17 +268,23 @@ class TestSynchronousWrapperAndResultModel:
         offers_file = _create_mock_offers_file(tmp_path, count=2)
 
         def mock_inspect(url, offer=None, max_retries=3):
-            return "Active", "HTTP 200 OK", url, {
-                "is_authentic_vendor": True,
-                "authenticity_score": 100,
-                "verdict": "VERIFIED_AUTHENTIC",
-                "summary": "Verified",
-                "warning_flags": []
-            }
+            return (
+                "Active",
+                "HTTP 200 OK",
+                url,
+                {
+                    "is_authentic_vendor": True,
+                    "authenticity_score": 100,
+                    "verdict": "VERIFIED_AUTHENTIC",
+                    "summary": "Verified",
+                    "warning_flags": [],
+                },
+            )
 
-        with patch("src.inspector.DATA_FILE", offers_file), \
-             patch("src.inspector.inspect_url_with_retry", side_effect=mock_inspect):
-
+        with (
+            patch("src.inspector.DATA_FILE", offers_file),
+            patch("src.inspector.inspect_url_with_retry", side_effect=mock_inspect),
+        ):
             run_inspection(use_headless=False, concurrency=2)
 
         # Verify file on disk was atomically updated with timestamps

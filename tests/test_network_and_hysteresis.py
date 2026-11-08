@@ -6,32 +6,24 @@ Unit and invariant tests for:
 
 from __future__ import annotations
 
-import pytest
-
-from src.models import Offer
+import src.network_verifier as legacy_facade
 from src.main import apply_self_healing
+from src.models import Offer
 from src.network import (
-    AUTHORIZED_ENTERPRISE_CDNS,
     AUTHORIZED_VENDOR_ASNS,
     ASNRouteVerifier,
-    ASNVerificationResult,
-    CAAVerifier,
-    DNSSecurityVerifier,
     DNSSECVerifier,
     NetworkProvenance,
     NetworkVerifier,
     TLSCertificateVerifier,
     clean_hostname,
-    is_whitelisted_domain,
     match_san,
-    verify_network_provenance,
 )
-import src.network_verifier as legacy_facade
-
 
 # ==============================================================================
 # 1. Option 1A: Modular Network Package & Facade Invariants
 # ==============================================================================
+
 
 class TestModularNetworkPackage:
     """Verifies that src.network modules and src.network_verifier facade export consistent symbols."""
@@ -94,6 +86,7 @@ class TestModularNetworkPackage:
 # ==============================================================================
 # 2. Option 3A: Flapping Status Hysteresis & State Machine Invariants
 # ==============================================================================
+
 
 class TestFlappingStatusHysteresis:
     """Verifies 2-strike hysteresis with hard-closure fast-path."""
@@ -224,21 +217,22 @@ class TestFlappingStatusHysteresis:
 # 3. Concurrency, Timeout Isolation & DoH Fallback Resilience
 # ==============================================================================
 
+
 class TestConcurrencyAndResilience:
     """Verifies timeout isolation, DoH resolver failover, and thread-safety under load."""
 
     def test_doh_primary_failover_to_secondary(self, respx_mock):
         """When primary DoH resolver (Google) fails, automatically fails over to Cloudflare."""
         import httpx
+
         # Primary fails with 500
         respx_mock.get("https://dns.google/resolve").mock(return_value=httpx.Response(500))
         # Secondary succeeds with valid DNSSEC AD=True
         respx_mock.get("https://cloudflare-dns.com/dns-query").mock(
-            return_value=httpx.Response(200, json={
-                "Status": 0,
-                "AD": True,
-                "Answer": [{"name": "example.com", "type": 1, "data": "93.184.216.34"}]
-            })
+            return_value=httpx.Response(
+                200,
+                json={"Status": 0, "AD": True, "Answer": [{"name": "example.com", "type": 1, "data": "93.184.216.34"}]},
+            )
         )
 
         verifier = DNSSECVerifier(timeout=1.0)
@@ -250,6 +244,7 @@ class TestConcurrencyAndResilience:
     def test_doh_all_endpoints_fail_graceful_degradation(self, respx_mock):
         """When all DoH resolvers time out, returns indeterminate verdict without raising."""
         import httpx
+
         respx_mock.get("https://dns.google/resolve").mock(side_effect=httpx.ConnectTimeout("timeout"))
         respx_mock.get("https://cloudflare-dns.com/dns-query").mock(side_effect=httpx.ConnectTimeout("timeout"))
 
@@ -262,23 +257,31 @@ class TestConcurrencyAndResilience:
     def test_asn_route_cymru_fail_rdap_fallback(self, respx_mock):
         """When Team Cymru DoH TXT query fails, falls back to ARIN RDAP HTTPS."""
         import httpx
+
         # DoH A query for learn.microsoft.com succeeds
         respx_mock.get("https://dns.google/resolve", params__contains={"type": "A"}).mock(
-            return_value=httpx.Response(200, json={
-                "Status": 0,
-                "Answer": [{"name": "learn.microsoft.com", "type": 1, "data": "150.171.109.131"}]
-            })
+            return_value=httpx.Response(
+                200,
+                json={"Status": 0, "Answer": [{"name": "learn.microsoft.com", "type": 1, "data": "150.171.109.131"}]},
+            )
         )
         # Cymru DoH TXT fails
-        respx_mock.get("https://dns.google/resolve", params__contains={"type": "TXT"}).mock(return_value=httpx.Response(500))
-        respx_mock.get("https://cloudflare-dns.com/dns-query", params__contains={"type": "TXT"}).mock(return_value=httpx.Response(500))
+        respx_mock.get("https://dns.google/resolve", params__contains={"type": "TXT"}).mock(
+            return_value=httpx.Response(500)
+        )
+        respx_mock.get("https://cloudflare-dns.com/dns-query", params__contains={"type": "TXT"}).mock(
+            return_value=httpx.Response(500)
+        )
         # ARIN RDAP succeeds
         respx_mock.get("https://rdap.arin.net/registry/ip/150.171.109.131").mock(
-            return_value=httpx.Response(200, json={
-                "name": "MSFT-CORP",
-                "handle": "NET-150-171-0-0-1",
-                "entities": [{"vcardArray": ["vcard", [["fn", {}, "text", "Microsoft Corporation"]]]}]
-            })
+            return_value=httpx.Response(
+                200,
+                json={
+                    "name": "MSFT-CORP",
+                    "handle": "NET-150-171-0-0-1",
+                    "entities": [{"vcardArray": ["vcard", [["fn", {}, "text", "Microsoft Corporation"]]]}],
+                },
+            )
         )
 
         verifier = ASNRouteVerifier(timeout=1.0)
@@ -291,6 +294,7 @@ class TestConcurrencyAndResilience:
     def test_multi_threaded_network_verifier_thread_safety(self):
         """Verifies concurrent multi-threaded execution across 16 worker threads."""
         import concurrent.futures
+
         verifier = NetworkVerifier(offline_mode=True)
         hosts = [
             ("https://learn.microsoft.com/credentials", "Microsoft Azure"),

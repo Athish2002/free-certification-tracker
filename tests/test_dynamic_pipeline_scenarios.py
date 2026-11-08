@@ -7,12 +7,11 @@ Prevents recurring CI workflow failures by testing dynamic real-world execution 
 4. End-to-end dry-run pipeline stability.
 """
 
-import json
-import pytest
 from pathlib import Path
-from src.collector import vet_candidate_lead, classify_credential_tier
-from src.models import Offer, OffersDatabase
+
 from src.builder import generate_readme, generate_web_dashboard
+from src.collector import classify_credential_tier, vet_candidate_lead
+from src.models import Offer
 from src.truth_oracle import corroborate_offer
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -25,17 +24,34 @@ def test_scenario_partial_discount_copay_rejection():
     Invariant: Must be rejected at the candidate gate with PARTIAL_DISCOUNT_ONLY.
     """
     leads_to_reject = [
-        {"title": "Azure 50% off + FREE Retake", "url": "https://www.pearsonvue.com/us/en/test-takers/free-retake.html", "platform": "Microsoft Azure"},
-        {"title": "AWS 50% discount voucher challenge", "url": "https://aws.amazon.com/certification/", "platform": "Amazon Web Services"},
-        {"title": "Get 75% off JNCIA voucher with free assessment", "url": "https://learningportal.juniper.net/juniper/", "platform": "Juniper Networks"},
-        {"title": "Half off certification exam copay required", "url": "https://mylearn.oracle.com/", "platform": "Oracle Cloud"},
+        {
+            "title": "Azure 50% off + FREE Retake",
+            "url": "https://www.pearsonvue.com/us/en/test-takers/free-retake.html",
+            "platform": "Microsoft Azure",
+        },
+        {
+            "title": "AWS 50% discount voucher challenge",
+            "url": "https://aws.amazon.com/certification/",
+            "platform": "Amazon Web Services",
+        },
+        {
+            "title": "Get 75% off JNCIA voucher with free assessment",
+            "url": "https://learningportal.juniper.net/juniper/",
+            "platform": "Juniper Networks",
+        },
+        {
+            "title": "Half off certification exam copay required",
+            "url": "https://mylearn.oracle.com/",
+            "platform": "Oracle Cloud",
+        },
     ]
 
     for lead in leads_to_reject:
         promoted, reason = vet_candidate_lead(lead)
         assert promoted is None, f"Expected lead '{lead['title']}' to be rejected, but got promoted!"
-        assert "PARTIAL_DISCOUNT_ONLY" in reason, f"Expected PARTIAL_DISCOUNT_ONLY for '{lead['title']}', got '{reason}'"
-
+        assert "PARTIAL_DISCOUNT_ONLY" in reason, (
+            f"Expected PARTIAL_DISCOUNT_ONLY for '{lead['title']}', got '{reason}'"
+        )
 
 
 def test_scenario_forum_question_and_troubleshooting_rejection():
@@ -51,10 +67,26 @@ def test_scenario_forum_question_and_troubleshooting_rejection():
     """
     discussion_leads = [
         {"title": "Can't upgrade my account?", "url": "https://aws.amazon.com/free", "platform": "Amazon Web Services"},
-        {"title": "Question about how to get a free voucher", "url": "https://learn.microsoft.com/", "platform": "Microsoft Azure"},
-        {"title": "How do I reschedule my exam voucher?", "url": "https://mylearn.oracle.com/", "platform": "Oracle Cloud"},
-        {"title": "Anyone have AWS voucher code for tight budget?", "url": "https://aws.amazon.com/", "platform": "Amazon Web Services"},
-        {"title": "General discussion on cloud career path", "url": "https://cloud.google.com/", "platform": "Google Cloud"},
+        {
+            "title": "Question about how to get a free voucher",
+            "url": "https://learn.microsoft.com/",
+            "platform": "Microsoft Azure",
+        },
+        {
+            "title": "How do I reschedule my exam voucher?",
+            "url": "https://mylearn.oracle.com/",
+            "platform": "Oracle Cloud",
+        },
+        {
+            "title": "Anyone have AWS voucher code for tight budget?",
+            "url": "https://aws.amazon.com/",
+            "platform": "Amazon Web Services",
+        },
+        {
+            "title": "General discussion on cloud career path",
+            "url": "https://cloud.google.com/",
+            "platform": "Google Cloud",
+        },
     ]
 
     for lead in discussion_leads:
@@ -76,7 +108,7 @@ def test_scenario_promoted_candidate_schema_completeness():
         "url": "https://learn.microsoft.com/en-us/training/challenges",
         "verified_vendor_url": "https://learn.microsoft.com/en-us/training/challenges",
         "platform": "Microsoft Azure",
-        "is_authentic_vendor": True
+        "is_authentic_vendor": True,
     }
 
     tier, proctoring_type, accredited_body = classify_credential_tier(valid_lead["title"], valid_lead["url"])
@@ -115,8 +147,8 @@ def test_scenario_promoted_candidate_schema_completeness():
             "verified_cart_balance": "$0.00 (100% Free / Waiver Confirmed)",
             "instructions": [
                 "Complete challenge modules on Microsoft Learn.",
-                "Redeem 100% voucher code at Pearson VUE checkout to confirm $0.00 cart balance."
-            ]
+                "Redeem 100% voucher code at Pearson VUE checkout to confirm $0.00 cart balance.",
+            ],
         },
         "claim_steps": "Complete challenge modules on Microsoft Learn.",
         "is_authentic_vendor": True,
@@ -128,10 +160,10 @@ def test_scenario_promoted_candidate_schema_completeness():
             "status": "verified",
             "zero_dollar_confirmed": True,
             "maintenance_detected": False,
-            "paid_catalog_detected": False
+            "paid_catalog_detected": False,
         },
         "verification_date": "2026-10-19",
-        "inspection_notes": "Playwright DOM Verified: 100% free voucher terms confirmed."
+        "inspection_notes": "Playwright DOM Verified: 100% free voucher terms confirmed.",
     }
 
     # Validate against strict Offer Pydantic model
@@ -185,19 +217,19 @@ def test_scenario_builder_resilience_to_null_and_missing_fields():
                     "status": "verified",
                     "zero_dollar_confirmed": True,
                     "maintenance_detected": False,
-                    "paid_catalog_detected": False
+                    "paid_catalog_detected": False,
                 },
                 "verification_date": "2026-10-19",
-                "inspection_notes": "Active verification."
+                "inspection_notes": "Active verification.",
             }
-        ]
+        ],
     }
 
     mock_news = {
         "$schema": "./news_schema.json",
         "last_updated": "2026-10-19T00:00:00Z",
         "last_sync": "2026-10-19T00:00:00Z",
-        "news": []
+        "news": [],
     }
 
     # Must generate cleanly without throwing AttributeError: 'NoneType' object has no attribute 'get'
@@ -220,7 +252,7 @@ def test_scenario_truth_oracle_on_incoming_offer():
         "title": "Brand New Free Exam",
         "platform": "New Tech Vendor",
         "credential_tier": "proctored_exam",
-        "url": "https://newtech.example.com/cert"
+        "url": "https://newtech.example.com/cert",
     }
 
     truth_payload = corroborate_offer(new_offer)

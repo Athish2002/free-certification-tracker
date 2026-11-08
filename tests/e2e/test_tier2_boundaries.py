@@ -7,21 +7,21 @@ Preserves 100% boundary coverage while eliminating redundant micro-unit assertio
 from __future__ import annotations
 
 import asyncio
-import io
 import json
-import os
 import re
 from pathlib import Path
-from typing import Any, Dict, List
-import pytest
+from typing import Any
 
-from PIL import Image
+import pytest
 
 # ---------------------------------------------------------------------------
 # Feature 1: authenticity_details Boundary Invariants
 # ---------------------------------------------------------------------------
 
-def test_b01_powershell_boundary_and_syntax_corruption_invariants(parse_powershell_dict, sample_offer_dict: Dict[str, Any]):
+
+def test_b01_powershell_boundary_and_syntax_corruption_invariants(
+    parse_powershell_dict, sample_offer_dict: dict[str, Any]
+):
     """
     B01 Invariant: PowerShell and authenticity parsing boundaries must:
     1. Raise clean ValueError on malformed syntax / unbalanced braces.
@@ -44,6 +44,7 @@ def test_b01_powershell_boundary_and_syntax_corruption_invariants(parse_powershe
 
     # 4. Pydantic validation rejects non-dict
     from src.models import Offer
+
     invalid_offer = dict(sample_offer_dict)
     invalid_offer["authenticity_details"] = 12345
     with pytest.raises(Exception):
@@ -58,6 +59,7 @@ def test_b01_powershell_boundary_and_syntax_corruption_invariants(parse_powershe
 # ---------------------------------------------------------------------------
 # Feature 2: Synchronize News Date Keys Boundary Invariants
 # ---------------------------------------------------------------------------
+
 
 def test_b02_news_date_boundary_and_normalization_invariants(tmp_path: Path):
     """
@@ -97,8 +99,9 @@ def test_b02_news_date_boundary_and_normalization_invariants(tmp_path: Path):
 # Feature 3: JSON Schema Pre-Flight Write Protection Boundary Invariants
 # ---------------------------------------------------------------------------
 
+
 def test_b03_storage_boundary_and_schema_failure_invariants(
-    tmp_path: Path, sample_offer_dict: Dict[str, Any], canonical_offers_schema: Dict[str, Any], fallback_io_utils: Any
+    tmp_path: Path, sample_offer_dict: dict[str, Any], canonical_offers_schema: dict[str, Any], fallback_io_utils: Any
 ):
     """
     B03 Invariant: Storage failure boundaries must:
@@ -110,6 +113,7 @@ def test_b03_storage_boundary_and_schema_failure_invariants(
     """
     try:
         from src import io_utils
+
         writer = io_utils.atomic_write_json
         validator = io_utils.validate_payload
     except (ImportError, AttributeError):
@@ -151,7 +155,8 @@ def test_b03_storage_boundary_and_schema_failure_invariants(
 # Feature 4: Expiry Date Sentinel Coalescing Boundary Invariants
 # ---------------------------------------------------------------------------
 
-def test_b04_expiry_date_normalization_and_past_dates_invariants(sample_offer_dict: Dict[str, Any]):
+
+def test_b04_expiry_date_normalization_and_past_dates_invariants(sample_offer_dict: dict[str, Any]):
     """
     B04 Invariant: Expiry date boundary conditions must:
     1. Normalize explicit None, empty string, and 'null' string to canonical 'Rolling'.
@@ -160,6 +165,7 @@ def test_b04_expiry_date_normalization_and_past_dates_invariants(sample_offer_di
     4. Preserve historical past expiry dates for expired campaigns without overwriting.
     5. Safely handle student-restricted evergreen vouchers with missing expiration.
     """
+
     def coalesce(val: Any) -> str:
         if val is None or str(val).strip().lower() in ("none", "null", ""):
             return "Rolling"
@@ -188,6 +194,7 @@ def test_b04_expiry_date_normalization_and_past_dates_invariants(sample_offer_di
 # Feature 5: Screenshot Perceptual Hash Delta-Skipping Boundary Invariants
 # ---------------------------------------------------------------------------
 
+
 def test_b05_perceptual_hash_boundary_and_corrupt_image_invariants(tmp_path: Path, mock_png_bytes):
     """
     B05 Invariant: Perceptual hash boundary conditions must:
@@ -197,7 +204,7 @@ def test_b05_perceptual_hash_boundary_and_corrupt_image_invariants(tmp_path: Pat
     4. Compute valid perceptual hashes for large viewport dimensions (1200x1200).
     5. Strictly enforce Hamming distance boundary (distance <= 3 skips, > 3 rewrites).
     """
-    from src.visual_hasher import should_skip_screenshot_write, PerceptualHashEngine
+    from src.visual_hasher import PerceptualHashEngine, should_skip_screenshot_write
 
     new_png = mock_png_bytes(size=(600, 600))
     non_existent = tmp_path / "does_not_exist.png"
@@ -212,8 +219,12 @@ def test_b05_perceptual_hash_boundary_and_corrupt_image_invariants(tmp_path: Pat
     existing = tmp_path / "existing.png"
     existing.write_bytes(new_png)
     try:
-        should_skip_screenshot_write(new_image=b"NOT_A_PNG", existing_screenshot_path=existing, old_status="Active", new_status="Active")
-        should_skip_screenshot_write(new_image=b"", existing_screenshot_path=existing, old_status="Active", new_status="Active")
+        should_skip_screenshot_write(
+            new_image=b"NOT_A_PNG", existing_screenshot_path=existing, old_status="Active", new_status="Active"
+        )
+        should_skip_screenshot_write(
+            new_image=b"", existing_screenshot_path=existing, old_status="Active", new_status="Active"
+        )
     except Exception:
         pass  # Handled exception is compliant
 
@@ -225,6 +236,7 @@ def test_b05_perceptual_hash_boundary_and_corrupt_image_invariants(tmp_path: Pat
     # 5. Hamming distance boundary
     def eval_skip(dist: int) -> bool:
         return dist <= 3
+
     assert eval_skip(0) is True and eval_skip(3) is True and eval_skip(4) is False
 
 
@@ -232,7 +244,8 @@ def test_b05_perceptual_hash_boundary_and_corrupt_image_invariants(tmp_path: Pat
 # Feature 6: Modular Architectural Package for Builder Boundary Invariants
 # ---------------------------------------------------------------------------
 
-def test_b06_builder_sanitization_xss_and_escaping_invariants(sample_offer_dict: Dict[str, Any]):
+
+def test_b06_builder_sanitization_xss_and_escaping_invariants(sample_offer_dict: dict[str, Any]):
     """
     B06 Invariant: Builder rendering boundaries must:
     1. Render a clean fallback when offer dataset is completely empty.
@@ -241,8 +254,8 @@ def test_b06_builder_sanitization_xss_and_escaping_invariants(sample_offer_dict:
     4. Properly escape markdown table pipe characters ('|').
     5. Render minimal offers missing non-mandatory fields without KeyError.
     """
-    from src.builders.readme_builder import generate_readme
     from src.builders.html_builder import generate_web_dashboard
+    from src.builders.readme_builder import generate_readme
 
     # 1. Empty offers
     empty_md = generate_readme({"offers": []})
@@ -264,8 +277,13 @@ def test_b06_builder_sanitization_xss_and_escaping_invariants(sample_offer_dict:
 
     # 5. Minimal offer
     minimal = {
-        "id": "min-offer", "title": "Min", "platform": "P", "category": "C",
-        "certification_name": "C", "url": "https://example.com", "status": "Active"
+        "id": "min-offer",
+        "title": "Min",
+        "platform": "P",
+        "category": "C",
+        "certification_name": "C",
+        "url": "https://example.com",
+        "status": "Active",
     }
     min_md = generate_readme({"offers": [minimal]})
     assert "Min" in min_md
@@ -275,7 +293,8 @@ def test_b06_builder_sanitization_xss_and_escaping_invariants(sample_offer_dict:
 # Feature 7: 10 Developer Color Palettes Boundary Invariants
 # ---------------------------------------------------------------------------
 
-def test_b07_theme_engine_fallback_and_token_boundary_invariants(canonical_themes_spec: List[Dict[str, Any]]):
+
+def test_b07_theme_engine_fallback_and_token_boundary_invariants(canonical_themes_spec: list[dict[str, Any]]):
     """
     B07 Invariant: Theme engine boundary conditions must:
     1. Fall back gracefully to the default theme when an unknown theme is queried.
@@ -284,7 +303,7 @@ def test_b07_theme_engine_fallback_and_token_boundary_invariants(canonical_theme
     4. Adhere strictly to CSS custom properties syntax (--[a-z0-9-]+).
     5. Handle empty theme lists gracefully without uncaught crashes.
     """
-    from src.builders.theme_engine import THEMES, DEFAULT_THEME, generate_zero_foit_script
+    from src.builders.theme_engine import DEFAULT_THEME, THEMES, generate_zero_foit_script
 
     # 1. Fallback for unknown theme
     valid_ids = {t["id"] for t in THEMES}
@@ -308,6 +327,7 @@ def test_b07_theme_engine_fallback_and_token_boundary_invariants(canonical_theme
 # ---------------------------------------------------------------------------
 # Feature 8: Backward-Compatible Builder Facade Boundary Invariants
 # ---------------------------------------------------------------------------
+
 
 def test_b08_build_all_idempotency_and_filesystem_boundary_invariants(tmp_path: Path):
     """
@@ -344,6 +364,7 @@ def test_b08_build_all_idempotency_and_filesystem_boundary_invariants(tmp_path: 
 # Feature 9: Dynamic Truth Policy Derivation Boundary Invariants
 # ---------------------------------------------------------------------------
 
+
 def test_b09_truth_policy_fallback_and_edge_case_invariants():
     """
     B09 Invariant: Truth policy boundary conditions must:
@@ -353,8 +374,8 @@ def test_b09_truth_policy_fallback_and_edge_case_invariants():
     4. Return inconclusive or non-fatal status when evaluating empty HTML.
     5. Prioritize closure signals over promotional signals under conflicting page content.
     """
-    from src.truth_oracle import derive_truth_policy
     from src.dom_inspector import inspect_rendered_dom
+    from src.truth_oracle import derive_truth_policy
 
     # 1 & 2. Fallbacks
     bare = {"id": "bare", "url": "https://example.com"}
@@ -380,6 +401,7 @@ def test_b09_truth_policy_fallback_and_edge_case_invariants():
 # Feature 10: Primary News Feed Expansion Boundary Invariants
 # ---------------------------------------------------------------------------
 
+
 def test_b10_feed_xml_malformed_and_subdomain_spoofing_invariants():
     """
     B10 Invariant: News feed security and parsing boundaries must:
@@ -389,8 +411,9 @@ def test_b10_feed_xml_malformed_and_subdomain_spoofing_invariants():
     4. Strictly reject subdomain spoofing attempts (e.g. microsoft.com.attacker.com).
     5. Deduplicate articles with identical URLs.
     """
-    from tests.test_invariants import APPROVED_NEWS_DOMAINS, BANNED_CLICKBAIT_PATTERNS
     import xml.etree.ElementTree as ET
+
+    from tests.test_invariants import APPROVED_NEWS_DOMAINS, BANNED_CLICKBAIT_PATTERNS
 
     # 1. Malformed XML raises ParseError cleanly
     with pytest.raises(ET.ParseError):
@@ -421,6 +444,7 @@ def test_b10_feed_xml_malformed_and_subdomain_spoofing_invariants():
 # Feature 11: Concurrent Inspection Engine Boundary Invariants
 # ---------------------------------------------------------------------------
 
+
 @pytest.mark.asyncio
 async def test_b11_inspector_timeout_concurrency_and_yaml_invariants():
     """
@@ -434,26 +458,31 @@ async def test_b11_inspector_timeout_concurrency_and_yaml_invariants():
     # 1. Serial concurrency
     sem = asyncio.Semaphore(1)
     orders = []
+
     async def worker(idx: int):
         async with sem:
             orders.append(idx)
             await asyncio.sleep(0.005)
+
     await asyncio.gather(worker(1), worker(2))
     assert len(orders) == 2
 
     # 2. Timeout cancellation
     async def slow():
         await asyncio.sleep(5.0)
+
     with pytest.raises(asyncio.TimeoutError):
         await asyncio.wait_for(slow(), timeout=0.02)
 
     # 3. Zero offers summary
-    def summarize(offers: List[Any], duration: float) -> Dict[str, Any]:
+    def summarize(offers: list[Any], duration: float) -> dict[str, Any]:
         return {"total": len(offers), "rate": (len(offers) / duration) if duration > 0 else 0.0}
+
     assert summarize([], 1.0)["rate"] == 0.0
 
     # 4. DNS unresolvable categorization
     from src.authenticity import check_domain_authenticity
+
     is_ok, tier, _, flags = check_domain_authenticity("unresolvable-domain-99999.xyz")
     assert is_ok is False
     assert tier == "Untrusted" or any("SUSPICIOUS" in f or "UNAPPROVED" in f or "UNTRUSTED" in f for f in flags)

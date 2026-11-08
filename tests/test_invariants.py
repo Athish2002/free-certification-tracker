@@ -4,27 +4,29 @@ Enforces structural payload integrity, cross-format synchronization (JSON vs REA
 calendar conservation laws, and verified authentic news radar integrity across CertPulse.
 """
 
-import re
 import json
-import pytest
+import re
 from pathlib import Path
+
+import pytest
+
 from src.authenticity import (
-    clean_hostname,
-    check_domain_authenticity,
-    check_ssl_and_protocol,
-    check_redirect_chain_security,
-    audit_offer_authenticity,
-    SCAM_DOMAIN_KEYWORDS,
     BANNED_URL_SHORTENERS,
-    SUSPICIOUS_TLDS
+    SCAM_DOMAIN_KEYWORDS,
+    SUSPICIOUS_TLDS,
+    audit_offer_authenticity,
+    check_domain_authenticity,
+    check_redirect_chain_security,
+    check_ssl_and_protocol,
+    clean_hostname,
 )
 from src.dom_inspector import (
-    inspect_rendered_dom,
-    HeadlessDOMInspector,
     CAPACITY_PATTERNS,
     COUPON_EXPIRED_PATTERNS,
+    DEAD_END_PATTERNS,
     REGISTRATION_CLOSED_PATTERNS,
-    DEAD_END_PATTERNS
+    HeadlessDOMInspector,
+    inspect_rendered_dom,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -34,8 +36,13 @@ README_FILE = ROOT / "README.md"
 DOCS_HTML = ROOT / "docs" / "index.html"
 
 CANONICAL_STATUSES = {
-    "Active", "Registrations Closed", "Expired", "Broken Link",
-    "Review Needed", "Server Error", "Network Warning"
+    "Active",
+    "Registrations Closed",
+    "Expired",
+    "Broken Link",
+    "Review Needed",
+    "Server Error",
+    "Network Warning",
 }
 
 APPROVED_NEWS_DOMAINS = {
@@ -49,40 +56,53 @@ APPROVED_NEWS_DOMAINS = {
     "databricks.com",
     "snowflake.com",
     "hashicorp.com",
-    "redhat.com"
+    "redhat.com",
 }
 
 BANNED_CLICKBAIT_PATTERNS = [
-    r"\bshocking\b", r"\binsane\b", r"\byou won't believe\b",
-    r"\bunbelievable\b", r"\bsecret trick\b", r"\bgame changer\b",
-    r"\bdestroy\b", r"\bmind blowing\b", r"\bexposed\b", r"\bviral\b"
+    r"\bshocking\b",
+    r"\binsane\b",
+    r"\byou won't believe\b",
+    r"\bunbelievable\b",
+    r"\bsecret trick\b",
+    r"\bgame changer\b",
+    r"\bdestroy\b",
+    r"\bmind blowing\b",
+    r"\bexposed\b",
+    r"\bviral\b",
 ]
+
 
 @pytest.fixture(scope="session")
 def loaded_data():
     assert DATA_FILE.exists(), f"Missing primary data store: {DATA_FILE}"
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
+    with open(DATA_FILE, encoding="utf-8") as f:
         return json.load(f)
+
 
 @pytest.fixture(scope="session")
 def loaded_news():
     assert NEWS_FILE.exists(), f"Missing news data store: {NEWS_FILE}"
-    with open(NEWS_FILE, "r", encoding="utf-8") as f:
+    with open(NEWS_FILE, encoding="utf-8") as f:
         return json.load(f)
+
 
 @pytest.fixture(scope="session")
 def readme_text():
     assert README_FILE.exists(), f"Missing README.md: {README_FILE}"
-    with open(README_FILE, "r", encoding="utf-8") as f:
+    with open(README_FILE, encoding="utf-8") as f:
         return f.read()
+
 
 @pytest.fixture(scope="session")
 def html_text():
     assert DOCS_HTML.exists(), f"Missing docs/index.html: {DOCS_HTML}"
-    with open(DOCS_HTML, "r", encoding="utf-8") as f:
+    with open(DOCS_HTML, encoding="utf-8") as f:
         return f.read()
 
+
 # --- 1. Structural Schema Invariants ---
+
 
 def test_json_schema_invariants(loaded_data):
     """Asserts that all offers strictly conform to expected types and required attributes."""
@@ -113,6 +133,7 @@ def test_json_schema_invariants(loaded_data):
         if val is not None:
             assert isinstance(val, (int, float)) and val >= 0, f"Invalid value_usd for {oid}: {val}"
 
+
 def test_news_json_schema_invariants(loaded_news):
     """Asserts that verified engineering news items meet strict integrity and authenticity invariants."""
     news_items = loaded_news.get("news", [])
@@ -121,7 +142,17 @@ def test_news_json_schema_invariants(loaded_news):
     seen_ids = set()
     for item in news_items:
         # Key presence
-        for req_field in ["id", "company", "source", "source_domain", "category", "title", "summary", "published_date", "url"]:
+        for req_field in [
+            "id",
+            "company",
+            "source",
+            "source_domain",
+            "category",
+            "title",
+            "summary",
+            "published_date",
+            "url",
+        ]:
             assert req_field in item, f"News item {item.get('id', 'UNKNOWN')} missing field: {req_field}"
             assert str(item[req_field]).strip() != "", f"News item {item.get('id')} has empty field {req_field}"
 
@@ -138,14 +169,18 @@ def test_news_json_schema_invariants(loaded_news):
         assert item["url"].startswith("https://"), f"News URL must be HTTPS: {item['url']}"
 
         # Date format invariant (YYYY-MM-DD)
-        assert re.match(r"^\d{4}-\d{2}-\d{2}$", item["published_date"]), f"Invalid published_date for {nid}: {item['published_date']}"
+        assert re.match(r"^\d{4}-\d{2}-\d{2}$", item["published_date"]), (
+            f"Invalid published_date for {nid}: {item['published_date']}"
+        )
 
         # Zero clickbait invariant
         content = (item["title"] + " " + item["summary"]).lower()
         for pat in BANNED_CLICKBAIT_PATTERNS:
             assert not re.search(pat, content), f"Clickbait buzzword detected in {nid}: pattern {pat}"
 
+
 # --- 2. Mathematical Conservation Laws & Cross-Format Sync ---
+
 
 def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
     """
@@ -159,14 +194,19 @@ def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
     expected_count = len(active_offers)
 
     # 1. Assert Badge Count
-    count_badge_match = re.search(r"!\[Active Vouchers\]\(https://img\.shields\.io/badge/Active%20Offers-(\d+)-success\.svg\)", readme_text)
+    count_badge_match = re.search(
+        r"!\[Active Vouchers\]\(https://img\.shields\.io/badge/Active%20Offers-(\d+)-success\.svg\)", readme_text
+    )
     assert count_badge_match is not None, "Active Offers count badge missing in README"
     assert int(count_badge_match.group(1)) == expected_count, (
         f"README badge active count ({count_badge_match.group(1)}) desynchronized with JSON active count ({expected_count})"
     )
 
     # 2. Assert Badge Savings Value
-    val_badge_match = re.search(r"!\[Total Savings\]\(https://img\.shields\.io/badge/Total%20Value%20Saved-%24(\d+)%20USD-gold\.svg\)", readme_text)
+    val_badge_match = re.search(
+        r"!\[Total Savings\]\(https://img\.shields\.io/badge/Total%20Value%20Saved-%24(\d+)%20USD-gold\.svg\)",
+        readme_text,
+    )
     assert val_badge_match is not None, "Total Savings badge missing in README"
     assert int(val_badge_match.group(1)) == expected_savings, (
         f"README badge savings value (${val_badge_match.group(1)}) desynchronized with JSON total (${expected_savings})"
@@ -177,22 +217,28 @@ def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
     assert f"| **Total Financial Value** | **${expected_savings:,} USD** |" in readme_text
 
     # 4. Assert Checked Offers badge & Executive Summary Table
-    checked_badge_match = re.search(r"!\[Offers Checked\]\(https://img\.shields\.io/badge/Offers%20Checked-(\d+)%20Audited-blue\.svg\)", readme_text)
+    checked_badge_match = re.search(
+        r"!\[Offers Checked\]\(https://img\.shields\.io/badge/Offers%20Checked-(\d+)%20Audited-blue\.svg\)", readme_text
+    )
     assert checked_badge_match is not None, "Offers Checked badge missing in README"
     assert int(checked_badge_match.group(1)) == len(offers), (
         f"README badge checked count ({checked_badge_match.group(1)}) desynchronized with total offers ({len(offers)})"
     )
     assert f"| **Offers Checked & Audited** | **{len(offers)} Total**" in readme_text
 
+
 def test_readme_news_radar_sync(loaded_news, readme_text):
     """Asserts that the intelligence radar table in README.md accurately reflects all news items."""
     news_items = loaded_news.get("news", [])
-    assert "## 📰 Verified Cloud & Engineering Intelligence Radar" in readme_text, "Missing news radar heading in README"
+    assert "## 📰 Verified Cloud & Engineering Intelligence Radar" in readme_text, (
+        "Missing news radar heading in README"
+    )
     assert f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** |" in readme_text
 
     for item in news_items:
         assert item["title"] in readme_text, f"News title '{item['title']}' not rendered in README table"
         assert item["url"] in readme_text, f"News URL '{item['url']}' not linked in README table"
+
 
 def test_web_dashboard_payload_sync(loaded_data, loaded_news, html_text):
     """
@@ -201,7 +247,7 @@ def test_web_dashboard_payload_sync(loaded_data, loaded_news, html_text):
     """
     offers = loaded_data.get("offers", [])
     news = loaded_news.get("news", [])
-    
+
     # 1. Offers JSON payload sync
     match_offers = re.search(r"const offersData = (\[.*?\]);", html_text, flags=re.DOTALL)
     assert match_offers is not None, "Embedded offersData script variable not found in docs/index.html"
@@ -224,7 +270,9 @@ def test_web_dashboard_payload_sync(loaded_data, loaded_news, html_text):
         f"Bento 2 dynamic check counter ({active_count}/{active_count} LIVE • {len(offers)} CHECKED) missing in dashboard"
     )
 
+
 # --- 3. Anti-Divergence Regression Checks ---
+
 
 def test_no_dead_code_or_unresolved_todos(readme_text, html_text):
     """Verifies production cleanliness: zero placeholder stubs."""
@@ -233,19 +281,22 @@ def test_no_dead_code_or_unresolved_todos(readme_text, html_text):
         assert "FIXME" not in text, f"Unresolved FIXME found in {name}"
         assert "undefined" not in text, f"'undefined' string leak found in {name}"
 
+
 def test_mobile_ux_invariants(html_text):
     """Verifies mobile responsiveness, safe area insets, touch targets, and iOS zoom prevention."""
-    assert 'viewport-fit=cover' in html_text, "Missing viewport-fit=cover in docs/index.html"
+    assert "viewport-fit=cover" in html_text, "Missing viewport-fit=cover in docs/index.html"
     assert 'name="theme-color"' in html_text, "Missing theme-color meta tag in docs/index.html"
-    assert 'safe-area-inset-bottom' in html_text, "Missing safe-area-inset-bottom handling in docs/index.html"
-    assert 'touch-scroll' in html_text, "Missing touch-scroll CSS class in docs/index.html"
-    assert '16px !important' in html_text, "Missing 16px mobile input rule to prevent iOS Safari auto-zoom"
-    assert 'min-h-[44px]' in html_text, "Missing min-h-[44px] for SubNav touch targets in docs/index.html"
-    assert 'min-h-[40px]' in html_text, "Missing min-h-[40px] for interactive buttons and pills in docs/index.html"
-    assert 'onStatusFilterChange' in html_text, "Missing onStatusFilterChange function for filter synchronization"
-    assert 'offersData.find' in html_text, "copySteps should lookup offer in offersData by ID to avoid escaping bugs"
+    assert "safe-area-inset-bottom" in html_text, "Missing safe-area-inset-bottom handling in docs/index.html"
+    assert "touch-scroll" in html_text, "Missing touch-scroll CSS class in docs/index.html"
+    assert "16px !important" in html_text, "Missing 16px mobile input rule to prevent iOS Safari auto-zoom"
+    assert "min-h-[44px]" in html_text, "Missing min-h-[44px] for SubNav touch targets in docs/index.html"
+    assert "min-h-[40px]" in html_text, "Missing min-h-[40px] for interactive buttons and pills in docs/index.html"
+    assert "onStatusFilterChange" in html_text, "Missing onStatusFilterChange function for filter synchronization"
+    assert "offersData.find" in html_text, "copySteps should lookup offer in offersData by ID to avoid escaping bugs"
+
 
 # --- 4. Multi-Layer Authenticity & Anti-Scam Security Invariants ---
+
 
 def test_offer_authenticity_schema_invariants(loaded_data):
     """
@@ -257,11 +308,13 @@ def test_offer_authenticity_schema_invariants(loaded_data):
 
     for o in offers:
         oid = o.get("id", "UNKNOWN")
-        
+
         # 1. Flag presence & type invariant
         assert "is_authentic_vendor" in o, f"Offer {oid} missing 'is_authentic_vendor' flag"
         assert isinstance(o["is_authentic_vendor"], bool), f"Offer {oid} 'is_authentic_vendor' must be boolean"
-        assert o["is_authentic_vendor"] is True, f"Offer {oid} failed authenticity verification: {o.get('inspection_notes')}"
+        assert o["is_authentic_vendor"] is True, (
+            f"Offer {oid} failed authenticity verification: {o.get('inspection_notes')}"
+        )
 
         # 2. Score invariant [80, 100]
         assert "authenticity_score" in o, f"Offer {oid} missing 'authenticity_score'"
@@ -276,7 +329,12 @@ def test_offer_authenticity_schema_invariants(loaded_data):
         assert details.get("domain_verified") is True, f"Offer {oid} domain not verified in details"
         assert details.get("ssl_verified") is True, f"Offer {oid} SSL not verified in details"
         assert details.get("redirect_secure") is True, f"Offer {oid} redirect not verified in details"
-        assert details.get("trust_tier") in {"Official Vendor Portal", "Accredited Exam Partner", "Accredited Educational Institution"}
+        assert details.get("trust_tier") in {
+            "Official Vendor Portal",
+            "Accredited Exam Partner",
+            "Accredited Educational Institution",
+        }
+
 
 def test_domain_authenticity_and_anti_scam_invariants(loaded_data):
     """
@@ -310,9 +368,8 @@ def test_domain_authenticity_and_anti_scam_invariants(loaded_data):
 
         # 5. Zero suspicious TLDs in domain hostname
         for tld in SUSPICIOUS_TLDS:
-            assert not host.endswith(tld), (
-                f"Offer {oid} host uses high-risk scam TLD '{tld}': {host}"
-            )
+            assert not host.endswith(tld), f"Offer {oid} host uses high-risk scam TLD '{tld}': {host}"
+
 
 def test_authenticity_engine_adversarial_rejection():
     """
@@ -324,74 +381,77 @@ def test_authenticity_engine_adversarial_rejection():
         {
             "offer": {"platform": "Microsoft Azure", "url": "https://micros0ft-freecerts.top/promo"},
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Typosquatting Salesforce
         {
             "offer": {"platform": "Salesforce", "url": "https://salesf0rce.com/voucher"},
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Exam braindump domain
         {
             "offer": {"platform": "Amazon Web Services", "url": "https://aws-examdumps.xyz/vouchers"},
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Disallowed shortener cloaking
         {
             "offer": {"platform": "Google Cloud", "url": "https://bit.ly/azure-free-voucher"},
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Insecure HTTP
         {
             "offer": {"platform": "Microsoft Azure", "url": "http://learn.microsoft.com/credentials"},
             "body": "",
-            "expected_verdict": ["SUSPICIOUS_UNTRUSTED"]
+            "expected_verdict": ["SUSPICIOUS_UNTRUSTED"],
         },
         # Userinfo spoofing injection
         {
             "offer": {"platform": "Microsoft Azure", "url": "https://admin:secret@learn.microsoft.com/credentials"},
             "body": "",
-            "expected_verdict": ["SUSPICIOUS_UNTRUSTED"]
+            "expected_verdict": ["SUSPICIOUS_UNTRUSTED"],
         },
         # Open redirect target to scam domain
         {
-            "offer": {"platform": "Microsoft Azure", "url": "https://learn.microsoft.com/external?goto=https://scam-dumps.xyz"},
+            "offer": {
+                "platform": "Microsoft Azure",
+                "url": "https://learn.microsoft.com/external?goto=https://scam-dumps.xyz",
+            },
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Vendor mismatch (cross-vendor spoofing)
         {
             "offer": {"platform": "Microsoft Azure", "url": "https://cisco.com/free-vouchers"},
             "body": "",
-            "expected_verdict": ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"]
+            "expected_verdict": ["DECEPTIVE_SCAM", "SUSPICIOUS_UNTRUSTED"],
         },
         # Legitimate domain with exam dump scam content
         {
             "offer": {"platform": "Oracle Cloud", "url": "https://education.oracle.com/oracle-cloud-infrastructure"},
             "body": "Download our guaranteed pass 100% real braindump exam questions and answers.",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Legitimate domain with credit card paywall trap
         {
             "offer": {"platform": "Cisco", "url": "https://u.cisco.com/"},
             "body": "Credit card is required to enroll. 7-day trial then $49 billed automatically after trial.",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Deceptive paywall auto-renewal
         {
             "offer": {"platform": "Salesforce", "url": "https://trailhead.salesforce.com/quests"},
             "body": "Credit card is required for account creation. Subscription auto-renews at $39/mo.",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
+            "expected_verdict": ["DECEPTIVE_SCAM"],
         },
         # Expired promo/coupon code page
         {
             "offer": {"platform": "Databricks", "url": "https://www.databricks.com/learn/training/certification"},
             "body": "Sorry, this promo code is invalid or has expired.",
-            "expected_verdict": ["DECEPTIVE_SCAM"]
-        }
+            "expected_verdict": ["DECEPTIVE_SCAM"],
+        },
     ]
 
     for case in adversarial_cases:
@@ -402,6 +462,7 @@ def test_authenticity_engine_adversarial_rejection():
         )
         assert res["authenticity_score"] <= 50, f"Adversarial case received too high score: {res['authenticity_score']}"
 
+
 def test_redirect_chain_security_invariant():
     """
     Asserts that redirect chains with protocol downgrades, shorteners,
@@ -410,27 +471,20 @@ def test_redirect_chain_security_invariant():
     # 1. Clean genuine chain
     clean_chain = [
         "https://learn.microsoft.com/en-us/training",
-        "https://learn.microsoft.com/en-us/credentials/applied-skills/"
+        "https://learn.microsoft.com/en-us/credentials/applied-skills/",
     ]
     ok, flags = check_redirect_chain_security(clean_chain, "Microsoft Azure")
     assert ok is True
     assert "CLEAN_REDIRECT_CHAIN" in flags
 
     # 2. Insecure HTTP downgrade
-    downgrade_chain = [
-        "https://aws.amazon.com/education",
-        "http://aws.amazon.com/education/awseducate/"
-    ]
+    downgrade_chain = ["https://aws.amazon.com/education", "http://aws.amazon.com/education/awseducate/"]
     ok, flags = check_redirect_chain_security(downgrade_chain, "Amazon Web Services")
     assert ok is False
     assert "REDIRECT_SSL_DOWNGRADE" in flags
 
     # 3. Cloaked redirect through shortener
-    shortener_chain = [
-        "https://google.com/promo",
-        "https://bit.ly/gcp-cert",
-        "https://cloudskillsboost.google/"
-    ]
+    shortener_chain = ["https://google.com/promo", "https://bit.ly/gcp-cert", "https://cloudskillsboost.google/"]
     ok, flags = check_redirect_chain_security(shortener_chain, "Google Cloud")
     assert ok is False
     assert "REDIRECT_THROUGH_SHORTENER" in flags
@@ -439,37 +493,31 @@ def test_redirect_chain_security_invariant():
     scam_hop_chain = [
         "https://learn.microsoft.com/start",
         "https://scam-ad-tracker.xyz/click",
-        "https://learn.microsoft.com/finish"
+        "https://learn.microsoft.com/finish",
     ]
     ok, flags = check_redirect_chain_security(scam_hop_chain, "Microsoft Azure")
     assert ok is False
     assert any("REDIRECT_THROUGH_SUSPICIOUS_TLD" in f or "REDIRECT_THROUGH_SCAM" in f for f in flags)
 
     # 5. Intermediate hop routing through affiliate network
-    affiliate_hop_chain = [
-        "https://aws.amazon.com/promo",
-        "https://cj.com/track",
-        "https://aws.amazon.com/finish"
-    ]
+    affiliate_hop_chain = ["https://aws.amazon.com/promo", "https://cj.com/track", "https://aws.amazon.com/finish"]
     ok, flags = check_redirect_chain_security(affiliate_hop_chain, "Amazon Web Services")
     assert ok is False
     assert any("AFFILIATE" in f for f in flags)
 
     # 6. Redirecting to external untrusted scam destination
-    scam_dest_chain = [
-        "https://u.cisco.com/promo",
-        "https://scam-voucher-farm.xyz/affiliate-lead"
-    ]
+    scam_dest_chain = ["https://u.cisco.com/promo", "https://scam-voucher-farm.xyz/affiliate-lead"]
     ok, flags = check_redirect_chain_security(scam_dest_chain, "Cisco")
     assert ok is False
     assert "REDIRECT_UNTRUSTED_DESTINATION" in flags
+
 
 def test_educational_institution_authenticity_invariant():
     """Asserts that accredited university and academic domains are verified authentic."""
     uni_cases = [
         "https://online.stanford.edu/courses/cloud-computing",
         "https://cs50.harvard.edu/x",
-        "https://mitxonline.mit.edu/courses"
+        "https://mitxonline.mit.edu/courses",
     ]
     for url in uni_cases:
         ok, tier, _, flags = check_domain_authenticity(url, "")
@@ -477,19 +525,24 @@ def test_educational_institution_authenticity_invariant():
         assert tier == "Accredited Educational Institution"
         assert "ACCREDITED_UNIVERSITY_DOMAIN" in flags
 
+
 def test_readme_and_dashboard_authenticity_sync(loaded_data, readme_text, html_text):
     """
     Asserts that the README badge and Web Dashboard prominently display
     verified vendor authenticity metrics and zero-scam disclosures.
     """
     # README authenticity indicators
-    assert "![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg)" in readme_text
+    assert (
+        "![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg)"
+        in readme_text
+    )
     assert "| **Authenticity Gate** | **100% Primary Vendor Verified** |" in readme_text
 
     # Web Dashboard authenticity indicators
     assert "Authenticity Standard" in html_text
     assert "100% Authentic" in html_text
     assert "Zero scam domains, zero dumps, strict TLS" in html_text
+
 
 def test_multiview_dashboard_invariants(html_text):
     """
@@ -514,6 +567,7 @@ def test_multiview_dashboard_invariants(html_text):
     # 4. Keyboard shortcuts
     assert "views.indexOf(currentLayout)" in html_text, "Missing cycling logic for V key"
 
+
 def test_expanded_vendor_authenticity_coverage(loaded_data):
     """
     Enforces authentic coverage across all enterprise vendors requested:
@@ -521,7 +575,7 @@ def test_expanded_vendor_authenticity_coverage(loaded_data):
     """
     offers = loaded_data.get("offers", [])
     platforms_present = {o.get("platform") for o in offers}
-    
+
     expected_platforms = {
         "Red Hat",
         "HashiCorp",
@@ -533,7 +587,7 @@ def test_expanded_vendor_authenticity_coverage(loaded_data):
         "Databricks",
         "Oracle Cloud",
         "Cisco",
-        "GitHub"
+        "GitHub",
     }
 
     for p in expected_platforms:
@@ -545,6 +599,7 @@ def test_expanded_vendor_authenticity_coverage(loaded_data):
             assert o.get("is_authentic_vendor") is True, f"Offer {o.get('id')} failed vendor authenticity"
             assert o.get("authenticity_score", 0) >= 80, f"Offer {o.get('id')} has score < 80"
             assert o.get("url", "").startswith("https://"), f"Offer {o.get('id')} must use HTTPS"
+
 
 def test_difficulty_tier_and_timeline_metadata(loaded_data):
     """
@@ -558,7 +613,9 @@ def test_difficulty_tier_and_timeline_metadata(loaded_data):
         tier = o.get("difficulty_tier")
         assert tier in valid_tiers, f"Offer {oid} has invalid difficulty_tier: {tier}"
         assert "time_period" in o and str(o["time_period"]).strip() != "", f"Offer {oid} missing time_period"
-        assert "recurrence_pattern" in o and str(o["recurrence_pattern"]).strip() != "", f"Offer {oid} missing recurrence_pattern"
+        assert "recurrence_pattern" in o and str(o["recurrence_pattern"]).strip() != "", (
+            f"Offer {oid} missing recurrence_pattern"
+        )
 
 
 def test_html_javascript_syntax_validity(html_text):
@@ -593,6 +650,7 @@ def test_domain_matrix_technical_domains(html_text):
         assert f"id: '{dom_id}'" in html_text, f"Missing domain configuration for: {dom_id}"
 
 
+@pytest.mark.browser
 def test_interactive_browser_view_switching():
     """
     Executes headless Chromium browser test via Playwright to verify:
@@ -678,6 +736,7 @@ def test_interactive_browser_view_switching():
 
 # --- 5. Where Offers Are Applied & Zero-Dollar Checkout Invariants ---
 
+
 def test_redemption_guide_schema_invariants(loaded_data):
     """
     Enforces that every certification offer contains complete, structured redemption mechanisms,
@@ -693,14 +752,20 @@ def test_redemption_guide_schema_invariants(loaded_data):
         "Scholarship Award Token",
         "Continuing Education Claim",
         "Training Milestone Token",
-        "Event Voucher Code"
+        "Event Voucher Code",
     }
 
     for o in offers:
         oid = o.get("id", "UNKNOWN")
 
         # 1. Top-level redemption fields presence and type
-        for field in ["voucher_code", "redemption_portal", "checkout_field", "application_flow_type", "cart_balance_verified"]:
+        for field in [
+            "voucher_code",
+            "redemption_portal",
+            "checkout_field",
+            "application_flow_type",
+            "cart_balance_verified",
+        ]:
             assert field in o, f"Offer {oid} missing redemption field: {field}"
             assert str(o[field]).strip() != "", f"Offer {oid} has empty redemption field: {field}"
 
@@ -716,7 +781,14 @@ def test_redemption_guide_schema_invariants(loaded_data):
         guide = o["redemption_guide"]
         assert isinstance(guide, dict), f"Offer {oid} 'redemption_guide' must be a dictionary"
 
-        for subfield in ["portal_name", "portal_url", "field_location", "flow_type", "verified_cart_balance", "instructions"]:
+        for subfield in [
+            "portal_name",
+            "portal_url",
+            "field_location",
+            "flow_type",
+            "verified_cart_balance",
+            "instructions",
+        ]:
             assert subfield in guide, f"Offer {oid} redemption_guide missing subfield: {subfield}"
             assert guide[subfield], f"Offer {oid} redemption_guide has empty subfield: {subfield}"
 
@@ -725,7 +797,9 @@ def test_redemption_guide_schema_invariants(loaded_data):
         assert isinstance(instructions, list), f"Offer {oid} instructions must be a list"
         assert len(instructions) >= 2, f"Offer {oid} must have at least 2 step-by-step instructions"
         for step in instructions:
-            assert isinstance(step, str) and len(step.strip()) > 10, f"Offer {oid} has too short instruction step: {step}"
+            assert isinstance(step, str) and len(step.strip()) > 10, (
+                f"Offer {oid} has too short instruction step: {step}"
+            )
 
         # 3. Protocol security on redemption portal
         if o.get("status") == "Active":
@@ -745,9 +819,10 @@ def test_readme_and_dashboard_redemption_sync(loaded_data, readme_text, html_tex
     assert "## 💳 Where & How Vouchers Are Applied (Zero-Dollar Checkout Guide)" in readme_text, (
         "Missing redemption guide section header in README.md"
     )
-    assert "| Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |" in readme_text, (
-        "Missing redemption table headers in README.md"
-    )
+    assert (
+        "| Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |"
+        in readme_text
+    ), "Missing redemption table headers in README.md"
     assert "**$0.00**" in readme_text, "Missing bold $0.00 balance indicator in README.md"
 
     for o in active_offers:
@@ -762,14 +837,15 @@ def test_readme_and_dashboard_redemption_sync(loaded_data, readme_text, html_tex
     assert 'id="tabBtnRedemption"' in html_text, "Missing tabBtnRedemption in docs/index.html"
     assert 'id="redemptionSection"' in html_text, "Missing redemptionSection in docs/index.html"
     assert 'id="redemptionGrid"' in html_text, "Missing redemptionGrid container in docs/index.html"
-    assert 'renderRedemption' in html_text, "Missing renderRedemption function in docs/index.html"
-    assert 'openRedemptionFor' in html_text, "Missing openRedemptionFor function in docs/index.html"
-    assert 'copyVoucherToken' in html_text, "Missing copyVoucherToken function in docs/index.html"
-    assert 'Cart Balance: $0.00' in html_text, "Missing Cart Balance: $0.00 badge in docs/index.html"
-    assert '<span>3</span>' in html_text or '>3<' in html_text, "Missing Hotkey 3 hint in docs/index.html"
+    assert "renderRedemption" in html_text, "Missing renderRedemption function in docs/index.html"
+    assert "openRedemptionFor" in html_text, "Missing openRedemptionFor function in docs/index.html"
+    assert "copyVoucherToken" in html_text, "Missing copyVoucherToken function in docs/index.html"
+    assert "Cart Balance: $0.00" in html_text, "Missing Cart Balance: $0.00 badge in docs/index.html"
+    assert "<span>3</span>" in html_text or ">3<" in html_text, "Missing Hotkey 3 hint in docs/index.html"
 
 
 # --- 6. Headless Playwright DOM Inspection & Invariant Logic ---
+
 
 def test_headless_dom_inspector_invariant_logic():
     """
@@ -814,7 +890,7 @@ def test_headless_dom_inspector_invariant_logic():
     res = inspect_rendered_dom(
         "Welcome to the general homepage catalog.",
         final_url="https://cloud.vendor.com/en-us",
-        original_url="https://cloud.vendor.com/promo/free-voucher-challenge"
+        original_url="https://cloud.vendor.com/promo/free-voucher-challenge",
     )
     assert res["status"] == "Registrations Closed"
     assert res["category"] == "silent_reroute"
@@ -849,7 +925,7 @@ def test_headless_dom_inspector_invariant_logic():
     # 10. Missing Affirmative Signals on Non-Empty Catalog Page
     catalog_res = inspect_rendered_dom(
         "Standard exam fee is $250. Select your test center and pay with credit card.",
-        rendered_title="Pearson VUE Standard Catalog"
+        rendered_title="Pearson VUE Standard Catalog",
     )
     assert catalog_res["status"] == "Review Needed"
     assert catalog_res["category"] == "no_offer_signal"
@@ -889,17 +965,9 @@ def test_playwright_headless_dom_rendering_on_local_fixture(tmp_path):
 
     with HeadlessDOMInspector(headless=True, timeout_ms=8000) as inspector:
         assert inspector.is_available is True, "Headless Chromium failed to start"
-        inspector.route(
-            test_url,
-            lambda route: route.fulfill(status=200, content_type="text/html", body=html_content)
-        )
+        inspector.route(test_url, lambda route: route.fulfill(status=200, content_type="text/html", body=html_content))
         status, reason, final_url, auth_result = inspector.inspect_url(
-            test_url,
-            offer={
-                "id": "test-spa-offer",
-                "platform": "Microsoft Azure",
-                "url": test_url
-            }
+            test_url, offer={"id": "test-spa-offer", "platform": "Microsoft Azure", "url": test_url}
         )
         assert status == "Registrations Closed", f"Expected Registrations Closed, got {status} ({reason})"
         assert "capacity has been reached" in reason.lower() or "seats are full" in reason.lower()
@@ -909,7 +977,9 @@ def test_dashboard_redemption_and_keyboard_invariants(html_text):
     """Asserts that the web dashboard implements robust clipboard fallbacks and multi-tab keyboard shortcuts."""
     assert "document.execCommand('copy')" in html_text, "Missing execCommand copy fallback in copyVoucherToken"
     assert "redemptionSearchInput" in html_text, "Missing redemptionSearchInput in docs/index.html"
-    assert "currentMainTab === 'redemption'" in html_text, "Missing contextual tab check for redemption search in docs/index.html"
+    assert "currentMainTab === 'redemption'" in html_text, (
+        "Missing contextual tab check for redemption search in docs/index.html"
+    )
 
 
 def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
@@ -932,7 +1002,7 @@ def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
                 "status": "Active",
                 "claim_steps": "Follow instructions.",
                 "value_usd": 99,
-                "is_historical_archive": False
+                "is_historical_archive": False,
             },
             {
                 "id": "test-offer-2",
@@ -944,7 +1014,7 @@ def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
                 "status": "Active",
                 "claim_steps": "Follow instructions.",
                 "value_usd": 100,
-                "is_historical_archive": False
+                "is_historical_archive": False,
             },
             {
                 "id": "hist-archive-3",
@@ -956,10 +1026,10 @@ def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
                 "status": "Expired",
                 "claim_steps": "Expired historical record.",
                 "value_usd": 245,
-                "is_historical_archive": True
-            }
+                "is_historical_archive": True,
+            },
         ],
-        "last_inspected": "2026-01-01T00:00:00Z"
+        "last_inspected": "2026-01-01T00:00:00Z",
     }
 
     test_file = tmp_path / "test_offers.json"
@@ -970,17 +1040,22 @@ def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
 
     # Mock inspect_url_with_retry to simulate successful verification without live network calls
     def mock_inspect(url, offer=None, max_retries=2):
-        return "Active", "HTTP 200 OK (Mocked Invariant Test)", url, {
-            "is_authentic_vendor": True,
-            "authenticity_score": 100,
-            "verdict": "VERIFIED_AUTHENTIC",
-            "summary": "Mock Verified",
-            "domain_verified": True,
-            "ssl_verified": True,
-            "redirect_secure": True,
-            "corroboration_passed": True,
-            "warning_flags": []
-        }
+        return (
+            "Active",
+            "HTTP 200 OK (Mocked Invariant Test)",
+            url,
+            {
+                "is_authentic_vendor": True,
+                "authenticity_score": 100,
+                "verdict": "VERIFIED_AUTHENTIC",
+                "summary": "Mock Verified",
+                "domain_verified": True,
+                "ssl_verified": True,
+                "redirect_secure": True,
+                "corroboration_passed": True,
+                "warning_flags": [],
+            },
+        )
 
     monkeypatch.setattr(insp, "inspect_url_with_retry", mock_inspect)
 
@@ -1012,6 +1087,7 @@ def test_inspector_run_inspection_loop_coverage(tmp_path, monkeypatch):
 
 # --- TIER 1: FEATURE COVERAGE INVARIANTS ---
 
+
 def test_tier1_credential_tier_taxonomy_segregation(loaded_data):
     """
     Tier 1 Invariant: Enforces strict credential segmentation between Primary Tier
@@ -1020,30 +1096,57 @@ def test_tier1_credential_tier_taxonomy_segregation(loaded_data):
     """
     # Authoritative Ground-Truth mapping for all 39 offers from SPEC-005 (taxonomy_spec.md)
     canonical_unproctored_badges = {
-        "ms-applied-skills", "gcp-cloud-skills-boost", "snowflake-hands-on-essentials",
-        "postman-api-expert", "qualys-certified-specialist", "databricks-genai-fundamentals",
-        "fortinet-cybersecurity-fundamentals", "aws-educate-badges", "redhat-skills-assessment-rhel",
-        "paloalto-pccet-cybersecurity", "gitlab-certified-associate", "splunk-certified-defense-analyst",
-        "ibm-skillsbuild-cybersecurity", "databricks-lakehouse-fundamentals", "cisco-netacad-cyberops",
-        "cisco-rev-up-recert", "hist-cisco-rev-up-devnae", "hist-databricks-genai-2024"
+        "ms-applied-skills",
+        "gcp-cloud-skills-boost",
+        "snowflake-hands-on-essentials",
+        "postman-api-expert",
+        "qualys-certified-specialist",
+        "databricks-genai-fundamentals",
+        "fortinet-cybersecurity-fundamentals",
+        "aws-educate-badges",
+        "redhat-skills-assessment-rhel",
+        "paloalto-pccet-cybersecurity",
+        "gitlab-certified-associate",
+        "splunk-certified-defense-analyst",
+        "ibm-skillsbuild-cybersecurity",
+        "databricks-lakehouse-fundamentals",
+        "cisco-netacad-cyberops",
+        "cisco-rev-up-recert",
+        "hist-cisco-rev-up-devnae",
+        "hist-databricks-genai-2024",
     }
     canonical_proctored_exams = {
-        "isc2-one-million-cc", "oracle-oci-free-cert", "linux-foundation-lift",
-        "mongodb-developer-cert", "salesforce-trailhead-quests", "juniper-open-learning",
-        "github-student-foundations", "hashicorp-terraform-associate-community",
-        "cncf-dan-kohn-scholarship", "oracle-oci-generative-ai-cert", "github-foundations-cert-wave",
-        "hist-msft-build-2024", "hist-msft-ignite-2023", "hist-oracle-race-cert-2024",
-        "hist-aws-ai-practitioner-early", "hist-gcp-ace-challenge", "hist-github-universe-2024",
-        "hist-redhat-summit-2024", "hist-terraform-challenge-2023", "hist-paloalto-ignite-2023",
-        "hist-splunk-conf-2024"
+        "isc2-one-million-cc",
+        "oracle-oci-free-cert",
+        "linux-foundation-lift",
+        "mongodb-developer-cert",
+        "salesforce-trailhead-quests",
+        "juniper-open-learning",
+        "github-student-foundations",
+        "hashicorp-terraform-associate-community",
+        "cncf-dan-kohn-scholarship",
+        "oracle-oci-generative-ai-cert",
+        "github-foundations-cert-wave",
+        "hist-msft-build-2024",
+        "hist-msft-ignite-2023",
+        "hist-oracle-race-cert-2024",
+        "hist-aws-ai-practitioner-early",
+        "hist-gcp-ace-challenge",
+        "hist-github-universe-2024",
+        "hist-redhat-summit-2024",
+        "hist-terraform-challenge-2023",
+        "hist-paloalto-ignite-2023",
+        "hist-splunk-conf-2024",
     }
 
-    assert canonical_unproctored_badges.isdisjoint(canonical_proctored_exams), "Taxonomy classification overlap detected!"
+    assert canonical_unproctored_badges.isdisjoint(canonical_proctored_exams), (
+        "Taxonomy classification overlap detected!"
+    )
     assert len(canonical_unproctored_badges) > 0 and len(canonical_proctored_exams) > 0
 
     offers = loaded_data.get("offers", [])
     has_tier_count = sum(1 for o in offers if "credential_tier" in o)
-    
+
     # Invariant: Every offer in data/offers.json must be explicitly classified
     assert has_tier_count == len(offers), (
         f"Implementation Bug in data/offers.json: {len(offers) - has_tier_count} offers missing 'credential_tier'. "
@@ -1055,7 +1158,9 @@ def test_tier1_credential_tier_taxonomy_segregation(loaded_data):
         tier = o["credential_tier"]
         assert tier in {"proctored_exam", "skill_badge_lab", "primary", "secondary"}, f"Invalid tier '{tier}' for {oid}"
         if oid in canonical_unproctored_badges:
-            assert tier in {"skill_badge_lab", "secondary"}, f"Unproctored credential {oid} misclassified as proctored exam!"
+            assert tier in {"skill_badge_lab", "secondary"}, (
+                f"Unproctored credential {oid} misclassified as proctored exam!"
+            )
         elif oid in canonical_proctored_exams:
             assert tier in {"proctored_exam", "primary"}, f"Proctored exam voucher {oid} misclassified as skill badge!"
 
@@ -1074,7 +1179,7 @@ def test_tier1_valid_screenshot_paths(loaded_data):
     for o in active_offers:
         oid = o["id"]
         assert slug_pattern.match(oid), f"Offer ID '{oid}' is not a valid lowercase slug"
-        
+
         # Check screenshot_path attribute if present
         if "screenshot_path" in o:
             shot_path = o["screenshot_path"]
@@ -1114,7 +1219,9 @@ def test_tier1_zero_dollar_verification_invariants(loaded_data):
         # 2. Redemption guide cart balance affirmation
         guide = o.get("redemption_guide", {})
         guide_bal = guide.get("verified_cart_balance", "")
-        assert "$0.00" in guide_bal, f"Active offer {oid} redemption_guide verified_cart_balance missing $0.00: '{guide_bal}'"
+        assert "$0.00" in guide_bal, (
+            f"Active offer {oid} redemption_guide verified_cart_balance missing $0.00: '{guide_bal}'"
+        )
 
         # 3. Disallowed payment trap phrases
         for field in [cart_bal, guide_bal]:
@@ -1157,10 +1264,10 @@ def test_tier1_ci_workflow_commit_pattern():
     wf_text = wf_path.read_text(encoding="utf-8")
 
     has_screenshot_pattern = (
-        "docs/screenshots/*.png" in wf_text or
-        "docs/screenshots/**" in wf_text or
-        "docs/screenshots" in wf_text or
-        "docs/**" in wf_text
+        "docs/screenshots/*.png" in wf_text
+        or "docs/screenshots/**" in wf_text
+        or "docs/screenshots" in wf_text
+        or "docs/**" in wf_text
     )
     assert has_screenshot_pattern, (
         "Implementation Bug in tracker.yml: git-auto-commit file_pattern must include 'docs/screenshots/*.png' "
@@ -1169,6 +1276,7 @@ def test_tier1_ci_workflow_commit_pattern():
 
 
 # --- TIER 2: BOUNDARY & CORNER CASE INVARIANTS ---
+
 
 def test_tier2_soft_404_detection():
     """
@@ -1180,7 +1288,7 @@ def test_tier2_soft_404_detection():
         "We're sorry, but the page you are looking for does not exist on this server.",
         "Error 404: We couldn't find that page.",
         "Looks like this page doesn't exist. Return to homepage.",
-        "Sorry, this page is not available or has been removed."
+        "Sorry, this page is not available or has been removed.",
     ]
 
     for sample in soft_404_samples:
@@ -1197,7 +1305,9 @@ def test_tier2_oracle_403_maintenance_detection():
     Review Needed and never falsely certified as Active.
     """
     # 1. Maintenance notice without affirmative offer signals
-    maint_sample = "Oracle University. Our website is currently down for maintenance. Please speak with an Oracle representative."
+    maint_sample = (
+        "Oracle University. Our website is currently down for maintenance. Please speak with an Oracle representative."
+    )
     res1 = inspect_rendered_dom(maint_sample, rendered_title="Oracle University Maintenance")
     assert res1["status"] in {"Review Needed", "Server Error"}, (
         f"Maintenance notice must trigger Review Needed, got: {res1['status']}"
@@ -1205,7 +1315,9 @@ def test_tier2_oracle_403_maintenance_detection():
 
     # 2. Maintenance notice commingled with generic 'free' tokens
     # Invariant: Maintenance notice must take strict priority over affirmative signals
-    maint_with_free = "Oracle University offers free certification training courses. Our website is currently down for maintenance."
+    maint_with_free = (
+        "Oracle University offers free certification training courses. Our website is currently down for maintenance."
+    )
     res2 = inspect_rendered_dom(maint_with_free, rendered_title="Down for Maintenance")
     assert res2["status"] == "Review Needed", (
         "Implementation Bug in dom_inspector.py: 'free' token bypassed maintenance notice! "
@@ -1225,7 +1337,9 @@ def test_tier2_paid_catalog_standard_price_detection():
     assert res1["status"] in {"Review Needed", "Server Error"}
 
     # 2. Commercial fee with deceptive 'free account' signup
-    catalog_with_free = "Create a free Oracle account to purchase exam vouchers. Standard exam fee is $245. Add to cart."
+    catalog_with_free = (
+        "Create a free Oracle account to purchase exam vouchers. Standard exam fee is $245. Add to cart."
+    )
     res2 = inspect_rendered_dom(catalog_with_free, rendered_title="Exam Checkout")
     assert res2["status"] == "Review Needed", (
         "Implementation Bug in dom_inspector.py: Generic 'free account' bypassed paid catalog check! "
@@ -1233,7 +1347,9 @@ def test_tier2_paid_catalog_standard_price_detection():
     )
 
     # 3. Valid 100% discount promotion must still be certified Active
-    valid_promo_text = "Standard exam fee is $245. Use promo code OCI-FREE for 100% discount. Total cart balance: $0.00."
+    valid_promo_text = (
+        "Standard exam fee is $245. Use promo code OCI-FREE for 100% discount. Total cart balance: $0.00."
+    )
     res3 = inspect_rendered_dom(valid_promo_text, rendered_title="OCI Free Challenge")
     assert res3["status"] == "Active", f"Legitimate 100% waiver was falsely rejected: {res3}"
 
@@ -1243,13 +1359,19 @@ def test_tier2_dual_visual_gate_missing_screenshot_downgrade():
     Tier 2 Invariant: Asserts that an offer with affirmative DOM signals but a
     missing, failed, or corrupted visual screenshot is downgraded to Review Needed.
     """
-    def evaluate_dual_gate(dom_status: str, has_zero_dollar: bool, screenshot_valid: bool, auth_score: int = 95) -> tuple[str, str]:
+
+    def evaluate_dual_gate(
+        dom_status: str, has_zero_dollar: bool, screenshot_valid: bool, auth_score: int = 95
+    ) -> tuple[str, str]:
         if dom_status != "Active" or not has_zero_dollar:
             return dom_status, "DOM failed affirmative check"
         if auth_score < 80:
             return "Review Needed", "Authenticity score below threshold"
         if not screenshot_valid:
-            return "Review Needed", "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid"
+            return (
+                "Review Needed",
+                "Visual Proof Gate Invariant: DOM confirmed offer, but visual screenshot proof is missing or invalid",
+            )
         return "Active", "Playwright DOM Verified: active campaign validated with visual screenshot proof"
 
     # Both pass -> Active
@@ -1271,6 +1393,7 @@ def test_tier2_malformed_and_empty_data_rejection():
     Tier 2 Invariant: Asserts strict validation rejection for corrupted records,
     empty strings, negative amounts, and non-HTTPS transports.
     """
+
     def validate_offer_record(record: dict) -> tuple[bool, str]:
         req_keys = ["id", "title", "platform", "url", "status", "claim_steps", "cart_balance_verified"]
         for k in req_keys:
@@ -1297,7 +1420,7 @@ def test_tier2_malformed_and_empty_data_rejection():
         "status": "Active",
         "claim_steps": "Follow test steps.",
         "cart_balance_verified": "$0.00 (Confirmed)",
-        "value_usd": 165
+        "value_usd": 165,
     }
     ok, _ = validate_offer_record(valid_record)
     assert ok is True
@@ -1325,6 +1448,7 @@ def test_tier2_malformed_and_empty_data_rejection():
 
 # --- TIER 3: CROSS-FEATURE INTERACTION INVARIANTS ---
 
+
 def test_tier3_proctored_vouchers_with_verified_proof(loaded_data):
     """
     Tier 3 Invariant: Validates cross-feature cohesion for Primary Tier offers:
@@ -1332,10 +1456,10 @@ def test_tier3_proctored_vouchers_with_verified_proof(loaded_data):
     valid screenshot proof specification.
     """
     offers = loaded_data.get("offers", [])
-    
+
     # Check active offers that represent formal proctored certifications
     proctored_keywords = ["pearson", "webassessor", "kryterion", "psi", "100% free exam voucher", "exam voucher"]
-    
+
     for o in offers:
         title_type = f"{o.get('title', '')} {o.get('offer_type', '')}".lower()
         if any(kw in title_type for kw in proctored_keywords) and o.get("status") == "Active":
@@ -1349,7 +1473,9 @@ def test_tier3_proctored_vouchers_with_verified_proof(loaded_data):
 
             # 3. Screenshot proof path pattern
             shot_path = o.get("screenshot_path", f"docs/screenshots/{o['id']}.png")
-            assert shot_path.startswith("docs/screenshots/"), f"Proctored offer {o['id']} screenshot path invalid: {shot_path}"
+            assert shot_path.startswith("docs/screenshots/"), (
+                f"Proctored offer {o['id']} screenshot path invalid: {shot_path}"
+            )
 
 
 def test_tier3_unproctored_badges_segregated_to_secondary(loaded_data):
@@ -1359,9 +1485,16 @@ def test_tier3_unproctored_badges_segregated_to_secondary(loaded_data):
     """
     offers = loaded_data.get("offers", [])
     unproctored_indicators = [
-        "applied skills", "skill badge", "arcade", "hands-on essentials",
-        "fundamentals student", "digital credential", "educate graduate",
-        "skills assessment", "lantern", "lakehouse fundamentals"
+        "applied skills",
+        "skill badge",
+        "arcade",
+        "hands-on essentials",
+        "fundamentals student",
+        "digital credential",
+        "educate graduate",
+        "skills assessment",
+        "lantern",
+        "lakehouse fundamentals",
     ]
 
     for o in offers:
@@ -1386,22 +1519,22 @@ def test_tier3_candidate_lead_vetting_gate(tmp_path):
             "title": "Free AWS Cert Voucher Braindump",
             "url": "https://aws-examdumps.xyz/vouchers",
             "is_authentic_vendor": False,
-            "verified_vendor_url": None
+            "verified_vendor_url": None,
         },
         {
             "id": "lead-closed-cohort",
             "title": "ISC2 Free Security Voucher Cohort",
             "url": "https://www.isc2.org/landing/1mcc",
             "is_authentic_vendor": True,
-            "verified_vendor_url": "https://www.isc2.org/landing/1mcc"
+            "verified_vendor_url": "https://www.isc2.org/landing/1mcc",
         },
         {
             "id": "lead-valid-azure",
             "title": "Microsoft Learn Applied Skills Azure AI",
             "url": "https://learn.microsoft.com/en-us/credentials/applied-skills/azure-ai",
             "is_authentic_vendor": True,
-            "verified_vendor_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/azure-ai"
-        }
+            "verified_vendor_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/azure-ai",
+        },
     ]
 
     # Vetting pipeline logic
@@ -1433,6 +1566,7 @@ def test_tier3_candidate_lead_vetting_gate(tmp_path):
 
 
 # --- TIER 4: REAL-WORLD SCENARIO INVARIANTS ---
+
 
 def test_tier4_oracle_university_outage_scenario():
     """
@@ -1499,7 +1633,7 @@ def test_tier4_google_cloud_skills_boost_direct_routing():
     reroute_res = inspect_rendered_dom(
         "Grow with Google. Explore career certificates and training programs.",
         final_url="https://www.skills.google/",
-        original_url="https://www.skills.google/free-cloud-voucher-quest"
+        original_url="https://www.skills.google/free-cloud-voucher-quest",
     )
     assert reroute_res["status"] in {"Registrations Closed", "Review Needed"}, (
         f"Silent reroute to root should not be Active, got: {reroute_res['status']}"
@@ -1510,7 +1644,7 @@ def test_tier4_google_cloud_skills_boost_direct_routing():
     direct_res = inspect_rendered_dom(
         arcade_text,
         final_url="https://go.cloudskillsboost.google/arcade",
-        original_url="https://go.cloudskillsboost.google/arcade"
+        original_url="https://go.cloudskillsboost.google/arcade",
     )
     assert direct_res["status"] == "Active", f"Direct Arcade quest should be Active, got: {direct_res['status']}"
 
@@ -1528,11 +1662,13 @@ def test_tier4_self_healing_recovery_flow():
         "status": "Review Needed",
         "verification_date": "2026-09-01",
         "inspection_notes": "Maintenance Invariant: Portal currently down for maintenance",
-        "url": "https://mylearn.oracle.com/"
+        "url": "https://mylearn.oracle.com/",
     }
 
     # Simulate recovery event
-    recovered_dom_text = "Registration is now open! 100% free exam voucher waiver included with course completion. Balance: $0.00."
+    recovered_dom_text = (
+        "Registration is now open! 100% free exam voucher waiver included with course completion. Balance: $0.00."
+    )
     res = inspect_rendered_dom(recovered_dom_text, rendered_title="Challenge Portal Open")
     assert res["status"] == "Active"
 
@@ -1540,7 +1676,7 @@ def test_tier4_self_healing_recovery_flow():
         updated = dict(offer)
         old_status = updated["status"]
         new_status = inspection_res["status"]
-        
+
         if old_status in ["Review Needed", "Registrations Closed", "Broken Link"] and new_status == "Active":
             updated["status"] = "Active"
             updated["verification_date"] = "2026-10-15"
@@ -1549,27 +1685,17 @@ def test_tier4_self_healing_recovery_flow():
                 "previous_status": old_status,
                 "healed_status": "Active",
                 "timestamp": "2026-10-15T12:00:00Z",
-                "proof_image": proof_path
+                "proof_image": proof_path,
             }
         return updated
 
-    healed_offer = apply_self_healing(
-        initial_offer,
-        res,
-        "docs/screenshots/self-heal-test-offer.png"
-    )
+    healed_offer = apply_self_healing(initial_offer, res, "docs/screenshots/self-heal-test-offer.png")
 
     assert healed_offer["status"] == "Active"
     assert healed_offer["verification_date"] == "2026-10-15"
     assert "self_healing_event" in healed_offer
     assert healed_offer["self_healing_event"]["previous_status"] == "Review Needed"
     assert healed_offer["self_healing_event"]["healed_status"] == "Active"
-
-
-
-
-
-
 
 
 def test_marketing_lead_funnel_rejection():
@@ -1581,7 +1707,7 @@ def test_marketing_lead_funnel_rejection():
     from src.dom_inspector import inspect_rendered_dom
 
     # 1. Marketing sales page without actionable fulfillment -> Must be rejected
-    marketing_lead_text = '''
+    marketing_lead_text = """
     Generative AI Capabilities
     Enter a new era of productivity with generative AI capabilities built for business.
     Speak to an AI expert
@@ -1589,23 +1715,25 @@ def test_marketing_lead_funnel_rejection():
     Oracle named a Leader in the IDC MarketScape: Worldwide Agentic AI Platforms 2026 Vendor Assessment
     Read the excerpt
     Try Free Cloud Tier with $300 in free cloud credits
-    '''
-    res = inspect_rendered_dom(marketing_lead_text, rendered_title='Generative AI Capabilities | Oracle')
-    assert res['status'] == 'Review Needed'
-    assert 'Marketing Funnel Invariant' in res['reason']
-    assert res['zero_dollar_confirmed'] is False
+    """
+    res = inspect_rendered_dom(marketing_lead_text, rendered_title="Generative AI Capabilities | Oracle")
+    assert res["status"] == "Review Needed"
+    assert "Marketing Funnel Invariant" in res["reason"]
+    assert res["zero_dollar_confirmed"] is False
 
     # 2. Authentic educational portal with enrollment CTA -> Must pass
-    actionable_portal_text = '''
+    actionable_portal_text = """
     Become an OCI Generative AI Professional
     Enroll in Path
     Course Modules: Large Language Models, Retrieval-Augmented Generation, OCI AI Stack
     Certification Exam: Oracle Cloud Infrastructure 2026 Generative AI Professional (1Z0-1127)
     Schedule Free Exam - 100% discount waiver applied ($0.00)
-    '''
-    active_res = inspect_rendered_dom(actionable_portal_text, rendered_title='Oracle MyLearn - Become an OCI Generative AI Professional')
-    assert active_res['status'] == 'Active'
-    assert active_res['zero_dollar_confirmed'] is True
+    """
+    active_res = inspect_rendered_dom(
+        actionable_portal_text, rendered_title="Oracle MyLearn - Become an OCI Generative AI Professional"
+    )
+    assert active_res["status"] == "Active"
+    assert active_res["zero_dollar_confirmed"] is True
 
 
 def test_semantic_accessibility_scanner_invariants():
@@ -1620,7 +1748,7 @@ def test_semantic_accessibility_scanner_invariants():
     fluff_report = scan_accessibility_elements(
         interactive_elements=fluff_elements,
         page_text="IDC MarketScape leader in agentic AI. Connect with sales.",
-        page_title="Generative AI Capabilities"
+        page_title="Generative AI Capabilities",
     )
     assert fluff_report.verdict == "MARKETING_LEAD_FUNNEL"
     assert fluff_report.is_actionable is False
@@ -1631,7 +1759,7 @@ def test_semantic_accessibility_scanner_invariants():
     actionable_report = scan_accessibility_elements(
         interactive_elements=actionable_elements,
         page_text="Oracle Cloud Infrastructure 2026 Generative AI Professional (1Z0-1127). 100% waiver applied.",
-        page_title="Oracle MyLearn - OCI Generative AI Professional"
+        page_title="Oracle MyLearn - OCI Generative AI Professional",
     )
     assert actionable_report.verdict == "ACTIONABLE_FULFILLMENT_PORTAL"
     assert actionable_report.is_actionable is True
@@ -1652,7 +1780,7 @@ def test_synthetic_cart_balance_assertion_invariants():
         "value_usd": 245,
         "application_flow_type": "Automated Account Link Waiver",
         "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
-        "voucher_code": "ORACLE_GENAI_WAVE_FREE_ATTEMPT"
+        "voucher_code": "ORACLE_GENAI_WAVE_FREE_ATTEMPT",
     }
     free_res = assert_cart_balance(free_offer)
     assert free_res.is_zero_dollar is True
@@ -1666,7 +1794,7 @@ def test_synthetic_cart_balance_assertion_invariants():
         "title": "Juniper Open Learning JNCIA",
         "value_usd": 200,
         "application_flow_type": "Checkout Promo Code",
-        "cart_balance_verified": "$50.00 (75% Discount / $50 Fee)"
+        "cart_balance_verified": "$50.00 (75% Discount / $50 Fee)",
     }
     copay_res = assert_cart_balance(copay_offer)
     assert copay_res.is_zero_dollar is False
@@ -1680,7 +1808,7 @@ def test_cryptographic_audit_ledger_invariants(tmp_path):
     Asserts that record_audit_entry appends tamper-evident SHA-256 receipts
     and verify_ledger_integrity validates 100% cryptographic soundness.
     """
-    from src.audit_ledger import record_audit_entry, read_audit_entries, verify_ledger_integrity
+    from src.audit_ledger import read_audit_entries, record_audit_entry, verify_ledger_integrity
 
     ledger_file = tmp_path / "test_audit.jsonl"
     dummy_dom = "<html><body><h1>Oracle MyLearn</h1><p>Enroll for Free</p></body></html>"
@@ -1694,7 +1822,7 @@ def test_cryptographic_audit_ledger_invariants(tmp_path):
         status="Active",
         actionability_verdict="ACTIONABLE_FULFILLMENT_PORTAL",
         cart_balance_verified="$0.00",
-        ledger_path=ledger_file
+        ledger_path=ledger_file,
     )
 
     assert receipt.offer_id == "test-crypt-offer"
@@ -1713,7 +1841,6 @@ def test_cryptographic_audit_ledger_invariants(tmp_path):
     assert audit_summary["integrity_rate"] == 1.0
 
 
-
 def test_two_strike_grace_period_invariant():
     """
     Asserts the Two-Strike State Machine invariant (P1):
@@ -1726,7 +1853,12 @@ def test_two_strike_grace_period_invariant():
     # Strike 1: Transient 502 / network timeout
     new_status = "Review Needed"
     consecutive_failures = offer.get("consecutive_failures", 0)
-    if old_status == "Active" and new_status in ["Review Needed", "Broken Link", "Server Error", "Registrations Closed"]:
+    if old_status == "Active" and new_status in [
+        "Review Needed",
+        "Broken Link",
+        "Server Error",
+        "Registrations Closed",
+    ]:
         if consecutive_failures < 1:
             offer["consecutive_failures"] = 1
             offer["in_grace_period"] = True
@@ -1739,7 +1871,12 @@ def test_two_strike_grace_period_invariant():
     # Strike 2: Second consecutive failure
     new_status = "Review Needed"
     consecutive_failures = offer.get("consecutive_failures", 0)
-    if old_status == "Active" and new_status in ["Review Needed", "Broken Link", "Server Error", "Registrations Closed"]:
+    if old_status == "Active" and new_status in [
+        "Review Needed",
+        "Broken Link",
+        "Server Error",
+        "Registrations Closed",
+    ]:
         if consecutive_failures < 1:
             offer["consecutive_failures"] = 1
             offer["in_grace_period"] = True

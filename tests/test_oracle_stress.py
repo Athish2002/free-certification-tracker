@@ -7,23 +7,20 @@ pathological inputs, dynamic derivation, and registry fallbacks.
 import json
 import tempfile
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any
 
 import pytest
 
 from src.truth_oracle import (
-    TRUTH_POLICY_REGISTRY,
     CURATED_POLICY_OVERRIDES,
-    POLICY_VERIFIED_100PCT_FREE,
-    POLICY_STUDENT_VERIFIED_ONLY,
-    POLICY_PARTIAL_DISCOUNT_COPAY,
-    POLICY_ANNUAL_WINDOW_CLOSED,
-    POLICY_HISTORICAL_EVENT_WAVE,
     POLICY_FREE_UNPROCTORED_BADGE,
-    derive_truth_policy,
+    POLICY_PARTIAL_DISCOUNT_COPAY,
+    POLICY_STUDENT_VERIFIED_ONLY,
+    POLICY_VERIFIED_100PCT_FREE,
+    TRUTH_POLICY_REGISTRY,
     build_dynamic_policy_registry,
+    derive_truth_policy,
     get_truth_policy,
-    corroborate_offer,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -31,9 +28,9 @@ OFFERS_FILE = ROOT / "data" / "offers.json"
 
 
 @pytest.fixture(scope="module")
-def canonical_offers() -> List[Dict[str, Any]]:
+def canonical_offers() -> list[dict[str, Any]]:
     assert OFFERS_FILE.exists(), f"Missing canonical offers file: {OFFERS_FILE}"
-    with open(OFFERS_FILE, "r", encoding="utf-8") as f:
+    with open(OFFERS_FILE, encoding="utf-8") as f:
         data = json.load(f)
     return data.get("offers", [])
 
@@ -53,10 +50,20 @@ class TestEmpiricalCanonicalInvariants:
 
             # Invariant 1: Top-level required keys
             for key in [
-                "provider", "exam_name", "policy_type", "real_exam_cost_usd",
-                "verified_discount_pct", "truth_source_name", "truth_source_url",
-                "verdict_notes", "enforce_status", "category", "official_url",
-                "domain", "authority_rules", "expected_verification_patterns"
+                "provider",
+                "exam_name",
+                "policy_type",
+                "real_exam_cost_usd",
+                "verified_discount_pct",
+                "truth_source_name",
+                "truth_source_url",
+                "verdict_notes",
+                "enforce_status",
+                "category",
+                "official_url",
+                "domain",
+                "authority_rules",
+                "expected_verification_patterns",
             ]:
                 assert key in policy, f"Offer '{oid}' missing policy key '{key}'"
 
@@ -81,8 +88,13 @@ class TestEmpiricalCanonicalInvariants:
             # Invariant 6: Expected verification patterns
             exp = policy["expected_verification_patterns"]
             assert exp["status"] in [
-                "Active", "Registrations Closed", "Expired", "Broken Link",
-                "Review Needed", "Server Error", "Network Warning"
+                "Active",
+                "Registrations Closed",
+                "Expired",
+                "Broken Link",
+                "Review Needed",
+                "Server Error",
+                "Network Warning",
             ]
             assert isinstance(exp["zero_dollar_expected"], bool)
 
@@ -200,15 +212,18 @@ class TestEmpiricalPathologicalInputs:
         assert policy["category"] == ""
         assert policy["truth_source_url"] == "https://certpulse.org/truth"
 
-    @pytest.mark.parametrize("strange_url,expected_source_url", [
-        ("javascript:alert(1)", "https://certpulse.org/truth"),
-        ("mailto:support@certpulse.org", "https://certpulse.org/truth"),
-        ("ftp://files.example.org/exam.pdf", "https://files.example.org"),
-        ("not-a-valid-url-format", "https://certpulse.org/truth"),
-        ("http://192.168.1.50:8080/portal", "https://192.168.1.50:8080"),
-        ("http://10.0.0.1/cert", "https://10.0.0.1"),
-        ("http://insecure.vendor.com/exam", "https://insecure.vendor.com"),
-    ])
+    @pytest.mark.parametrize(
+        "strange_url,expected_source_url",
+        [
+            ("javascript:alert(1)", "https://certpulse.org/truth"),
+            ("mailto:support@certpulse.org", "https://certpulse.org/truth"),
+            ("ftp://files.example.org/exam.pdf", "https://files.example.org"),
+            ("not-a-valid-url-format", "https://certpulse.org/truth"),
+            ("http://192.168.1.50:8080/portal", "https://192.168.1.50:8080"),
+            ("http://10.0.0.1/cert", "https://10.0.0.1"),
+            ("http://insecure.vendor.com/exam", "https://insecure.vendor.com"),
+        ],
+    )
     def test_strange_urls_and_internal_ips(self, strange_url, expected_source_url):
         policy = derive_truth_policy({"id": "test-url", "url": strange_url, "company": "UrlVendor"})
         assert policy["truth_source_url"].startswith("https://")
@@ -216,13 +231,15 @@ class TestEmpiricalPathologicalInputs:
 
     def test_missing_nested_metadata_dictionaries(self):
         """Omitting authenticity_details, visual_proof, and redemption_guide defaults safely."""
-        policy = derive_truth_policy({
-            "id": "test-no-nested",
-            "url": "https://example.com/cert",
-            "authenticity_details": None,
-            "visual_proof": None,
-            "redemption_guide": None,
-        })
+        policy = derive_truth_policy(
+            {
+                "id": "test-no-nested",
+                "url": "https://example.com/cert",
+                "authenticity_details": None,
+                "visual_proof": None,
+                "redemption_guide": None,
+            }
+        )
         assert policy["authority_rules"]["requires_https"] is True
         assert policy["expected_verification_patterns"]["zero_dollar_expected"] is True
 
