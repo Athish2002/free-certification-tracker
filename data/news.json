@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-10T17:33:45.572295+00:00",
-  "last_sync": "2026-11-10T17:33:45.572295+00:00",
+  "last_updated": "2026-11-10T19:28:15.295182+00:00",
+  "last_sync": "2026-11-10T19:28:15.295182+00:00",
   "news": [
+    {
+      "id": "github-git-security-vulnerabilities-a",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "Git security vulnerabilities announced",
+      "summary": "Git is releasing updates addressing six security vulnerabilities affecting recursive clones, reference handling, merges, binary patches, and imports. Here is what users need to know. The post Git security vulnerabilities announced appeared ...",
+      "published_date": "2026-11-10",
+      "date": "2026-11-10",
+      "url": "https://github.blog/open-source/git/git-security-vulnerabilities-announced-7/",
+      "impact_badge": "Developer Tooling",
+      "content_fingerprint": "87c899fbb3532b0363b3630005984d7da98b76aa54b0da43b046f6262eaa1c80"
+    },
     {
       "id": "cisco-safeguard-your-wan-from-quantu",
       "company": "Cisco",
@@ -1386,20 +1400,6 @@
       "impact_badge": "Cloud Platform",
       "date": "2024-08-01",
       "content_fingerprint": "79fe4b07aad930fa4205d0fb58ed465835c30fd4953c9356763c7fe289ba4100"
-    },
-    {
-      "id": "google-cloud-introducing-new-self-learning",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Introducing new self-learning context enrichment in Knowledge Catalog",
-      "summary": "Today, we're launching self-learning context enrichment (preview) and a reimagined Knowledge Studio experience (preview) in Knowledge Catalog, Google Cloud's context engine for agents. Building on Knowledge Catalog's existing Gemini-powered...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "56882fbfba4ba41b4951be55807a215ac7f4a2250d45bee530e371b0e60350f0"
     }
   ],
   "total_items": 100
