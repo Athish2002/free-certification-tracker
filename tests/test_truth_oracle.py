@@ -188,3 +188,32 @@ class TestTruthOracleUISynchronization:
         assert 'id="proofModalTruthSource"' in html
         assert 'id="proofModalTruthSourceName"' in html
         assert 'id="proofModalTruthNotes"' in html
+
+
+class TestTruthOracleTimeoutCircuitBreaker:
+    """Verifies that the Truth Oracle execution circuit breaker does not block on timeout."""
+
+    def test_oracle_non_blocking_timeout_shutdown(self):
+        """Shutdown with wait=False must not block main thread when worker task times out."""
+        import concurrent.futures
+        import time
+
+        def hanging_task():
+            time.sleep(2.0)
+            return "done"
+
+        start_time = time.perf_counter()
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        timed_out = False
+        try:
+            future = executor.submit(hanging_task)
+            future.result(timeout=0.05)
+        except (concurrent.futures.TimeoutError, TimeoutError):
+            timed_out = True
+        finally:
+            executor.shutdown(wait=False, cancel_futures=True)
+
+        elapsed = time.perf_counter() - start_time
+        assert timed_out is True
+        # Elapsed must be substantially less than the 2.0s sleep of the background worker
+        assert elapsed < 0.5, f"Executor shutdown blocked main thread: elapsed={elapsed:.3f}s"

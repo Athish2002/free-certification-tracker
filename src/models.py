@@ -316,6 +316,9 @@ class Offer(BaseModel):
 
     # Online Truth Oracle Verification
     truth_verification: dict[str, Any] | None = None
+    oracle_timeout: bool | None = Field(
+        default=None, description="True if Truth Oracle circuit breaker timed out during audit"
+    )
 
     # Visual Proof Metadata (R2, R3)
     visual_proof: VisualProof | None = None

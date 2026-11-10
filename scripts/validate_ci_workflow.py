@@ -26,23 +26,24 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
+
 import yaml
 
 WORKFLOW_PATH = Path(__file__).resolve().parent.parent / ".github" / "workflows" / "tracker.yml"
 
 
-def load_workflow() -> Dict[str, Any]:
+def load_workflow() -> dict[str, Any]:
     if not WORKFLOW_PATH.exists():
         raise FileNotFoundError(f"Workflow file not found at {WORKFLOW_PATH}")
-    with open(WORKFLOW_PATH, "r", encoding="utf-8") as f:
+    with open(WORKFLOW_PATH, encoding="utf-8") as f:
         data = yaml.safe_load(f)
     if not isinstance(data, dict):
         raise ValueError("Parsed workflow is not a dictionary")
     return data
 
 
-def validate_workflow(workflow_yaml: Dict[str, Any]) -> None:
+def validate_workflow(workflow_yaml: dict[str, Any]) -> None:
     # 1. Triggers & Permissions
     name = workflow_yaml.get("name")
     assert name and "CertPulse" in name, f"Invalid workflow name: {name}"
@@ -61,7 +62,9 @@ def validate_workflow(workflow_yaml: Dict[str, Any]) -> None:
     # Least privilege permissions: root has contents: read (or write),
     # while update-and-deploy has contents: write, and deploy-pages has pages: write & id-token: write
     root_perms = workflow_yaml.get("permissions", {})
-    assert root_perms.get("contents") in ("read", "write"), f"Invalid root contents permission: {root_perms.get('contents')}"
+    assert root_perms.get("contents") in ("read", "write"), (
+        f"Invalid root contents permission: {root_perms.get('contents')}"
+    )
 
     jobs = workflow_yaml.get("jobs", {})
     assert "update-and-deploy" in jobs, "'update-and-deploy' job missing"
@@ -91,7 +94,9 @@ def validate_workflow(workflow_yaml: Dict[str, Any]) -> None:
         assert "3.12" in versions, f"Python 3.12 missing from matrix: {versions}"
         assert "3.13" in versions, f"Python 3.13 missing from matrix: {versions}"
     elif isinstance(matrix_py, str):
-        assert "3.12" in matrix_py and "3.13" in matrix_py, f"Python 3.12 and 3.13 missing from matrix expression: {matrix_py}"
+        assert "3.12" in matrix_py and "3.13" in matrix_py, (
+            f"Python 3.12 and 3.13 missing from matrix expression: {matrix_py}"
+        )
         assert "github.event_name == 'push'" in matrix_py or "push" in matrix_py, "Push-based matrix condition missing"
     else:
         raise AssertionError(f"Unexpected matrix python-version type: {type(matrix_py)}")
@@ -110,7 +115,11 @@ def validate_workflow(workflow_yaml: Dict[str, Any]) -> None:
     e2e_steps = [s for s in steps if "run" in s and "tests/e2e/runner.py" in s["run"]]
     assert e2e_steps, "E2E runner execution step missing in test job"
 
-    cache_steps = [s for s in steps if "actions/cache" in s.get("uses", "") and "ms-playwright" in s.get("with", {}).get("path", "")]
+    cache_steps = [
+        s
+        for s in steps
+        if "actions/cache" in s.get("uses", "") and "ms-playwright" in s.get("with", {}).get("path", "")
+    ]
     assert cache_steps, "Playwright browser cache step missing in test job"
 
     schema_steps = [s for s in steps if "run" in s and "schema.json" in s["run"]]

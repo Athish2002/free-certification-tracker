@@ -146,6 +146,23 @@ class TestReadmeBuilder:
             fallback = format_4_timezones(invalid)
             assert isinstance(fallback, dict) and "utc" in fallback
 
+    def test_readme_timezone_fallback_when_zoneinfo_missing(self, monkeypatch):
+        """format_4_timezones must use fallback offsets if ZoneInfo raises on bare OS."""
+        from zoneinfo import ZoneInfoNotFoundError
+
+        def mock_zoneinfo_fail(key):
+            raise ZoneInfoNotFoundError(f"Mocked missing timezone: {key}")
+
+        monkeypatch.setattr("src.builders.readme_builder.ZoneInfo", mock_zoneinfo_fail)
+
+        res = format_4_timezones("2026-10-23T12:00:00Z")
+        assert "UTC" in res["utc"]
+        assert "IST" in res["ist"]
+        assert "EST" in res["et"]
+        assert "CET" in res["cet"]
+        assert "ticker" in res
+        assert "banner" in res
+
     def test_readme_builder_generation_and_escaping_invariants(self):
         """generate_readme must produce valid Markdown, handle empty datasets, and escape pipes."""
         offers = [

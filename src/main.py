@@ -8,6 +8,7 @@ the README and Web Dashboard.
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import logging
 from datetime import UTC, datetime
@@ -415,10 +416,11 @@ def run_pipeline(
                 o_data = json.load(f)
             initial_offers = o_data.get("offers", [])
             corrections_applied = 0
+            offers_payload = copy.deepcopy(initial_offers)
+            executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
-                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                    future = executor.submit(audit_and_enrich_offers, initial_offers, strict_enforcement=True)
-                    enriched, summary = future.result(timeout=30.0)
+                future = executor.submit(audit_and_enrich_offers, offers_payload, strict_enforcement=True)
+                enriched, summary = future.result(timeout=30.0)
                 o_data["offers"] = enriched
                 corrections_applied = summary.get("corrections_applied", 0)
                 logger.info(f"Truth Oracle corroboration complete: {corrections_applied} corrections applied.")
@@ -427,6 +429,13 @@ def run_pipeline(
                 for off in o_data.get("offers", []):
                     off["oracle_timeout"] = True
                 corrections_applied = 1
+            except Exception as oracle_err:
+                logger.error(
+                    f"Truth Oracle corroboration encountered unexpected error: {oracle_err}. Preserving offers.",
+                    exc_info=True,
+                )
+            finally:
+                executor.shutdown(wait=False, cancel_futures=True)
 
             # Substantive change check: only mutate on-disk data if statuses, urls, prices, or policies changed
             def _has_substantive_changes(old_list, new_list):

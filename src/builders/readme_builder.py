@@ -6,7 +6,7 @@ and zero-dollar checkout navigation.
 """
 
 import json
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -27,6 +27,17 @@ STATUS_BADGES = {
 }
 
 
+def _safe_format_tz(dt: datetime, tz_name: str, fallback_offset_hours: float, fallback_label: str) -> str:
+    """Safely formats datetime for a target timezone with UTC-offset fallback on bare OS / missing tzdata."""
+    try:
+        tz = ZoneInfo(tz_name)
+        fmt = "%H:%M IST" if tz_name == "Asia/Kolkata" else "%H:%M %Z"
+        return dt.astimezone(tz).strftime(fmt)
+    except Exception:
+        fb_tz = timezone(timedelta(hours=fallback_offset_hours))
+        return dt.astimezone(fb_tz).strftime(f"%H:%M {fallback_label}")
+
+
 def format_4_timezones(dt: datetime | str | None = None) -> dict[str, str]:
     """Formats a datetime across 4 canonical global timezones: UTC, IST, US Eastern (ET), and Central Europe (CET/CEST)."""
     parsed_dt: datetime | None = None
@@ -45,9 +56,9 @@ def format_4_timezones(dt: datetime | str | None = None) -> dict[str, str]:
 
     utc_str = parsed_dt.strftime("%Y-%m-%d %H:%M UTC")
     utc_time_only = parsed_dt.strftime("%H:%M UTC")
-    ist_str = parsed_dt.astimezone(ZoneInfo("Asia/Kolkata")).strftime("%H:%M IST")
-    et_str = parsed_dt.astimezone(ZoneInfo("America/New_York")).strftime("%H:%M %Z")
-    cet_str = parsed_dt.astimezone(ZoneInfo("Europe/Berlin")).strftime("%H:%M %Z")
+    ist_str = _safe_format_tz(parsed_dt, "Asia/Kolkata", 5.5, "IST")
+    et_str = _safe_format_tz(parsed_dt, "America/New_York", -5.0, "EST")
+    cet_str = _safe_format_tz(parsed_dt, "Europe/Berlin", 1.0, "CET")
 
     return {
         "utc": utc_str,

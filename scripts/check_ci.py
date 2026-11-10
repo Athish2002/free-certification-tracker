@@ -1,5 +1,6 @@
-import urllib.request
 import json
+import urllib.request
+
 
 def check_ci():
     url = "https://api.github.com/repos/Athish2002/free-certification-tracker/actions/runs?per_page=10"
@@ -10,9 +11,12 @@ def check_ci():
             runs = data.get("workflow_runs", [])
             print(f"Total Workflow Runs Returned: {len(runs)}")
             for r in runs:
-                print(f"ID: {r['id']} | Event: {r['event']} | Status: {r['status']} | Conclusion: {r['conclusion']} | SHA: {r['head_sha'][:7]} | Branch: {r['head_branch']} | Created: {r['created_at']}")
+                print(
+                    f"ID: {r['id']} | Event: {r['event']} | Status: {r['status']} | Conclusion: {r['conclusion']} | SHA: {r['head_sha'][:7]} | Branch: {r['head_branch']} | Created: {r['created_at']}"
+                )
     except Exception as e:
         print("Error fetching GitHub Actions runs:", e)
+
 
 if __name__ == "__main__":
     check_ci()

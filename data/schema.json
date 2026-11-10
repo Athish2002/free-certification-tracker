@@ -316,6 +316,12 @@
             "object",
             "null"
           ]
+        },
+        "oracle_timeout": {
+          "type": [
+            "boolean",
+            "null"
+          ]
         }
       }
     }
