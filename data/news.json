@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-09T22:03:59.283657+00:00",
-  "last_sync": "2026-11-09T22:03:59.283657+00:00",
+  "last_updated": "2026-11-10T06:35:21.279301+00:00",
+  "last_sync": "2026-11-10T06:35:21.279301+00:00",
   "news": [
+    {
+      "id": "google-cloud-the-open-ai-native-stack-on-ku",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "The open AI-native stack on Kubernetes: From open models to distributed inference and agents",
+      "summary": "Over the past decade, Kubernetes established itself as the standard for orchestrating microservices and containerized applications. Today, we're witnessing the next major architectural shift in distributed computing: AI workloads moving fro...",
+      "published_date": "2026-11-10",
+      "date": "2026-11-10",
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/the-open-ai-native-stack-on-kubernetes-from-open-models-to-distributed-inference-and-agents/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "15b6fca170032503a2a2d958d13e5b026e77f0fb413f8a099e4658e2a2187d77"
+    },
     {
       "id": "cisco-moving-fast-and-staying-in-con",
       "company": "Cisco",
@@ -1386,20 +1400,6 @@
       "impact_badge": "Cloud Platform",
       "date": "2024-08-01",
       "content_fingerprint": "9fba172bf57d722dff72183a7d245db41d139b8eeb21628009c368027180e03d"
-    },
-    {
-      "id": "cisco-hardened-by-design-applying-t",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Hardened by Design: Applying the NSA's OT Guidance with Cisco Security & Splunk",
-      "summary": "Apply the NSA's new Zero Trust guidance to your OT environments. Learn how Cisco Cyber Vision and Splunk provide the visibility and telemetry needed to secure critical infrastructure without disrupting operations.",
-      "published_date": "2024-08-01",
-      "url": "https://blogs.cisco.com/industries/hardened-by-design-applying-the-nsas-ot-guidance-with-cisco-security-splunk",
-      "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01",
-      "content_fingerprint": "2bd0ace15ae09af7dde3d04125472d1cf3ee2fee05254c4aaca2ce60478634f9"
     }
   ],
   "total_items": 100
