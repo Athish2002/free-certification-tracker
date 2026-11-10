@@ -116,7 +116,7 @@ jobs:
 
       - name: Sync remote with rebase before commit
         run: |
-          git pull --rebase origin main || (git rebase --abort && exit 1)
+          git pull --rebase --autostash origin main || true
 
       - name: Commit and Push Changes If Updated
         id: auto-commit
