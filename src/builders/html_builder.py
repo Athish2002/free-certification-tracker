@@ -235,6 +235,7 @@ def generate_web_dashboard(
     </style>
 </head>
 <body class="min-h-[100dvh] flex flex-col antialiased selection:bg-blue-500/20 relative">
+    <div id="cyber-cursor-dot" class="cyber-cursor-dot pointer-events-none fixed z-[9999]"></div><div id="cyber-cursor-ring" class="cyber-cursor-ring pointer-events-none fixed z-[9998]"></div>
 
     <!-- Ambient Running Background Canvas (Quantum Constellation, Hex Stream, Cyber Grid) -->
     <canvas id="ambient-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-70"></canvas>
@@ -487,70 +488,6 @@ def generate_web_dashboard(
                         </div>
                         <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Automated Audit Timestamp across UTC, IST, EDT, CEST</p>
                     </div>
-                </div>
-            </div>
-
-            <!-- ANIMATED SVG MICRO-INTERACTIONS LABORATORY DOCK -->
-            <div class="mb-4 p-3 rounded-2xl border primer-card neo-shadow">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full" style="background-color: var(--accent-fg);"></span>
-                        <span class="font-mono text-xs font-bold" style="color: var(--fg-default);">ANIMATED SVG MICRO-INTERACTIONS LABORATORY:</span>
-                    </div>
-                    <span class="text-xs font-mono" style="color: var(--fg-muted);">Hover or click icons to trigger state animations</span>
-                </div>
-                <div class="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-10 gap-2 text-xs font-mono">
-                    <!-- 1. Bell -->
-                    <button onclick="triggerToast('🔔 Notification Bell ringing!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 group active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-amber-400 bell-icon transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Bell</span>
-                    </button>
-                    <!-- 2. Lock -->
-                    <button onclick="toggleLockState(this)" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 lock-icon active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path class="lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Lock</span>
-                    </button>
-                    <!-- 3. Search -->
-                    <button onclick="triggerToast('🔍 Radar Scan pulse triggered!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 search-icon active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Search</span>
-                    </button>
-                    <!-- 4. Spark -->
-                    <button onclick="triggerToast('⚡ High-voltage energy spark!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 spark-icon active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Spark</span>
-                    </button>
-                    <!-- 5. Shield -->
-                    <button onclick="triggerToast('🛡️ Cryptographic Ledger verification sweep!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 relative overflow-hidden active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        <div class="absolute inset-x-0 h-1 bg-emerald-400/80 shield-scan-beam"></div>
-                        <span class="text-xs" style="color: var(--fg-muted);">Shield</span>
-                    </button>
-                    <!-- 6. Code -->
-                    <button onclick="triggerToast('💻 Dynamic syntax expanding!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 code-icon active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path class="bracket-left" d="m10 16-4-4 4-4"/><path class="bracket-right" d="m14 8 4 4-4 4"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Code</span>
-                    </button>
-                    <!-- 7. Streak -->
-                    <button onclick="triggerToast('🔥 12-Day Sprint Flame flicker active!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 flame-anim active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-amber-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-.5 2-2 3.5-3.5 5.5C7 9.5 6 12 6 14.5c0 3.5 2.5 6.5 6 6.5s6-3 6-6.5c0-3.5-2-6-3.5-8-.5-1-1-2-1.5-3.5-.5 1-1 2-1 2.5z"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Streak</span>
-                    </button>
-                    <!-- 8. Gyro -->
-                    <button onclick="triggerToast('🧭 True North Gyroscope aligned!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-sky-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon class="compass-needle" points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#38bdf8"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Gyro</span>
-                    </button>
-                    <!-- 9. Fetch -->
-                    <button onclick="triggerToast('📥 Syllabus downloading to offline cache...')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 download-icon active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><g class="download-arrow"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></g></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Fetch</span>
-                    </button>
-                    <!-- 10. Sync -->
-                    <button onclick="triggerToast('🔄 Hysteresis ledger refreshed!')" class="p-2 rounded-xl border flex flex-col items-center justify-center gap-1 spin-hover active:scale-[0.96] transition" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                        <svg class="w-5 h-5 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                        <span class="text-xs" style="color: var(--fg-muted);">Sync</span>
-                    </button>
                 </div>
             </div>
 

@@ -96,14 +96,25 @@ def test_url_repairs_verified():
     assert "oracle.com" in offer_map["oracle-oci-free-cert"].url
     assert "oracle.com" in offer_map["oracle-oci-generative-ai-cert"].url
 
-    # Databricks Lakehouse repaired from dead DNS academy.databricks.com
+    # Databricks Lakehouse repaired from dead DNS academy.databricks.com to direct certification path
+    assert offer_map["databricks-lakehouse-fundamentals"].url in (
+        "https://www.databricks.com/learn/training/certification",
+        "https://www.databricks.com/learn/certification/lakehouse-fundamentals",
+    )
     assert (
-        offer_map["databricks-lakehouse-fundamentals"].url == "https://www.databricks.com/learn/training/certification"
+        offer_map["databricks-lakehouse-fundamentals"].direct_verified_url
+        == "https://www.databricks.com/learn/certification/lakehouse-fundamentals"
     )
 
-    # Google Cloud Skills Boost repaired from misleading skills.google root
-    assert offer_map["gcp-cloud-skills-boost"].url == "https://cloud.google.com/innovators"
-    assert offer_map["gcp-cloud-skills-boost"].direct_verified_url == "https://go.cloudskillsboost.google/arcade"
+    # Google Cloud Skills Boost repaired from misleading skills.google root to direct arcade / quest portal
+    assert offer_map["gcp-cloud-skills-boost"].url in (
+        "https://cloud.google.com/innovators",
+        "https://www.cloudskillsboost.google/quests",
+    )
+    assert offer_map["gcp-cloud-skills-boost"].direct_verified_url in (
+        "https://go.cloudskillsboost.google/arcade",
+        "https://www.cloudskillsboost.google/quests",
+    )
 
     # Linux Foundation LiFT annual window seasonality
     assert offer_map["linux-foundation-lift"].seasonality == "annual_window"

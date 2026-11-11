@@ -274,9 +274,9 @@ def generate_readme(
         proof_link = f"[📸 Proof](docs/screenshots/{o.get('id', '')}.png)"
         tv = o.get("truth_verification") or {}
         truth_source_name = _escape_md(tv.get("truth_source_name", f"{provider} Policy"))
-        truth_source_url = tv.get("truth_source_url", o.get("url"))
+        truth_source_url = tv.get("truth_source_url", o.get("direct_verified_url") or o.get("url"))
         truth_link = f"[{truth_source_name}]({truth_source_url})"
-        url = o.get("url", "#")
+        url = o.get("direct_verified_url") or o.get("url", "#")
         lines.append(
             f"| **{provider}** | {cert} | {cat} | `{cadence}` | {val} | {status_text} | {proof_link} | {truth_link} | [**Claim Voucher**]({url}) |"
         )
@@ -304,9 +304,9 @@ def generate_readme(
         proof_link = f"[📸 Proof](docs/screenshots/{o.get('id', '')}.png)"
         tv = o.get("truth_verification") or {}
         truth_source_name = _escape_md(tv.get("truth_source_name", f"{provider} Policy"))
-        truth_source_url = tv.get("truth_source_url", o.get("url"))
+        truth_source_url = tv.get("truth_source_url", o.get("direct_verified_url") or o.get("url"))
         truth_link = f"[{truth_source_name}]({truth_source_url})"
-        url = o.get("url", "#")
+        url = o.get("direct_verified_url") or o.get("url", "#")
         lines.append(
             f"| **{provider}** | {cert} | {cat} | {elig} | {val} | {status_text} | {proof_link} | {truth_link} | [**Claim Discount**]({url}) |"
         )
@@ -336,9 +336,9 @@ def generate_readme(
         proof_link = f"[📸 Proof](docs/screenshots/{o.get('id', '')}.png)"
         tv = o.get("truth_verification") or {}
         truth_source_name = _escape_md(tv.get("truth_source_name", f"{provider} Policy"))
-        truth_source_url = tv.get("truth_source_url", o.get("url"))
+        truth_source_url = tv.get("truth_source_url", o.get("direct_verified_url") or o.get("url"))
         truth_link = f"[{truth_source_name}]({truth_source_url})"
-        url = o.get("url", "#")
+        url = o.get("direct_verified_url") or o.get("url", "#")
         lines.append(
             f"| **{provider}** | {cert} | {cat} | `{tier}` | {val} | {status_text} | {proof_link} | {truth_link} | [**Launch Lab**]({url}) |"
         )
@@ -452,7 +452,8 @@ def generate_readme(
         lines.append(f"- **Value:** ${o.get('value_usd')} USD")
         lines.append(f"- **Eligibility:** {o.get('eligibility')}")
         lines.append(f"- **Steps to Claim:** {o.get('claim_steps')}")
-        lines.append(f"- **Official Link:** [{o.get('url')}]({o.get('url')})")
+        target_link = o.get("direct_verified_url") or o.get("url")
+        lines.append(f"- **Official Link:** [{target_link}]({target_link})")
         lines.append("")
     lines.append("</details>")
     lines.append("")
@@ -473,7 +474,7 @@ def generate_readme(
         cert = _escape_md(o.get("certification_name") or o.get("title"))
         guide = o.get("redemption_guide") or {}
         portal_name = _escape_md(guide.get("portal_name", o.get("platform")))
-        portal_url = guide.get("portal_url", o.get("url"))
+        portal_url = guide.get("portal_url", o.get("direct_verified_url") or o.get("url"))
         field_loc = _escape_md(guide.get("field_location", o.get("checkout_field", "Promo / Voucher Code input")))
         flow = _escape_md(guide.get("flow_type", o.get("application_flow_type", "Checkout Promo Code")))
         bal = _escape_md(guide.get("verified_cart_balance", "$0.00"))
@@ -492,7 +493,7 @@ def generate_readme(
         lines.append(f"#### {o.get('title')}")
         lines.append(f"- **Voucher / Promo Code:** `{code}`")
         lines.append(
-            f"- **Official Redemption Portal:** [{guide.get('portal_name', o.get('platform'))}]({guide.get('portal_url', o.get('url'))})"
+            f"- **Official Redemption Portal:** [{guide.get('portal_name', o.get('platform'))}]({guide.get('portal_url', o.get('direct_verified_url') or o.get('url'))})"
         )
         lines.append(f"- **Checkout Field Location:** `{guide.get('field_location', o.get('checkout_field'))}`")
         lines.append(f"- **Application Flow Type:** `{guide.get('flow_type', o.get('application_flow_type'))}`")

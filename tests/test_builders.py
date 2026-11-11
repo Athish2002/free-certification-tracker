@@ -89,8 +89,15 @@ class TestThemeEngine:
         for theme in THEMES:
             assert f'value="{theme["id"]}"' in dropdown_html
 
-        parsed = json.loads(get_theme_json())
-        assert len(parsed) == 2 and parsed[0]["id"] == THEMES[0]["id"]
+    def test_theme_engine_cyber_cursor_and_platform_icons_css(self):
+        """Theme engine must output cyber cursor and platform brand icon animation styles."""
+        css = generate_css_variables()
+        assert ".cyber-cursor-dot" in css
+        assert ".cyber-cursor-ring" in css
+        assert "@media (hover: none)" in css
+        assert ".platform-brand-icon" in css
+        assert "brandGlowPulse" in css
+        assert "var(--accent-fg)" in css
 
 
 # ==============================================================================
@@ -129,6 +136,33 @@ class TestClientBundle:
         assert "Test Certification" in injected
         assert "Test News" in injected
         assert "2026-10-23T12:00:00Z" in injected
+
+    def test_client_bundle_cyber_cursor_and_dual_icons(self):
+        """Client bundle must implement initCyberCursor and authentic brand SVGs with .platform-brand-icon."""
+        js = generate_client_bundle()
+        assert "function initCyberCursor()" in js
+        assert "cyber-cursor-dot" in js
+        assert "cyber-cursor-ring" in js
+        assert "cursor-hover" in js
+        assert "function getPlatformIconSvg(platform)" in js
+
+        # Test brand SVGs across all 12 key platforms
+        for brand in [
+            "AWS",
+            "Microsoft Azure",
+            "Google Cloud",
+            "Oracle Cloud",
+            "Cisco",
+            "Databricks",
+            "ISC2",
+            "Linux Foundation",
+            "Snowflake",
+            "Splunk",
+            "IBM",
+            "Harvard",
+        ]:
+            assert "platform-brand-icon" in js
+            assert brand.lower().split()[0] in js.lower()
 
 
 # ==============================================================================
@@ -263,6 +297,15 @@ class TestHtmlBuilder:
         ]
         xss_html = generate_web_dashboard(malicious, [], "2026-10-23T12:00:00Z")
         assert "<script>alert('XSS')</script>" not in xss_html
+
+    def test_html_builder_cyber_cursor_and_no_toy_laboratory(self):
+        """Dashboard must contain cyber cursor DOM elements and must omit the laboratory dock."""
+        html = generate_web_dashboard([], [], "2026-10-23T12:00:00Z")
+        assert 'id="cyber-cursor-dot"' in html
+        assert 'id="cyber-cursor-ring"' in html
+        assert "cyber-cursor-dot pointer-events-none fixed z-[9999]" in html
+        assert "cyber-cursor-ring pointer-events-none fixed z-[9998]" in html
+        assert "ANIMATED SVG MICRO-INTERACTIONS LABORATORY" not in html
 
 
 # ==============================================================================

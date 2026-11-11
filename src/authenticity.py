@@ -163,7 +163,7 @@ PLATFORM_DOMAINS: dict[str, list[str]] = {
         "google",
     ],
     "Oracle Cloud": ["oracle.com", "education.oracle.com", "mylearn.oracle.com", "blogs.oracle.com"],
-    "Cisco": ["cisco.com", "u.cisco.com", "learningnetwork.cisco.com", "blogs.cisco.com", "netacad.com"],
+    "Cisco": ["cisco.com", "u.cisco.com", "learningnetwork.cisco.com", "blogs.cisco.com", "netacad.com", "skillsforall.com"],
     "ISC2": ["isc2.org", "www.isc2.org"],
     "Linux Foundation / CNCF": ["linuxfoundation.org", "cncf.io", "training.linuxfoundation.org"],
     "Snowflake": ["snowflake.com", "learn.snowflake.com"],

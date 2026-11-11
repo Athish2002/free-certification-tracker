@@ -401,77 +401,106 @@ JS_TEMPLATE = """
             checkedOfferIds = [];
         }
 
-        // Authentic Brand Logos (SVG Vector Library for 22+ platforms)
+        // Authentic Brand Logos (SVG Vector Library with Dual Icon Architecture)
         function getPlatformIconSvg(platform) {
             if (!platform) return '';
             const p = platform.toLowerCase();
+
+            // 1. AWS (smile arrow + AWS mark)
             if (p.includes('aws') || p.includes('amazon')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#ff9900"><path d="M4 11.5c3.5 1.8 7.5.8 9.5-.5.3-.2.5.2.3.4-1.8 1.8-6.5 2.8-9.8.7-.3-.2 0-.6 0-.6zm8.8-1.7c-.2-.3-1.4-.4-2-.3-.2 0-.2-.2 0-.3.7-.5 2.1-.3 2.3 0 .2.2.1 1.6-.5 2.1-.2.2-.3.1-.3 0 .1-.5.7-1.2.5-1.5z"/><path d="M10.7 7.2c-.1-.7-.4-1.3-1-1.7-.8-.5-1.9-.5-2.6 0-.6.4-.9 1-.9 1.7 0 .5.3 1 .8 1.3.7.4 1.7.5 2.6.2.8-.3 1.1-.9 1.1-1.5zm-3.3 0c0-.4.2-.7.6-.9.4-.2.9-.2 1.3 0 .4.2.6.5.6.9 0 .4-.2.7-.6.9-.4.2-.9.2-1.3 0-.4-.2-.6-.5-.6-.9z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 9.2c-.8 0-1.5.3-1.8.8l.6.6c.2-.3.6-.5 1.2-.5.7 0 1.1.4 1.1 1v.2c-.3-.1-.7-.1-1.1-.1-1 0-1.7.5-1.7 1.3 0 .8.6 1.3 1.5 1.3.6 0 1.1-.3 1.3-.7v.6h.9v-2.8c0-1-.8-1.7-2-1.7zm.8 2.3c0 .4-.4.7-.9.7-.5 0-.8-.3-.8-.7 0-.4.3-.6.9-.6.3 0 .6 0 .8.1v.5zM8.2 9.4h.8l.8 2.7.8-2.7h.8l.8 2.7.8-2.7h.8l-1.2 4h-.9l-.8-2.6-.8 2.6h-.9l-1.2-4zM16.5 10.5c-.3-.2-.7-.3-1.1-.3-.6 0-.9.3-.9.6 0 .4.3.5.8.7.8.2 1.5.6 1.5 1.4 0 .9-.7 1.4-1.7 1.4-.6 0-1.2-.2-1.6-.5l.5-.7c.3.2.7.4 1.1.4.6 0 1-.3 1-.6 0-.4-.4-.5-.9-.7-.8-.2-1.4-.5-1.4-1.3 0-.8.7-1.3 1.6-1.3.5 0 1 .1 1.4.4l-.3.9z"/><path fill="#FF9900" d="M3.5 17.2c4.8 2.7 11 1.8 14.8-.8.4-.3.7.3.4.6-2.7 2.4-8.8 3.8-14.5 1.1-.6-.3-.2-1.1-.7-.9z"/><path fill="#FF9900" d="M19.2 15.1c-.3-.4-1.7-.5-2.4-.3-.3 0-.3-.3 0-.4 1-.6 2.6-.3 2.9 0 .2.3 0 2-.6 2.6-.3.3-.5.2-.4 0 .2-.6.8-1.5.5-1.9z"/></svg>`;
             }
+
+            // 2. Microsoft / Azure (official Azure multi-polygon cloud)
             if (p.includes('azure') || p.includes('microsoft')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><rect x="1" y="1" width="6.5" height="6.5" fill="#f25022"/><rect x="8.5" y="1" width="6.5" height="6.5" fill="#7fba00"/><rect x="1" y="8.5" width="6.5" height="6.5" fill="#00a4ef"/><rect x="8.5" y="8.5" width="6.5" height="6.5" fill="#ffb900"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L4.85 8.163l4.57 3.327 4.063-7.49Z" fill="#0078d4"/><path d="M13.04 4.004l-3.62 6.673 4.542 3.842 5.057-9.458a1.375 1.375 0 0 0-1.198-1.057Z" fill="#5ea0ef"/><path d="M5.408 8.783.336 13.623a1.375 1.375 0 0 0 .142 1.996l7.747 6.467c.604.505 1.503.35 1.914-.33l3.655-6.05-4.457-3.235-3.93 2.502 2.65 2.186-.967 1.587-4.14-3.484 2.47-2.48Z" fill="#0078d4"/><path d="M13.794 15.706l-3.376 5.587a1.374 1.374 0 0 0 1.177 2.082h9.914c.974 0 1.62-.99 1.22-1.878l-4.942-10.978Z" fill="#005ba1"/></svg>`;
             }
-            if (p.includes('google')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><path d="M10.2 4.4A3.8 3.8 0 0 0 4 6.2a3 3 0 0 0-2 2.8 3 3 0 0 0 3 3h7.5a3 3 0 0 0 3-3 3 3 0 0 0-2.5-3 3.8 3.8 0 0 0-2.8-1.6z" fill="#4285f4"/><path d="M10.2 4.4a3.8 3.8 0 0 0-3.5 2.4l1.8 1.8a2 2 0 0 1 1.7-1.2 2 2 0 0 1 2 2l1.3-.3a3 3 0 0 0-3.3-4.7z" fill="#ea4335"/><path d="M13 9a3 3 0 0 1-3 3H5a3 3 0 0 1-1.8-.6l1.2-1.2a2 2 0 0 0 .6.3h5a2 2 0 0 0 2-2z" fill="#34a853"/><path d="M2 9a3 3 0 0 1 3-3l1 1a2 2 0 0 0-2 2z" fill="#fbbc05"/></svg>`;
+
+            // 3. Google Cloud / GCP (official 4-color cloud logo)
+            if (p.includes('google') || p.includes('gcp')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-3.11 0-5.83 1.77-7.14 4.36L8.41 12C9.17 10.79 10.5 10 12 10c2.76 0 5 2.24 5 5 0 .34-.04.67-.11.99l3.52 2.6c.6-.82.94-1.82.94-2.59 0-2.64-2.05-4.78-4.65-4.96z"/><path fill="#EA4335" d="M16.9 14.99c.07-.32.1-.65.1-.99 0-2.76-2.24-5-5-5-.4 0-.78.06-1.15.15L8.41 6.72C9.52 6.26 10.73 6 12 6c3.64 0 6.67 2.59 7.35 6.04 1.5.11 2.82.93 3.52 2.15L19.35 16c-.46-.57-1.12-.92-1.85-.99-.2 0-.4.01-.6.02v-.04z"/><path fill="#FBBC05" d="M4.86 8.36C2.08 8.87 0 11.28 0 14.2c0 3.31 2.69 6 6 6h4.5v-3H6c-1.66 0-3-1.34-3-3 0-1.54 1.16-2.81 2.68-2.97l-.82-2.87z"/><path fill="#34A853" d="M19 14c0 1.66-1.34 3-3 3h-5.5v3H16c3.31 0 6-2.69 6-6 0-1.85-.85-3.5-2.18-4.58l-1.92 1.92C18.52 11.93 19 12.91 19 14z"/></svg>`;
             }
+
+            // 4. Oracle (official Oracle red brand badge + cloud)
             if (p.includes('oracle')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><rect x="1" y="3.5" width="14" height="9" rx="4.5" fill="#f80000"/><rect x="3.5" y="5.5" width="9" height="5" rx="2.5" fill="var(--canvas-subtle)"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><rect x="1" y="2" width="22" height="20" rx="4" fill="#C74634"/><path d="M12 5c-3.6 0-6.5 1.1-6.5 2.5s2.9 2.5 6.5 2.5 6.5-1.1 6.5-2.5S15.6 5 12 5zm0 3.8c-2.5 0-4.5-.6-4.5-1.3s2-1.3 4.5-1.3 4.5.6 4.5 1.3-2 1.3-4.5 1.3z" fill="#FFFFFF"/><path d="M16.8 15.2c-.3-1.8-1.9-3.2-3.8-3.2-1.5 0-2.8.8-3.4 2.1-.4-.2-.8-.3-1.3-.3-1.8 0-3.3 1.5-3.3 3.3 0 1.8 1.5 3.3 3.3 3.3h8.3c1.7 0 3-1.3 3-3 0-1.5-1.2-2.8-2.8-2.2z" fill="#FFFFFF"/></svg>`;
             }
+
+            // 5. Cisco (official Cisco bridge bar waveform)
             if (p.includes('cisco')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#1ba0d7"><rect x="1" y="7" width="1.5" height="6" rx="0.75"/><rect x="3.5" y="4" width="1.5" height="9" rx="0.75"/><rect x="6" y="8" width="1.5" height="5" rx="0.75"/><rect x="8.5" y="8" width="1.5" height="5" rx="0.75"/><rect x="11" y="4" width="1.5" height="9" rx="0.75"/><rect x="13.5" y="7" width="1.5" height="6" rx="0.75"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24" fill="#049FD9"><rect x="1.5" y="13" width="1.5" height="7" rx="0.75"/><rect x="3.85" y="8" width="1.5" height="12" rx="0.75"/><rect x="6.2" y="13" width="1.5" height="7" rx="0.75"/><rect x="8.55" y="8" width="1.5" height="12" rx="0.75"/><rect x="10.9" y="3" width="1.5" height="17" rx="0.75"/><rect x="13.25" y="8" width="1.5" height="12" rx="0.75"/><rect x="15.6" y="13" width="1.5" height="7" rx="0.75"/><rect x="17.95" y="8" width="1.5" height="12" rx="0.75"/><rect x="20.3" y="13" width="1.5" height="7" rx="0.75"/></svg>`;
             }
-            if (p.includes('github')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>`;
-            }
-            if (p.includes('linux') || p.includes('cncf')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><path d="M8 1l5.5 3.2v6.4L8 13.8l-5.5-3.2V4.2L8 1z" stroke="#326ce5" stroke-width="1.4" fill="none"/><circle cx="8" cy="7.5" r="2.5" fill="#326ce5"/></svg>`;
-            }
+
+            // 6. Databricks (official Databricks isometric stack)
             if (p.includes('databricks')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#ff3621"><path d="M8 1L2 4.5l6 3.5 6-3.5L8 1zm0 5L2 9.5l6 3.5 6-3.5L8 6zm0 5l-6 3.5 6 3.5 6-3.5L8 11z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24" fill="#FF3621"><path d="M12 0L1.605 6.002l1.605.926L12 1.854l8.79 5.074 1.605-.926L12 0zm0 5.432L3.21 10.505l1.605.926L12 7.287l7.185 4.144 1.605-.926L12 5.432zm0 5.432L3.21 15.579l1.605.926L12 12.36l7.185 4.145 1.605-.926L12 10.864zm0 5.432l-7.185 4.145 1.605.926L12 17.79l7.185 4.145 1.605-.926L12 16.296z"/></svg>`;
             }
+
+            // 7. ISC2 (official ISC2 circular shield)
+            if (p.includes('isc2') || p.includes('isc')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10.5" fill="none" stroke="#008542" stroke-width="1.8"/><path d="M12 4.5L5.5 7.5v5c0 4.2 2.8 7.2 6.5 8.2 3.7-1 6.5-4 6.5-8.2v-5L12 4.5z" fill="#008542"/><circle cx="12" cy="10.5" r="2.2" fill="#FFFFFF"/><path d="M10.8 11.5h2.4l.6 4h-3.6z" fill="#FFFFFF"/></svg>`;
+            }
+
+            // 8. Linux Foundation (official LF mark)
+            if (p.includes('linux') || p.includes('cncf')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><path d="M2.5 2.5v19h19v-5H7.5V2.5H2.5z" fill="#003366"/><path d="M10 2.5v12h11.5V2.5H10zm8 4h-4.5V4.5H18v2zm-2 4h-2.5V8.5H16v2z" fill="#0099FF"/></svg>`;
+            }
+
+            // 9. Snowflake (official Snowflake crystal)
             if (p.includes('snowflake')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><path d="M8 1v14M1 8h14M3 3l10 10M3 13L13 3M6 2l2 2 2-2M6 14l2-2 2 2M2 6l2 2-2 2M14 6l-2 2 2 2" stroke="#29b5e8" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24" fill="#29B5E8"><path d="M12 0a1 1 0 0 0-1 1v3.27l-2.03-1.17a1 1 0 0 0-1 1.73L10 6.01 7.22 6.5a1 1 0 0 0 .34 1.97L11 8.08V11H8.08l-.39-3.44a1 1 0 1 0-1.98.22L6.2 10.6 3.4 9.1a1 1 0 0 0-1 1.73l2.87 1.66-2.87 1.66a1 1 0 0 0 1 1.73l2.8-1.5.5 2.82a1 1 0 1 0 1.98.22L8.08 13H11v2.92l-3.44.39a1 1 0 0 0-.34 1.97l2.78.49-2.03 1.18a1 1 0 0 0 1 1.73L11 20.51V23a1 1 0 1 0 2 0v-2.49l2.03 1.18a1 1 0 0 0 1-1.73l-2.78-.49 2.78-.49a1 1 0 0 0-.34-1.97L13 15.92V13h2.92l.39 3.44a1 1 0 0 0 1.98-.22l.51-2.82 2.8 1.5a1 1 0 0 0 1-1.73l-2.87-1.66 2.87-1.66a1 1 0 0 0-1-1.73l-2.8 1.5-.51-2.82a1 1 0 1 0-1.98-.22L15.92 11H13V8.08l3.44-.39a1 1 0 0 0 .34-1.97l-2.78-.49 2.03-1.18a1 1 0 0 0-1-1.73L13 4.27V1a1 1 0 0 0-1-1z"/></svg>`;
+            }
+
+            // 10. Splunk (official Splunk angle bracket)
+            if (p.includes('splunk')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24" fill="#F15B24"><path d="M3.5 3.5l8.8 8.5-8.8 8.5h4.2l8.8-8.5-8.8-8.5H3.5z"/><rect x="15.5" y="18" width="7" height="2.5" rx="0.5"/></svg>`;
+            }
+
+            // 11. IBM (official IBM 8-bar mark)
+            if (p.includes('ibm')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24" fill="#0F62FE"><path d="M0 3.25h5.455v1.442H0V3.25zm6.818 0h6.705v1.442H6.818V3.25zm8.068 0H24v1.442h-9.114V3.25zM0 5.606h5.455v1.442H0V5.606zm6.818 0h6.705v1.442H6.818V5.606zm8.068 0H24v1.442h-9.114V5.606zM0 7.962h5.455v1.442H0V7.962zm8.182 0h4.09v1.442h-4.09V7.962zm8.068 0H24v1.442h-7.75V7.962zM0 10.317h5.455v1.442H0v-1.442zm8.182 0h4.09v1.442h-4.09v-1.442zm8.068 0H24v1.442h-7.75v-1.442zM0 12.673h5.455v1.442H0v-1.442zm6.818 0h6.705v1.442H6.818v-1.442zm8.068 0H24v1.442h-9.114v-1.442zM0 15.029h5.455v1.442H0v-1.442zm8.182 0h4.09v1.442h-4.09v-1.442zm8.068 0H24v1.442h-7.75v-1.442zM0 17.385h5.455v1.442H0v-1.442zm6.818 0h6.705v1.442H6.818v-1.442zm8.068 0H24v1.442h-9.114v-1.442zM0 19.74h5.455v1.442H0V19.74zm6.818 0h6.705v1.442H6.818V19.74zm8.068 0H24v1.442h-9.114V19.74z"/></svg>`;
+            }
+
+            // 12. Harvard (official Veritas crest / academic shield)
+            if (p.includes('harvard')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 4 4.5 4 8.5c0 6.5 5 11 8 13.5 3-2.5 8-7 8-13.5 0-4-2.5-6.5-8-6.5z" fill="#A51C30"/><path d="M12 3.2C7.3 3.2 5.2 5.4 5.2 8.7c0 5.6 4.3 9.7 6.8 11.8 2.5-2.1 6.8-6.2 6.8-11.8 0-3.3-2.1-5.5-6.8-5.5z" fill="none" stroke="#FFFFFF" stroke-width="0.75" opacity="0.6"/><rect x="6.8" y="6.2" width="4.2" height="3.2" rx="0.5" fill="#FFFFFF"/><text x="7.4" y="8.6" font-size="2" font-weight="bold" fill="#A51C30" font-family="serif">VE</text><rect x="13" y="6.2" width="4.2" height="3.2" rx="0.5" fill="#FFFFFF"/><text x="13.7" y="8.6" font-size="2" font-weight="bold" fill="#A51C30" font-family="serif">RI</text><rect x="9.9" y="11.5" width="4.2" height="3.2" rx="0.5" fill="#FFFFFF"/><text x="10.2" y="13.9" font-size="1.8" font-weight="bold" fill="#A51C30" font-family="serif">TAS</text></svg>`;
+            }
+
+            // Additional Platforms
+            if (p.includes('github')) {
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>`;
             }
             if (p.includes('mongodb')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#00ed64"><path d="M8 1c.5 1.5 4 4.5 4 8a4 4 0 0 1-8 0c0-3.5 3.5-6.5 4-8z"/><path d="M8 3v10" stroke="#001e2b" stroke-width="0.8"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#00ed64"><path d="M8 1c.5 1.5 4 4.5 4 8a4 4 0 0 1-8 0c0-3.5 3.5-6.5 4-8z"/><path d="M8 3v10" stroke="#001e2b" stroke-width="0.8"/></svg>`;
             }
             if (p.includes('salesforce')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#00a1e0"><path d="M6 4a3.5 3.5 0 0 1 3.4 2.7 3 3 0 0 1 3.6 3 2.5 2.5 0 0 1-2.5 2.3H5a3 3 0 0 1-.9-5.8A3.5 3.5 0 0 1 6 4z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#00a1e0"><path d="M6 4a3.5 3.5 0 0 1 3.4 2.7 3 3 0 0 1 3.6 3 2.5 2.5 0 0 1-2.5 2.3H5a3 3 0 0 1-.9-5.8A3.5 3.5 0 0 1 6 4z"/></svg>`;
             }
             if (p.includes('postman')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#ff6c37"><circle cx="8" cy="8" r="6.5"/><path d="M5 8l2.5 2.5L11 5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#ff6c37"><circle cx="8" cy="8" r="6.5"/><path d="M5 8l2.5 2.5L11 5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
             }
             if (p.includes('juniper')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="3" fill="#00739c"/><path d="M6 6h4v4H6z" fill="#ffffff"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="3" fill="#00739c"/><path d="M6 6h4v4H6z" fill="#ffffff"/></svg>`;
             }
             if (p.includes('fortinet')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#ee3124"><rect x="2" y="3" width="5.5" height="4.5" rx="1"/><rect x="8.5" y="3" width="5.5" height="4.5" rx="1"/><rect x="2" y="8.5" width="5.5" height="4.5" rx="1"/><rect x="8.5" y="8.5" width="5.5" height="4.5" rx="1"/></svg>`;
-            }
-            if (p.includes('isc2')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#008752"><path d="M8 1L2.5 3v5c0 3.5 2.5 6 5.5 7 3-1 5.5-3.5 5.5-7V3L8 1zm0 3a2.5 2.5 0 0 1 2.5 2.5c0 1.2-.8 2.2-2 2.4v2.1h-1V8.9a2.5 2.5 0 0 1-2-2.4A2.5 2.5 0 0 1 8 4z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#ee3124"><rect x="2" y="3" width="5.5" height="4.5" rx="1"/><rect x="8.5" y="3" width="5.5" height="4.5" rx="1"/><rect x="2" y="8.5" width="5.5" height="4.5" rx="1"/><rect x="8.5" y="8.5" width="5.5" height="4.5" rx="1"/></svg>`;
             }
             if (p.includes('qualys')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="#ed1c24" stroke-width="1.5" fill="none"/><path d="M9 10l2.5 2.5" stroke="#ed1c24" stroke-width="2" stroke-linecap="round"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="#ed1c24" stroke-width="1.5" fill="none"/><path d="M9 10l2.5 2.5" stroke="#ed1c24" stroke-width="2" stroke-linecap="round"/></svg>`;
             }
             if (p.includes('red hat')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16"><path d="M14.5 10.5c-.8 0-1.8-.3-2.6-.7-.6 1.4-2 2.2-3.9 2.2-2.3 0-4-1.2-4-2.8 0-.4.1-.7.3-1C2.9 8.2 2 7.7 2 7.2c0-.5.8-1 2.3-1.3C5 4.5 6.4 3 8 3c2.2 0 3.7 1.6 4.1 3.8 1.4.3 2.4 1 2.4 1.8 0 .5-.7 1-2 1.3.4.2.8.4 1.2.6.5-.2.8-.2.8 0 0 .5-1.1.8-2 .8z" fill="#ee0000"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16"><path d="M14.5 10.5c-.8 0-1.8-.3-2.6-.7-.6 1.4-2 2.2-3.9 2.2-2.3 0-4-1.2-4-2.8 0-.4.1-.7.3-1C2.9 8.2 2 7.7 2 7.2c0-.5.8-1 2.3-1.3C5 4.5 6.4 3 8 3c2.2 0 3.7 1.6 4.1 3.8 1.4.3 2.4 1 2.4 1.8 0 .5-.7 1-2 1.3.4.2.8.4 1.2.6.5-.2.8-.2.8 0 0 .5-1.1.8-2 .8z" fill="#ee0000"/></svg>`;
             }
             if (p.includes('hashicorp')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#027bfd"><path d="M2.5 2h3v12h-3zm8 0h3v12h-3zm-5.5 4.5h5v3h-5z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#027bfd"><path d="M2.5 2h3v12h-3zm8 0h3v12h-3zm-5.5 4.5h5v3h-5z"/></svg>`;
             }
             if (p.includes('palo alto')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#fa582d"><path d="M8 1L2 4v5c0 3.5 2.5 5.5 6 6 3.5-.5 6-2.5 6-6V4L8 1zm0 2.2l4 2v3.8c0 2.4-1.6 3.9-4 4.3-2.4-.4-4-1.9-4-4.3V5.2l4-2z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#fa582d"><path d="M8 1L2 4v5c0 3.5 2.5 5.5 6 6 3.5-.5 6-2.5 6-6V4L8 1zm0 2.2l4 2v3.8c0 2.4-1.6 3.9-4 4.3-2.4-.4-4-1.9-4-4.3V5.2l4-2z"/></svg>`;
             }
             if (p.includes('gitlab')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#fc6d26"><path d="M8 14.5L1.5 5.8l2.2-6.5L8 4.2l4.3-4.9 2.2 6.5L8 14.5z"/></svg>`;
+                return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="#fc6d26"><path d="M8 14.5L1.5 5.8l2.2-6.5L8 4.2l4.3-4.9 2.2 6.5L8 14.5z"/></svg>`;
             }
-            if (p.includes('splunk')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#f15b24"><path d="M3 2.5l5.5 5.5L3 13.5h3l5.5-5.5L6 2.5H3zm7 11h3v-2h-3v2z"/></svg>`;
-            }
-            if (p.includes('ibm')) {
-                return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="#0f62fe"><rect x="1" y="2" width="14" height="1"/><rect x="1" y="4" width="14" height="1"/><rect x="1" y="6" width="14" height="1"/><rect x="1" y="8" width="14" height="1"/><rect x="1" y="10" width="14" height="1"/><rect x="1" y="12" width="14" height="1"/></svg>`;
-            }
-            return `<svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 16 16" fill="var(--accent-fg)"><circle cx="8" cy="8" r="6"/></svg>`;
+            return `<svg class="w-4 h-4 flex-shrink-0 platform-brand-icon" viewBox="0 0 16 16" fill="var(--accent-fg)"><circle cx="8" cy="8" r="6"/></svg>`;
         }
 
         // Canonical Developer Color Palettes: GitHub Dark and GitHub Light
@@ -2108,7 +2137,74 @@ JS_TEMPLATE = """
         window.setBackgroundFXMode = setBackgroundFXMode;
         window.flipCard = flipCard;
 
+        // ================= CUSTOM CYBER CURSOR ENGINE =================
+        function initCyberCursor() {
+            const dot = document.getElementById('cyber-cursor-dot');
+            const ring = document.getElementById('cyber-cursor-ring');
+            if (!dot || !ring) return;
+
+            if (window.matchMedia && window.matchMedia('(hover: none)').matches) {
+                dot.style.display = 'none';
+                ring.style.display = 'none';
+                return;
+            }
+
+            let mouseX = -100, mouseY = -100;
+            let ringX = -100, ringY = -100;
+            let isTracking = false;
+
+            function lerpRing() {
+                if (isTracking) {
+                    ringX += (mouseX - ringX) * 0.18;
+                    ringY += (mouseY - ringY) * 0.18;
+                    ring.style.left = ringX.toFixed(2) + 'px';
+                    ring.style.top = ringY.toFixed(2) + 'px';
+                }
+                requestAnimationFrame(lerpRing);
+            }
+            requestAnimationFrame(lerpRing);
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                dot.style.left = mouseX + 'px';
+                dot.style.top = mouseY + 'px';
+
+                if (!isTracking) {
+                    ringX = mouseX;
+                    ringY = mouseY;
+                    ring.style.left = ringX + 'px';
+                    ring.style.top = ringY + 'px';
+                    dot.classList.add('active');
+                    ring.classList.add('active');
+                    isTracking = true;
+                }
+            });
+
+            document.addEventListener('mouseleave', () => {
+                dot.classList.remove('active');
+                ring.classList.remove('active');
+                isTracking = false;
+            });
+
+            document.addEventListener('mouseenter', () => {
+                dot.classList.add('active');
+                ring.classList.add('active');
+                isTracking = true;
+            });
+
+            document.addEventListener('mouseover', (e) => {
+                const interactive = e.target && e.target.closest('a, button, input, [role="button"], .primer-card');
+                if (interactive) {
+                    ring.classList.add('cursor-hover');
+                } else {
+                    ring.classList.remove('cursor-hover');
+                }
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            initCyberCursor();
             const urlParams = new URLSearchParams(window.location.search);
             const viewParam = urlParams.get('view');
             const tabParam = urlParams.get('tab');

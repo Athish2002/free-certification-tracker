@@ -31,7 +31,7 @@
 | **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-11-10 19:28 UTC` (00:58 IST • 14:28 EST • 20:28 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-11-10 17:33 UTC` (23:03 IST • 12:33 EST • 18:33 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 | **Maintainer Model** | **Solo Developer ([Athish R S](https://github.com/Athish2002))** | 100% independent project; best-effort response (no corporate SLAs) |
 
@@ -42,10 +42,10 @@
 
 | Provider | Certification & Program | Category | Cadence & Wave | Value (USD) | Status | Proof | Truth Source | Claim Link |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Quarterly Learning Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Quarterly Learning Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) |
 | **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Continuous Cisco U Tracks` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Claim Voucher**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
-| **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Claim Voucher**](https://www.databricks.com/learn/training/certification) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227) |
+| **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | [**Claim Voucher**](https://www.databricks.com/learn/certification/generative-ai-fundamentals) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://education.oracle.com/oracle-cloud-infrastructure-generative-ai-professional/pexam_1Z0-1127-24) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444) |
 | **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Biannual Student & Universe Waves` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
 
 ---
@@ -68,19 +68,19 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
 | **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Associate` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Launch Lab**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | Cloud & AI | `Associate` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/ms-applied-skills.png) | [Microsoft Learn Credentials Registry](https://learn.microsoft.com/en-us/credentials/applied-skills/) | [**Launch Lab**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/gcp-cloud-skills-boost.png) | [Google Cloud Innovators Program](https://cloud.google.com/innovators) | [**Launch Lab**](https://cloud.google.com/innovators) |
-| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/snowflake-hands-on-essentials.png) | [Snowflake Learn Essentials Track](https://learn.snowflake.com/en/pages/hands-on-essentials-track/) | [**Launch Lab**](https://learn.snowflake.com/en/pages/hands-on-essentials-track/) |
-| **Postman** | Postman API Fundamentals Student / Pro Expert | API & DevOps | `Foundational` | $50 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/postman-api-expert.png) | [Postman Academy Student Programs](https://academy.postman.com/) | [**Launch Lab**](https://academy.postman.com/) |
-| **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/qualys-certified-specialist.png) | [Qualys Training Official Portal](https://www.qualys.com/training) | [**Launch Lab**](https://www.qualys.com/training) |
-| **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | Security | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | [Fortinet Training Institute](https://training.fortinet.com/) | [**Launch Lab**](https://training.fortinet.com/) |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/gcp-cloud-skills-boost.png) | [Google Cloud Innovators Program](https://www.cloudskillsboost.google/quests) | [**Launch Lab**](https://www.cloudskillsboost.google/quests) |
+| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/snowflake-hands-on-essentials.png) | [Snowflake Learn Essentials Track](https://learn.snowflake.com/en/tracks/hands-on-essentials/) | [**Launch Lab**](https://learn.snowflake.com/en/tracks/hands-on-essentials/) |
+| **Postman** | Postman API Fundamentals Student / Pro Expert | API & DevOps | `Foundational` | $50 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/postman-api-expert.png) | [Postman Academy Student Programs](https://academy.postman.com/path/postman-api-fundamentals-student-expert) | [**Launch Lab**](https://academy.postman.com/path/postman-api-fundamentals-student-expert) |
+| **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/qualys-certified-specialist.png) | [Qualys Training Official Portal](https://www.qualys.com/training) | [**Launch Lab**](https://www.qualys.com/training/) |
+| **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | [**Launch Lab**](https://www.databricks.com/learn/certification/generative-ai-fundamentals) |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | Security | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | [Fortinet Training Institute](https://training.fortinet.com/local/staticpage/view.php?page=fcf) | [**Launch Lab**](https://training.fortinet.com/local/staticpage/view.php?page=fcf) |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | Cloud Computing | `Foundational` | $50 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/aws-educate-badges.png) | [AWS Educate Program](https://aws.amazon.com/education/awseducate/) | [**Launch Lab**](https://aws.amazon.com/education/awseducate/) |
 | **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | Cloud & DevOps | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/redhat-skills-assessment-rhel.png) | [Red Hat Developer Program](https://developers.redhat.com/) | [**Launch Lab**](https://www.redhat.com/en/services/skills-assessment) |
 | **GitLab** | GitLab Certified Associate | Cloud & DevOps | `Associate` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/gitlab-certified-associate.png) | [GitLab University](https://university.gitlab.com/) | [**Launch Lab**](https://university.gitlab.com/pages/certifications) |
 | **Splunk** | Splunk Core Observability & Defense Fundamentals | Security | `Foundational` | $130 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/splunk-certified-defense-analyst.png) | [Splunk Lantern & Training](https://lantern.splunk.com/) | [**Launch Lab**](https://www.splunk.com/en_us/training/splunk-fundamentals.html) |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/) | [**Launch Lab**](https://skillsbuild.org/learning-catalog) |
-| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Databricks Academy](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.netacad.com/) | [**Launch Lab**](https://www.netacad.com/courses/introduction-to-cybersecurity) |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) | [**Launch Lab**](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) |
+| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Databricks Academy](https://www.databricks.com/learn/certification/lakehouse-fundamentals) | [**Launch Lab**](https://www.databricks.com/learn/certification/lakehouse-fundamentals) |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.skillsforall.com/) | [**Launch Lab**](https://www.skillsforall.com/) |
 
 ---
 
@@ -136,7 +136,6 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| `2026-11-10` | **GitHub** | Tech Development | `Developer Tooling` | **[Git security vulnerabilities announced](https://github.blog/open-source/git/git-security-vulnerabilities-announced-7/)**<br>Git is releasing updates addressing six security vulnerabilities affecting recursive clones, reference handling, merges, binary patches, and imports. Here is what users need to know. The post Git security vulnerabilities announced appeared ... | [GitHub Engineering Blog](https://github.blog/open-source/git/git-security-vulnerabilities-announced-7/)<br>`github.blog` |
 | `2026-11-10` | **Cisco** | Tech Development | `Enterprise Networking` | **[Safeguard Your WAN from Quantum Threats, Part 2: The CNSA 2.0 Blueprint](https://blogs.cisco.com/networking/safeguard-your-wan-from-quantum-threats-part-2-the-cnsa-2-0-blueprint)**<br>The quantum threat is here. Discover how Cisco 8000 Series Secure Routers deliver the industry's first end-to-end CNSA 2.0 blueprint, securing your WAN with zero disruption to existing operations. | [Cisco Blogs](https://blogs.cisco.com/networking/safeguard-your-wan-from-quantum-threats-part-2-the-cnsa-2-0-blueprint)<br>`blogs.cisco.com` |
 | `2026-11-10` | **Cisco** | Tech Development | `Enterprise Networking` | **[Two Forrester Waves. One Connected Security Strategy.](https://blogs.cisco.com/security/two-forrester-waves-one-connected-security-strategy)**<br>Cisco is the only vendor named a Leader in both the Forrester Enterprise Network Firewall and Microsegmentation Solutions Waves. | [Cisco Blogs](https://blogs.cisco.com/security/two-forrester-waves-one-connected-security-strategy)<br>`blogs.cisco.com` |
 | `2026-11-10` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Don't just flag it, fix it: How to run CodeMender in your pull requests](https://cloud.google.com/blog/products/identity-security/how-to-run-codemender-in-your-pull-requests/)**<br>As many developers use agentic tools to create more code faster than ever before, the code has gotten more complex and they're taking longer to find and fix software flaws. Helping to address that pressure is a key concern at Google. We kno... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/how-to-run-codemender-in-your-pull-requests/)<br>`cloud.google.com` |
@@ -236,6 +235,7 @@
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Are You Post-Quantum Ready? Build Quantum Readiness Into Today's Infrastructure Strategy](https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure)**<br>PQC is a top priority today. The strategy organizations set now across infrastructure, products, and partnerships will determine their long-term resilience. | [Cisco Blogs](https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Unified Defense from Endpoint to Cloud: Real-Time Protection with Cisco Security, Splunk, and SentinelOne](https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud)**<br>Discover how Cisco and SentinelOne work together across Splunk, Duo, Firepower and now ISE - turning endpoint detection into automated network access decisions. | [Cisco Blogs](https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Inside Agent Compute Engine: Building the compute foundation for the agentic era](https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/)**<br>Every decade or so, a shift in software forces us to rethink computer architecture from first principles. After the first boom of web-scale traffic, Google pioneered warehouse-scale computing and Linux containers on Borg. This reshaped how ... | [Google Cloud Blog](https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/)<br>`cloud.google.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Introducing new self-learning context enrichment in Knowledge Catalog](https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/)**<br>Today, we're launching self-learning context enrichment (preview) and a reimagined Knowledge Studio experience (preview) in Knowledge Catalog, Google Cloud's context engine for agents. Building on Knowledge Catalog's existing Gemini-powered... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/)<br>`cloud.google.com` |
 
 </details>
 
@@ -270,14 +270,14 @@
 - **Value:** $100 USD
 - **Eligibility:** Global (Google Account)
 - **Steps to Claim:** Join Google Cloud Innovators to receive free monthly credits for Cloud Skills Boost, complete quest labs, and earn shareable skill credentials.
-- **Official Link:** [https://cloud.google.com/innovators](https://cloud.google.com/innovators)
+- **Official Link:** [https://www.cloudskillsboost.google/quests](https://www.cloudskillsboost.google/quests)
 
 #### Snowflake Hands-on Essentials Free Digital Badges
 - **Provider:** Snowflake
 - **Value:** $150 USD
 - **Eligibility:** Global (Free registration)
 - **Steps to Claim:** Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.
-- **Official Link:** [https://learn.snowflake.com/en/pages/hands-on-essentials-track/](https://learn.snowflake.com/en/pages/hands-on-essentials-track/)
+- **Official Link:** [https://learn.snowflake.com/en/tracks/hands-on-essentials/](https://learn.snowflake.com/en/tracks/hands-on-essentials/)
 
 #### MongoDB University Free Courses & Associate Exam Drives
 - **Provider:** MongoDB
@@ -291,7 +291,7 @@
 - **Value:** $50 USD
 - **Eligibility:** Global (Free for all developers & students)
 - **Steps to Claim:** Fork the official Postman training collection, complete the hands-on API testing requests, submit your workspace URL, and claim your verified digital badge.
-- **Official Link:** [https://academy.postman.com/](https://academy.postman.com/)
+- **Official Link:** [https://academy.postman.com/path/postman-api-fundamentals-student-expert](https://academy.postman.com/path/postman-api-fundamentals-student-expert)
 
 #### Juniper Open Learning - JNCIA Associate Certification Vouchers
 - **Provider:** Juniper Networks
@@ -305,21 +305,21 @@
 - **Value:** $150 USD
 - **Eligibility:** Global (Free registration)
 - **Steps to Claim:** Create an account on the Qualys Training portal, complete the self-paced video labs, and take the online proctored exam to earn certification.
-- **Official Link:** [https://www.qualys.com/training](https://www.qualys.com/training)
+- **Official Link:** [https://www.qualys.com/training/](https://www.qualys.com/training/)
 
 #### Databricks Generative AI Fundamentals Accreditation
 - **Provider:** Databricks
 - **Value:** $75 USD
 - **Eligibility:** Global (Free for all)
 - **Steps to Claim:** Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.
-- **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
+- **Official Link:** [https://www.databricks.com/learn/certification/generative-ai-fundamentals](https://www.databricks.com/learn/certification/generative-ai-fundamentals)
 
 #### Fortinet Certified Fundamentals (FCF) in Cybersecurity
 - **Provider:** Fortinet
 - **Value:** $100 USD
 - **Eligibility:** Global (Fortinet Training Institute)
 - **Steps to Claim:** Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.
-- **Official Link:** [https://training.fortinet.com/](https://training.fortinet.com/)
+- **Official Link:** [https://training.fortinet.com/local/staticpage/view.php?page=fcf](https://training.fortinet.com/local/staticpage/view.php?page=fcf)
 
 #### GitHub Foundations Certification via Student Developer Pack
 - **Provider:** GitHub
@@ -361,28 +361,28 @@
 - **Value:** $150 USD
 - **Eligibility:** Global (Open to all students, jobseekers, and engineers)
 - **Steps to Claim:** Register on IBM SkillsBuild. Enroll in the Cybersecurity or AI Practitioner track, complete interactive labs, and take the proctored exit assessment to earn verified IBM digital credentials issued on Credly.
-- **Official Link:** [https://skillsbuild.org/learning-catalog](https://skillsbuild.org/learning-catalog)
+- **Official Link:** [https://skillsbuild.org/adult-learners/explore-learning/cybersecurity](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity)
 
 #### Databricks Academy: Lakehouse Fundamentals & Generative AI Accreditation
 - **Provider:** Databricks
 - **Value:** $75 USD
 - **Eligibility:** Global (Free Databricks Academy account)
 - **Steps to Claim:** Sign up on Databricks Academy, enroll in the free Lakehouse Fundamentals pathway, complete the interactive curriculum, and pass the accreditation test to earn the official Databricks badge.
-- **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
+- **Official Link:** [https://www.databricks.com/learn/certification/lakehouse-fundamentals](https://www.databricks.com/learn/certification/lakehouse-fundamentals)
 
 #### Oracle University: Free OCI Generative AI Professional Certification
 - **Provider:** Oracle Cloud
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
-- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227)
+- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444)
 
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Provider:** Cisco
 - **Value:** $125 USD
 - **Eligibility:** Global (Free Cisco NetAcad / Skills for All account)
 - **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
-- **Official Link:** [https://www.netacad.com/courses/introduction-to-cybersecurity](https://www.netacad.com/courses/introduction-to-cybersecurity)
+- **Official Link:** [https://www.skillsforall.com/](https://www.skillsforall.com/)
 
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Provider:** GitHub
@@ -403,23 +403,23 @@
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Continuing Education (Recertification) | [Cisco Continuing Education Portal](https://ce.cisco.com/) | `CE Portal Dashboard -> 'Submit Items' -> Claim CE Credits` | `Continuing Education Claim` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | [Microsoft Learn Credentials Portal](https://learn.microsoft.com/en-us/credentials/applied-skills/) | `Microsoft Learn Credential Page -> 'Take Assessment Lab' launch container` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/) | `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | [Snowflake University Learning Portal](https://learn.snowflake.com/en/) | `Course Catalog -> 'Enroll for Free' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/quests) | `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | [Snowflake University Learning Portal](https://learn.snowflake.com/en/tracks/hands-on-essentials/) | `Course Catalog -> 'Enroll for Free' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **MongoDB** | MongoDB Associate Developer / DBA | [MongoDB University Certification Center](https://learn.mongodb.com/pages/certification) | `Registration Checkout -> 'Have a coupon or voucher?' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Postman** | Postman API Fundamentals Student / Pro Expert | [Postman Academy Assessment Center](https://academy.postman.com/) | `Academy Final Assessment -> 'Submit Collection' automated test runner` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Postman** | Postman API Fundamentals Student / Pro Expert | [Postman Academy Assessment Center](https://academy.postman.com/path/postman-api-fundamentals-student-expert) | `Academy Final Assessment -> 'Submit Collection' automated test runner` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | [Pearson VUE (Juniper Networks)](https://home.pearsonvue.com/junipernetworks) | `Checkout Screen -> 'Add Voucher or Promo Code' modal` | `Checkout Promo Code` | **$0.00 (75% Official Discount Applied - $50 Pearson VUE Co-Pay)** |
 | **Qualys** | Vulnerability Management & CSAM Specialist | [Qualys Training Academy Portal](https://www.qualys.com/training/) | `Qualys Training Portal -> 'Launch Certification Exam' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Databricks** | Generative AI Fundamentals | [Databricks Academy Certification Portal](https://www.databricks.com/learn/training/certification) | `Course Checkout -> 'Promo Code' input or Instant Free Launch` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | [Fortinet Training Institute](https://training.fortinet.com/) | `Fortinet Training Institute -> 'Enroll' -> Free Curriculum Access` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Databricks** | Generative AI Fundamentals | [Databricks Academy Certification Portal](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | `Course Checkout -> 'Promo Code' input or Instant Free Launch` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | [Fortinet Training Institute](https://training.fortinet.com/local/staticpage/view.php?page=fcf) | `Fortinet Training Institute -> 'Enroll' -> Free Curriculum Access` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **GitHub** | GitHub Foundations | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Payment Step -> 'Add Voucher or Promo Code' text input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | [AWS Educate and Emerging Talent Portal](https://aws.amazon.com/education/awseducate/) | `Student Pathway -> 'Earn Badge' final assessment` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | [Red Hat Developer Learning Portal](https://developers.redhat.com/) | `Red Hat Developer Dashboard -> 'Start Skills Assessment' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **GitLab** | GitLab Certified Associate | [GitLab University Certification Center](https://university.gitlab.com/) | `Course Checkout -> 'Have a discount code?' field` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Splunk** | Splunk Core Observability & Defense Fundamentals | [Splunk Lantern and Education Portal](https://lantern.splunk.com/) | `Lantern Training Portal -> 'Start Guided Scenario' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/) | `Student Learning Dashboard -> 'Complete Credential Track' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/training/certification) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | [Red Hat Developer Learning Portal](https://www.redhat.com/en/services/skills-assessment) | `Red Hat Developer Dashboard -> 'Start Skills Assessment' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **GitLab** | GitLab Certified Associate | [GitLab University Certification Center](https://university.gitlab.com/pages/certifications) | `Course Checkout -> 'Have a discount code?' field` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Splunk** | Splunk Core Observability & Defense Fundamentals | [Splunk Lantern and Education Portal](https://www.splunk.com/en_us/training/splunk-fundamentals.html) | `Lantern Training Portal -> 'Start Guided Scenario' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) | `Student Learning Dashboard -> 'Complete Credential Track' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/certification/lakehouse-fundamentals) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Skills for All / NetAcad](https://www.skillsforall.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
@@ -463,7 +463,7 @@
 
 #### Google Cloud Skills Boost & Innovators Free Badges
 - **Voucher / Promo Code:** `GCP_INNOVATOR_MONTHLY_PASS`
-- **Official Redemption Portal:** [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/)
+- **Official Redemption Portal:** [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/quests)
 - **Checkout Field Location:** `Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'`
 - **Application Flow Type:** `Checkout Promo Code`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -475,7 +475,7 @@
 
 #### Snowflake Hands-on Essentials Free Digital Badges
 - **Voucher / Promo Code:** `SNOWFLAKE_FREE_WORKSHOP_GRANT`
-- **Official Redemption Portal:** [Snowflake University Learning Portal](https://learn.snowflake.com/en/)
+- **Official Redemption Portal:** [Snowflake University Learning Portal](https://learn.snowflake.com/en/tracks/hands-on-essentials/)
 - **Checkout Field Location:** `Course Catalog -> 'Enroll for Free' button`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -499,7 +499,7 @@
 
 #### Postman API Fundamentals & Student Expert Certifications
 - **Voucher / Promo Code:** `POSTMAN_STUDENT_EXPERT_GRANT`
-- **Official Redemption Portal:** [Postman Academy Assessment Center](https://academy.postman.com/)
+- **Official Redemption Portal:** [Postman Academy Assessment Center](https://academy.postman.com/path/postman-api-fundamentals-student-expert)
 - **Checkout Field Location:** `Academy Final Assessment -> 'Submit Collection' automated test runner`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -535,7 +535,7 @@
 
 #### Databricks Generative AI Fundamentals Accreditation
 - **Voucher / Promo Code:** `DATABRICKS_ACADEMY_COMPLIMENTARY`
-- **Official Redemption Portal:** [Databricks Academy Certification Portal](https://www.databricks.com/learn/training/certification)
+- **Official Redemption Portal:** [Databricks Academy Certification Portal](https://www.databricks.com/learn/certification/generative-ai-fundamentals)
 - **Checkout Field Location:** `Course Checkout -> 'Promo Code' input or Instant Free Launch`
 - **Application Flow Type:** `Training Milestone Token`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -547,7 +547,7 @@
 
 #### Fortinet Certified Fundamentals (FCF) in Cybersecurity
 - **Voucher / Promo Code:** `FORTINET_NSE_ACADEMY_GRANT`
-- **Official Redemption Portal:** [Fortinet Training Institute](https://training.fortinet.com/)
+- **Official Redemption Portal:** [Fortinet Training Institute](https://training.fortinet.com/local/staticpage/view.php?page=fcf)
 - **Checkout Field Location:** `Fortinet Training Institute -> 'Enroll' -> Free Curriculum Access`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -583,7 +583,7 @@
 
 #### Red Hat Developer: Free Enterprise Linux & OpenShift Accreditations
 - **Voucher / Promo Code:** `REDHAT_DEVELOPER_SKILLS_TOKEN`
-- **Official Redemption Portal:** [Red Hat Developer Learning Portal](https://developers.redhat.com/)
+- **Official Redemption Portal:** [Red Hat Developer Learning Portal](https://www.redhat.com/en/services/skills-assessment)
 - **Checkout Field Location:** `Red Hat Developer Dashboard -> 'Start Skills Assessment' button`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -595,7 +595,7 @@
 
 #### GitLab University: GitLab Certified Associate & CI/CD Specialist
 - **Voucher / Promo Code:** `GITLAB_UNIVERSITY_EXAM_TOKEN`
-- **Official Redemption Portal:** [GitLab University Certification Center](https://university.gitlab.com/)
+- **Official Redemption Portal:** [GitLab University Certification Center](https://university.gitlab.com/pages/certifications)
 - **Checkout Field Location:** `Course Checkout -> 'Have a discount code?' field`
 - **Application Flow Type:** `Checkout Promo Code`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -607,7 +607,7 @@
 
 #### Splunk Lantern: Core Cybersecurity Defense & Observability Specialist
 - **Voucher / Promo Code:** `SPLUNK_LANTERN_DEFENSE_PASS`
-- **Official Redemption Portal:** [Splunk Lantern and Education Portal](https://lantern.splunk.com/)
+- **Official Redemption Portal:** [Splunk Lantern and Education Portal](https://www.splunk.com/en_us/training/splunk-fundamentals.html)
 - **Checkout Field Location:** `Lantern Training Portal -> 'Start Guided Scenario' button`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -619,7 +619,7 @@
 
 #### IBM SkillsBuild: Enterprise Cybersecurity & AI Practitioner Certifications
 - **Voucher / Promo Code:** `IBM_SKILLSBUILD_FREE_CREDENTIAL`
-- **Official Redemption Portal:** [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/)
+- **Official Redemption Portal:** [IBM SkillsBuild Enterprise Portal](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity)
 - **Checkout Field Location:** `Student Learning Dashboard -> 'Complete Credential Track' button`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -631,7 +631,7 @@
 
 #### Databricks Academy: Lakehouse Fundamentals & Generative AI Accreditation
 - **Voucher / Promo Code:** `DATABRICKS_ACADEMY_FREE_PASS`
-- **Official Redemption Portal:** [Databricks Academy Portal](https://www.databricks.com/learn/training/certification)
+- **Official Redemption Portal:** [Databricks Academy Portal](https://www.databricks.com/learn/certification/lakehouse-fundamentals)
 - **Checkout Field Location:** `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation`
 - **Application Flow Type:** `Direct Assessment Launch`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -643,7 +643,7 @@
 
 #### Oracle University: Free OCI Generative AI Professional Certification
 - **Voucher / Promo Code:** `ORACLE_GENAI_WAVE_FREE_ATTEMPT`
-- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-a-oci-generative-ai-professional/136227)
+- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444)
 - **Checkout Field Location:** `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam`
 - **Application Flow Type:** `Automated Account Link Waiver`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -655,7 +655,7 @@
 
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Voucher / Promo Code:** `NETACAD_QUALIFICATION_WAIVER`
-- **Official Redemption Portal:** [Cisco Networking Academy / Pearson VUE](https://u.cisco.com/)
+- **Official Redemption Portal:** [Cisco Skills for All / NetAcad](https://www.skillsforall.com/)
 - **Checkout Field Location:** `NetAcad Course Completion -> 'Request Exam Discount' voucher form`
 - **Application Flow Type:** `Training Milestone Token`
 - **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
@@ -757,4 +757,4 @@ Community contributions are warmly welcome! If you find a new verified free vouc
 
 ---
 
-*Built and maintained by [Athish R S](https://github.com/Athish2002) for the global tech community. Audited automatically every 12 hours on `2026-11-10 19:28 UTC`.*
+*Built and maintained by [Athish R S](https://github.com/Athish2002) for the global tech community. Audited automatically every 12 hours on `2026-11-10 17:33 UTC`.*

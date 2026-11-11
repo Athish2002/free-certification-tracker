@@ -420,6 +420,93 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
         font-size: 16px !important;
     }
 }
+
+/* Custom Cyber Cursor Architecture */
+.cyber-cursor-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--accent-fg);
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    will-change: left, top;
+    box-shadow: 0 0 8px var(--accent-fg);
+}
+
+.cyber-cursor-ring {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent-fg);
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+                background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                opacity 0.2s ease;
+    will-change: left, top, transform;
+}
+
+.cyber-cursor-dot.active {
+    opacity: 1;
+}
+
+.cyber-cursor-ring.active {
+    opacity: 0.7;
+}
+
+/* Hover Scale Effect with Accent Background Glow */
+.cyber-cursor-ring.cursor-hover,
+.cyber-cursor-ring.active.cursor-hover,
+body:has(a:hover) .cyber-cursor-ring,
+body:has(button:hover) .cyber-cursor-ring,
+body:has(input:hover) .cyber-cursor-ring,
+body:has([role="button"]:hover) .cyber-cursor-ring,
+body:has(.primer-card:hover) .cyber-cursor-ring {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: var(--accent-subtle);
+    border-color: var(--accent-fg);
+    box-shadow: 0 0 16px var(--accent-fg), inset 0 0 6px var(--accent-subtle);
+    opacity: 0.85;
+}
+
+@media (hover: none) {
+    .cyber-cursor-dot, .cyber-cursor-ring {
+        display: none !important;
+    }
+}
+
+/* Platform Brand Icons: Micro-Interaction & Card Hover Elevation */
+.platform-brand-icon {
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
+                filter 0.25s ease;
+}
+
+@keyframes brandGlowPulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px var(--accent-fg));
+    }
+    50% {
+        filter: drop-shadow(0 0 8px var(--accent-fg));
+    }
+}
+
+.primer-card:hover .platform-brand-icon,
+tr:hover .platform-brand-icon,
+.group:hover .platform-brand-icon {
+    transform: scale(1.15);
+    animation: brandGlowPulse 2s ease-in-out infinite;
+}
 """)
 
     return "\n".join(lines)
