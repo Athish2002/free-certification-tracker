@@ -564,10 +564,15 @@ JS_TEMPLATE = """
         }
 
         function toggleThemeDropdown() {
-            toggleTheme();
+            const menu = document.getElementById('themeDropdownMenu');
+            if (menu) menu.classList.toggle('hidden');
+            else toggleTheme();
         }
 
-        function closeThemeDropdown() {}
+        function closeThemeDropdown() {
+            const menu = document.getElementById('themeDropdownMenu');
+            if (menu) menu.classList.add('hidden');
+        }
 
         // ================= WEB AUDIO PROCEDURAL HAPTICS SYNTHESIZER =================
         class UIAudioSynthesizer {
@@ -998,17 +1003,6 @@ JS_TEMPLATE = """
             }, 55);
         }
 
-        // ================= ANIMATED SVG ICON MICRO-INTERACTIONS =================
-        function toggleLockState(btn) {
-            if (window.audioSynth) audioSynth.playClick('tick');
-            if (!btn) return;
-            btn.classList.toggle('lock-unlocked');
-            const isUnlocked = btn.classList.contains('lock-unlocked');
-            const label = btn.querySelector('span');
-            if (label) label.textContent = isUnlocked ? 'Unlocked' : 'Lock';
-            triggerToast(isUnlocked ? '🔓 Access Key decrypted & unlocked!' : '🔒 Access Key encrypted and secured.');
-        }
-
         // ================= RAYCAST-STYLE COMMAND PALETTE (⌘K / Ctrl+K) =================
         function openCommandPalette() {
             let cp = document.getElementById('commandPaletteModal');
@@ -1097,10 +1091,62 @@ JS_TEMPLATE = """
         }
         setInterval(updateWorldClock, 1000);
 
-        // Backwards compatibility stubs
-        function toggleOfferChecked() {}
-        function clearAllChecked() {}
-        function updateGoalCounters() { updateWorldClock(); }
+        // ================= PERSONAL STUDY GOALS TRACKER ENGINE =================
+        function getTrackedOffers() {
+            try {
+                const raw = localStorage.getItem('certpulse_tracked_offers');
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function isOfferTracked(id) {
+            if (!id) return false;
+            return getTrackedOffers().includes(id);
+        }
+
+        function toggleOfferChecked(id) {
+            if (!id) return;
+            let tracked = getTrackedOffers();
+            const idx = tracked.indexOf(id);
+            if (idx >= 0) {
+                tracked.splice(idx, 1);
+                triggerToast('Removed from personal study goals');
+            } else {
+                tracked.push(id);
+                triggerToast('⭐ Added to personal study goals!');
+                if (window.audioSynth) audioSynth.playClick('action');
+            }
+            try {
+                localStorage.setItem('certpulse_tracked_offers', JSON.stringify(tracked));
+            } catch (e) {
+                console.warn('LocalStorage unavailable for goal tracking', e);
+            }
+            updateGoalCounters();
+            renderCards();
+        }
+
+        function clearAllChecked() {
+            try {
+                localStorage.removeItem('certpulse_tracked_offers');
+            } catch (e) {
+                console.warn('LocalStorage unavailable', e);
+            }
+            updateGoalCounters();
+            renderCards();
+            triggerToast('All tracked study goals cleared');
+        }
+
+        function updateGoalCounters() {
+            const tracked = getTrackedOffers();
+            const count = tracked.length;
+            const badge = document.getElementById('trackedGoalsCountBadge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-flex' : 'none';
+            }
+        }
 
         // Tab Switching Engine (Vouchers vs Tech Radar vs Where Offers Are Applied)
         function switchMainTab(tab, updateUrl = true) {
@@ -1274,7 +1320,9 @@ JS_TEMPLATE = """
                     if (currentTier === 'proctored_exam' && tier === 'badge') return false;
                 }
 
-                if (currentCategory === 'History') {
+                if (currentCategory === 'Tracked') {
+                    if (!getTrackedOffers().includes(o.id)) return false;
+                } else if (currentCategory === 'History') {
                     if (!o.is_historical_archive && o.status !== 'Expired') return false;
                 } else if (currentCategory !== 'All') {
                     const cat = (o.category || '').toLowerCase();
@@ -1420,6 +1468,9 @@ JS_TEMPLATE = """
                                     </button>
                                     <button onclick="downloadCalendarReminder('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Add Deadline to Calendar (.ics)">
                                         📅
+                                    </button>
+                                    <button onclick="toggleOfferChecked('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: ${isOfferTracked(o.id) ? 'var(--accent-fg)' : 'var(--fg-muted)'};" title="Track in Personal Study Goals">
+                                        <span>${isOfferTracked(o.id) ? '⭐ Tracked' : '☆ Track'}</span>
                                     </button>
                                     <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--accent-fg);" title="Flip to Truth Oracle Cryptographic Spec Sheet">
                                         🔄 Spec
@@ -1616,6 +1667,7 @@ JS_TEMPLATE = """
                     </div>
                     <div class="sm:col-span-1 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${valText}</div>
                     <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
+                        <button onclick="toggleOfferChecked('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: ${isOfferTracked(o.id) ? 'var(--accent-fg)' : 'var(--fg-muted)'};" title="Track in Personal Study Goals"><span>${isOfferTracked(o.id) ? '⭐' : '☆'}</span></button>
                         <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1 rounded border cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox"><span class="pointer-events-none">📸 Proof</span></button>
                         <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
                         <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
@@ -2129,13 +2181,17 @@ JS_TEMPLATE = """
         window.filterCategory = filterCategory;
         window.setLayoutView = setLayoutView;
         window.switchMainTab = switchMainTab;
-        window.toggleLockState = toggleLockState;
         window.manualPingOracle = manualPingOracle;
         window.downloadCalendarReminder = downloadCalendarReminder;
         window.triggerConfettiBurst = triggerConfettiBurst;
         window.toggleAudioHaptics = toggleAudioHaptics;
         window.setBackgroundFXMode = setBackgroundFXMode;
         window.flipCard = flipCard;
+        window.toggleOfferChecked = toggleOfferChecked;
+        window.clearAllChecked = clearAllChecked;
+        window.updateGoalCounters = updateGoalCounters;
+        window.getTrackedOffers = getTrackedOffers;
+        window.isOfferTracked = isOfferTracked;
 
         // ================= CUSTOM CYBER CURSOR ENGINE =================
         function initCyberCursor() {
@@ -2143,7 +2199,7 @@ JS_TEMPLATE = """
             const ring = document.getElementById('cyber-cursor-ring');
             if (!dot || !ring) return;
 
-            if (window.matchMedia && window.matchMedia('(hover: none)').matches) {
+            if (window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches)) {
                 dot.style.display = 'none';
                 ring.style.display = 'none';
                 return;
@@ -2185,17 +2241,31 @@ JS_TEMPLATE = """
                 dot.classList.remove('active');
                 ring.classList.remove('active');
                 isTracking = false;
+                dot.style.left = '-100px';
+                dot.style.top = '-100px';
+                ring.style.left = '-100px';
+                ring.style.top = '-100px';
             });
 
-            document.addEventListener('mouseenter', () => {
-                dot.classList.add('active');
-                ring.classList.add('active');
-                isTracking = true;
+            document.addEventListener('mouseenter', (e) => {
+                if (e.clientX && e.clientY) {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    ringX = mouseX;
+                    ringY = mouseY;
+                    dot.style.left = mouseX + 'px';
+                    dot.style.top = mouseY + 'px';
+                    ring.style.left = ringX + 'px';
+                    ring.style.top = ringY + 'px';
+                    dot.classList.add('active');
+                    ring.classList.add('active');
+                    isTracking = true;
+                }
             });
 
             document.addEventListener('mouseover', (e) => {
                 const interactive = e.target && e.target.closest('a, button, input, [role="button"], .primer-card');
-                if (interactive) {
+                if (interactive && isTracking) {
                     ring.classList.add('cursor-hover');
                 } else {
                     ring.classList.remove('cursor-hover');

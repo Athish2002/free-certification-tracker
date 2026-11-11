@@ -519,11 +519,13 @@ async def run_inspection_async(
                 if "screenshot_path" not in offer or not offer["screenshot_path"]:
                     offer["screenshot_path"] = f"docs/screenshots/{offer_id}.png"
                 if "visual_proof" not in offer or not offer["visual_proof"]:
+                    sc_f = Path(f"docs/screenshots/{offer_id}.png")
+                    has_sc = sc_f.exists() and sc_f.stat().st_size >= 4096
                     offer["visual_proof"] = {
                         "screenshot_path": f"docs/screenshots/{offer_id}.png",
                         "screenshot_url": f"docs/screenshots/{offer_id}.png",
                         "captured_at": None,
-                        "status": "placeholder",
+                        "status": "verified" if has_sc else "missing",
                         "zero_dollar_confirmed": True,
                         "maintenance_detected": False,
                         "paid_catalog_detected": False,
@@ -888,11 +890,13 @@ async def run_inspection_async(
                 if "screenshot_path" not in offer or not offer["screenshot_path"]:
                     offer["screenshot_path"] = f"docs/screenshots/{offer_id}.png"
                 if "visual_proof" not in offer or not offer["visual_proof"]:
+                    sc_f = Path(f"docs/screenshots/{offer_id}.png")
+                    has_sc = sc_f.exists() and sc_f.stat().st_size >= 4096
                     offer["visual_proof"] = {
                         "screenshot_path": f"docs/screenshots/{offer_id}.png",
                         "screenshot_url": f"docs/screenshots/{offer_id}.png",
                         "captured_at": datetime.now(UTC).isoformat(),
-                        "status": "verified" if new_status == "Active" else "placeholder",
+                        "status": "verified" if has_sc else ("failed" if new_status in ["Broken Link", "Server Error"] else "missing"),
                         "zero_dollar_confirmed": new_status == "Active",
                         "maintenance_detected": "maintenance" in reason.lower(),
                         "paid_catalog_detected": "catalog" in reason.lower(),

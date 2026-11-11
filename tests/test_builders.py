@@ -307,6 +307,24 @@ class TestHtmlBuilder:
         assert "cyber-cursor-ring pointer-events-none fixed z-[9998]" in html
         assert "ANIMATED SVG MICRO-INTERACTIONS LABORATORY" not in html
         assert "SYNERGY QUEST PATHWAY" not in html
+        assert 'id="trackedGoalsBtn"' in html
+        assert 'id="trackedGoalsCountBadge"' in html
+
+    def test_client_bundle_goal_tracking_and_no_stubs(self):
+        """Client bundle must implement real localStorage goal tracking and zero empty wrapper stubs."""
+        js = generate_client_bundle()
+        # Verify real logic implementations
+        assert "function getTrackedOffers()" in js
+        assert "certpulse_tracked_offers" in js
+        assert "function isOfferTracked(id)" in js
+        assert "function toggleOfferChecked(id)" in js
+        assert "function clearAllChecked()" in js
+        assert "function updateGoalCounters()" in js
+        # Verify no empty stubs
+        assert "function toggleOfferChecked() {}" not in js
+        assert "function clearAllChecked() {}" not in js
+        assert "function closeThemeDropdown() {}" not in js
+        assert "toggleLockState" not in js
 
 
 # ==============================================================================

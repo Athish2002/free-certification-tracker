@@ -321,6 +321,13 @@ def generate_web_dashboard(
                     </span>
                 </button>
 
+                <!-- Tracked Goals CTA -->
+                <button onclick="filterCategory('Tracked')" id="trackedGoalsBtn" title="View Tracked Study Goals" aria-label="View Tracked Goals" class="h-10 sm:h-9 px-2.5 sm:px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.96] shadow-xs cursor-pointer select-none" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                    <span>⭐</span>
+                    <span class="hidden sm:inline">Goals</span>
+                    <span id="trackedGoalsCountBadge" class="hidden px-1.5 py-0.2 rounded-full text-xs font-bold tabular-nums" style="background-color: var(--accent-subtle); color: var(--accent-fg);">0</span>
+                </button>
+
                 <!-- GitHub Repo Star CTA -->
                 <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" aria-label="Star CertPulse on GitHub" class="h-10 w-10 sm:h-9 sm:w-auto sm:px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 transition active:scale-[0.98] shadow-xs cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                     <svg height="14" viewBox="0 0 16 16" width="14" fill="currentColor">

@@ -427,8 +427,8 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
     height: 6px;
     border-radius: 50%;
     background-color: var(--accent-fg);
-    top: 0;
-    left: 0;
+    top: -100px;
+    left: -100px;
     pointer-events: none;
     transform: translate(-50%, -50%);
     opacity: 0;
@@ -442,8 +442,8 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
     height: 28px;
     border-radius: 50%;
     border: 1.5px solid var(--accent-fg);
-    top: 0;
-    left: 0;
+    top: -100px;
+    left: -100px;
     pointer-events: none;
     transform: translate(-50%, -50%);
     opacity: 0;
@@ -463,14 +463,19 @@ input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible
     opacity: 0.7;
 }
 
+.cyber-cursor-ring:not(.active),
+.cyber-cursor-dot:not(.active) {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* Hover Scale Effect with Accent Background Glow */
-.cyber-cursor-ring.cursor-hover,
 .cyber-cursor-ring.active.cursor-hover,
-body:has(a:hover) .cyber-cursor-ring,
-body:has(button:hover) .cyber-cursor-ring,
-body:has(input:hover) .cyber-cursor-ring,
-body:has([role="button"]:hover) .cyber-cursor-ring,
-body:has(.primer-card:hover) .cyber-cursor-ring {
+body:has(a:hover) .cyber-cursor-ring.active,
+body:has(button:hover) .cyber-cursor-ring.active,
+body:has(input:hover) .cyber-cursor-ring.active,
+body:has([role="button"]:hover) .cyber-cursor-ring.active,
+body:has(.primer-card:hover) .cyber-cursor-ring.active {
     transform: translate(-50%, -50%) scale(1.5);
     background-color: var(--accent-subtle);
     border-color: var(--accent-fg);
@@ -478,7 +483,7 @@ body:has(.primer-card:hover) .cyber-cursor-ring {
     opacity: 0.85;
 }
 
-@media (hover: none) {
+@media (hover: none), (pointer: coarse) {
     .cyber-cursor-dot, .cyber-cursor-ring {
         display: none !important;
     }

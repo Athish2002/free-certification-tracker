@@ -529,8 +529,13 @@ def audit_and_enrich_offers(
                 vp = offer.get("visual_proof")
                 if isinstance(vp, dict):
                     vp["zero_dollar_confirmed"] = req_zd
-                    if not req_zd and vp.get("status") == "verified":
-                        vp["status"] = "placeholder"
+                    sc_p = Path(vp.get("screenshot_path", f"docs/screenshots/{oid}.png"))
+                    if sc_p.exists() and sc_p.stat().st_size >= 4096:
+                        vp["status"] = "verified"
+                    elif offer.get("status") in ["Broken Link", "Server Error"]:
+                        vp["status"] = "failed"
+                    else:
+                        vp["status"] = "missing"
                     offer["visual_proof"] = vp
 
             # Enforce cart balance clarity

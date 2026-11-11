@@ -1021,14 +1021,13 @@ class HeadlessDOMInspector:
             # Populate visual_proof metadata on offer
             if offer is not None:
                 target_file = screenshots_dir / f"{offer_id}.png" if offer_id else None
-                if status == "Active" and screenshot_ok:
-                    proof_status = "verified"
-                elif status in ["Broken Link", "Server Error"]:
+                has_valid_capture = bool(target_file and target_file.exists() and target_file.stat().st_size >= 4096)
+                if status in ["Broken Link", "Server Error"]:
                     proof_status = "failed"
-                elif not screenshot_ok or not target_file or not target_file.exists():
-                    proof_status = "missing"
+                elif has_valid_capture:
+                    proof_status = "verified"
                 else:
-                    proof_status = "placeholder"
+                    proof_status = "missing"
 
                 pqs_res = calculate_proof_quality_score(
                     url_score=url_score if "url_score" in locals() else 100.0,
