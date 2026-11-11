@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-10T17:33:45.572295+00:00",
-  "last_sync": "2026-11-10T17:33:45.572295+00:00",
+  "last_updated": "2026-11-11T02:47:24.966820+00:00",
+  "last_sync": "2026-11-11T02:47:24.966820+00:00",
   "news": [
+    {
+      "id": "red-hat-red-hat-openshift-5-transforms",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat OpenShift 5 Transforms Hybrid Cloud Operations with Real-Time Intelligence and Zero Trust Security",
+      "summary": "Red Hat, the world's leading provider of open source solutions, today announced the general availability of Red Hat OpenShift 5, bringing built-in operational intelligence, zero trust security and a longer, predictable lifecycle to the indu...",
+      "published_date": "2026-11-09",
+      "date": "2026-11-09",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-openshift-5-transforms-hybrid-cloud-operations-real-time-intelligence-and-zero-trust-security",
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "e0aa9557c2288d44fff1427a4335f803cbe23efd7ac18231b21389a711bb3cef"
+    },
+    {
+      "id": "red-hat-red-hat-strengthens-hybrid-clo",
+      "company": "Red Hat",
+      "source": "Red Hat Press Releases",
+      "source_domain": "redhat.com",
+      "category": "Linux & Enterprise",
+      "title": "Red Hat Strengthens Hybrid Cloud Foundations Against AI-Driven Threats with Latest Versions of Red Hat Enterprise Linux",
+      "summary": "Red Hat, the world's leading provider of open source solutions, today announced the upcoming general availability of Red Hat Enterprise Linux 10.3 and 9.9, platforms designed to address an era of increasingly sophisticated, AI-driven cyber ...",
+      "published_date": "2026-11-09",
+      "date": "2026-11-09",
+      "url": "https://www.redhat.com/en/about/press-releases/red-hat-strengthens-hybrid-cloud-foundations-against-ai-driven-threats-latest-versions-red-hat-enterprise-linux",
+      "impact_badge": "Linux & Enterprise",
+      "content_fingerprint": "f91707e8b6a120f9e62361fff4b5c607d9062c8d9983cb2e136f1003dcde7fb4"
+    },
+    {
+      "id": "github-git-security-vulnerabilities-a",
+      "company": "GitHub",
+      "source": "GitHub Engineering Blog",
+      "source_domain": "github.blog",
+      "category": "Tech Development",
+      "title": "Git security vulnerabilities announced",
+      "summary": "Git is releasing updates addressing six security vulnerabilities affecting recursive clones, reference handling, merges, binary patches, and imports. Here is what users need to know. The post Git security vulnerabilities announced appeared ...",
+      "published_date": "2026-11-10",
+      "date": "2026-11-10",
+      "url": "https://github.blog/open-source/git/git-security-vulnerabilities-announced-7/",
+      "impact_badge": "Developer Tooling",
+      "content_fingerprint": "87c899fbb3532b0363b3630005984d7da98b76aa54b0da43b046f6262eaa1c80"
+    },
     {
       "id": "cisco-safeguard-your-wan-from-quantu",
       "company": "Cisco",
@@ -1358,48 +1400,6 @@
       "impact_badge": "Enterprise Networking",
       "date": "2024-08-01",
       "content_fingerprint": "01c09e14f63715be0041b7e4fe34c5d16212d1c06c5aab17d557373f6ed336a5"
-    },
-    {
-      "id": "cisco-unified-defense-from-endpoint",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Unified Defense from Endpoint to Cloud: Real-Time Protection with Cisco Security, Splunk, and SentinelOne",
-      "summary": "Discover how Cisco and SentinelOne work together across Splunk, Duo, Firepower and now ISE - turning endpoint detection into automated network access decisions.",
-      "published_date": "2024-08-01",
-      "url": "https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud",
-      "impact_badge": "Enterprise Networking",
-      "date": "2024-08-01",
-      "content_fingerprint": "db3e5954cafa164e59fdaddbddd23e2c73cc7da1488ef8ecc39ee54ce16d86f4"
-    },
-    {
-      "id": "google-cloud-inside-agent-compute-engine-b",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Inside Agent Compute Engine: Building the compute foundation for the agentic era",
-      "summary": "Every decade or so, a shift in software forces us to rethink computer architecture from first principles. After the first boom of web-scale traffic, Google pioneered warehouse-scale computing and Linux containers on Borg. This reshaped how ...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "79fe4b07aad930fa4205d0fb58ed465835c30fd4953c9356763c7fe289ba4100"
-    },
-    {
-      "id": "google-cloud-introducing-new-self-learning",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Introducing new self-learning context enrichment in Knowledge Catalog",
-      "summary": "Today, we're launching self-learning context enrichment (preview) and a reimagined Knowledge Studio experience (preview) in Knowledge Catalog, Google Cloud's context engine for agents. Building on Knowledge Catalog's existing Gemini-powered...",
-      "published_date": "2024-08-01",
-      "url": "https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/",
-      "impact_badge": "Cloud Platform",
-      "date": "2024-08-01",
-      "content_fingerprint": "56882fbfba4ba41b4951be55807a215ac7f4a2250d45bee530e371b0e60350f0"
     }
   ],
   "total_items": 100
