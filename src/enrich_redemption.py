@@ -67,7 +67,7 @@ REDEMPTION_MAP = {
     },
     "gcp-cloud-skills-boost": {
         "voucher_code": "GCP_INNOVATOR_MONTHLY_PASS",
-        "redemption_portal": "https://www.cloudskillsboost.google/quests",
+        "redemption_portal": "https://go.cloudskillsboost.google/arcade",
         "portal_name": "Google Cloud Skills Boost Portal",
         "checkout_field": "Account Settings -> 'Subscriptions' / Quest Checkout -> 'Apply Credits'",
         "application_flow_type": "Checkout Promo Code",
@@ -95,7 +95,7 @@ REDEMPTION_MAP = {
     },
     "snowflake-hands-on-essentials": {
         "voucher_code": "SNOWFLAKE_FREE_WORKSHOP_GRANT",
-        "redemption_portal": "https://learn.snowflake.com/en/tracks/hands-on-essentials/",
+        "redemption_portal": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
         "portal_name": "Snowflake University Learning Portal",
         "checkout_field": "Course Catalog -> 'Enroll for Free' button",
         "application_flow_type": "Direct Assessment Launch",
@@ -179,7 +179,7 @@ REDEMPTION_MAP = {
     },
     "databricks-genai-fundamentals": {
         "voucher_code": "DATABRICKS_ACADEMY_COMPLIMENTARY",
-        "redemption_portal": "https://www.databricks.com/learn/certification/generative-ai-fundamentals",
+        "redemption_portal": "https://www.databricks.com/learn/training/certification",
         "portal_name": "Databricks Academy Certification Portal",
         "checkout_field": "Course Checkout -> 'Promo Code' input or Instant Free Launch",
         "application_flow_type": "Training Milestone Token",
@@ -193,7 +193,7 @@ REDEMPTION_MAP = {
     },
     "fortinet-cybersecurity-fundamentals": {
         "voucher_code": "FORTINET_NSE_ACADEMY_GRANT",
-        "redemption_portal": "https://training.fortinet.com/local/staticpage/view.php?page=fcf",
+        "redemption_portal": "https://training.fortinet.com/",
         "portal_name": "Fortinet Training Institute",
         "checkout_field": "Fortinet Training Institute -> 'Enroll' -> Free Curriculum Access",
         "application_flow_type": "Direct Assessment Launch",
@@ -333,7 +333,7 @@ REDEMPTION_MAP = {
     },
     "databricks-lakehouse-fundamentals": {
         "voucher_code": "DATABRICKS_ACADEMY_FREE_PASS",
-        "redemption_portal": "https://www.databricks.com/learn/certification/lakehouse-fundamentals",
+        "redemption_portal": "https://www.databricks.com/learn/training/certification",
         "portal_name": "Databricks Academy Portal",
         "checkout_field": "Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation",
         "application_flow_type": "Direct Assessment Launch",
@@ -361,7 +361,7 @@ REDEMPTION_MAP = {
     },
     "cisco-netacad-cyberops": {
         "voucher_code": "NETACAD_QUALIFICATION_WAIVER",
-        "redemption_portal": "https://www.skillsforall.com/",
+        "redemption_portal": "https://www.netacad.com/courses/introduction-to-cybersecurity",
         "portal_name": "Cisco Skills for All / NetAcad",
         "checkout_field": "NetAcad Course Completion -> 'Request Exam Discount' voucher form",
         "application_flow_type": "Training Milestone Token",

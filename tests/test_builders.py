@@ -299,13 +299,14 @@ class TestHtmlBuilder:
         assert "<script>alert('XSS')</script>" not in xss_html
 
     def test_html_builder_cyber_cursor_and_no_toy_laboratory(self):
-        """Dashboard must contain cyber cursor DOM elements and must omit the laboratory dock."""
+        """Dashboard must contain cyber cursor DOM elements and must omit experimental mock docks."""
         html = generate_web_dashboard([], [], "2026-10-23T12:00:00Z")
         assert 'id="cyber-cursor-dot"' in html
         assert 'id="cyber-cursor-ring"' in html
         assert "cyber-cursor-dot pointer-events-none fixed z-[9999]" in html
         assert "cyber-cursor-ring pointer-events-none fixed z-[9998]" in html
         assert "ANIMATED SVG MICRO-INTERACTIONS LABORATORY" not in html
+        assert "SYNERGY QUEST PATHWAY" not in html
 
 
 # ==============================================================================

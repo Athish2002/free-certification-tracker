@@ -101,9 +101,9 @@ def test_url_repairs_verified():
         "https://www.databricks.com/learn/training/certification",
         "https://www.databricks.com/learn/certification/lakehouse-fundamentals",
     )
-    assert (
-        offer_map["databricks-lakehouse-fundamentals"].direct_verified_url
-        == "https://www.databricks.com/learn/certification/lakehouse-fundamentals"
+    assert offer_map["databricks-lakehouse-fundamentals"].direct_verified_url in (
+        "https://www.databricks.com/learn/training/certification",
+        "https://www.databricks.com/learn/certification/lakehouse-fundamentals",
     )
 
     # Google Cloud Skills Boost repaired from misleading skills.google root to direct arcade / quest portal

@@ -31,7 +31,7 @@
 | **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
 | **Truth Oracle Engine** | **100% Policy Corroborated** | Verified against primary vendor policies (copays, windows, student prereqs) |
-| **Last Automated Inspection** | `2026-11-11 02:17 UTC` (07:47 IST • 21:17 EST • 03:17 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
+| **Last Automated Inspection** | `2026-11-10 17:33 UTC` (23:03 IST • 12:33 EST • 18:33 CET) | Auto-audited for 404s and 'Closed' notices (UTC, IST, EDT, CEST) |
 | **Hosting & Compute Cost** | **$0.00 / Month** | 100% native to GitHub Actions & GitHub Pages |
 | **Maintainer Model** | **Solo Developer ([Athish R S](https://github.com/Athish2002))** | 100% independent project; best-effort response (no corporate SLAs) |
 
@@ -42,10 +42,10 @@
 
 | Provider | Certification & Program | Category | Cadence & Wave | Value (USD) | Status | Proof | Truth Source | Claim Link |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Quarterly Learning Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/education/certification/) |
-| **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Continuous Cisco U Tracks` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Claim Voucher**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
-| **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Claim Voucher**](https://www.databricks.com/learn/certification/generative-ai-fundamentals) |
-| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/artificial-intelligence/generative-ai/) |
+| **Oracle Cloud** | OCI Foundations & Associate Certifications | Cloud & Data | `Quarterly Learning Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/oracle-oci-free-cert.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177) |
+| **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Continuous Cisco U Tracks` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Claim Voucher**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
+| **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | [**Claim Voucher**](https://www.databricks.com/learn/training/certification) |
+| **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://education.oracle.com/oracle-cloud-infrastructure-generative-ai-professional/pexam_1Z0-1127-24) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444) |
 | **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Biannual Student & Universe Waves` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
 
 ---
@@ -66,21 +66,21 @@
 
 | Provider | Credential & Assessment | Category | Tier | Value (USD) | Status | Proof | Truth Source | Launch Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
-| **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Associate` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Launch Lab**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
-| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | Cloud & AI | `Associate` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/ms-applied-skills.png) | [Microsoft Learn Credentials Registry](https://learn.microsoft.com/en-us/credentials/applied-skills/) | [**Launch Lab**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/gcp-cloud-skills-boost.png) | [Google Cloud Innovators Program](https://cloud.google.com/innovators) | [**Launch Lab**](https://go.cloudskillsboost.google/arcade) |
-| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/snowflake-hands-on-essentials.png) | [Snowflake Learn Essentials Track](https://learn.snowflake.com/en/pages/hands-on-essentials-track/) | [**Launch Lab**](https://learn.snowflake.com/en/tracks/hands-on-essentials/) |
-| **Postman** | Postman API Fundamentals Student / Pro Expert | API & DevOps | `Foundational` | $50 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/postman-api-expert.png) | [Postman Academy Student Programs](https://academy.postman.com/) | [**Launch Lab**](https://academy.postman.com/path/postman-api-fundamentals-student-expert) |
-| **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/qualys-certified-specialist.png) | [Qualys Training Official Portal](https://www.qualys.com/training) | [**Launch Lab**](https://www.qualys.com/training/) |
-| **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/certification/generative-ai-fundamentals) |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | Security | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | [Fortinet Training Institute](https://training.fortinet.com/) | [**Launch Lab**](https://training.fortinet.com/) |
+| **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Associate` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Launch Lab**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
+| **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | Cloud & AI | `Associate` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/ms-applied-skills.png) | [Microsoft Learn Credentials Registry](https://learn.microsoft.com/en-us/credentials/applied-skills/) | [**Launch Lab**](https://learn.microsoft.com/en-us/credentials/applied-skills/) |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/gcp-cloud-skills-boost.png) | [Google Cloud Innovators Program](https://www.cloudskillsboost.google/quests) | [**Launch Lab**](https://go.cloudskillsboost.google/arcade) |
+| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/snowflake-hands-on-essentials.png) | [Snowflake Learn Essentials Track](https://learn.snowflake.com/en/tracks/hands-on-essentials/) | [**Launch Lab**](https://learn.snowflake.com/en/pages/hands-on-essentials-track/) |
+| **Postman** | Postman API Fundamentals Student / Pro Expert | API & DevOps | `Foundational` | $50 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/postman-api-expert.png) | [Postman Academy Student Programs](https://academy.postman.com/path/postman-api-fundamentals-student-expert) | [**Launch Lab**](https://academy.postman.com/path/postman-api-fundamentals-student-expert) |
+| **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/qualys-certified-specialist.png) | [Qualys Training Official Portal](https://www.qualys.com/training) | [**Launch Lab**](https://www.qualys.com/training/) |
+| **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | Security | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | [Fortinet Training Institute](https://training.fortinet.com/local/staticpage/view.php?page=fcf) | [**Launch Lab**](https://training.fortinet.com/) |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | Cloud Computing | `Foundational` | $50 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/aws-educate-badges.png) | [AWS Educate Program](https://aws.amazon.com/education/awseducate/) | [**Launch Lab**](https://aws.amazon.com/education/awseducate/) |
 | **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | Cloud & DevOps | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/redhat-skills-assessment-rhel.png) | [Red Hat Developer Program](https://developers.redhat.com/) | [**Launch Lab**](https://www.redhat.com/en/services/skills-assessment) |
 | **GitLab** | GitLab Certified Associate | Cloud & DevOps | `Associate` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/gitlab-certified-associate.png) | [GitLab University](https://university.gitlab.com/) | [**Launch Lab**](https://university.gitlab.com/pages/certifications) |
-| **Splunk** | Splunk Core Observability & Defense Fundamentals | Security | `Foundational` | $130 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/splunk-certified-defense-analyst.png) | [Splunk Lantern & Training](https://lantern.splunk.com/) | [**Launch Lab**](https://www.splunk.com/en_us/training/splunk-fundamentals.html) |
-| **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/) | [**Launch Lab**](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) |
-| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Databricks Academy](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/certification/lakehouse-fundamentals) |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-11</sub> | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.netacad.com/) | [**Launch Lab**](https://www.skillsforall.com/) |
+| **Splunk** | Splunk Core Observability & Defense Fundamentals | Security | `Foundational` | $130 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/splunk-certified-defense-analyst.png) | [Splunk Lantern & Training](https://lantern.splunk.com/) | [**Launch Lab**](https://lantern.splunk.com/) |
+| **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) | [**Launch Lab**](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) |
+| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Databricks Academy](https://www.databricks.com/learn/certification/lakehouse-fundamentals) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-10</sub> | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.skillsforall.com/) | [**Launch Lab**](https://www.netacad.com/courses/introduction-to-cybersecurity) |
 
 ---
 
@@ -136,7 +136,6 @@
 
 | Published | Enterprise | Category | Focus / Badge | Technical Briefing & Headline | Verified Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| `2026-11-10` | **GitHub** | Tech Development | `Developer Tooling` | **[Git security vulnerabilities announced](https://github.blog/open-source/git/git-security-vulnerabilities-announced-7/)**<br>Git is releasing updates addressing six security vulnerabilities affecting recursive clones, reference handling, merges, binary patches, and imports. Here is what users need to know. The post Git security vulnerabilities announced appeared ... | [GitHub Engineering Blog](https://github.blog/open-source/git/git-security-vulnerabilities-announced-7/)<br>`github.blog` |
 | `2026-11-10` | **Cisco** | Tech Development | `Enterprise Networking` | **[Safeguard Your WAN from Quantum Threats, Part 2: The CNSA 2.0 Blueprint](https://blogs.cisco.com/networking/safeguard-your-wan-from-quantum-threats-part-2-the-cnsa-2-0-blueprint)**<br>The quantum threat is here. Discover how Cisco 8000 Series Secure Routers deliver the industry's first end-to-end CNSA 2.0 blueprint, securing your WAN with zero disruption to existing operations. | [Cisco Blogs](https://blogs.cisco.com/networking/safeguard-your-wan-from-quantum-threats-part-2-the-cnsa-2-0-blueprint)<br>`blogs.cisco.com` |
 | `2026-11-10` | **Cisco** | Tech Development | `Enterprise Networking` | **[Two Forrester Waves. One Connected Security Strategy.](https://blogs.cisco.com/security/two-forrester-waves-one-connected-security-strategy)**<br>Cisco is the only vendor named a Leader in both the Forrester Enterprise Network Firewall and Microsegmentation Solutions Waves. | [Cisco Blogs](https://blogs.cisco.com/security/two-forrester-waves-one-connected-security-strategy)<br>`blogs.cisco.com` |
 | `2026-11-10` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Don't just flag it, fix it: How to run CodeMender in your pull requests](https://cloud.google.com/blog/products/identity-security/how-to-run-codemender-in-your-pull-requests/)**<br>As many developers use agentic tools to create more code faster than ever before, the code has gotten more complex and they're taking longer to find and fix software flaws. Helping to address that pressure is a key concern at Google. We kno... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/how-to-run-codemender-in-your-pull-requests/)<br>`cloud.google.com` |
@@ -236,6 +235,7 @@
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Are You Post-Quantum Ready? Build Quantum Readiness Into Today's Infrastructure Strategy](https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure)**<br>PQC is a top priority today. The strategy organizations set now across infrastructure, products, and partnerships will determine their long-term resilience. | [Cisco Blogs](https://blogs.cisco.com/news/are-you-post-quantum-ready-build-quantum-readiness-into-todays-infrastructure)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Cisco** | Tech Development | `Enterprise Networking` | **[Unified Defense from Endpoint to Cloud: Real-Time Protection with Cisco Security, Splunk, and SentinelOne](https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud)**<br>Discover how Cisco and SentinelOne work together across Splunk, Duo, Firepower and now ISE - turning endpoint detection into automated network access decisions. | [Cisco Blogs](https://blogs.cisco.com/security/unified-defense-from-endpoint-to-cloud)<br>`blogs.cisco.com` |
 | `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Inside Agent Compute Engine: Building the compute foundation for the agentic era](https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/)**<br>Every decade or so, a shift in software forces us to rethink computer architecture from first principles. After the first boom of web-scale traffic, Google pioneered warehouse-scale computing and Linux containers on Borg. This reshaped how ... | [Google Cloud Blog](https://cloud.google.com/blog/topics/ai-infrastructure/agent-compute-engine-deep-dive/)<br>`cloud.google.com` |
+| `2024-08-01` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Introducing new self-learning context enrichment in Knowledge Catalog](https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/)**<br>Today, we're launching self-learning context enrichment (preview) and a reimagined Knowledge Studio experience (preview) in Knowledge Catalog, Google Cloud's context engine for agents. Building on Knowledge Catalog's existing Gemini-powered... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/knowledge-catalog-self-learning-context-enrichment-for-ai-agents/)<br>`cloud.google.com` |
 
 </details>
 
@@ -249,7 +249,7 @@
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Enroll in Oracle University OCI learning paths. Complete the training modules to unlock free proctored online exam attempts during the promotional cycle.
-- **Official Link:** [https://www.oracle.com/education/certification/](https://www.oracle.com/education/certification/)
+- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177](https://mylearn.oracle.com/ou/learning-path/become-an-oci-ai-foundations-associate-2023/127177)
 
 #### Cisco U: Rev Up to Recert - Free CE Credits for CCNA/CCNP/DevNet
 - **Provider:** Cisco
@@ -277,7 +277,7 @@
 - **Value:** $150 USD
 - **Eligibility:** Global (Free registration)
 - **Steps to Claim:** Enroll in the free Snowflake Hands-on Essentials track on Snowflake University. Complete interactive SQL lab exercises to earn verified Accredible badges.
-- **Official Link:** [https://learn.snowflake.com/en/tracks/hands-on-essentials/](https://learn.snowflake.com/en/tracks/hands-on-essentials/)
+- **Official Link:** [https://learn.snowflake.com/en/pages/hands-on-essentials-track/](https://learn.snowflake.com/en/pages/hands-on-essentials-track/)
 
 #### MongoDB University Free Courses & Associate Exam Drives
 - **Provider:** MongoDB
@@ -312,7 +312,7 @@
 - **Value:** $75 USD
 - **Eligibility:** Global (Free for all)
 - **Steps to Claim:** Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.
-- **Official Link:** [https://www.databricks.com/learn/certification/generative-ai-fundamentals](https://www.databricks.com/learn/certification/generative-ai-fundamentals)
+- **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
 
 #### Fortinet Certified Fundamentals (FCF) in Cybersecurity
 - **Provider:** Fortinet
@@ -354,7 +354,7 @@
 - **Value:** $130 USD
 - **Eligibility:** Global (Free Splunk.com account)
 - **Steps to Claim:** Create a free Splunk account. Access Splunk Lantern and Splunk Education free foundational courses. Pass the final exam track to receive accredited digital credentials.
-- **Official Link:** [https://www.splunk.com/en_us/training/splunk-fundamentals.html](https://www.splunk.com/en_us/training/splunk-fundamentals.html)
+- **Official Link:** [https://lantern.splunk.com/](https://lantern.splunk.com/)
 
 #### IBM SkillsBuild: Enterprise Cybersecurity & AI Practitioner Certifications
 - **Provider:** IBM
@@ -368,21 +368,21 @@
 - **Value:** $75 USD
 - **Eligibility:** Global (Free Databricks Academy account)
 - **Steps to Claim:** Sign up on Databricks Academy, enroll in the free Lakehouse Fundamentals pathway, complete the interactive curriculum, and pass the accreditation test to earn the official Databricks badge.
-- **Official Link:** [https://www.databricks.com/learn/certification/lakehouse-fundamentals](https://www.databricks.com/learn/certification/lakehouse-fundamentals)
+- **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
 
 #### Oracle University: Free OCI Generative AI Professional Certification
 - **Provider:** Oracle Cloud
 - **Value:** $245 USD
 - **Eligibility:** Global (Free Oracle University account)
 - **Steps to Claim:** Log in to Oracle University MyLearn. Complete the OCI Generative AI learning path and schedule your free proctored exam attempt directly within the promotion portal.
-- **Official Link:** [https://www.oracle.com/artificial-intelligence/generative-ai/](https://www.oracle.com/artificial-intelligence/generative-ai/)
+- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444)
 
 #### Cisco Networking Academy: Junior Cybersecurity Analyst Career Path & Exam Badge
 - **Provider:** Cisco
 - **Value:** $125 USD
 - **Eligibility:** Global (Free Cisco NetAcad / Skills for All account)
 - **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
-- **Official Link:** [https://www.skillsforall.com/](https://www.skillsforall.com/)
+- **Official Link:** [https://www.netacad.com/courses/introduction-to-cybersecurity](https://www.netacad.com/courses/introduction-to-cybersecurity)
 
 #### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
 - **Provider:** GitHub
@@ -757,4 +757,4 @@ Community contributions are warmly welcome! If you find a new verified free vouc
 
 ---
 
-*Built and maintained by [Athish R S](https://github.com/Athish2002) for the global tech community. Audited automatically every 12 hours on `2026-11-11 02:17 UTC`.*
+*Built and maintained by [Athish R S](https://github.com/Athish2002) for the global tech community. Audited automatically every 12 hours on `2026-11-10 17:33 UTC`.*

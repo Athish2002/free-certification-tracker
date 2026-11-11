@@ -633,6 +633,24 @@ class HeadlessDOMInspector:
             except Exception as wait_err:
                 logger.debug("Text length wait timeout notice: %s", wait_err)
 
+            # Anti-404 / error-page protection: never capture a 404 or access denied page
+            try:
+                page_title = page.title() or ""
+                body_sample = page.evaluate("() => document.body ? document.body.innerText.slice(0, 500) : ''")
+                if (
+                    "404" in page_title
+                    or "page not found" in page_title.lower()
+                    or "access denied" in page_title.lower()
+                    or "404 - not found" in body_sample.lower()
+                    or "page could not be found" in body_sample.lower()
+                ):
+                    logger.warning(f"Aborting screenshot for {offer_id}: page is a 404 or error page ('{page_title}')")
+                    if target_path.exists():
+                        return True, rel_path
+                    return False, ""
+            except Exception as err_check:
+                logger.debug("Error page detection notice: %s", err_check)
+
             screenshot_bytes = page.screenshot(path=str(temp_path), full_page=False)
             if (not screenshot_bytes or not isinstance(screenshot_bytes, bytes)) and temp_path.exists():
                 screenshot_bytes = temp_path.read_bytes()

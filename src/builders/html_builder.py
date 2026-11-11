@@ -491,37 +491,6 @@ def generate_web_dashboard(
                 </div>
             </div>
 
-            <!-- SYNERGY QUEST PATHWAY -->
-            <div class="mb-4 p-3.5 rounded-2xl border primer-card neo-shadow">
-                <div class="flex items-center justify-between mb-2.5">
-                    <div class="flex items-center gap-2">
-                        <span class="text-emerald-400">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-                        </span>
-                        <span class="font-mono text-xs font-bold" style="color: var(--fg-default);">SYNERGY QUEST PATHWAY: [HARVARD &rarr; MIT &rarr; ORACLE ARCHITECT]</span>
-                    </div>
-                    <span class="text-xs font-mono" style="color: var(--accent-fg);">Active Quest: Step 3 of 4</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-mono">
-                    <div class="p-2.5 rounded-xl border flex items-center justify-between" style="background-color: var(--success-subtle); border-color: var(--success-fg); color: var(--success-fg);">
-                        <div><div class="font-bold">STEP 01: CS50x</div><div class="text-xs opacity-90">C & Memory</div></div>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-emerald-500/20">DONE</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl border flex items-center justify-between" style="background-color: var(--success-subtle); border-color: var(--success-fg); color: var(--success-fg);">
-                        <div><div class="font-bold">STEP 02: 6.0001</div><div class="text-xs opacity-90">Python & Data</div></div>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-emerald-500/20">DONE</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl border flex items-center justify-between relative overflow-hidden" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">
-                        <div class="relative z-10"><div class="font-bold">STEP 03: EXAM PREP</div><div class="text-xs opacity-90">OCI GenAI</div></div>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-sky-500/20 relative z-10 animate-pulse">ACTIVE</span>
-                    </div>
-                    <div class="p-2.5 rounded-xl border flex items-center justify-between opacity-80" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-muted);">
-                        <div><div class="font-bold">STEP 04: REDEEM</div><div class="text-xs opacity-90">Pearson VUE</div></div>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded" style="background-color: var(--canvas-inset); color: var(--success-fg);">$245 FREE</span>
-                    </div>
-                </div>
-            </div>
-
             <!-- Prominent Command-Bar Search Experience -->
             <div class="mb-4">
                 <div class="relative w-full rounded-xl border shadow-xs transition-all duration-200 focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
