@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-11T19:24:05.269462+00:00",
-  "last_sync": "2026-11-11T19:24:05.269462+00:00",
+  "last_updated": "2026-11-12T06:15:31.870436+00:00",
+  "last_sync": "2026-11-12T06:15:31.870436+00:00",
   "news": [
+    {
+      "id": "amazon-web-services-how-zillow-runs-100-million-da",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How Zillow runs 100 million daily notifications on AWS Step Functions",
+      "summary": "Zillow sends more than 100 million personalized notifications a day, each as a short-lived AWS Step Functions Express workflow. See how the Comms Experience team replaced more than 10 campaign generators with one configuration-driven orches...",
+      "published_date": "2026-11-11",
+      "date": "2026-11-11",
+      "url": "https://aws.amazon.com/blogs/architecture/how-zillow-runs-100-million-daily-notifications-on-aws-step-functions/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "16e064c9af670e7b11c03fca962d4cf4ba098d0ca378897732d457f99ed8f8a1"
+    },
     {
       "id": "hashicorp-consul-2-1-0-advancing-secure",
       "company": "HashiCorp",
@@ -1386,20 +1400,6 @@
       "url": "https://www.hashicorp.com/blog/banking-at-machine-speed-securing-access-across-cloud-ai-and-hybrid-environments",
       "impact_badge": "Infrastructure as Code",
       "content_fingerprint": "bfb3c919c4b5e829c187826ec076e2fcd527719178e159867783b781bd804aa8"
-    },
-    {
-      "id": "cisco-the-road-to-zero-scaling-safe",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "The Road to Zero: Scaling Safety Through Intelligent Infrastructure",
-      "summary": "Urban roadways are facing unprecedented complexity, forcing Departments of Transportation to balance the need for advanced V2X technology with the absolute requirement for rigorous cybersecurity.",
-      "published_date": "2026-10-23",
-      "date": "2026-10-23",
-      "url": "https://blogs.cisco.com/industrial-iot/the-road-to-zero-scaling-safety-through-intelligent-infrastructure",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "f2dc6f54b57133ab1c0e4cac96b89dc2afcfb0b44b29ef30d1206035fb94abed"
     }
   ],
   "total_items": 100
