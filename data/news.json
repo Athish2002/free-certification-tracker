@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-12T06:15:31.870436+00:00",
-  "last_sync": "2026-11-12T06:15:31.870436+00:00",
+  "last_updated": "2026-11-12T19:41:34.334182+00:00",
+  "last_sync": "2026-11-12T19:41:34.334182+00:00",
   "news": [
+    {
+      "id": "google-cloud-powering-agentic-cloud-governa",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Powering agentic cloud governance: What's new in Organization Policy",
+      "summary": "Even as sophisticated, new zero-day exploits continue to emerge, most cybersecurity incidents still start from the same common sources: an attacker locating and exploiting a fundamental, easily preventable cloud misconfiguration. Organizati...",
+      "published_date": "2026-11-12",
+      "date": "2026-11-12",
+      "url": "https://cloud.google.com/blog/products/identity-security/ai-powered-cloud-governance-whats-new-in-organization-policy/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "73b77c4db2ead0827adbad4c67da17ec765cd976539bb85f98760cfa3e83b3fd"
+    },
+    {
+      "id": "google-cloud-chrome-enterprise-brings-more",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Chrome Enterprise brings more protections to healthcare technologies",
+      "summary": "Healthcare is adopting AI quickly, and it's moving beyond chat. Clinical teams are starting to use AI agents that draft documentation, summarize charts, navigate web apps, and complete multi-step tasks on a clinician's behalf. Many of these...",
+      "published_date": "2026-11-12",
+      "date": "2026-11-12",
+      "url": "https://cloud.google.com/blog/products/chrome-enterprise/chrome-enterprise-brings-more-protections-to-healthcare-technologies/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "16c290ad957c2d95cdf638795c3baa2678b3bf430127f1238b0d098e5aeaec45"
+    },
+    {
+      "id": "amazon-web-services-inside-an-enterprise-ai-agent",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Inside an enterprise AI agent: A governed, observable loop architecture",
+      "summary": "This post lays out a five-layer reference architecture for governed, observable enterprise AI agents on AWS: an API gateway, a five-phase agent runtime, a knowledge and state tier, platform services, and a cross-cutting trust and control fr...",
+      "published_date": "2026-11-12",
+      "date": "2026-11-12",
+      "url": "https://aws.amazon.com/blogs/architecture/inside-an-enterprise-ai-agent-a-governed-observable-loop-architecture/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "c50e85b9310121eaefb32068c00e10670efb506ab579db8f456223d483c1aa02"
+    },
     {
       "id": "amazon-web-services-how-zillow-runs-100-million-da",
       "company": "Amazon Web Services",
@@ -1358,48 +1400,6 @@
       "date": "2026-10-23",
       "url": "https://blogs.cisco.com/ai/introducing-agentic-evaluation-in-faith",
       "impact_badge": "Enterprise Networking"
-    },
-    {
-      "id": "cisco-how-cisco-iq-powers-continuous",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "How Cisco IQ Powers Continuous Compliance for PCI DSS 4.0 and Quantum Readiness",
-      "summary": "How can financial institutions harvest the capabilities of Cisco IQ to navigate compliance with regulatory frameworks and ensuring quantum readiness by 2030? Cisco IQ, with professional grade analysis and AI powered insights, simplifies thi...",
-      "published_date": "2026-10-23",
-      "date": "2026-10-23",
-      "url": "https://blogs.cisco.com/cisco-devnet/how-cisco-iq-powers-continuous-compliance-for-pci-dss-4-0-and-quantum-readiness",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "e3b7beaf463f03597e294ef06bf05c81a0dde0b78fa21ea97bb9da09345a2e4e"
-    },
-    {
-      "id": "red-hat-red-hat-ai-factory-with-nvidia",
-      "company": "Red Hat",
-      "source": "Red Hat Press Releases",
-      "source_domain": "redhat.com",
-      "category": "Linux & Enterprise",
-      "title": "Red Hat AI Factory with NVIDIA Accelerates Agentic AI Security Capabilities Across the Open Hybrid Cloud",
-      "summary": "Red Hat, the world's leading provider of open source solutions, today announced expanded updates in its ongoing collaboration with NVIDIA to accelerate security-focused, enterprise-grade agentic AI across the open hybrid cloud using Red Hat...",
-      "published_date": "2026-10-21",
-      "date": "2026-10-21",
-      "url": "https://www.redhat.com/en/about/press-releases/red-hat-ai-factory-nvidia-accelerates-agentic-ai-security-capabilities-across-open-hybrid-cloud",
-      "impact_badge": "Linux & Enterprise",
-      "content_fingerprint": "7c60a62cf55af5feda60a4e34092d57469b243a6196a30421631f1a992c14a94"
-    },
-    {
-      "id": "hashicorp-banking-at-machine-speed-secu",
-      "company": "HashiCorp",
-      "source": "HashiCorp Blog",
-      "source_domain": "hashicorp.com",
-      "category": "Infrastructure & DevOps",
-      "title": "Banking at machine speed: Securing access across cloud, AI, and hybrid environments",
-      "summary": "How can financial institutions manage access across cloud, AI, and hybrid environments while supporting compliance, auditability, and operational resilience?...",
-      "published_date": "2026-10-09",
-      "date": "2026-10-09",
-      "url": "https://www.hashicorp.com/blog/banking-at-machine-speed-securing-access-across-cloud-ai-and-hybrid-environments",
-      "impact_badge": "Infrastructure as Code",
-      "content_fingerprint": "bfb3c919c4b5e829c187826ec076e2fcd527719178e159867783b781bd804aa8"
     }
   ],
   "total_items": 100
