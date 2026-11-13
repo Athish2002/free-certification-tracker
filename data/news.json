@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-13T05:37:16.383544+00:00",
-  "last_sync": "2026-11-13T05:37:16.383544+00:00",
+  "last_updated": "2026-11-13T19:22:52.988794+00:00",
+  "last_sync": "2026-11-13T19:22:52.988794+00:00",
   "news": [
+    {
+      "id": "cisco-byoh-bring-your-own-harness-w",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "BYOH: Bring Your Own Harness with Cisco IQ, for partners",
+      "summary": "With bringing your own harness (BYOH) trusted context has become part of the security perimeter. Here's how Cisco IQ fits in.",
+      "published_date": "2026-11-13",
+      "date": "2026-11-13",
+      "url": "https://blogs.cisco.com/customerexperience/byoh-bring-your-own-harness-with-cisco-iq-for-partners",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "5a561d990da4fe16900f1b707bacb9297d77c232ddb36714dc9f0fe4c18849b2"
+    },
+    {
+      "id": "google-cloud-new-ai-agent-observability-and",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "New AI agent observability and governance across BigQuery and Looker",
+      "summary": "As enterprises move AI agents from experimental prototypes into production, data and platform teams are discovering that deploying an agent is only half the battle - you also need to see how it reasons, which data it touches, and what it co...",
+      "published_date": "2026-11-13",
+      "date": "2026-11-13",
+      "url": "https://cloud.google.com/blog/products/data-analytics/enterprise-ai-agent-observability-with-bigquery-and-looker/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "1ddaa0c99542effe22214081322c10301c4acb2d0dee317f2c68a597792d1970"
+    },
     {
       "id": "cisco-skills-to-jobs-a-strategic-ca",
       "company": "Cisco",
@@ -1374,34 +1402,6 @@
       "url": "https://blogs.cisco.com/security/cisco-rethinks-privileged-infrastructure-access",
       "impact_badge": "Enterprise Networking",
       "content_fingerprint": "e78fa4cc986480708248dbfdbc5e1ff8da7fe09e9c37f782d224a4a404de6e59"
-    },
-    {
-      "id": "google-cloud-unifying-enterprise-context-an",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Unifying enterprise context and semantics: LookML in Knowledge Catalog is now GA",
-      "summary": "As enterprises go from experimental AI agent prototypes to using them in production, data teams are realizing that access to data is not the same as understanding that data. To help bridge that gap, today, we are announcing the general avai...",
-      "published_date": "2026-10-26",
-      "date": "2026-10-26",
-      "url": "https://cloud.google.com/blog/products/business-intelligence/lookml-metadata-indexing-in-knowledge-catalog-is-now-ga/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "91e543b52979de4e8d024cd49ddfd276bfcfc751c000647e8f950f45bd64daba"
-    },
-    {
-      "id": "google-cloud-scale-agents-securely-with-iam",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Scale agents securely with IAM Helper Agent Skills and MCP Tools",
-      "summary": "As organizations adopt autonomous agents to build applications, securing identities and access has become more challenging. Developers relying on agents to provision cloud resources, write Terraform, and deploy microservices at machine-spee...",
-      "published_date": "2026-10-26",
-      "date": "2026-10-26",
-      "url": "https://cloud.google.com/blog/products/identity-security/scale-agents-securely-with-iam-helper-agent-skills-and-mcp-tools/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "9fcf2bfba3e4ecc37159a6228ec94842cbe7fca88b946e90e8e9e8a471477af1"
     }
   ],
   "total_items": 100
