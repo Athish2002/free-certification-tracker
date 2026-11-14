@@ -371,3 +371,21 @@ class TestBlankScreenshotShield:
                     target_path.unlink()
                 except Exception:
                     pass
+
+    def test_scroll_to_evidence_evaluates_target_terms_and_anchors(self):
+        """HeadlessDOMInspector.scroll_to_evidence evaluates DOM terms and scrolls matching container."""
+        mock_page = MagicMock()
+        mock_page.evaluate.return_value = {"scrolled": True, "score": 45, "textSnippet": "Free 1Z0-1085 Exam"}
+        inspector = HeadlessDOMInspector(headless=True)
+        res = inspector.scroll_to_evidence(
+            page=mock_page,
+            offer_id="oracle-oci-free-cert",
+            offer={"title": "Oracle OCI Free Certification", "exam_code": "1Z0-1085", "platform": "Oracle"},
+        )
+        assert res is True
+        mock_page.evaluate.assert_called_once()
+        args, kwargs = mock_page.evaluate.call_args
+        terms_arg = args[1]
+        assert "1z0-1085" in terms_arg
+        assert "oracle" in terms_arg
+        assert "free certification" in terms_arg

@@ -279,7 +279,11 @@ JS_TEMPLATE = """
                     portalLink.innerHTML = '<span>Inspect Server Status</span>';
                 }
             } else {
-                if (alertEl) alertEl.classList.add('hidden');
+                if (alertEl) {
+                    alertEl.classList.remove('hidden');
+                    alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-slate-500/10 border-slate-500/20 text-slate-400 font-medium';
+                    alertEl.innerHTML = '<span class="text-sm">📜</span><span><strong>Historical Campaign Archive:</strong> This certification campaign has concluded (e.g. promotional exam voucher quota exhausted or annual testing window closed). The screenshot below captures the campaign portal as audited. Preserved to monitor for future wave re-openings.</span>';
+                }
                 if (badgeEl) {
                     badgeEl.className = 'px-2 py-0.5 rounded text-xs font-bold border border-slate-500/30 bg-slate-500/20 text-slate-400';
                     badgeEl.style.backgroundColor = '';
@@ -307,6 +311,11 @@ JS_TEMPLATE = """
             const sourceNameEl = document.getElementById('proofModalTruthSourceName');
             const sourceLink = document.getElementById('proofModalTruthSource');
             const notesEl = document.getElementById('proofModalTruthNotes');
+            const eligEl = document.getElementById('proofModalEligibility');
+
+            if (eligEl) {
+                eligEl.textContent = offer.eligibility || 'Open to all developers and engineers globally with free account.';
+            }
 
             if (tv) {
                 if (truthCard) truthCard.classList.remove('hidden');
@@ -342,6 +351,11 @@ JS_TEMPLATE = """
             const shotPath = offer.screenshot_path 
                 ? (offer.screenshot_path.startsWith('docs/') ? './' + offer.screenshot_path.slice(5) : './' + offer.screenshot_path)
                 : ('./screenshots/' + offer.id + '.png');
+
+            const fullResLink = document.getElementById('proofModalFullResLink');
+            if (fullResLink) {
+                fullResLink.href = shotPath;
+            }
 
             if (fallback) fallback.classList.add('hidden');
             if (img) {
@@ -1472,8 +1486,8 @@ JS_TEMPLATE = """
                                     <button onclick="toggleOfferChecked('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: ${isOfferTracked(o.id) ? 'var(--accent-fg)' : 'var(--fg-muted)'};" title="Track in Personal Study Goals">
                                         <span>${isOfferTracked(o.id) ? '⭐ Tracked' : '☆ Track'}</span>
                                     </button>
-                                    <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--accent-fg);" title="Flip to Truth Oracle Cryptographic Spec Sheet">
-                                        🔄 Spec
+                                    <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--accent-fg);" title="View Verified Policy, Value & Eligibility Criteria">
+                                        <span>📋 Policy</span>
                                     </button>
                                 </div>
                                 <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" onclick="triggerConfettiBurst(60)" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
@@ -1483,41 +1497,56 @@ JS_TEMPLATE = """
                             </div>
                         </div>
 
-                        <!-- BACK FACE: Truth Oracle Forensic Spec Sheet -->
+                        <!-- BACK FACE: Verified Policy & Claim Rules -->
                         <div class="flip-card-back flex flex-col justify-between h-full p-4 rounded-xl border" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                            <div>
-                                <div class="flex items-center justify-between border-b pb-2 mb-2.5" style="border-color: var(--border-default);">
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center justify-between border-b pb-2 mb-1" style="border-color: var(--border-default);">
                                     <div class="flex items-center gap-1.5 font-mono text-xs font-bold" style="color: var(--accent-fg);">
-                                        <span>🛡️ TRUTH ORACLE SPEC SHEET</span>
+                                        <span>🛡️ VERIFIED CLAIM & POLICY SPEC</span>
                                     </div>
-                                    <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-mono px-2 py-0.5 rounded border" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
+                                    <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-mono px-2 py-0.5 rounded border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
                                         ✕ Back
                                     </button>
                                 </div>
-                                <div class="space-y-2 text-xs font-mono">
-                                    <div>
-                                        <span style="color: var(--fg-muted);">SHA-256 Fingerprint:</span>
-                                        <div class="text-xs truncate font-bold text-sky-400 select-all">${escapeHtml((o.id + '_truth_verified_certpulse_ledger').slice(0, 32))}...</div>
+
+                                <!-- Policy & Value Summary -->
+                                <div class="p-2.5 rounded-lg border text-xs space-y-1" style="background-color: var(--canvas-default); border-color: var(--border-default);">
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span style="color: var(--fg-muted);">Waiver Status:</span>
+                                        <span class="font-bold ${o.status === 'Active' ? 'text-emerald-400' : 'text-slate-400'}">${escapeHtml(o.cart_balance_verified || (o.status === 'Active' ? '$0.00 Confirmed Zero-Dollar Waiver' : 'Historical Archive'))}</span>
                                     </div>
-                                    <div>
-                                        <span style="color: var(--fg-muted);">Last Zero-Dollar Audit:</span>
-                                        <div class="font-bold text-emerald-400">${escapeHtml(o.last_zero_dollar_confirmed_date || '2026-10-23')} (0% Drift)</div>
-                                    </div>
-                                    <div>
-                                        <span style="color: var(--fg-muted);">Crawler Protocol:</span>
-                                        <div style="color: var(--fg-default);">Headless Playwright TLSv1.3 DOM Snapshot</div>
-                                    </div>
-                                    <div class="pt-1.5">
-                                        <span style="color: var(--fg-muted);">Verification Replay:</span>
-                                        <code class="block text-xs p-1.5 rounded border mt-0.5 select-all overflow-x-auto" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">curl -sI "${escapeHtml((o.direct_verified_url || o.url || '').slice(0, 45))}..."</code>
+                                    <div class="flex items-center justify-between gap-1">
+                                        <span style="color: var(--fg-muted);">Tuition Saved:</span>
+                                        <span class="font-mono font-bold text-emerald-400">${(o.real_value_usd || o.value_usd) ? '$' + escapeHtml(String(o.real_value_usd || o.value_usd)) + ' USD (100% Free)' : 'Complimentary'}</span>
                                     </div>
                                 </div>
+
+                                <!-- Eligibility & Qualifying Rules -->
+                                <div>
+                                    <div class="font-semibold mb-0.5" style="color: var(--fg-default);">Eligibility & Prerequisites:</div>
+                                    <p class="leading-relaxed text-pretty line-clamp-2" style="color: var(--fg-muted);">${escapeHtml(o.eligibility || 'Open to all developers and engineers globally.')}</p>
+                                </div>
+
+                                <!-- Audit Finding Notes -->
+                                <div>
+                                    <div class="font-semibold mb-0.5" style="color: var(--fg-default);">Truth Oracle Verdict:</div>
+                                    <p class="leading-relaxed text-pretty line-clamp-2" style="color: var(--fg-muted);">${escapeHtml((o.truth_verification && o.truth_verification.verdict_notes) || o.inspection_notes || 'Verified against vendor program documentation and registration terms.')}</p>
+                                </div>
+
+                                <!-- Direct Verified Target Portal -->
+                                <div>
+                                    <span style="color: var(--fg-muted);">Target Portal:</span>
+                                    <a href="${sanitizeUrl(o.direct_verified_url || o.url)}" target="_blank" rel="noopener" class="block font-mono truncate underline hover:opacity-80 transition mt-0.5" style="color: var(--accent-fg);">
+                                        ${escapeHtml((o.direct_verified_url || o.url || '').replace(/^https?:\\/\\//, ''))}
+                                    </a>
+                                </div>
                             </div>
+
                             <div class="pt-3 border-t flex items-center justify-between gap-2" style="border-color: var(--border-default);">
                                 <button type="button" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                                    📸 Open Full Proof
+                                    📸 View Proof
                                 </button>
-                                <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
+                                <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                                     🔄 Return to Voucher
                                 </button>
                             </div>

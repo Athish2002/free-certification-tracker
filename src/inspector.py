@@ -429,6 +429,122 @@ class InspectionResult(list):
         }
 
 
+async def scroll_to_evidence_async(page: Any, offer_id: str, offer: dict[str, Any] | None = None) -> bool:
+    """
+    Locates the primary verification evidence element in the DOM and scrolls it
+    into the center of the viewport before capturing screenshot proof.
+    """
+    if not page or not hasattr(page, "evaluate"):
+        return False
+    try:
+        target_terms = [
+            "free certification",
+            "free exam",
+            "voucher",
+            "waiver",
+            "$0",
+            "100% discount",
+            "100% off",
+            "zero cost",
+            "exam voucher",
+            "promotional code",
+            "claim",
+            "schedule exam",
+            "take exam",
+            "get certified",
+            "scholarship",
+            "datacamp",
+            "student developer pack",
+        ]
+        if offer:
+            title = offer.get("title") or offer.get("certification_name") or ""
+            for word in re.findall(r"[A-Za-z0-9\-]{3,}", title):
+                if word.lower() not in {"the", "and", "for", "with", "free", "all", "via", "exam"}:
+                    target_terms.append(word.lower())
+            exam_code = offer.get("exam_code") or ""
+            if exam_code:
+                target_terms.insert(0, exam_code.lower())
+            provider = offer.get("provider") or offer.get("platform") or ""
+            if provider:
+                target_terms.append(provider.lower())
+
+        target_terms = list(dict.fromkeys(target_terms))
+
+        js_code = """(terms) => {
+            try {
+                const tabs = Array.from(document.querySelectorAll('button, [role="tab"], a, summary, .tab, .nav-link'));
+                for (const tab of tabs) {
+                    const txt = (tab.innerText || tab.textContent || '').trim().toLowerCase();
+                    if (txt.includes('certification') || txt.includes('voucher') || txt.includes('benefit') || txt.includes('exam')) {
+                        if (tab.getAttribute('aria-selected') === 'false' || tab.getAttribute('aria-expanded') === 'false') {
+                            tab.click();
+                        }
+                    }
+                }
+            } catch (e) {}
+
+            const candidateNodes = Array.from(document.querySelectorAll(
+                'section, article, div[class*="card"], div[class*="tier"], div[class*="offer"], div[class*="cert"], div[class*="benefit"], div[class*="item"], div[class*="content"], tr, li, p, h1, h2, h3, h4'
+            ));
+
+            let bestEl = null;
+            let bestScore = 0;
+
+            for (const el of candidateNodes) {
+                if (!el.offsetParent && el.offsetWidth === 0 && el.offsetHeight === 0) continue;
+                const rect = el.getBoundingClientRect();
+                if (rect.height < 20 || rect.width < 50) continue;
+
+                const text = (el.innerText || el.textContent || '').trim();
+                if (text.length < 15 || text.length > 2500) continue;
+                const lower = text.toLowerCase();
+
+                let score = 0;
+                for (const term of terms) {
+                    if (term.length >= 3 && lower.includes(term)) {
+                        if (term.includes('1z0') || term.includes('az-') || term.includes('ai-') || term.includes('voucher')) {
+                            score += 30;
+                        } else if (term.includes('free') || term.includes('waiver') || term.includes('$0') || term.includes('100%')) {
+                            score += 25;
+                        } else {
+                            score += 10;
+                        }
+                    }
+                }
+
+                if (text.length >= 50 && text.length <= 800) {
+                    score += 15;
+                }
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestEl = el;
+                }
+            }
+
+            if (bestEl && bestScore >= 20) {
+                bestEl.scrollIntoView({ behavior: 'instant', block: 'center' });
+                bestEl.style.outline = '3px solid #10b981';
+                bestEl.style.outlineOffset = '4px';
+                bestEl.style.borderRadius = '8px';
+                bestEl.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+                return { scrolled: true, score: bestScore, textSnippet: bestEl.innerText.slice(0, 120) };
+            }
+            return { scrolled: false, score: bestScore };
+        }"""
+
+        res = await page.evaluate(js_code, target_terms)
+        if res and res.get("scrolled"):
+            try:
+                await page.wait_for_timeout(250)
+            except Exception:
+                pass
+            return True
+    except Exception as e:
+        logger.debug(f"Evidence scroll attempt notice in inspector: {e}")
+    return False
+
+
 async def run_inspection_async(
     use_headless: bool = True,
     concurrency: int = 5,
@@ -660,6 +776,10 @@ async def run_inspection_async(
 
                             if offer_id:
                                 try:
+                                    try:
+                                        await scroll_to_evidence_async(page, offer_id, offer=offer)
+                                    except Exception as scroll_err:
+                                        logger.debug("Evidence scroll notice for %s: %s", offer_id, scroll_err)
                                     screenshot_bytes = await page.screenshot(full_page=False)
                                     if (
                                         screenshot_bytes

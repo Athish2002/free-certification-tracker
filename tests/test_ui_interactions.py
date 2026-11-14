@@ -214,6 +214,14 @@ class TestProofButtonClickabilityAndModalContent:
                 f"Invalid tier label '{tier}'"
             )
 
+            # Verify candidate eligibility is populated
+            elig = browser_page.inner_text("#proofModalEligibility")
+            assert len(elig) > 0, f"Candidate eligibility must be populated for {target_id}"
+
+            # Verify full-res link
+            full_res_href = browser_page.get_attribute("#proofModalFullResLink", "href")
+            assert full_res_href and ".png" in full_res_href, f"Full-res link must target screenshot png"
+
             # Close via close button
             close_btn = browser_page.query_selector("#closeProofModalBtn")
             assert close_btn is not None and close_btn.is_visible()
@@ -221,6 +229,26 @@ class TestProofButtonClickabilityAndModalContent:
             browser_page.wait_for_timeout(200)
 
             assert not modal.is_visible(), "Modal must be hidden after clicking close button"
+
+    def test_card_back_flip_shows_verified_claim_spec_without_fake_fingerprint(self, browser_page: Page):
+        """Flipping a card must display the genuine claim spec and no fake SHA-256 fingerprints or curl replays."""
+        flip_btn = browser_page.query_selector("#offersGrid button[title*='Policy']")
+        if flip_btn:
+            flip_btn.scroll_into_view_if_needed()
+            flip_btn.click()
+            browser_page.wait_for_timeout(300)
+
+            grid_text = browser_page.inner_text("#offersGrid")
+            assert "VERIFIED CLAIM & POLICY SPEC" in grid_text
+            assert "SHA-256 Fingerprint:" not in grid_text
+            assert "curl -sI" not in grid_text
+            assert "Tuition Saved:" in grid_text
+
+            # Flip back so front face buttons remain clickable for subsequent tests
+            return_btn = browser_page.query_selector("#offersGrid button:has-text('Return to Voucher')")
+            if return_btn:
+                return_btn.click()
+            browser_page.wait_for_timeout(300)
 
     def test_proof_modal_closes_on_escape_key(self, browser_page: Page):
         """Opening modal and pressing Escape key must close it cleanly."""

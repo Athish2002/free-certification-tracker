@@ -307,11 +307,17 @@ class TestHtmlBuilder:
         assert "cyber-cursor-ring pointer-events-none fixed z-[9998]" in html
         assert "ANIMATED SVG MICRO-INTERACTIONS LABORATORY" not in html
         assert "SYNERGY QUEST PATHWAY" not in html
+        assert "SHA-256 Fingerprint:" not in html
+        assert "curl -sI" not in html
+        assert "TRUTH ORACLE SPEC SHEET" not in html
         assert 'id="trackedGoalsBtn"' in html
         assert 'id="trackedGoalsCountBadge"' in html
+        assert 'id="proofModalEligibility"' in html
+        assert 'id="proofModalFullResLink"' in html
+        assert "DOM Viewport: Anchored to Exam Terms" in html
 
     def test_client_bundle_goal_tracking_and_no_stubs(self):
-        """Client bundle must implement real localStorage goal tracking and zero empty wrapper stubs."""
+        """Client bundle must implement real localStorage goal tracking, verified claim specs, and zero empty wrapper stubs."""
         js = generate_client_bundle()
         # Verify real logic implementations
         assert "function getTrackedOffers()" in js
@@ -320,6 +326,12 @@ class TestHtmlBuilder:
         assert "function toggleOfferChecked(id)" in js
         assert "function clearAllChecked()" in js
         assert "function updateGoalCounters()" in js
+        assert "VERIFIED CLAIM & POLICY SPEC" in js
+        assert "proofModalFullResLink" in js
+        # Verify no fake fingerprints or cosmetic curl replays
+        assert "SHA-256 Fingerprint:" not in js
+        assert "curl -sI" not in js
+        assert "TRUTH ORACLE SPEC SHEET" not in js
         # Verify no empty stubs
         assert "function toggleOfferChecked() {}" not in js
         assert "function clearAllChecked() {}" not in js

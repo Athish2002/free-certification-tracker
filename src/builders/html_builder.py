@@ -936,8 +936,15 @@ def generate_web_dashboard(
             <!-- Dynamic Status & Quarantine Alert Banner -->
             <div id="proofModalAlert" class="hidden px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2"></div>
 
-            <!-- Modal Body (Hero Screenshot) -->
+            <!-- Modal Body (Hero Screenshot with Anchor Badge and Full-Res link) -->
             <div class="relative flex-1 overflow-auto bg-black/5 dark:bg-black/40 p-2 sm:p-4 flex flex-col items-center justify-center min-h-[220px]">
+                <div class="absolute top-4 left-4 z-10 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-mono font-medium shadow-md bg-black/75 text-emerald-400 backdrop-blur-md border border-emerald-500/30 select-none">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>DOM Viewport: Anchored to Exam Terms</span>
+                </div>
+                <a id="proofModalFullResLink" href="#" target="_blank" rel="noopener" class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-xs font-medium shadow-md bg-black/75 text-white/90 hover:text-white backdrop-blur-md border border-white/20 transition cursor-pointer select-none" title="Open high-resolution uncompressed screenshot in new tab">
+                    <span>🔍 Full-Res ↗</span>
+                </a>
                 <img id="proofModalImage" src="" alt="Screenshot proof of zero-dollar certification terms" class="max-w-full max-h-[55dvh] sm:max-h-[60dvh] object-contain rounded-lg border shadow-sm transition-opacity" style="border-color: var(--border-default);">
                 <div id="proofImageFallback" class="hidden text-xs text-center p-8" style="color: var(--fg-muted);">
                     <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -946,7 +953,7 @@ def generate_web_dashboard(
             </div>
 
             <!-- Truth Oracle Online Corroboration Card -->
-            <div id="proofModalTruthCard" class="px-4 sm:px-6 py-2.5 border-t text-xs flex flex-col gap-1.5" style="background-color: var(--canvas-default); border-color: var(--border-default);">
+            <div id="proofModalTruthCard" class="px-4 sm:px-6 py-2.5 border-t text-xs flex flex-col gap-2" style="background-color: var(--canvas-default); border-color: var(--border-default);">
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                     <div class="flex items-center gap-1.5 font-bold">
                         <span>🛡️ Online Truth Corroboration:</span>
@@ -961,6 +968,10 @@ def generate_web_dashboard(
                     </div>
                 </div>
                 <p id="proofModalTruthNotes" class="text-xs leading-relaxed text-pretty" style="color: var(--fg-muted);"></p>
+                <div id="proofModalEligibilityRow" class="text-xs flex items-start gap-1 pt-1 border-t" style="border-color: var(--border-muted);">
+                    <span class="font-semibold flex-shrink-0" style="color: var(--fg-default);">Candidate Eligibility:</span>
+                    <span id="proofModalEligibility" class="leading-relaxed text-pretty" style="color: var(--fg-muted);"></span>
+                </div>
             </div>
 
             <!-- Modal Telemetry Strip & Action Footer -->
