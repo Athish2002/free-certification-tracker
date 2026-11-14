@@ -1537,8 +1537,18 @@ JS_TEMPLATE = """
                                 <div>
                                     <span style="color: var(--fg-muted);">Target Portal:</span>
                                     <a href="${sanitizeUrl(o.direct_verified_url || o.url)}" target="_blank" rel="noopener" class="block font-mono truncate underline hover:opacity-80 transition mt-0.5" style="color: var(--accent-fg);">
-                                        ${escapeHtml((o.direct_verified_url || o.url || '').replace(/^https?:\\/\\//, ''))}
+                                        ${escapeHtml((o.direct_verified_url || o.url || '').replace(/^https?:[/][/]/, ''))}
                                     </a>
+                                </div>
+
+                                <!-- CoursePulse Academic Synergy -->
+                                <div class="pt-1">
+                                    <div class="flex items-center justify-between text-xs p-1.5 rounded border" style="background-color: var(--canvas-default); border-color: var(--border-default);">
+                                        <span class="font-semibold text-emerald-400">🎓 Prep Syllabus:</span>
+                                        <span class="font-mono truncate text-right text-xs" style="color: var(--fg-muted);">
+                                            ${(o.platform === 'Oracle Cloud' || o.platform === 'Oracle') ? 'Harvard CS50x + MIT 6.0001' : (o.platform === 'Google Cloud' || o.platform === 'Google') ? 'UC Berkeley CS61A + MIT 6.036' : (o.platform.includes('Microsoft')) ? 'Stanford CS229 (Machine Learning)' : (o.platform === 'AWS') ? 'MIT 6.036 + Stanford CS110' : (o.platform === 'Linux Foundation') ? 'CMU 15-213 + Nand2Tetris' : (o.platform === 'Cisco') ? 'Stanford CS110 Systems' : (o.platform === 'Databricks') ? 'CMU 15-445 Databases' : 'Harvard CS50 / MIT OCW'}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 

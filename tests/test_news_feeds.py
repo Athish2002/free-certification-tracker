@@ -47,11 +47,11 @@ def canonical_offers() -> list[dict[str, Any]]:
 class TestDynamicTruthPolicyDerivation:
     """Verifies dynamic truth policy derivation across all canonical offers in data/offers.json."""
 
-    def test_dynamic_registry_loads_all_39_offers(self, canonical_offers):
+    def test_dynamic_registry_loads_all_47_offers(self, canonical_offers):
         """Dynamic registry builder must load and index every offer in data/offers.json."""
-        assert len(canonical_offers) == 39, f"Expected 39 canonical offers, found {len(canonical_offers)}"
+        assert len(canonical_offers) == 47, f"Expected 47 canonical offers, found {len(canonical_offers)}"
         registry = build_dynamic_policy_registry(OFFERS_FILE)
-        assert len(registry) >= 39
+        assert len(registry) >= 47
         for offer in canonical_offers:
             oid = offer["id"]
             assert oid in registry, f"Offer '{oid}' was not dynamically registered in policy registry"
@@ -138,7 +138,7 @@ class TestDynamicTruthPolicyDerivation:
     def test_module_load_initializes_truth_policy_registry(self, canonical_offers):
         """TRUTH_POLICY_REGISTRY must be populated upon module load for backward compatibility."""
         assert isinstance(TRUTH_POLICY_REGISTRY, dict)
-        assert len(TRUTH_POLICY_REGISTRY) >= 39
+        assert len(TRUTH_POLICY_REGISTRY) >= 47
         for offer in canonical_offers:
             assert offer["id"] in TRUTH_POLICY_REGISTRY
 

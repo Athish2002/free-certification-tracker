@@ -383,9 +383,67 @@ class TestBlankScreenshotShield:
             offer={"title": "Oracle OCI Free Certification", "exam_code": "1Z0-1085", "platform": "Oracle"},
         )
         assert res is True
-        mock_page.evaluate.assert_called_once()
-        args, kwargs = mock_page.evaluate.call_args
-        terms_arg = args[1]
+        assert mock_page.evaluate.call_count == 2
+        # First call is overlay purge, second call is target terms evaluation
+        terms_arg = mock_page.evaluate.call_args_list[1][0][1]
         assert "1z0-1085" in terms_arg
         assert "oracle" in terms_arg
         assert "free certification" in terms_arg
+
+    def test_purge_page_overlays_executes_safely(self):
+        """HeadlessDOMInspector.purge_page_overlays injects overlay removal script safely."""
+        mock_page = MagicMock()
+        mock_page.evaluate.return_value = 5
+        inspector = HeadlessDOMInspector(headless=True)
+        res = inspector.purge_page_overlays(mock_page)
+        assert res is True
+        mock_page.evaluate.assert_called_once()
+        js_code = mock_page.evaluate.call_args[0][0]
+        assert "onetrust" in js_code
+        assert "cookie" in js_code
+
+    def test_benefit_removal_and_partner_dependency_detection(self):
+        """inspect_rendered_dom enforces benefit removal patterns and partner presence invariants."""
+        from src.dom_inspector import inspect_rendered_dom
+
+        # Case 1: Partner removed pattern
+        eval1 = inspect_rendered_dom(
+            rendered_text="GitHub Student Developer Pack. Notice: DataCamp is no longer a partner in the pack.",
+            rendered_title="GitHub Education",
+        )
+        assert eval1["status"] == "Expired"
+        assert eval1["category"] == "benefit_discontinued"
+        assert "Partner benefit removed or discontinued" in eval1["reason"]
+
+        # Case 2: Partner dependency absent from hub page
+        eval2 = inspect_rendered_dom(
+            rendered_text="GitHub Student Developer Pack. Learn to ship software with tools like Microsoft Azure, Heroku, and Namecheap.",
+            rendered_title="GitHub Education",
+            offer={
+                "id": "github-student-foundations",
+                "partner_dependency": {"partner_name": "DataCamp", "required_terms": ["datacamp", "foundations"]},
+            },
+        )
+        assert eval2["status"] == "Expired"
+        assert eval2["category"] == "partner_benefit_missing"
+        assert "DataCamp" in eval2["reason"]
+
+        # Case 3: Partner dependency affirmatively present
+        eval3 = inspect_rendered_dom(
+            rendered_text="GitHub Student Developer Pack. Free access to DataCamp GitHub Foundations certification tracks and vouchers.",
+            rendered_title="GitHub Education",
+            offer={
+                "id": "github-student-foundations",
+                "partner_dependency": {"partner_name": "DataCamp", "required_terms": ["datacamp", "foundations"]},
+            },
+        )
+        assert eval3["status"] == "Active"
+
+        # Case 4: Disabled enrollment CTA buttons
+        eval4 = inspect_rendered_dom(
+            rendered_text="Annual Certification Challenge. Free exam vouchers for all participants.",
+            rendered_title="Cloud Summit 2026",
+            interactive_elements=["Register for Exam - Disabled", "Claim Voucher (Registration Closed)"],
+        )
+        assert eval4["status"] == "Registrations Closed"
+        assert eval4["category"] == "disabled_cta"

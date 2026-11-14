@@ -1,15 +1,15 @@
 {
-  "active": 19,
+  "active": 27,
   "review_needed": 1,
   "expired": 16,
-  "total": 39,
+  "total": 47,
   "last_updated": "2026-11-14T11:56:12.587713+00:00",
-  "last_successful_run": "2026-11-14T12:12:49.003578+00:00",
+  "last_successful_run": "2026-11-14T16:50:47.974263+00:00",
   "signals_breakdown": {
-    "dom_inspected": 26,
-    "oracle_corroborated": 39,
-    "authentic_vendors": 39,
-    "zero_dollar_confirmed": 39,
+    "dom_inspected": 34,
+    "oracle_corroborated": 47,
+    "authentic_vendors": 47,
+    "zero_dollar_confirmed": 47,
     "historical_archives": 13
   }
 }

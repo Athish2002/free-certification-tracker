@@ -3,12 +3,12 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-19-success.svg) 
-![Offers Checked](https://img.shields.io/badge/Offers%20Checked-39%20Audited-blue.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242644%20USD-gold.svg) 
-![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-4%20Active-success.svg) 
-![Skill Badges](https://img.shields.io/badge/Skill%20Badges-15%20Active-blue.svg) 
-![Visual Proof](https://img.shields.io/badge/Visual%20Proof-39%2F39%20Verified-brightgreen.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-27-success.svg) 
+![Offers Checked](https://img.shields.io/badge/Offers%20Checked-47%20Audited-blue.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%243877%20USD-gold.svg) 
+![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-5%20Active-success.svg) 
+![Skill Badges](https://img.shields.io/badge/Skill%20Badges-22%20Active-blue.svg) 
+![Visual Proof](https://img.shields.io/badge/Visual%20Proof-47%2F47%20Verified-brightgreen.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
 ![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg) 
@@ -21,12 +21,12 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **19** | Verified 100% free exams & live registration windows |
-| **Written Proctored Exam Vouchers** | **4 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
-| **Free Skill Badges & Labs** | **15 Active** (18 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
-| **Offers Checked & Audited** | **39 Total** (19 Active, 7 Triage, 13 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
-| **Total Financial Value** | **$2,644 USD** | Aggregate savings if claimed today |
-| **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
+| **Active Opportunities** | **27** | Verified 100% free exams & live registration windows |
+| **Written Proctored Exam Vouchers** | **5 Active** (22 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
+| **Free Skill Badges & Labs** | **22 Active** (25 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
+| **Offers Checked & Audited** | **47 Total** (27 Active, 7 Triage, 13 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
+| **Total Financial Value** | **$3,877 USD** | Aggregate savings if claimed today |
+| **Verified Screenshot Proofs** | **47/47 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
 | **Authenticity Gate** | **100% Primary Vendor Verified** | Zero scam domains, zero dumps, strict TLS |
@@ -37,7 +37,7 @@
 
 ---
 
-## 🌊 Tier 1A: Limited-Time Exam Waves & Seasonal Challenge Cohorts (4 Active)
+## 🌊 Tier 1A: Limited-Time Exam Waves & Seasonal Challenge Cohorts (5 Active)
 > Time-bounded challenge cohorts, Cloud Skills Waves, and promotional certification windows with periodic renewal cycles.
 
 | Provider | Certification & Program | Category | Cadence & Wave | Value (USD) | Status | Proof | Truth Source | Claim Link |
@@ -46,20 +46,22 @@
 | **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Continuous Cisco U Tracks` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Claim Voucher**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
 | **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Claim Voucher**](https://www.databricks.com/learn/training/certification) |
 | **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/artificial-intelligence/generative-ai/) |
+| **Oracle Cloud** | OCI Security Professional (1Z0-1104) Free Prep & Assessment | Cybersecurity & Defense | `Quarterly Learning Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/oracle-oci-security-cert-prep.png) | [Oracle University MyLearn Portal](https://mylearn.oracle.com/) | [**Claim Voucher**](https://mylearn.oracle.com/ou/learning-path/become-an-oci-security-professional/133703) |
 
 ---
 
-## 🏷️ Tier 1B: Active Ongoing Discounts & Vouchers (2 Active)
+## 🏷️ Tier 1B: Active Ongoing Discounts & Vouchers (3 Active)
 > Ongoing student discounts, continuous partner vouchers, partial co-pay discounts, and permanent $0 certification waivers.
 
 | Provider | Discount / Voucher Program | Category | Terms & Prereqs | Value (USD) | Status | Proof | Truth Source | Claim Link |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
 | **MongoDB** | MongoDB Associate Developer / DBA | AI & Data | Global (100% free voucher for students via GitHub Student Pack) | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | [MongoDB Learn Portal & GitHub Student Pack](https://learn.mongodb.com/pages/certification) | [**Claim Discount**](https://learn.mongodb.com/pages/certification) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | Global (Participants of Open Learning webinars) | $200 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [Juniper Open Learning Voucher Policy](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | [**Claim Discount**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+| **AWS** | AWS Educate Machine Learning Foundations | AI & Machine Learning | Students & Educators globally (No credit card required) | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/aws-educate-machine-learning.png) | [AWS Educate Official Portal](https://aws.amazon.com/education/awseducate/) | [**Claim Discount**](https://aws.amazon.com/education/awseducate/) |
 
 ---
 
-## 🎖️ Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs (15 Active / 18 Tracked)
+## 🎖️ Secondary Tier: Free Digital Skill Badges & Hands-On Cloud Labs (22 Active / 25 Tracked)
 > Unproctored interactive training completions, practical scenario-based cloud labs, sandbox learning paths, and verifiable digital badges.
 
 | Provider | Credential & Assessment | Category | Tier | Value (USD) | Status | Proof | Truth Source | Launch Link |
@@ -79,6 +81,13 @@
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | Security | `Associate` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | [IBM SkillsBuild Global Initiative](https://skillsbuild.org/) | [**Launch Lab**](https://skillsbuild.org/adult-learners/explore-learning/cybersecurity) |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Databricks Academy](https://www.databricks.com/learn/training/certification) | [**Launch Lab**](https://www.databricks.com/learn/training/certification) |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | $125 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/cisco-netacad-cyberops.png) | [Cisco Networking Academy](https://www.netacad.com/) | [**Launch Lab**](https://www.netacad.com/courses/introduction-to-cybersecurity) |
+| **Google Cloud** | Google Cloud Digital Leader & Skill Badges | Cloud & Data | `Foundational` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/gcp-cloud-digital-leader-genai.png) | [Google Cloud Skills Boost Official Directory](https://www.cloudskillsboost.google/) | [**Launch Lab**](https://www.cloudskillsboost.google/paths) |
+| **Microsoft Learn** | Applied Skills Credential (Azure OpenAI Service) | Cloud & Data | `Associate` | $165 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/ms-applied-skills-azure-openai.png) | [Microsoft Learn Applied Skills Documentation](https://learn.microsoft.com/en-us/credentials/) | [**Launch Lab**](https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/) |
+| **AWS** | AWS Cloud Quest: Cloud Practitioner Badge | Cloud & Data | `Foundational` | $100 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/aws-cloud-quest-practitioner.png) | [AWS Skill Builder Official Catalog](https://explore.skillbuilder.aws/) | [**Launch Lab**](https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner) |
+| **AWS** | AWS Educate Machine Learning Foundations | AI & Machine Learning | `Foundational` | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/aws-educate-machine-learning.png) | [AWS Educate Official Portal](https://aws.amazon.com/education/awseducate/) | [**Launch Lab**](https://aws.amazon.com/education/awseducate/) |
+| **Linux Foundation** | Introduction to Linux (LFS101x) Free Audit & Completion Certificate | DevOps & Cloud Native | `Foundational` | $149 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/linux-foundation-intro-linux.png) | [Linux Foundation Training Portal](https://training.linuxfoundation.org/) | [**Launch Lab**](https://training.linuxfoundation.org/training/introduction-to-linux/) |
+| **Cisco** | Network Defense Verified Digital Credential | Cybersecurity & Defense | `Associate` | $125 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/cisco-netacad-network-defense.png) | [Cisco Skills for All Platform](https://www.skillsforall.com/) | [**Launch Lab**](https://www.skillsforall.com/course/network-defense) |
+| **Databricks** | Databricks Generative AI Engineer Accreditation | Cloud & Data | `Professional` | $200 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/databricks-genai-engineer-path.png) | [Databricks Academy Portal](https://www.databricks.com/learn/training) | [**Launch Lab**](https://www.databricks.com/learn/training/generative-ai-engineer) |
 
 ---
 
@@ -242,7 +251,7 @@
 ---
 
 <details>
-<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 19 Active Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 27 Active Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Provider:** Oracle Cloud
@@ -377,6 +386,62 @@
 - **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
 - **Official Link:** [https://www.netacad.com/courses/introduction-to-cybersecurity](https://www.netacad.com/courses/introduction-to-cybersecurity)
 
+#### Google Cloud Digital Leader & Generative AI Leader Tracks
+- **Provider:** Google Cloud
+- **Value:** $99 USD
+- **Eligibility:** Global (Google Cloud Skills Boost free account)
+- **Steps to Claim:** Create a free Google Cloud Skills Boost account. Enroll in the Cloud Digital Leader and Gen AI paths to earn official verifiable digital skill badges.
+- **Official Link:** [https://www.cloudskillsboost.google/paths](https://www.cloudskillsboost.google/paths)
+
+#### Microsoft Applied Skills: Develop Generative AI Solutions with Azure OpenAI
+- **Provider:** Microsoft Learn
+- **Value:** $165 USD
+- **Eligibility:** Global (Free Microsoft Learn Account)
+- **Steps to Claim:** Sign in to Microsoft Learn, complete the interactive preparation module, and take the 2-hour cloud lab assessment at zero cost.
+- **Official Link:** [https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/](https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/)
+
+#### AWS Cloud Quest: Cloud Practitioner Digital Badge
+- **Provider:** AWS
+- **Value:** $100 USD
+- **Eligibility:** Global (Free AWS Skill Builder account)
+- **Steps to Claim:** Log in to AWS Skill Builder, launch the 3D role-playing game Cloud Quest, solve real cloud architecture quests, and claim your Credly digital badge.
+- **Official Link:** [https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner](https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner)
+
+#### AWS Educate: Machine Learning Foundations Badge
+- **Provider:** AWS
+- **Value:** $150 USD
+- **Eligibility:** Students & Educators globally (No credit card required)
+- **Steps to Claim:** Sign up for AWS Educate with any valid student/educator email. Complete the ML Foundations learning track and pass the knowledge assessment.
+- **Official Link:** [https://aws.amazon.com/education/awseducate/](https://aws.amazon.com/education/awseducate/)
+
+#### Linux Foundation: Introduction to Linux (LFS101x) Verified Track
+- **Provider:** Linux Foundation
+- **Value:** $149 USD
+- **Eligibility:** Global Open Enrollment
+- **Steps to Claim:** Enroll in LFS101x directly on Linux Foundation Training portal. Progress through system administration, CLI, and networking modules for verified course completion.
+- **Official Link:** [https://training.linuxfoundation.org/training/introduction-to-linux/](https://training.linuxfoundation.org/training/introduction-to-linux/)
+
+#### Cisco Networking Academy: Network Defense Digital Badge
+- **Provider:** Cisco
+- **Value:** $125 USD
+- **Eligibility:** Global (Free Cisco Skills for All / NetAcad account)
+- **Steps to Claim:** Sign up at Cisco Skills for All, enroll in Network Defense, complete the packet inspection labs, and pass the final course exam with 70%+ score to earn the Credly badge.
+- **Official Link:** [https://www.skillsforall.com/course/network-defense](https://www.skillsforall.com/course/network-defense)
+
+#### Databricks Academy: Generative AI Engineering Pathway & Accreditation
+- **Provider:** Databricks
+- **Value:** $200 USD
+- **Eligibility:** Global (Free Databricks Academy account)
+- **Steps to Claim:** Sign in to Databricks Academy, enroll in the Generative AI Engineer track, complete the hands-on notebook labs, and pass the accreditation test.
+- **Official Link:** [https://www.databricks.com/learn/training/generative-ai-engineer](https://www.databricks.com/learn/training/generative-ai-engineer)
+
+#### Oracle Cloud Infrastructure (OCI) Security Professional Certification Prep
+- **Provider:** Oracle Cloud
+- **Value:** $245 USD
+- **Eligibility:** Global (Free Oracle SSO Account)
+- **Steps to Claim:** Log in to Oracle MyLearn, finish the OCI Security Professional course modules, and register for promotional wave proctored attempts.
+- **Official Link:** [https://mylearn.oracle.com/ou/learning-path/become-an-oci-security-professional/133703](https://mylearn.oracle.com/ou/learning-path/become-an-oci-security-professional/133703)
+
 </details>
 
 ---
@@ -405,9 +470,17 @@
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/certification/lakehouse-fundamentals) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Skills for All / NetAcad](https://www.skillsforall.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Google Cloud** | Google Cloud Digital Leader & Skill Badges | [Google Cloud Skills Boost](https://www.cloudskillsboost.google/paths) | `Google Cloud Skills Boost -> Paths -> Enroll in Path` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Microsoft Learn** | Applied Skills Credential (Azure OpenAI Service) | [Microsoft Learn Credentials Hub](https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/) | `Microsoft Learn -> Credentials -> Applied Skills -> Take Assessment` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **AWS** | AWS Cloud Quest: Cloud Practitioner Badge | [AWS Skill Builder Cloud Quest](https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner) | `AWS Skill Builder -> Cloud Quest -> Enroll Free` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **AWS** | AWS Educate Machine Learning Foundations | [AWS Educate Student Portal](https://aws.amazon.com/education/awseducate/) | `AWS Educate -> Badges -> ML Foundations -> Start Pathway` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Linux Foundation** | Introduction to Linux (LFS101x) Free Audit & Completion Certificate | [Linux Foundation Training & Certification](https://training.linuxfoundation.org/training/introduction-to-linux/) | `Linux Foundation -> Courses -> Introduction to Linux -> Enroll Free` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Cisco** | Network Defense Verified Digital Credential | [Cisco Skills for All](https://www.skillsforall.com/course/network-defense) | `Cisco Skills for All -> Network Defense -> Get Started Free` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Databricks** | Databricks Generative AI Engineer Accreditation | [Databricks Academy](https://www.databricks.com/learn/training/generative-ai-engineer) | `Databricks Academy -> Generative AI Engineer -> Start Learning` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
+| **Oracle Cloud** | OCI Security Professional (1Z0-1104) Free Prep & Assessment | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-security-professional/133703) | `Oracle MyLearn -> Security Professional -> Enroll Free` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 19 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 27 Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Voucher / Promo Code:** `ORACLE_MYLEARN_SSO_WAIVER`
@@ -636,6 +709,102 @@
   1. Score 70%+ on first attempt of final course exam.
   1. Receive qualifying voucher request link from course instructor / dashboard.
   1. Redeem voucher at Pearson VUE for discount / waiver on official 200-201 CBROPS exam.
+
+#### Google Cloud Digital Leader & Generative AI Leader Tracks
+- **Voucher / Promo Code:** `GCP_SKILLS_BOOST_BADGE`
+- **Official Redemption Portal:** [Google Cloud Skills Boost](https://www.cloudskillsboost.google/paths)
+- **Checkout Field Location:** `Google Cloud Skills Boost -> Paths -> Enroll in Path`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Sign in to Google Cloud Skills Boost with your Google account.
+  1. Select the Cloud Digital Leader or Generative AI Leader learning path.
+  1. Complete the interactive hands-on lab modules.
+  1. Earn and claim your official Google Cloud verifiable digital badge.
+
+#### Microsoft Applied Skills: Develop Generative AI Solutions with Azure OpenAI
+- **Voucher / Promo Code:** `MS_APPLIED_SKILLS_LAB_WAIVER`
+- **Official Redemption Portal:** [Microsoft Learn Credentials Hub](https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/)
+- **Checkout Field Location:** `Microsoft Learn -> Credentials -> Applied Skills -> Take Assessment`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Sign in with your personal or corporate Microsoft account.
+  1. Review the Azure OpenAI service prerequisites and skills measured.
+  1. Click Start Assessment to launch the dedicated sandboxed Azure portal environment.
+  1. Complete the live scenario tasks to earn the official verifiable Microsoft credential.
+
+#### AWS Cloud Quest: Cloud Practitioner Digital Badge
+- **Voucher / Promo Code:** `AWS_CLOUD_QUEST_BADGE`
+- **Official Redemption Portal:** [AWS Skill Builder Cloud Quest](https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner)
+- **Checkout Field Location:** `AWS Skill Builder -> Cloud Quest -> Enroll Free`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Sign in to AWS Skill Builder with your Amazon credentials.
+  1. Open AWS Cloud Quest: Cloud Practitioner role.
+  1. Complete all 12 hands-on lab solutions in the game world.
+  1. Verify badge issuance through Credly automatically.
+
+#### AWS Educate: Machine Learning Foundations Badge
+- **Voucher / Promo Code:** `AWS_EDUCATE_STUDENT_BADGE`
+- **Official Redemption Portal:** [AWS Educate Student Portal](https://aws.amazon.com/education/awseducate/)
+- **Checkout Field Location:** `AWS Educate -> Badges -> ML Foundations -> Start Pathway`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Register with a valid student email address at aws.amazon.com/education/awseducate.
+  1. Access the Machine Learning Foundations pathway in your student dashboard.
+  1. Complete the hands-on cloud labs and end-of-track assessment.
+  1. Receive your official Credly verified badge.
+
+#### Linux Foundation: Introduction to Linux (LFS101x) Verified Track
+- **Voucher / Promo Code:** `LF_LFS101X_FREE_AUDIT`
+- **Official Redemption Portal:** [Linux Foundation Training & Certification](https://training.linuxfoundation.org/training/introduction-to-linux/)
+- **Checkout Field Location:** `Linux Foundation -> Courses -> Introduction to Linux -> Enroll Free`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Create a free Linux Foundation Single Sign-On account.
+  1. Open the LFS101x course overview page.
+  1. Click Enroll for Free to access the full curriculum and labs.
+  1. Complete all quizzes and exams to earn the certificate.
+
+#### Cisco Networking Academy: Network Defense Digital Badge
+- **Voucher / Promo Code:** `CISCO_SKILLS_FOR_ALL_DEFENSE`
+- **Official Redemption Portal:** [Cisco Skills for All](https://www.skillsforall.com/course/network-defense)
+- **Checkout Field Location:** `Cisco Skills for All -> Network Defense -> Get Started Free`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Log in with a free Cisco Networking Academy / Skills for All account.
+  1. Launch the Network Defense interactive curriculum.
+  1. Complete all Cisco Packet Tracer interactive scenarios.
+  1. Score 70% or higher on the end-of-course exam to receive your Credly badge.
+
+#### Databricks Academy: Generative AI Engineering Pathway & Accreditation
+- **Voucher / Promo Code:** `DATABRICKS_ACADEMY_GAIE`
+- **Official Redemption Portal:** [Databricks Academy](https://www.databricks.com/learn/training/generative-ai-engineer)
+- **Checkout Field Location:** `Databricks Academy -> Generative AI Engineer -> Start Learning`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Log in with a free customer or partner account on Databricks Academy.
+  1. Open the Generative AI Engineer learning pathway.
+  1. Complete all coding labs on MLflow, Mosaic AI, and LLM fine-tuning.
+  1. Pass the online assessment to earn the official accreditation credential.
+
+#### Oracle Cloud Infrastructure (OCI) Security Professional Certification Prep
+- **Voucher / Promo Code:** `ORACLE_MYLEARN_SEC_WAIVER`
+- **Official Redemption Portal:** [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-security-professional/133703)
+- **Checkout Field Location:** `Oracle MyLearn -> Security Professional -> Enroll Free`
+- **Application Flow Type:** `Automated Account Link Waiver`
+- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
+- **Checkout Steps:**
+  1. Log in with your free Oracle Single Sign-On account.
+  1. Enroll in the OCI Security Professional learning path.
+  1. Complete all video lessons, hands-on lab exercises, and sample questions.
+  1. Take the embedded certification assessment during the promotional wave.
 
 </details>
 

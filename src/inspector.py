@@ -471,6 +471,41 @@ async def scroll_to_evidence_async(page: Any, offer_id: str, offer: dict[str, An
         target_terms = list(dict.fromkeys(target_terms))
 
         js_code = """(terms) => {
+            // 0. Purge cookie banners, consent modals, and floating overlay blockers
+            try {
+                const overlaySelectors = [
+                    '#onetrust-consent-sdk',
+                    '.onetrust-pc-dark-filter',
+                    '#onetrust-banner-sdk',
+                    '.truste_box_overlay',
+                    '#truste-consent-track',
+                    '#truste-consent-button',
+                    '.cookie-banner',
+                    '.cookie-consent',
+                    '.cookie-notice',
+                    '#cookie-notice',
+                    '[aria-label*="cookie" i]',
+                    '[aria-label*="consent" i]',
+                    '.intercom-lightweight-app',
+                    '#launcher',
+                    '.drift-frame-controller',
+                    '#hs-eu-cookie-confirmation',
+                    '.optanon-alert-box-wrapper',
+                    '#usercentrics-root',
+                    'div[id*="cookie" i]',
+                    'div[class*="cookie" i]',
+                    'div[id*="consent" i]',
+                    'div[class*="consent" i]'
+                ];
+                for (const sel of overlaySelectors) {
+                    document.querySelectorAll(sel).forEach(el => {
+                        el.style.setProperty('display', 'none', 'important');
+                        el.style.setProperty('visibility', 'hidden', 'important');
+                        el.style.setProperty('pointer-events', 'none', 'important');
+                    });
+                }
+            } catch (e) {}
+
             try {
                 const tabs = Array.from(document.querySelectorAll('button, [role="tab"], a, summary, .tab, .nav-link'));
                 for (const tab of tabs) {
@@ -524,6 +559,16 @@ async def scroll_to_evidence_async(page: Any, offer_id: str, offer: dict[str, An
 
             if (bestEl && bestScore >= 20) {
                 bestEl.scrollIntoView({ behavior: 'instant', block: 'center' });
+                // Prevent sticky/fixed topbars from overlapping target evidence element
+                try {
+                    const fixedHeaders = Array.from(document.querySelectorAll('header, nav, [class*="header"], [class*="navbar"], [class*="topbar"]')).filter(h => {
+                        const pos = window.getComputedStyle(h).position;
+                        return (pos === 'fixed' || pos === 'sticky') && h.offsetHeight > 30;
+                    });
+                    if (fixedHeaders.length > 0) {
+                        window.scrollBy(0, -60);
+                    }
+                } catch (e) {}
                 bestEl.style.outline = '3px solid #10b981';
                 bestEl.style.outlineOffset = '4px';
                 bestEl.style.borderRadius = '8px';
@@ -671,7 +716,9 @@ async def run_inspection_async(
                     context = None
                     try:
                         context = await browser.new_context(
-                            viewport={"width": 1280, "height": 800}, user_agent=BROWSER_HEADERS["User-Agent"]
+                            viewport={"width": 1280, "height": 800},
+                            device_scale_factor=2,
+                            user_agent=BROWSER_HEADERS["User-Agent"],
                         )
                         page = await context.new_page()
 
@@ -857,6 +904,7 @@ async def run_inspection_async(
                                 final_url=final_url,
                                 original_url=current_url,
                                 interactive_elements=interactive_ctas,
+                                offer=offer,
                             )
                             vlm_verdict = evaluate_vlm_semantic_gate(
                                 offer_id=offer_id,
