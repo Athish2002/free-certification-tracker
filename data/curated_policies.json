@@ -80,11 +80,11 @@
     "verified_discount_pct": 100,
     "truth_source_name": "GitHub Student Developer Pack & DataCamp Integration",
     "truth_source_url": "https://education.github.com/pack",
-    "verdict_notes": "100% free $99 exam voucher is available exclusively to verified students via the GitHub Student Developer Pack and DataCamp track completion. General public pays $99.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The free $99 exam voucher pool via DataCamp / GitHub Student Pack has concluded/depleted. Direct exam voucher allocation is no longer active.",
+    "enforce_status": "Expired",
+    "zero_dollar_confirmed": false,
     "eligibility_clarification": "Verified Students (GitHub Student Developer Pack)",
-    "valid_through_utc": "2026-12-31T23:59:59Z",
+    "valid_through_utc": "2026-11-01T23:59:59Z",
     "review_due_utc": "2026-11-01T00:00:00Z"
   },
   "github-student-foundations": {
@@ -95,10 +95,10 @@
     "verified_discount_pct": 100,
     "truth_source_name": "GitHub Education Student Pack",
     "truth_source_url": "https://education.github.com/pack",
-    "verdict_notes": "Dedicated student portal tile for GitHub Foundations 100% free exam vouchers. Requires verified academic email or student enrollment proof.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
+    "verdict_notes": "Dedicated student portal tile for GitHub Foundations free exam vouchers has concluded/depleted from active pack benefits.",
+    "enforce_status": "Expired",
+    "zero_dollar_confirmed": false,
+    "valid_through_utc": "2026-11-01T23:59:59Z",
     "review_due_utc": "2026-11-01T00:00:00Z"
   },
   "hashicorp-terraform-associate-community": {

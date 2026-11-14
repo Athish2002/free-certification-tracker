@@ -3,10 +3,10 @@
 > **Automated, 100% free, and self-updating repository** tracking verified 100% free certification exam vouchers, accredited micro-credentials, and continuing education credits across AWS, Azure, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, HashiCorp, Palo Alto Networks, GitLab, Splunk, IBM, and GitHub.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) 
-![Active Vouchers](https://img.shields.io/badge/Active%20Offers-21-success.svg) 
+![Active Vouchers](https://img.shields.io/badge/Active%20Offers-19-success.svg) 
 ![Offers Checked](https://img.shields.io/badge/Offers%20Checked-39%20Audited-blue.svg) 
-![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242842%20USD-gold.svg) 
-![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-6%20Active-success.svg) 
+![Total Savings](https://img.shields.io/badge/Total%20Value%20Saved-%242644%20USD-gold.svg) 
+![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-4%20Active-success.svg) 
 ![Skill Badges](https://img.shields.io/badge/Skill%20Badges-15%20Active-blue.svg) 
 ![Visual Proof](https://img.shields.io/badge/Visual%20Proof-39%2F39%20Verified-brightgreen.svg) 
 ![Deep Inspection](https://img.shields.io/badge/Inspection-Liveness%20%26%20Soft404%20Checked-brightgreen.svg) 
@@ -21,11 +21,11 @@
 
 | Metric | Value | Definition |
 | :--- | :--- | :--- |
-| **Active Opportunities** | **21** | Verified 100% free exams & live registration windows |
-| **Written Proctored Exam Vouchers** | **6 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
+| **Active Opportunities** | **19** | Verified 100% free exams & live registration windows |
+| **Written Proctored Exam Vouchers** | **4 Active** (21 Tracked) | Pearson VUE / Kryterion / Webassessor 100% free exam seats |
 | **Free Skill Badges & Labs** | **15 Active** (18 Tracked) | Interactive hands-on cloud labs & verifiable digital badges |
-| **Offers Checked & Audited** | **39 Total** (21 Active, 5 Triage, 13 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
-| **Total Financial Value** | **$2,842 USD** | Aggregate savings if claimed today |
+| **Offers Checked & Audited** | **39 Total** (19 Active, 7 Triage, 13 Archived) | 100% verified against soft-404s, capacity limits, and expired vouchers |
+| **Total Financial Value** | **$2,644 USD** | Aggregate savings if claimed today |
 | **Verified Screenshot Proofs** | **39/39 (100%)** | Valid Playwright Chromium viewport screenshots captured in docs/screenshots/ |
 | **Historical Archive Tracked** | **13 Campaigns** | Past promotional cycles & recurrence roadmaps |
 | **Verified Tech Dispatches** | **100 Reports** | Official primary cloud engineering updates |
@@ -37,7 +37,7 @@
 
 ---
 
-## 🌊 Tier 1A: Limited-Time Exam Waves & Seasonal Challenge Cohorts (5 Active)
+## 🌊 Tier 1A: Limited-Time Exam Waves & Seasonal Challenge Cohorts (4 Active)
 > Time-bounded challenge cohorts, Cloud Skills Waves, and promotional certification windows with periodic renewal cycles.
 
 | Provider | Certification & Program | Category | Cadence & Wave | Value (USD) | Status | Proof | Truth Source | Claim Link |
@@ -46,18 +46,16 @@
 | **Cisco** | Cisco Continuing Education (Recertification) | Networking | `Continuous Cisco U Tracks` | $300 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/cisco-rev-up-recert.png) | [Cisco Learning Network Community](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) | [**Claim Voucher**](https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community) |
 | **Databricks** | Generative AI Fundamentals | AI & Data | `Previous Promotion Wave` | $75 | 🟢 Active<br><sub>$0 Confirmed: 2026-11-14</sub> | [📸 Proof](docs/screenshots/databricks-genai-fundamentals.png) | [Databricks Academy Accreditations](https://www.databricks.com/learn/training/certification) | [**Claim Voucher**](https://www.databricks.com/learn/training/certification) |
 | **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | AI & Data | `Oracle AI & Cloud Skills Waves` | $245 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/oracle-oci-generative-ai-cert.png) | [Oracle University AI Skilling Initiative](https://mylearn.oracle.com/) | [**Claim Voucher**](https://www.oracle.com/artificial-intelligence/generative-ai/) |
-| **GitHub** | GitHub Foundations Certification | Cloud & DevOps | `Biannual Student & Universe Waves` | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | [GitHub Student Developer Pack & DataCamp Integration](https://education.github.com/pack) | [**Claim Voucher**](https://education.github.com/pack) |
 
 ---
 
-## 🏷️ Tier 1B: Active Ongoing Discounts & Vouchers (3 Active)
+## 🏷️ Tier 1B: Active Ongoing Discounts & Vouchers (2 Active)
 > Ongoing student discounts, continuous partner vouchers, partial co-pay discounts, and permanent $0 certification waivers.
 
 | Provider | Discount / Voucher Program | Category | Terms & Prereqs | Value (USD) | Status | Proof | Truth Source | Claim Link |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
 | **MongoDB** | MongoDB Associate Developer / DBA | AI & Data | Global (100% free voucher for students via GitHub Student Pack) | $150 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/mongodb-developer-cert.png) | [MongoDB Learn Portal & GitHub Student Pack](https://learn.mongodb.com/pages/certification) | [**Claim Discount**](https://learn.mongodb.com/pages/certification) |
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | Global (Participants of Open Learning webinars) | $200 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/juniper-open-learning.png) | [Juniper Open Learning Voucher Policy](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | [**Claim Discount**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
-| **GitHub** | GitHub Foundations | DevOps | Active students verified via GitHub Student Developer Pack | $99 | 🟢 Active<br><sub>$0 Confirmed: 2026-10-29</sub> | [📸 Proof](docs/screenshots/github-student-foundations.png) | [GitHub Education Student Pack](https://education.github.com/pack) | [**Claim Discount**](https://education.github.com/pack) |
 
 ---
 
@@ -110,7 +108,7 @@
 ---
 
 <details>
-<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 5 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🟡 Under Review / Yet to Confirm (Triage Pool - 7 Opportunities)</b> — <i>Click to expand</i></summary>
 
 > Authentic vendor opportunities flagged by the automated inspector for capacity limits, closed cohorts, or ambiguous signals. Tracked for re-opening every 12 hours (twice daily) before retiring to the permanent archive.
 
@@ -119,8 +117,10 @@
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Proof](docs/screenshots/salesforce-trailhead-quests.png) | Truth Gate Invariant: Monthly sweepstakes where completing specified Trailhead trails grants raffle entry to win a $200-$400 certification exam voucher. Not a guaranteed voucher for all participants. |
+| **GitHub** | GitHub Foundations | 🔴 Expired | [📸 Proof](docs/screenshots/github-student-foundations.png) | Truth Gate Invariant: Dedicated student portal tile for GitHub Foundations free exam vouchers has concluded/depleted from active pack benefits. |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | 🔴 Expired | [📸 Proof](docs/screenshots/paloalto-pccet-cybersecurity.png) | Truth Gate Invariant: PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, Pearson VUE proctored exam retired. |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | 🟡 Closed / Waitlist | [📸 Proof](docs/screenshots/cncf-dan-kohn-scholarship.png) | Truth Gate Invariant: CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines. Active landing page at cncf.io/scholarships. |
+| **GitHub** | GitHub Foundations Certification | 🔴 Expired | [📸 Proof](docs/screenshots/github-foundations-cert-wave.png) | Truth Gate Invariant: The free $99 exam voucher pool via DataCamp / GitHub Student Pack has concluded/depleted. Direct exam voucher allocation is no longer active. |
 
 </details>
 
@@ -242,7 +242,7 @@
 ---
 
 <details>
-<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 21 Active Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 Detailed Step-by-Step Claiming Instructions (All 19 Active Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Provider:** Oracle Cloud
@@ -321,13 +321,6 @@
 - **Steps to Claim:** Create a free account on the Fortinet Training Institute portal. Complete the 'Introduction to the Threat Landscape' course and pass the quiz to claim your certificate.
 - **Official Link:** [https://training.fortinet.com/](https://training.fortinet.com/)
 
-#### GitHub Foundations Certification via Student Developer Pack
-- **Provider:** GitHub
-- **Value:** $99 USD
-- **Eligibility:** Active students verified via GitHub Student Developer Pack
-- **Steps to Claim:** Verify student status on GitHub Education, claim the certification discount code from the benefits page, and register through PSI or Pearson VUE.
-- **Official Link:** [https://education.github.com/pack](https://education.github.com/pack)
-
 #### AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers
 - **Provider:** Amazon Web Services
 - **Value:** $50 USD
@@ -384,13 +377,6 @@
 - **Steps to Claim:** Create a free account on Cisco U or Cisco Networking Academy. Complete the Junior Cybersecurity Analyst learning path and take the final qualification exam for your digital credential.
 - **Official Link:** [https://www.netacad.com/courses/introduction-to-cybersecurity](https://www.netacad.com/courses/introduction-to-cybersecurity)
 
-#### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
-- **Provider:** GitHub
-- **Value:** $99 USD
-- **Eligibility:** Verified Students (GitHub Student Developer Pack)
-- **Steps to Claim:** Verify status via GitHub Student Developer Pack or complete the GitHub Foundations challenge track on Microsoft Learn to receive a 100% off voucher for the PSI-delivered exam.
-- **Official Link:** [https://education.github.com/pack](https://education.github.com/pack)
-
 </details>
 
 ---
@@ -411,7 +397,6 @@
 | **Qualys** | Vulnerability Management & CSAM Specialist | [Qualys Training Academy Portal](https://www.qualys.com/training/) | `Qualys Training Portal -> 'Launch Certification Exam' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Databricks** | Generative AI Fundamentals | [Databricks Academy Certification Portal](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | `Course Checkout -> 'Promo Code' input or Instant Free Launch` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | [Fortinet Training Institute](https://training.fortinet.com/local/staticpage/view.php?page=fcf) | `Fortinet Training Institute -> 'Enroll' -> Free Curriculum Access` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **GitHub** | GitHub Foundations | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Payment Step -> 'Add Voucher or Promo Code' text input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | [AWS Educate and Emerging Talent Portal](https://aws.amazon.com/education/awseducate/) | `Student Pathway -> 'Earn Badge' final assessment` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | [Red Hat Developer Learning Portal](https://www.redhat.com/en/services/skills-assessment) | `Red Hat Developer Dashboard -> 'Start Skills Assessment' button` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **GitLab** | GitLab Certified Associate | [GitLab University Certification Center](https://university.gitlab.com/pages/certifications) | `Course Checkout -> 'Have a discount code?' field` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
@@ -420,10 +405,9 @@
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/certification/lakehouse-fundamentals) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | [Oracle University MyLearn Portal](https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444) | `Oracle MyLearn Path -> Sign In -> Click Enroll in Path -> Click Schedule Free Exam` | `Automated Account Link Waiver` | **$0.00 (100% Free / Waiver Confirmed)** |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Skills for All / NetAcad](https://www.skillsforall.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 (100% Free / Waiver Confirmed)** |
-| **GitHub** | GitHub Foundations Certification | [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github) | `Pearson VUE Payment -> 'Add Voucher or Promo Code' input` | `Checkout Promo Code` | **$0.00 (100% Free / Waiver Confirmed)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 21 Opportunities)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Navigation Guides (All 19 Opportunities)</b> — <i>Click to expand</i></summary>
 
 #### Oracle Cloud Infrastructure (OCI) Free Certifications & Learning
 - **Voucher / Promo Code:** `ORACLE_MYLEARN_SSO_WAIVER`
@@ -557,18 +541,6 @@
   1. Complete the self-paced courses: Introduction to the Threat Landscape and Getting Started in Cybersecurity.
   1. Passing the embedded final quiz automatically grants the FCF certification badge ($0.00).
 
-#### GitHub Foundations Certification via Student Developer Pack
-- **Voucher / Promo Code:** `GH_STUDENT_PACK_EXAM_WAIVER`
-- **Official Redemption Portal:** [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github)
-- **Checkout Field Location:** `Payment Step -> 'Add Voucher or Promo Code' text input`
-- **Application Flow Type:** `Checkout Promo Code`
-- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
-- **Checkout Steps:**
-  1. Verify active student status through GitHub Education at education.github.com/pack.
-  1. Navigate to the certification benefit tab and claim your single-use Pearson VUE exam waiver.
-  1. Schedule your GitHub Foundations or GitHub Actions certification on Pearson VUE.
-  1. Paste the single-use token into the voucher input; cart total updates from $99 to $0.00.
-
 #### AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers
 - **Voucher / Promo Code:** `AWS_EDUCATE_COMMUNITY_PASS`
 - **Official Redemption Portal:** [AWS Educate and Emerging Talent Portal](https://aws.amazon.com/education/awseducate/)
@@ -664,18 +636,6 @@
   1. Score 70%+ on first attempt of final course exam.
   1. Receive qualifying voucher request link from course instructor / dashboard.
   1. Redeem voucher at Pearson VUE for discount / waiver on official 200-201 CBROPS exam.
-
-#### GitHub Foundations: Free Certification Waves via Microsoft Learn & Student Hub
-- **Voucher / Promo Code:** `GITHUB_FOUNDATIONS_WAVE_TOKEN`
-- **Official Redemption Portal:** [Pearson VUE (GitHub Certification)](https://home.pearsonvue.com/github)
-- **Checkout Field Location:** `Pearson VUE Payment -> 'Add Voucher or Promo Code' input`
-- **Application Flow Type:** `Checkout Promo Code`
-- **Verified Cart Balance:** **$0.00 (100% Free / Waiver Confirmed)**
-- **Checkout Steps:**
-  1. Participate in official Microsoft Learn Cloud Skills Challenge or GitHub Days event.
-  1. Complete all collection modules before the challenge deadline.
-  1. Voucher code delivered to registered event email within 7-10 business days.
-  1. Book GitHub Foundations on Pearson VUE and apply promo code to zero out $99 fee ($0.00).
 
 </details>
 

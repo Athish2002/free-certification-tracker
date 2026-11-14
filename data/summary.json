@@ -1,10 +1,10 @@
 {
-  "active": 21,
+  "active": 19,
   "review_needed": 1,
-  "expired": 14,
+  "expired": 16,
   "total": 39,
   "last_updated": "2026-11-14T05:28:22.044899+00:00",
-  "last_successful_run": "2026-11-14T05:28:28.440007+00:00",
+  "last_successful_run": "2026-11-14T11:50:26.995904+00:00",
   "signals_breakdown": {
     "dom_inspected": 26,
     "oracle_corroborated": 39,
