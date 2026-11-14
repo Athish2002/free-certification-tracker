@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-13T19:22:52.988794+00:00",
-  "last_sync": "2026-11-13T19:22:52.988794+00:00",
+  "last_updated": "2026-11-14T05:28:25.631004+00:00",
+  "last_sync": "2026-11-14T05:28:25.631004+00:00",
   "news": [
+    {
+      "id": "google-cloud-where-supercomputing-meets-age",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Where supercomputing meets agentic AI: What's new in Google Cloud HPC and AI at SC26",
+      "summary": "Computational scientists and HPC engineers have always been among the earliest adopters of new computing paradigms, and agents are no exception. Today, research and engineering teams use AI models and agents for things such as ingesting den...",
+      "published_date": "2026-11-13",
+      "date": "2026-11-13",
+      "url": "https://cloud.google.com/blog/topics/hpc/whats-new-in-hpc-and-ai-at-sc26/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "81b890b4e9e4f3371383eebc2be4147bb2fcb51b468cfca8f17a15cbadcf5f35"
+    },
+    {
+      "id": "amazon-web-services-how-thermo-fisher-scientific-b",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How Thermo Fisher Scientific built AI-powered patient matching on AWS",
+      "summary": "Learn how Thermo Fisher Scientific built an AI-powered patient-matching platform on AWS, modernizing its clinical trial recruitment data foundation and using AWS Countdown Premium to de-risk the production launch.",
+      "published_date": "2026-11-13",
+      "date": "2026-11-13",
+      "url": "https://aws.amazon.com/blogs/architecture/how-thermo-fisher-scientific-built-ai-powered-patient-matching-on-aws/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "5495201f8df0d8b1f2fd1ee6c1787be5452f489cd98d48dfb877868b6b80da2f"
+    },
     {
       "id": "cisco-byoh-bring-your-own-harness-w",
       "company": "Cisco",
@@ -1374,34 +1402,6 @@
       "url": "https://cloud.google.com/blog/topics/public-sector/google-cloud-and-nasa-testing-robotic-systems-for-deep-space-missions/",
       "impact_badge": "Cloud Platform",
       "content_fingerprint": "47694a2024137f571d1907d59727cee568473032e7e3fd234b011ba2d253e419"
-    },
-    {
-      "id": "google-cloud-easy-to-integrate-compliant-b",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Easy to integrate, compliant by design: Bringing the Swiss Franc to Google Cloud Universal Ledger",
-      "summary": "Every day, countless financial transactions are interrupted by slow, expensive, and inflexible conventional payment systems. As a result, public commercial stablecoins like Tether, USDC, and PayPal USD have become increasingly popular by ma...",
-      "published_date": "2026-10-26",
-      "date": "2026-10-26",
-      "url": "https://cloud.google.com/blog/topics/financial-services/easy-to-integrate-compliant-by-design-bringing-the-swiss-franc-to-google-cloud-universal-ledger/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "6a566e060c48bccbd66bae4d7185c2ae704866836c50ad81a742476e655e473f"
-    },
-    {
-      "id": "cisco-cisco-rethinks-privileged-infr",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Cisco Rethinks Privileged Infrastructure Access",
-      "summary": "Cisco Privileged Infrastructure Access replaces standing admin access with identity-bound, cryptographic controls that keep critical work moving.",
-      "published_date": "2026-10-26",
-      "date": "2026-10-26",
-      "url": "https://blogs.cisco.com/security/cisco-rethinks-privileged-infrastructure-access",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "e78fa4cc986480708248dbfdbc5e1ff8da7fe09e9c37f782d224a4a404de6e59"
     }
   ],
   "total_items": 100
