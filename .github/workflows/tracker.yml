@@ -134,6 +134,31 @@ jobs:
         with:
           path: "docs/"
 
+  watch-alerts:
+    name: Open Issues for Changed Watchlist Pages
+    needs: update-and-deploy
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout Repository (after the data commit)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Open or update issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/open_watch_issues.py
+
   deploy-pages:
     name: Deploy to GitHub Pages
     needs: update-and-deploy

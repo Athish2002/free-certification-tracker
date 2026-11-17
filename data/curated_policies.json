@@ -21,12 +21,14 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Oracle University MyLearn Portal",
     "truth_source_url": "https://mylearn.oracle.com/",
-    "verdict_notes": "Oracle University provides 100% free digital learning paths and embedded free proctored online exam attempts for OCI Foundations directly through Oracle MyLearn SSO.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked Oracle MyLearn learning path (AI Foundations Associate 2023) redirected to the MyLearn home page on 2026-11-16. No page stating that an exam attempt is free was found.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "canonical_direct_url": "https://www.oracle.com/education/certification/",
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "oracle-oci-generative-ai-cert": {
     "provider": "Oracle Cloud",
@@ -36,12 +38,16 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Oracle University AI Skilling Initiative",
     "truth_source_url": "https://mylearn.oracle.com/",
-    "verdict_notes": "Oracle University offers free digital learning paths and free proctored exam attempts for OCI Generative AI & Agentic AI Foundations Associate on Oracle MyLearn.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked Oracle MyLearn learning path is no longer available.",
+    "enforce_status": "Expired",
+    "zero_dollar_confirmed": false,
     "canonical_direct_url": "https://www.oracle.com/artificial-intelligence/generative-ai/",
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)",
+    "evidence_url": "https://mylearn.oracle.com/ou/learning-path/become-an-oci-generative-ai-certified-professional-2024/134444",
+    "evidence_quote": "The course you're looking for may already be retired or obsolete."
   },
   "linux-foundation-lift": {
     "provider": "Linux Foundation / CNCF",
@@ -65,12 +71,16 @@
     "verified_discount_pct": 75,
     "truth_source_name": "Juniper Open Learning Voucher Policy",
     "truth_source_url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478",
-    "verdict_notes": "Juniper Open Learning provides a 75% discount exam voucher upon scoring 70%+ on the Voucher Assessment Test. Candidate must pay ~$50 USD at Pearson VUE checkout. It is NOT a 100% free ($0.00) voucher.",
+    "verdict_notes": "Not free: a 75% discount voucher, leaving $50 to pay, after passing the Voucher Assessment Test with 70% or higher. The page is now branded 'Free HPE Networking Training' and requires a login to register.",
     "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
-    "cart_balance_clarification": "$0.00 (75% Official Discount Applied - $50 Pearson VUE Co-Pay)",
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "zero_dollar_confirmed": false,
+    "cart_balance_clarification": "About $50 Co-Pay at Pearson VUE (75% discount voucher; not free)",
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478",
+    "evidence_quote": "Complete all the course modules and pass the Voucher Assessment Test with a score of 70% or higher and you will receive a 75% discount on your live exam, making it just $50 - a small investment to enhance your career.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "github-foundations-cert-wave": {
     "provider": "GitHub",
@@ -124,12 +134,14 @@
     "verified_discount_pct": 100,
     "truth_source_name": "MongoDB Learn Portal & GitHub Student Pack",
     "truth_source_url": "https://learn.mongodb.com/pages/certification",
-    "verdict_notes": "MongoDB offers official developer certification paths and 100% free exam vouchers to verified students through GitHub Student Developer Pack on learn.mongodb.com.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked page https://learn.mongodb.com/pages/certification redirected to a 'page not found' page on 2026-11-16. The student voucher claim could not be checked.",
+    "enforce_status": "Broken Link",
+    "zero_dollar_confirmed": false,
     "canonical_direct_url": "https://learn.mongodb.com/pages/certification",
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "salesforce-trailhead-quests": {
     "provider": "Salesforce",
@@ -139,11 +151,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Salesforce Trailhead Quests Program",
     "truth_source_url": "https://trailhead.salesforce.com/quests",
-    "verdict_notes": "Monthly sweepstakes where completing specified Trailhead trails grants raffle entry to win a $200-$400 certification exam voucher. Not a guaranteed voucher for all participants.",
+    "verdict_notes": "The Trailblazer Quests page ('Learn new skills. Win fun prizes.') links to general sweepstakes terms. Prizes are drawn, not guaranteed. Whether a certification voucher is a current prize was not read on 2026-11-16.",
     "enforce_status": "Review Needed",
     "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "cncf-dan-kohn-scholarship": {
     "provider": "Linux Foundation / CNCF",
@@ -168,11 +182,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Cisco Learning Network Community",
     "truth_source_url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community",
-    "verdict_notes": "Cisco Rev Up to Recert awards free Continuing Education (CE) credits to recertify active CCNA, CCNP, and CCIE credentials without paying for written Pearson VUE exams. Not a new exam voucher.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked link is a community forum. Posts dated November 2026 announce Rev Up to Recert campaigns with Continuing Education credits, but the forum is not a terms page and no campaign end date was read. Check the current campaign page on the Cisco Learning Network before relying on it.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "ms-applied-skills": {
     "provider": "Microsoft Azure",
@@ -182,11 +198,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Microsoft Learn Credentials Registry",
     "truth_source_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/",
-    "verdict_notes": "Free unproctored interactive scenario-based lab credentials verified on Microsoft Learn. Distinct from paid proctored Microsoft Certifications (AZ-900/AZ-104).",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The Microsoft Applied Skills overview page loaded on 2026-11-16 but does not state a cost. Not confirmed as free from that page.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "gcp-cloud-skills-boost": {
     "provider": "Google Cloud",
@@ -195,13 +213,17 @@
     "real_exam_cost_usd": 0.0,
     "verified_discount_pct": 100,
     "truth_source_name": "Google Cloud Innovators Program",
-    "truth_source_url": "https://cloud.google.com/innovators",
-    "verdict_notes": "Free hands-on lab quests and digital skill badges via Google Cloud Skills Boost. Formal proctored ACE and PCA certification exams require separate paid Webassessor registration.",
+    "truth_source_url": "https://www.skills.google/paths",
+    "verdict_notes": "Google Cloud Skills Boost now redirects to Google Skills. The no-cost subscription gives 35 credits a month for hands-on labs, so free use is limited by credits. The Arcade page could not be read on this date. Certification exams are separate and paid.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z",
-    "canonical_direct_url": "https://go.cloudskillsboost.google/arcade"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "canonical_direct_url": "https://www.skills.google/paths",
+    "evidence_url": "https://www.skills.google/paths",
+    "evidence_quote": "Join through our no-cost subscription to unlock 35 monthly credits for hands-on learning in Google Skills.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "snowflake-hands-on-essentials": {
     "provider": "Snowflake",
@@ -211,11 +233,15 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Snowflake Learn Essentials Track",
     "truth_source_url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
-    "verdict_notes": "Free interactive Snowflake workshop track with Accredible verified digital badges. SnowPro Core proctored exam is $175 Pearson VUE.",
+    "verdict_notes": "The vendor page says the courses are free and that many, not all, of the badges are free. The SnowPro proctored exams are separate and paid.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://learn.snowflake.com/en/pages/hands-on-essentials-track/",
+    "evidence_quote": "The courses in this track are free, and many of the badges are also free!",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "postman-api-expert": {
     "provider": "Postman",
@@ -225,11 +251,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Postman Academy Student Programs",
     "truth_source_url": "https://academy.postman.com/",
-    "verdict_notes": "Free verified digital credential awarded upon passing the API Fundamentals assessment on Postman Academy.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The Postman Academy page for this path showed very little text on 2026-11-16 and included a paid promotion ('just $25 with code ...'). It did not state that the credential is free.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "qualys-certified-specialist": {
     "provider": "Qualys",
@@ -239,11 +267,15 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Qualys Training Official Portal",
     "truth_source_url": "https://www.qualys.com/training",
-    "verdict_notes": "100% free official self-paced courses and online exams hosted directly on Qualys Training portal with free verifiable certificates.",
+    "verdict_notes": "The Qualys training page describes its training as free. The page does not list each certificate separately.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://www.qualys.com/training",
+    "evidence_quote": "Take free self-paced or instructor-led certified training on core Qualys topics, and get certified.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "databricks-genai-fundamentals": {
     "provider": "Databricks",
@@ -253,11 +285,15 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Databricks Academy Accreditations",
     "truth_source_url": "https://www.databricks.com/learn/training/certification",
-    "verdict_notes": "Free online training and accreditation quiz on Databricks Academy awarding verifiable digital badge.",
+    "verdict_notes": "Databricks states that badges are free and unproctored, and separately that certifications are proctored exams that cost $200. This entry is the free badge, not a certification.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://www.databricks.com/learn/training/certification",
+    "evidence_quote": "Badges are free, unproctored assessments that show what you've learned about a specific topic, such as generative AI.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "fortinet-cybersecurity-fundamentals": {
     "provider": "Fortinet",
@@ -267,12 +303,14 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Fortinet Training Institute",
     "truth_source_url": "https://training.fortinet.com/",
-    "verdict_notes": "Free digital cybersecurity fundamentals (FCF) training and verified digital badges via Fortinet Training Institute.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The Fortinet Training Institute home page loaded on 2026-11-16 but does not mention cost or the FCF certification. The tracked link is a home page, not the offer's own page.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "canonical_direct_url": "https://training.fortinet.com/",
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "aws-educate-badges": {
     "provider": "Amazon Web Services",
@@ -282,11 +320,15 @@
     "verified_discount_pct": 100,
     "truth_source_name": "AWS Educate Program",
     "truth_source_url": "https://aws.amazon.com/education/awseducate/",
-    "verdict_notes": "Free hands-on cloud labs and Credly badges for learners. AWS formal certification exams (CLF-C02, SAA-C03) require paid Pearson VUE registration.",
+    "verdict_notes": "The AWS Educate page says the training is free and that learners can earn shareable digital badges. AWS certification exams are separate and paid.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://aws.amazon.com/education/awseducate/",
+    "evidence_quote": "AWS Educate offers an extensive library of free, self-paced online training that covers a range of topics.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "redhat-skills-assessment-rhel": {
     "provider": "Red Hat",
@@ -296,11 +338,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Red Hat Developer Program",
     "truth_source_url": "https://developers.redhat.com/",
-    "verdict_notes": "Free developer subscription, hands-on tutorials, and skills assessment badges. Formal RHCSA / RHCE practical exams cost $400 USD.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The Red Hat page offers a free skills assessment ('Take a free skills assessment to see where you should start training'). It does not mention an accreditation or badge, so the offer as described here is not supported.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "paloalto-pccet-cybersecurity": {
     "provider": "Palo Alto Networks",
@@ -324,11 +368,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "GitLab University",
     "truth_source_url": "https://university.gitlab.com/",
-    "verdict_notes": "Free self-paced training courses and verifiable completion certificates on GitLab University.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The GitLab University certifications page says each exam has free self-paced learning content. It does not state the price of the certification exams, so 'free certification' is not confirmed.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "splunk-certified-defense-analyst": {
     "provider": "Splunk",
@@ -338,11 +384,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Splunk Lantern & Training",
     "truth_source_url": "https://lantern.splunk.com/",
-    "verdict_notes": "Free self-paced learning paths and knowledge assessments on Splunk Lantern. Formal Pearson VUE exams are $130 USD.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The Splunk Lantern home page loaded on 2026-11-16 and does not mention a free accreditation, badge or the Defense Analyst credential.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "ibm-skillsbuild-cybersecurity": {
     "provider": "IBM",
@@ -352,11 +400,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "IBM SkillsBuild Global Initiative",
     "truth_source_url": "https://skillsbuild.org/",
-    "verdict_notes": "100% free global education program providing digital learning and Credly-backed verified credentials.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The cybersecurity link redirected to the general IBM SkillsBuild learning catalog, whose title describes the courses as free. The specific 'Enterprise Cybersecurity Practitioner' credential named here was not found on the page.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "databricks-lakehouse-fundamentals": {
     "provider": "Databricks",
@@ -366,11 +416,15 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Databricks Academy",
     "truth_source_url": "https://www.databricks.com/learn/training/certification",
-    "verdict_notes": "Free self-paced accreditation on Databricks Academy with verifiable digital badge.",
+    "verdict_notes": "Listed on the page as 'Databricks Fundamentals': free on-demand training with a badge. Databricks certifications are separate proctored exams that cost $200.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://www.databricks.com/learn/training/certification",
+    "evidence_quote": "Get up to speed on Lakehouse by taking this free on-demand training — then earn a badge you can share on your LinkedIn profile or resume.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "cisco-netacad-cyberops": {
     "provider": "Cisco",
@@ -379,12 +433,16 @@
     "real_exam_cost_usd": 0.0,
     "verified_discount_pct": 100,
     "truth_source_name": "Cisco Networking Academy",
-    "truth_source_url": "https://www.netacad.com/",
-    "verdict_notes": "Free interactive course and digital credential on Cisco NetAcad / Skills for All.",
+    "truth_source_url": "https://www.netacad.com/courses/introduction-to-cybersecurity",
+    "verdict_notes": "The Cisco Networking Academy course page for Introduction to Cybersecurity carries a 'FREE' label and the line 'Badges you can earn in this course.' The page title reads 'Introduction to Cybersecurity by Cisco: Free Online Course'.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-11-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://www.netacad.com/courses/introduction-to-cybersecurity",
+    "evidence_quote": "FREE",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "hist-msft-build-2024": {
     "provider": "Microsoft Azure",
@@ -574,11 +632,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Google Cloud Skills Boost Official Directory",
     "truth_source_url": "https://www.cloudskillsboost.google/",
-    "verdict_notes": "Google Cloud Skills Boost offers complete free foundational digital learning paths and verified completion credentials.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked link redirects to the general Google Skills learning paths page. That page does not name this track or say it is free; see the Google Skills entry for what the page does state.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "ms-applied-skills-azure-openai": {
     "provider": "Microsoft Learn",
@@ -588,11 +648,15 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Microsoft Learn Applied Skills Documentation",
     "truth_source_url": "https://learn.microsoft.com/en-us/credentials/",
-    "verdict_notes": "Microsoft Applied Skills are 100% free interactive lab assessments that grant official verifiable digital credentials.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "Retired by the vendor. The credential page shows a retirement notice.",
+    "enforce_status": "Expired",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)",
+    "evidence_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/",
+    "evidence_quote": "This Applied Skill assessment has been retired."
   },
   "aws-cloud-quest-practitioner": {
     "provider": "AWS",
@@ -602,11 +666,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "AWS Skill Builder Official Catalog",
     "truth_source_url": "https://explore.skillbuilder.aws/",
-    "verdict_notes": "AWS Cloud Quest Cloud Practitioner role is completely free to all registered Skill Builder users with official Credly digital badge.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked AWS Skill Builder course link redirected to a search page with a 'not found' banner on 2026-11-16. Whether Cloud Quest: Cloud Practitioner is still free was not established.",
+    "enforce_status": "Broken Link",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "aws-educate-machine-learning": {
     "provider": "AWS",
@@ -616,11 +682,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "AWS Educate Official Portal",
     "truth_source_url": "https://aws.amazon.com/education/awseducate/",
-    "verdict_notes": "AWS Educate delivers 100% free cloud training and verified Credly badges to students and educators globally.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked link is the general AWS Educate page. It says AWS Educate training is free but does not name a 'Machine Learning Foundations' badge. Covered by the general AWS Educate entry.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "linux-foundation-intro-linux": {
     "provider": "Linux Foundation",
@@ -629,12 +697,16 @@
     "real_exam_cost_usd": 0.0,
     "verified_discount_pct": 100,
     "truth_source_name": "Linux Foundation Training Portal",
-    "truth_source_url": "https://training.linuxfoundation.org/",
-    "verdict_notes": "The Linux Foundation provides free open access to LFS101x Introduction to Linux course materials and assessments.",
+    "truth_source_url": "https://training.linuxfoundation.org/training/introduction-to-linux/",
+    "verdict_notes": "The course page describes the training as free. The page text read on this date did not state whether a completion certificate is free, so only the course is confirmed.",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://training.linuxfoundation.org/training/introduction-to-linux/",
+    "evidence_quote": "Develop a good working knowledge of Linux using both the graphical interface and command line across the major Linux distribution families with this free training course.",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "cisco-netacad-network-defense": {
     "provider": "Cisco",
@@ -643,12 +715,17 @@
     "real_exam_cost_usd": 0.0,
     "verified_discount_pct": 100,
     "truth_source_name": "Cisco Skills for All Platform",
-    "truth_source_url": "https://www.skillsforall.com/",
-    "verdict_notes": "Cisco provides free digital self-paced courses and verified Credly digital badges through the Skills for All initiative.",
+    "truth_source_url": "https://www.netacad.com/courses/network-defense",
+    "verdict_notes": "The old skillsforall.com link now redirects to the Cisco Networking Academy course page for Network Defense, which carries a 'FREE' label and the line 'Badges you can earn in this course.'",
     "enforce_status": "Active",
     "zero_dollar_confirmed": true,
-    "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "valid_through_utc": "2026-12-16T00:00:00Z",
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "evidence_url": "https://www.netacad.com/courses/network-defense",
+    "evidence_quote": "FREE",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)",
+    "canonical_direct_url": "https://www.netacad.com/courses/network-defense"
   },
   "databricks-genai-engineer-path": {
     "provider": "Databricks",
@@ -658,11 +735,13 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Databricks Academy Portal",
     "truth_source_url": "https://www.databricks.com/learn/training",
-    "verdict_notes": "Databricks Academy provides free self-paced engineering accreditations and badges for Generative AI applications.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The tracked page https://www.databricks.com/learn/training/generative-ai-engineer returned HTTP 404 on 2026-11-16.",
+    "enforce_status": "Broken Link",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   },
   "oracle-oci-security-cert-prep": {
     "provider": "Oracle Cloud",
@@ -672,10 +751,12 @@
     "verified_discount_pct": 100,
     "truth_source_name": "Oracle University MyLearn Portal",
     "truth_source_url": "https://mylearn.oracle.com/",
-    "verdict_notes": "Oracle University includes full digital preparation and periodic zero-dollar certification attempts for OCI Security Professional.",
-    "enforce_status": "Active",
-    "zero_dollar_confirmed": true,
+    "verdict_notes": "The Oracle MyLearn page for this learning path did not show any terms without signing in on 2026-11-16. No statement that the OCI Security Professional exam is free was found; the earlier 'periodic zero-dollar attempts' note has no recorded source.",
+    "enforce_status": "Review Needed",
+    "zero_dollar_confirmed": false,
     "valid_through_utc": "2026-12-31T23:59:59Z",
-    "review_due_utc": "2026-12-01T00:00:00Z"
+    "review_due_utc": "2026-12-16T00:00:00Z",
+    "reviewed_on": "2026-11-16",
+    "reviewed_by": "agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person)"
   }
 }

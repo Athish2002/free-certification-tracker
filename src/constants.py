@@ -103,6 +103,8 @@ COUPON_EXPIRED_PATTERNS: list[str] = [
 # Registration closed or campaign concluded
 REGISTRATION_CLOSED_PATTERNS: list[str] = [
     "has concluded",
+    "has been retired",
+    "retired or obsolete",
     "closed new enrollments",
     "has closed new enrollments",
     "registration is closed",

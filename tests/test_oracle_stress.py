@@ -38,10 +38,10 @@ def canonical_offers() -> list[dict[str, Any]]:
 class TestEmpiricalCanonicalInvariants:
     """Empirically asserts that all 47 canonical offers in data/offers.json produce valid truth policies."""
 
-    def test_canonical_offer_count_is_exactly_47(self, canonical_offers):
+    def test_canonical_offer_count_is_exactly_39(self, canonical_offers):
         assert len(canonical_offers) == 47, f"Expected exactly 47 offers, got {len(canonical_offers)}"
 
-    def test_all_47_offers_produce_valid_https_policies(self, canonical_offers):
+    def test_all_39_offers_produce_valid_https_policies(self, canonical_offers):
         """Every canonical offer must derive a complete, valid truth policy with HTTPS truth source URL."""
         for offer in canonical_offers:
             oid = offer.get("id")

@@ -12,46 +12,27 @@ from typing import Any
 from src.builders.client_bundle import generate_client_bundle
 from src.builders.readme_builder import (
     STATUS_BADGES,
+    copay_terms,
     format_4_timezones,
+    has_real_proof,
     load_news,
 )
 from src.builders.theme_engine import (
     DEFAULT_THEME,
     generate_css_variables,
-    generate_theme_dropdown_html,
     generate_zero_foit_script,
 )
 
 
 def classify_offer_tier(o: dict[str, Any]) -> str:
-    """Classifies an offer into 'wave' (limited-time exam wave), 'discount' (active ongoing discount/voucher), or 'badge' (skill badge & lab)."""
-    tv = o.get("truth_verification") or {}
-    otype = (o.get("offer_type") or "").lower()
-    seas = (o.get("seasonality") or "").lower()
-    oid = (o.get("id") or "").lower()
-    title = (o.get("title") or "").lower()
-    rec = (o.get("recurrence_pattern") or "").lower()
+    """Single classification shared with the README so both outputs put an offer in the same list."""
+    from src.builders.readme_builder import classify_offer_tier as _classify
 
-    # 1. Partial / Ongoing Discounts & Student Vouchers
-    is_partial_copay = tv.get("policy_type") == "partial_discount_copay" or (tv.get("real_exam_cost_usd") or 0) > 0
-    is_student_discount = "student" in seas or "student" in otype or "student" in oid
-    is_discount_type = ("discount" in otype and "100% free" not in otype) or ("%" in otype and "100%" not in otype)
-    if is_partial_copay or is_student_discount or is_discount_type:
-        return "discount"
-
-    # 2. Exam Waves (Seasonal challenge waves, limited-time cohorts, annual/event windows)
-    if (
-        seas in ("periodic_challenge_wave", "annual_window", "monthly_sweepstakes", "event_driven")
-        or "wave" in oid
-        or "wave" in title
-        or "challenge" in title
-        or "wave" in rec
-        or "cohort" in rec
-    ):
+    tier = _classify(o)
+    # Proctored offers that are neither a discount nor tagged as a wave belong with the exam offers.
+    if tier == "badge" and o.get("credential_tier") in ("proctored_exam", "primary"):
         return "wave"
-
-    # 3. Free Skill Badges & Labs
-    return "badge"
+    return tier
 
 
 def minify_offer_for_client(o: dict[str, Any]) -> dict[str, Any]:
@@ -71,7 +52,6 @@ def minify_offer_for_client(o: dict[str, Any]) -> dict[str, Any]:
         "value_usd",
         "time_period",
         "recurrence_pattern",
-        "voucher_code",
         "application_flow_type",
         "cart_balance_verified",
         "checkout_field",
@@ -82,6 +62,7 @@ def minify_offer_for_client(o: dict[str, Any]) -> dict[str, Any]:
         "visual_proof",
         "truth_verification",
         "inspection_notes",
+        "evidence_check",
         "verification_date",
         "last_zero_dollar_confirmed_date",
         "is_historical_archive",
@@ -91,6 +72,11 @@ def minify_offer_for_client(o: dict[str, Any]) -> dict[str, Any]:
         vp_keys = ("screenshot_path", "status", "captured_at", "zero_dollar_confirmed")
         m["visual_proof"] = {k: m["visual_proof"][k] for k in vp_keys if k in m["visual_proof"]}
     m["category_tier"] = classify_offer_tier(o)
+    # Only offers with a real captured screenshot get a screenshot button in the UI.
+    m["has_proof"] = has_real_proof(o)
+    copay = copay_terms(o)
+    if copay:
+        m["copay_terms"] = copay
     return m
 
 
@@ -104,6 +90,20 @@ def escape_js_attr(val: Any) -> str:
     """Escapes string for safe embedding inside single-quoted JavaScript literal in HTML attribute."""
     s = str(val or "")
     return s.replace("\\", "\\\\").replace("'", "\\'").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _closed_offer_screenshot_button(o: dict[str, Any]) -> str:
+    """Screenshot button for a triage row, or a plain 'No screenshot' label when no real image exists."""
+    if not has_real_proof(o):
+        return '<span class="text-xs" style="color: var(--fg-subtle);">No screenshot</span>'
+    oid = escape_js_attr(o.get("id", ""))
+    return (
+        f'<button type="button" data-proof-id="{oid}" onclick="openProofModal(\'{oid}\')" '
+        'class="px-2.5 py-1 rounded border text-xs font-semibold cursor-pointer inline-flex items-center gap-1 '
+        'hover:opacity-80 transition active:scale-[0.96] relative z-10 select-none" '
+        'style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" '
+        'title="View page screenshot"><span class="pointer-events-none">📸 Screenshot</span></button>'
+    )
 
 
 def generate_web_dashboard(
@@ -166,7 +166,8 @@ def generate_web_dashboard(
     total_discounts = [o for o in offers if classify_offer_tier(o) == "discount"]
     total_badges = [o for o in offers if classify_offer_tier(o) == "badge"]
 
-    total_savings = sum((o.get("value_usd") or 0) for o in active_offers)
+    review_offers = [o for o in offers if o.get("status") == "Review Needed"]
+    verified_proofs_count = sum(1 for o in offers if has_real_proof(o))
     last_sync_raw = (
         last_sync
         or (data.get("last_sync") if isinstance(data, dict) else None)
@@ -204,18 +205,16 @@ def generate_web_dashboard(
 
     closed_offers_markup = "".join(
         [
-            f'''<div class="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2" style="background-color: var(--canvas-inset);">
+            f"""<div class="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2" style="background-color: var(--canvas-inset);">
         <div>
             <span class="font-bold" style="color: var(--fg-default);">{html_lib.escape(str(o.get("platform") or ""))}</span> — <span style="color: var(--fg-muted);">{html_lib.escape(str(o.get("certification_name") or o.get("title") or ""))}</span>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
             <span class="px-2 py-0.5 rounded text-xs font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{html_lib.escape(str(STATUS_BADGES.get(o.get("status")) or o.get("status") or "Under Review"))}</span>
             <span class="text-xs" style="color: var(--fg-subtle);">{html_lib.escape(str(o.get("inspection_notes", "Under continuous review")))}</span>
-            <button type="button" data-proof-id="{escape_js_attr(o.get("id", ""))}" onclick="openProofModal('{escape_js_attr(o.get("id", ""))}')" class="px-2.5 py-1 rounded border text-xs font-semibold cursor-pointer inline-flex items-center gap-1 hover:opacity-80 transition active:scale-[0.96] relative z-10 select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Proof Screenshot Lightbox">
-                <span class="pointer-events-none">📸 Proof</span>
-            </button>
+            {_closed_offer_screenshot_button(o)}
         </div>
-    </div>'''
+    </div>"""
             for o in closed_offers
         ]
     )
@@ -256,7 +255,6 @@ def generate_web_dashboard(
                 </div>
                 <div class="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold min-w-0">
                     <span class="font-extrabold tracking-tight text-sm sm:text-base truncate" style="color: var(--fg-default);">CertPulse</span>
-                    <span class="text-xs font-bold px-1.5 py-0.5 rounded-full uppercase" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">PRO</span>
                     <span class="hidden md:inline" style="color: var(--fg-muted);">/</span>
                     <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hidden md:inline hover:underline truncate max-w-[180px]" style="color: var(--fg-muted);">
                         free-certification-tracker
@@ -387,30 +385,30 @@ def generate_web_dashboard(
         <div class="marquee-track flex items-center gap-8 text-xs font-mono select-none" style="color: var(--fg-muted);">
             <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full animate-ping" style="background-color: var(--accent-fg);"></span>
-                <span class="font-bold uppercase tracking-wider" style="color: var(--accent-fg);">LIVE RADAR</span>
-                <span>Active Tracked Vouchers: <strong style="color: var(--fg-default);">{len(active_offers)}</strong></span>
+                <span class="font-bold uppercase tracking-wider" style="color: var(--accent-fg);">STATUS</span>
+                <span>Active offers: <strong style="color: var(--fg-default);">{len(active_offers)}</strong> of {len(offers)} tracked</span>
             </div>
             <span style="color: var(--border-default);">•</span>
             <div class="flex items-center gap-2">
-                <span>🛡️ TRUTH ORACLE: Zero scam promotions detected across 14-day crawler history</span>
+                <span>Links are on official vendor domains and are checked twice a day for reachability and closure notices</span>
             </div>
             <span style="color: var(--border-default);">•</span>
             <div class="flex items-center gap-2">
-                <span>⚡ Pearson VUE 100% Free Waivers Confirmed: <strong style="color: var(--success-fg);">{len(active_proctored)} Exams</strong></span>
+                <span>Needs review: <strong>{len(review_offers)}</strong> &bull; Policy notes are maintained by hand</span>
             </div>
             <span style="color: var(--border-default);">•</span>
             <div class="flex items-center gap-2">
-                <span>🌐 Multi-Region Telemetry Synchronized: <strong>{tz_info["utc"]}</strong></span>
+                <span>Last automated check: <strong>{tz_info["utc"]}</strong></span>
             </div>
             <span style="color: var(--border-default);">•</span>
             <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full animate-ping" style="background-color: var(--accent-fg);"></span>
-                <span class="font-bold uppercase tracking-wider" style="color: var(--accent-fg);">LIVE RADAR</span>
-                <span>Active Tracked Vouchers: <strong style="color: var(--fg-default);">{len(active_offers)}</strong></span>
+                <span class="font-bold uppercase tracking-wider" style="color: var(--accent-fg);">STATUS</span>
+                <span>Active offers: <strong style="color: var(--fg-default);">{len(active_offers)}</strong> of {len(offers)} tracked</span>
             </div>
             <span style="color: var(--border-default);">•</span>
             <div class="flex items-center gap-2">
-                <span>🛡️ TRUTH ORACLE: Zero scam promotions detected across 14-day crawler history</span>
+                <span>Links are on official vendor domains and are checked twice a day for reachability and closure notices</span>
             </div>
         </div>
     </div>
@@ -422,17 +420,16 @@ def generate_web_dashboard(
         <div id="vouchersSection">
             <!-- Hero Bento Grid with Automated Inspection & Goal Check Counters -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 mb-4">
-                <!-- Bento 1: Total Value Saved -->
+                <!-- Bento 1: Screenshots Captured -->
                 <div class="p-4 sm:p-5 rounded-2xl border primer-card neo-shadow flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Total Savings</span>
-                        <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Screenshots</span>
                     </div>
                     <div class="mt-3">
-                        <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--success-fg);">
-                            ${total_savings:,} <span class="text-xs font-normal" style="color: var(--fg-muted);">USD</span>
+                        <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
+                            {verified_proofs_count}/{len(offers)} <span class="text-xs font-normal" style="color: var(--fg-muted);">captured</span>
                         </div>
-                        <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Aggregate tuition value of free proctored exams</p>
+                        <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Offers with a real screenshot of the vendor page. A screenshot shows the page loaded; it is not proof of the terms.</p>
                     </div>
                 </div>
 
@@ -440,43 +437,27 @@ def generate_web_dashboard(
                 <div class="p-4 sm:p-5 rounded-2xl border primer-card neo-shadow flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Active Offers</span>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg);">{len(active_offers)}/{len(active_offers)} LIVE &bull; {len(offers)} CHECKED</span>
+                        <span class="text-xs font-bold px-1.5 py-0.5 rounded tabular-nums" style="background-color: var(--success-subtle); color: var(--success-fg);">{len(active_offers)} ACTIVE &bull; {len(offers)} TRACKED</span>
                     </div>
                     <div class="mt-3">
                         <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
-                            {len(active_offers)} <span class="text-xs font-normal" style="color: var(--fg-muted);">Vouchers</span>
+                            {len(active_offers)} <span class="text-xs font-normal" style="color: var(--fg-muted);">Offers</span>
                         </div>
                         <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">{len(active_waves)} Exam Waves &bull; {len(active_discounts)} Discounts &bull; {len(active_badges)} Skill Badges</p>
                     </div>
                 </div>
 
-                <!-- Bento 3: Authenticity Standard with ECG Waveform Sweep & Interactive Latency Chip -->
+                <!-- Bento 3: What is checked -->
                 <div class="p-4 sm:p-5 rounded-2xl border primer-card neo-shadow flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Authenticity Standard</span>
-                        <span class="text-xs font-bold px-1.5 py-0.5 rounded" style="background-color: var(--accent-subtle); color: var(--accent-fg);">VERIFIED</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">What Is Checked</span>
+                        <span class="text-xs font-bold px-1.5 py-0.5 rounded tabular-nums" style="background-color: var(--attention-subtle); color: var(--attention-fg);">{len(review_offers)} NEED REVIEW</span>
                     </div>
                     <div class="mt-3">
-                        <div class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--accent-fg);">
-                            100% Authentic
+                        <div class="text-base sm:text-lg font-extrabold tracking-tight" style="color: var(--fg-default);">
+                            Official vendor links
                         </div>
-                        <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Zero scam domains, zero dumps, strict TLS</p>
-                    </div>
-                    <div class="mt-2.5 pt-2 border-t flex items-center justify-between gap-2" style="border-color: var(--border-default);">
-                        <div onclick="manualPingOracle()" id="latency-chip" class="flex items-center gap-2 px-2.5 py-1 rounded-lg border cursor-pointer active:scale-[0.96] transition" style="background-color: var(--canvas-inset); border-color: var(--border-default);" title="Click to Ping Oracle Network Node">
-                            <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background-color: var(--success-fg);"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2" style="background-color: var(--success-fg);"></span>
-                            </span>
-                            <div class="flex items-center gap-1.5 font-mono text-xs">
-                                <svg class="w-8 h-4" style="color: var(--success-fg);" viewBox="0 0 60 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path class="ecg-line-sweep" d="M0 10 L15 10 L20 3 L25 18 L30 8 L35 12 L40 10 L60 10" />
-                                    <circle class="ecg-blip" cx="20" cy="3" r="2.5" fill="currentColor" />
-                                </svg>
-                                <span id="live-latency" class="font-bold tabular-nums" style="color: var(--success-fg);">18ms</span>
-                            </div>
-                        </div>
-                        <span class="text-xs font-mono" style="color: var(--fg-muted);">0.0ms Jitter</span>
+                        <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Links are on official vendor domains and are checked twice a day for reachability and closure notices. Policy notes are maintained by hand; prices are not confirmed by purchase.</p>
                     </div>
                 </div>
 
@@ -493,7 +474,7 @@ def generate_web_dashboard(
                         <div class="text-xs font-mono mt-1 tabular-nums" style="color: var(--fg-muted);">
                             <span id="heroCadenceEt">{tz_info["et"]}</span> &bull; <span id="heroCadenceCet">{tz_info["cet"]}</span>
                         </div>
-                        <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Automated Audit Timestamp across UTC, IST, EDT, CEST</p>
+                        <p class="text-xs mt-1 text-pretty" style="color: var(--fg-muted);">Time of the last automated link check (UTC, IST, ET, CET)</p>
                     </div>
                 </div>
             </div>
@@ -661,7 +642,7 @@ def generate_web_dashboard(
                         <span class="text-xs transition-transform group-open:rotate-180" style="color: var(--fg-muted);">▼</span>
                     </summary>
                     <p class="text-xs mt-3 leading-relaxed" style="color: var(--fg-muted);">
-                        Authentic vendor opportunities flagged by our automated inspector for capacity limits, closed cohorts, or ambiguous signals. Re-audited automatically every 12 hours (twice daily).
+                        Offers that are closed, expired, or could not be confirmed: the inspector found a closure notice or an inconclusive page, or the hand-maintained policy note is past its review date. Re-checked twice a day.
                     </p>
                     <div class="mt-4 divide-y border rounded-lg overflow-hidden text-xs" style="border-color: var(--border-default);">
                         {closed_offers_markup}
@@ -679,7 +660,7 @@ def generate_web_dashboard(
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
-                            <span class="text-xs font-semibold" style="color: var(--fg-muted);">Live Intelligence Feed</span>
+                            <span class="text-xs font-semibold" style="color: var(--fg-muted);">Vendor News Feed</span>
                         </div>
                         <span class="p-1.5 sm:p-2 rounded-lg flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
                             <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
@@ -687,10 +668,10 @@ def generate_web_dashboard(
                     </div>
                     <div class="mt-3 sm:mt-4">
                         <div class="text-2xl sm:text-4xl font-extrabold tracking-tight tabular-nums" style="color: var(--success-fg);">
-                            {len(news_items)} Briefings <span class="text-xs sm:text-base font-normal font-sans" style="color: var(--fg-muted);">Live Dispatches</span>
+                            {len(news_items)} Items <span class="text-xs sm:text-base font-normal font-sans" style="color: var(--fg-muted);">from vendor feeds</span>
                         </div>
                         <p class="text-xs sm:text-sm mt-1.5 sm:mt-2 leading-relaxed text-pretty max-w-[65ch]" style="color: var(--fg-muted);">
-                            Silicon architecture breakthroughs, small language models, distributed systems RFCs, and SEC revenue filings.
+                            Posts pulled automatically from official vendor engineering blogs and feeds. Summaries come from the feeds and are not reviewed by a person.
                         </p>
                     </div>
                 </div>
@@ -705,7 +686,7 @@ def generate_web_dashboard(
                     </div>
                     <div class="mt-3 sm:mt-4">
                         <div class="text-xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
-                            9 Giants <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Tracked</span>
+                            Sources <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Vendor feeds</span>
                         </div>
                         <p class="text-xs mt-1.5 sm:mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
                             AWS, Azure, Google Cloud, Oracle Cloud, Cisco, GitHub, CNCF, Databricks, Snowflake.
@@ -716,17 +697,17 @@ def generate_web_dashboard(
                 <!-- News Bento 3: Anti-Clickbait Guardian -->
                 <div class="lg:col-span-3 p-4 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold" style="color: var(--fg-muted);">Integrity Standard</span>
+                        <span class="text-xs font-semibold" style="color: var(--fg-muted);">Source Filter</span>
                         <span class="p-1.5 sm:p-2 rounded-lg flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
                             <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path></svg>
                         </span>
                     </div>
                     <div class="mt-3 sm:mt-4">
                         <div class="text-xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--attention-fg);">
-                            0% Clickbait <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Verified</span>
+                            Allow-list <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">by domain</span>
                         </div>
                         <p class="text-xs mt-1.5 sm:mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
-                            Strict primary enterprise domain whitelist. Rumor blogs and content mills barred.
+                            Only items from an allow-list of vendor domains are kept. The filter is by domain and keyword, not by editorial review.
                         </p>
                     </div>
                 </div>
@@ -796,8 +777,8 @@ def generate_web_dashboard(
 
             <!-- News Results Status Bar -->
             <div class="flex flex-col xs:flex-row items-start xs:items-center justify-between text-xs mb-4 px-1 gap-1" style="color: var(--fg-muted);">
-                <div id="newsResultsCount">Showing {len(news_items)} of {len(news_items)} verified dispatches</div>
-                <div>Primary Domain Whitelist: <span class="font-medium text-xs" style="color: var(--success-fg);">Strict Verification Enforced</span></div>
+                <div id="newsResultsCount">Showing {len(news_items)} of {len(news_items)} news items</div>
+                <div>Source filter: <span class="font-medium text-xs">vendor domain allow-list</span></div>
             </div>
 
             <!-- News Cards Grid -->
@@ -813,7 +794,7 @@ def generate_web_dashboard(
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full animate-pulse" style="background-color: var(--success-fg);"></span>
-                            <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Redemption Protocol</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Redemption Guide</span>
                         </div>
                         <span class="p-1.5 sm:p-2 rounded-lg flex-shrink-0" style="background-color: var(--success-subtle); color: var(--success-fg); border: 1px solid var(--success-fg);">
                             <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
@@ -821,10 +802,10 @@ def generate_web_dashboard(
                     </div>
                     <div class="mt-3 sm:mt-4">
                         <div class="text-2xl sm:text-4xl font-extrabold tracking-tight tabular-nums" style="color: var(--success-fg);">
-                            $0.00 Balance <span class="text-xs sm:text-base font-normal font-sans" style="color: var(--fg-muted);">Verified Cart Total</span>
+                            Where to redeem <span class="text-xs sm:text-base font-normal font-sans" style="color: var(--fg-muted);">and what to expect to pay</span>
                         </div>
                         <p class="text-xs sm:text-sm mt-1.5 sm:mt-2 leading-relaxed text-pretty max-w-[65ch]" style="color: var(--fg-muted);">
-                            Step-by-step guidance showing where to paste discount codes, claim SSO waivers, and verify your cart drops to $0.00 before exam checkout.
+                            Hand-written guidance on where each offer is redeemed. CertPulse does not hold or publish voucher codes, and no test purchase is made: check the total at the vendor checkout before you confirm.
                         </p>
                     </div>
                 </div>
@@ -832,14 +813,14 @@ def generate_web_dashboard(
                 <!-- Bento 2: Delivery Portals -->
                 <div class="lg:col-span-3 p-4 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Accredited Portals</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Redemption Portals</span>
                         <span class="p-1.5 sm:p-2 rounded-lg flex-shrink-0" style="background-color: var(--accent-subtle); color: var(--accent-fg); border: 1px solid var(--accent-fg);">
                             <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M11 2.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75v2.5a.75.75 0 0 1-1.5 0V3.56l-3.22 3.22a.75.75 0 1 1-1.06-1.06L11.44 2.5H11.75a.75.75 0 0 1-.75-.75Z"></path><path d="M2 3.75C2 2.784 2.784 2 3.75 2h4.5a.75.75 0 0 1 0 1.5h-4.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-4.5a.75.75 0 0 1 1.5 0v4.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5Z"></path></svg>
                         </span>
                     </div>
                     <div class="mt-3 sm:mt-4">
                         <div class="text-xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
-                            6 Ecosystems <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Verified</span>
+                            Portals <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">referenced</span>
                         </div>
                         <p class="text-xs mt-1.5 sm:mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
                             Pearson VUE, Oracle MyLearn, Webassessor, Linux Foundation, Databricks Academy, Postman Academy.
@@ -850,17 +831,17 @@ def generate_web_dashboard(
                 <!-- Bento 3: Anti-Trap Guarantee -->
                 <div class="lg:col-span-3 p-4 sm:p-6 rounded-2xl border primer-card flex flex-col justify-between">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Zero-Fee Standard</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--fg-muted);">Before You Pay</span>
                         <span class="p-1.5 sm:p-2 rounded-lg flex-shrink-0" style="background-color: var(--attention-subtle); color: var(--attention-fg); border: 1px solid var(--attention-fg);">
                             <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M7.462.166a.75.75 0 0 1 .538 0l6.25 2.5a.75.75 0 0 1 .478.704c0 4.195-2.067 8.046-5.83 10.428a.75.75 0 0 1-.806 0C4.317 11.416 2.25 7.565 2.25 3.37a.75.75 0 0 1 .478-.704l6.25-2.5Zm.538 1.558L2.75 3.82c.117 3.518 1.83 6.758 4.996 8.847 3.165-2.089 4.88-5.329 4.996-8.847L8 1.724Z"></path></svg>
                         </span>
                     </div>
                     <div class="mt-3 sm:mt-4">
                         <div class="text-xl sm:text-3xl font-extrabold tracking-tight tabular-nums" style="color: var(--fg-default);">
-                            Zero Traps <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">Audited</span>
+                            Check the total <span class="text-xs sm:text-sm font-normal font-sans" style="color: var(--fg-muted);">at checkout</span>
                         </div>
                         <p class="text-xs mt-1.5 sm:mt-2 leading-relaxed text-pretty" style="color: var(--fg-muted);">
-                            Strictly no credit card input required on official 100% free vendor certification tracks.
+                            A free offer should show a zero total before you confirm. If the vendor checkout asks for payment, the offer may have changed or may not apply to you.
                         </p>
                     </div>
                 </div>
@@ -891,8 +872,8 @@ def generate_web_dashboard(
 
             <!-- Redemption Results Status Bar -->
             <div class="flex flex-col xs:flex-row items-start xs:items-center justify-between text-xs mb-4 px-1 gap-1" style="color: var(--fg-muted);">
-                <div id="redemptionResultsCount">Showing {len(active_offers)} of {len(active_offers)} verified redemption protocols</div>
-                <div>Checkout Assurance: <span class="font-medium text-xs" style="color: var(--success-fg);">100% Zero-Dollar ($0.00) Fee Verified</span></div>
+                <div id="redemptionResultsCount">Showing {len(active_offers)} of {len(active_offers)} redemption guides</div>
+                <div>Expected costs are hand-written; <span class="font-medium text-xs">no test purchase is made</span></div>
             </div>
 
             <!-- Redemption Cards Grid -->
@@ -904,7 +885,7 @@ def generate_web_dashboard(
     <!-- Footer -->
     <footer class="border-t py-6 sm:py-8 mt-10 sm:mt-12 text-center text-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted); padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem));">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-            <div class="text-balance">CertPulse — Open-Source Free Certification Tracker & Autonomous Intelligence Radar</div>
+            <div class="text-balance">CertPulse — Free Certification Tracker. Links are checked automatically; policy notes are maintained by hand. Confirm terms on the vendor page.</div>
             <div class="flex items-center gap-4 flex-wrap justify-center">
                 <a href="https://github.com/Athish2002/free-certification-tracker" target="_blank" class="hover:underline py-1" style="color: var(--accent-fg);">GitHub Repo</a>
                 <a href="https://github.com/Athish2002/free-certification-tracker/issues/new/choose" target="_blank" class="hover:underline py-1" style="color: var(--accent-fg);">Submit Voucher</a>
@@ -945,10 +926,10 @@ def generate_web_dashboard(
                 <a id="proofModalFullResLink" href="#" target="_blank" rel="noopener" class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-md text-xs font-medium shadow-md bg-black/75 text-white/90 hover:text-white backdrop-blur-md border border-white/20 transition cursor-pointer select-none" title="Open high-resolution uncompressed screenshot in new tab">
                     <span>🔍 Full-Res ↗</span>
                 </a>
-                <img id="proofModalImage" src="" alt="Screenshot proof of zero-dollar certification terms" class="max-w-full max-h-[55dvh] sm:max-h-[60dvh] object-contain rounded-lg border shadow-sm transition-opacity" style="border-color: var(--border-default);">
+                <img id="proofModalImage" src="" alt="Screenshot of the vendor page as loaded by the inspector" class="max-w-full max-h-[55dvh] sm:max-h-[60dvh] object-contain rounded-lg border shadow-sm transition-opacity" style="border-color: var(--border-default);">
                 <div id="proofImageFallback" class="hidden text-xs text-center p-8" style="color: var(--fg-muted);">
                     <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                    <span>Screenshot proof preview available in repository at <code class="font-mono" id="proofFallbackPath"></code></span>
+                    <span>Screenshot could not be loaded. Expected at <code class="font-mono" id="proofFallbackPath"></code></span>
                 </div>
             </div>
 
@@ -983,8 +964,8 @@ def generate_web_dashboard(
                         <span class="text-xs px-1.5 py-0.5 rounded font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">Headless Playwright</span>
                     </div>
                     <div class="flex items-center gap-2 flex-wrap">
-                        <span class="font-semibold" style="color: var(--fg-default);">Voucher Terms:</span>
-                        <span id="proofModalTerms" class="truncate" style="color: var(--success-fg);"></span>
+                        <span class="font-semibold" style="color: var(--fg-default);">Expected cost (not test-purchased):</span>
+                        <span id="proofModalTerms" class="truncate" style="color: var(--fg-muted);"></span>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 flex-shrink-0">

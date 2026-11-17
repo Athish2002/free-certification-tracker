@@ -4,6 +4,14 @@ Deconstructs monolithic builder into focused modules:
 - theme_engine: 10 developer palettes and Zero-FOIT styling
 - client_bundle: Client-side JavaScript controllers and multi-view engines
 - readme_builder: Markdown documentation and 4-timezone table formatting
+
+summary.json signal meanings (kept deliberately literal):
+- dom_inspected: offers whose inspection_method names the headless-browser check
+- oracle_corroborated: offers that carry a truth_verification block (a hand-maintained policy note was attached)
+- authentic_vendors: offers whose URL passed the vendor-domain allow-list
+- zero_dollar_confirmed: Active offers where the page check set the flag and recorded a date
+  (a keyword check on the page, not a purchase)
+- screenshots_captured: offers with a real screenshot file on disk
 - html_builder: Semantic HTML5 canvas and responsive view shell
 """
 
@@ -27,6 +35,7 @@ from src.builders.readme_builder import (
     STATUS_BADGES,
     format_4_timezones,
     generate_readme,
+    has_real_proof,
     load_news,
     load_offers,
 )
@@ -174,11 +183,16 @@ def build_all(
     )
     oracle_count = sum(1 for o in offers_list if o.get("truth_verification"))
     authentic_count = sum(1 for o in offers_list if o.get("is_authentic_vendor"))
-    zero_dollar_count = sum(
+    # Count only Active offers where an inspection actually set the flag and recorded a date.
+    # (Previously any offer with a cart_balance_verified string was counted, i.e. all of them.)
+    page_checked_count = sum(
         1
         for o in offers_list
-        if (o.get("visual_proof") or {}).get("zero_dollar_confirmed") or o.get("cart_balance_verified")
+        if str(o.get("status", "")).strip().lower() == "active"
+        and (o.get("visual_proof") or {}).get("zero_dollar_confirmed") is True
+        and o.get("last_zero_dollar_confirmed_date")
     )
+    screenshot_count = sum(1 for o in offers_list if has_real_proof(o))
     historical_count = sum(1 for o in offers_list if o.get("is_historical_archive"))
 
     summary_data = {
@@ -192,7 +206,8 @@ def build_all(
             "dom_inspected": dom_count,
             "oracle_corroborated": oracle_count,
             "authentic_vendors": authentic_count,
-            "zero_dollar_confirmed": zero_dollar_count,
+            "zero_dollar_confirmed": page_checked_count,
+            "screenshots_captured": screenshot_count,
             "historical_archives": historical_count,
         },
     }

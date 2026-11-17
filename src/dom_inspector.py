@@ -88,6 +88,8 @@ COUPON_EXPIRED_PATTERNS = [
 # Heuristic phrases indicating registration is closed or campaign concluded
 REGISTRATION_CLOSED_PATTERNS = [
     "has concluded",
+    "has been retired",
+    "retired or obsolete",
     "closed new enrollments",
     "has closed new enrollments",
     "registration is closed",
@@ -118,29 +120,6 @@ REGISTRATION_CLOSED_PATTERNS = [
     "offer ended",
     "offer is over",
     "milestone achieved",
-]
-
-# Heuristic phrases indicating a third-party partnership or specific student pack benefit was removed / ended
-PROGRAM_BENEFIT_REMOVAL_PATTERNS = [
-    "no longer a partner",
-    "partnership has ended",
-    "partnership concluded",
-    "benefit has ended",
-    "benefit is no longer available",
-    "benefit no longer offered",
-    "benefit removed",
-    "no longer offered in the student pack",
-    "no longer part of the student developer pack",
-    "offer discontinued",
-    "this benefit has expired",
-    "voucher wave discontinued",
-    "no longer participating",
-    "partner offer ended",
-    "is no longer included in",
-    "no longer available to new applicants",
-    "retired benefit",
-    "retired offer",
-    "datacamp is no longer",
 ]
 
 # Heuristic phrases indicating redundant or broken promotional links
@@ -341,18 +320,15 @@ def inspect_rendered_dom(
     final_url: str = "",
     original_url: str = "",
     interactive_elements: list[str] | None = None,
-    offer: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """
     Analyzes dynamically rendered DOM text, page title, and URL navigation
-    against seven invariant categories:
+    against five invariant categories:
     1. Capacity Limits / Cohort Saturation
     2. Expired Coupon / Promo Code
     3. Closed Registration / Campaign Concluded
-    4. Program Benefit Discontinuation / Missing Partner Dependency
-    5. Soft 404 / Dead-End Redirection / Redundant Links
-    6. Silent Reroute Detection
-    7. Disabled / Closed Interactive CTAs
+    4. Soft 404 / Dead-End Redirection / Redundant Links
+    5. Silent Reroute Detection
     """
     clean_text = rendered_text.lower()
     title_text = rendered_title.lower()
@@ -444,49 +420,6 @@ def inspect_rendered_dom(
             result["zero_dollar_confirmed"] = False
             result["matched_phrase"] = pat
             result["category"] = "campaign_closed"
-            return result
-
-    # 4b. Discontinued Program Partner / Benefit Removal Invariant
-    for pat in PROGRAM_BENEFIT_REMOVAL_PATTERNS:
-        if pat in combined_content:
-            result["status"] = "Expired"
-            result["reason"] = f"Benefit Discontinuation Invariant: Partner benefit removed or discontinued ('{pat}')"
-            result["is_campaign_closed"] = True
-            result["zero_dollar_confirmed"] = False
-            result["matched_phrase"] = pat
-            result["category"] = "benefit_discontinued"
-            return result
-
-    # 4c. Program Hub Partner Presence Invariant
-    # For offers that depend on third-party aggregators/hubs (e.g. GitHub Student Developer Pack with DataCamp),
-    # verify that the specific partner/exam benefit is affirmatively listed in the DOM.
-    if offer and offer.get("partner_dependency"):
-        dep = offer["partner_dependency"]
-        required_terms = dep.get("required_terms", [])
-        if required_terms:
-            has_partner = any(term.lower() in combined_content for term in required_terms)
-            if not has_partner:
-                partner_name = dep.get("partner_name", "Partner")
-                result["status"] = "Expired"
-                result["reason"] = (
-                    f"Partner Invariant: Dependent benefit '{partner_name}' is absent from program hub DOM ({required_terms})"
-                )
-                result["is_campaign_closed"] = True
-                result["zero_dollar_confirmed"] = False
-                result["category"] = "partner_benefit_missing"
-                return result
-
-    # 4d. Explicitly Disabled / Closed Registration CTA Invariant
-    if interactive_elements:
-        cta_candidates = [
-            el.lower() for el in interactive_elements
-            if any(sig in el.lower() for sig in ["register", "enroll", "claim", "apply", "voucher", "schedule"])
-        ]
-        if cta_candidates and all(any(dis in el for dis in ["disabled", "not available", "ended", "closed"]) for el in cta_candidates):
-            result["status"] = "Registrations Closed"
-            result["reason"] = "CTA State Invariant: All actionable registration/enrollment CTAs are explicitly disabled or closed"
-            result["zero_dollar_confirmed"] = False
-            result["category"] = "disabled_cta"
             return result
 
     # 5. Silent Reroute Detection in SPA Client Routing
@@ -612,7 +545,7 @@ def evaluate_dual_gate(
 
     return (
         "Active",
-        f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof",
+        f"Page check passed: HTTP {http_status}, no closure notice found, screenshot captured",
     )
 
 
@@ -671,59 +604,6 @@ class HeadlessDOMInspector:
     def is_available(self) -> bool:
         return self._browser is not None
 
-    @staticmethod
-    def purge_page_overlays(page: Any) -> bool:
-        """
-        Purges cookie consent banners, marketing modals, popups, and dark overlay filters
-        from the DOM prior to evidence scoring and screenshotting.
-        """
-        if not page or not hasattr(page, "evaluate"):
-            return False
-        try:
-            purge_js = """() => {
-                const overlaySelectors = [
-                    '#onetrust-consent-sdk',
-                    '.onetrust-pc-dark-filter',
-                    '#onetrust-banner-sdk',
-                    '.truste_box_overlay',
-                    '#truste-consent-track',
-                    '#truste-consent-button',
-                    '.cookie-banner',
-                    '.cookie-consent',
-                    '.cookie-notice',
-                    '#cookie-notice',
-                    '[aria-label*="cookie" i]',
-                    '[aria-label*="consent" i]',
-                    '.intercom-lightweight-app',
-                    '#launcher',
-                    '.drift-frame-controller',
-                    '#hs-eu-cookie-confirmation',
-                    '.optanon-alert-box-wrapper',
-                    '#usercentrics-root',
-                    'div[id*="cookie" i]',
-                    'div[class*="cookie" i]',
-                    'div[id*="consent" i]',
-                    'div[class*="consent" i]'
-                ];
-                let count = 0;
-                for (const sel of overlaySelectors) {
-                    try {
-                        document.querySelectorAll(sel).forEach(el => {
-                            el.style.setProperty('display', 'none', 'important');
-                            el.style.setProperty('visibility', 'hidden', 'important');
-                            el.style.setProperty('pointer-events', 'none', 'important');
-                            count++;
-                        });
-                    } catch (e) {}
-                }
-                return count;
-            }"""
-            page.evaluate(purge_js)
-            return True
-        except Exception as e:
-            logger.debug(f"DOM overlay purge notice: {e}")
-            return False
-
     def scroll_to_evidence(
         self,
         page: Any,
@@ -740,7 +620,6 @@ class HeadlessDOMInspector:
             return False
 
         try:
-            self.purge_page_overlays(page)
             target_terms = [
                 "free certification",
                 "free exam",
@@ -832,16 +711,6 @@ class HeadlessDOMInspector:
 
                 if (bestEl && bestScore >= 20) {
                     bestEl.scrollIntoView({ behavior: 'instant', block: 'center' });
-                    // Prevent sticky/fixed topbars from overlapping target evidence element
-                    try {
-                        const fixedHeaders = Array.from(document.querySelectorAll('header, nav, [class*="header"], [class*="navbar"], [class*="topbar"]')).filter(h => {
-                            const pos = window.getComputedStyle(h).position;
-                            return (pos === 'fixed' || pos === 'sticky') && h.offsetHeight > 30;
-                        });
-                        if (fixedHeaders.length > 0) {
-                            window.scrollBy(0, -60);
-                        }
-                    } catch (e) {}
                     // Highlight the target terms element
                     bestEl.style.outline = '3px solid #10b981';
                     bestEl.style.outlineOffset = '4px';
@@ -858,7 +727,9 @@ class HeadlessDOMInspector:
                     page.wait_for_timeout(250)
                 except Exception:
                     pass
-                logger.info(f"Anchored viewport to evidence for {offer_id} (score {res.get('score')}): {res.get('textSnippet')!r}")
+                logger.info(
+                    f"Anchored viewport to evidence for {offer_id} (score {res.get('score')}): {res.get('textSnippet')!r}"
+                )
                 return True
         except Exception as e:
             logger.debug(f"Evidence scroll attempt notice for {offer_id}: {e}")
@@ -1037,7 +908,6 @@ class HeadlessDOMInspector:
         try:
             context = self._browser.new_context(
                 viewport={"width": 1280, "height": 800},
-                device_scale_factor=2,
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
             )
             page = context.new_page()
@@ -1173,7 +1043,6 @@ class HeadlessDOMInspector:
                 final_url=final_url,
                 original_url=url,
                 interactive_elements=interactive_ctas,
-                offer=offer,
             )
 
             # Read screenshot bytes for VLM analysis
@@ -1276,7 +1145,7 @@ class HeadlessDOMInspector:
                         f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
                     )
                 else:
-                    reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
+                    reason = f"Page check passed: HTTP {http_status}, no closure notice found, screenshot captured"
 
             # Enforce ground-truth invariant: non-active offers never confirm zero-dollar terms
             if status != "Active":

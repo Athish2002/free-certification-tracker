@@ -184,56 +184,61 @@ def test_news_json_schema_invariants(loaded_news):
 
 def test_readme_and_json_mathematical_sync(loaded_data, readme_text):
     """
-    Asserts mathematical conservation laws:
-    Total Value Saved in README == sum(value_usd) of Active offers in JSON.
-    Total Active Count in README badge == count(Active offers) in JSON.
+    Asserts that README counts match the JSON:
+    Active count badge == count(Active offers); tracked badge == count(offers).
+    Also asserts that no aggregate "value saved" figure is published: the per-offer
+    values of always-free badges are not real prices, so a total would be invented.
     """
     offers = loaded_data.get("offers", [])
     active_offers = [o for o in offers if o.get("status") == "Active"]
-    expected_savings = sum((o.get("value_usd") or 0) for o in active_offers)
     expected_count = len(active_offers)
 
     # 1. Assert Badge Count
     count_badge_match = re.search(
-        r"!\[Active Vouchers\]\(https://img\.shields\.io/badge/Active%20Offers-(\d+)-success\.svg\)", readme_text
+        r"!\[Active Offers\]\(https://img\.shields\.io/badge/Active%20Offers-(\d+)-success\.svg\)", readme_text
     )
     assert count_badge_match is not None, "Active Offers count badge missing in README"
     assert int(count_badge_match.group(1)) == expected_count, (
         f"README badge active count ({count_badge_match.group(1)}) desynchronized with JSON active count ({expected_count})"
     )
 
-    # 2. Assert Badge Savings Value
-    val_badge_match = re.search(
-        r"!\[Total Savings\]\(https://img\.shields\.io/badge/Total%20Value%20Saved-%24(\d+)%20USD-gold\.svg\)",
-        readme_text,
-    )
-    assert val_badge_match is not None, "Total Savings badge missing in README"
-    assert int(val_badge_match.group(1)) == expected_savings, (
-        f"README badge savings value (${val_badge_match.group(1)}) desynchronized with JSON total (${expected_savings})"
-    )
+    # 2. No aggregate savings figure anywhere
+    assert "Total%20Value%20Saved" not in readme_text, "Total Value Saved badge must not be published"
+    assert "Total Financial Value" not in readme_text, "Total Financial Value row must not be published"
 
-    # 3. Assert Executive Summary Table matches
-    assert f"| **Active Opportunities** | **{expected_count}** |" in readme_text
-    assert f"| **Total Financial Value** | **${expected_savings:,} USD** |" in readme_text
+    # 3. Summary table matches
+    assert f"| **Active Offers** | **{expected_count}** |" in readme_text
 
-    # 4. Assert Checked Offers badge & Executive Summary Table
-    checked_badge_match = re.search(
-        r"!\[Offers Checked\]\(https://img\.shields\.io/badge/Offers%20Checked-(\d+)%20Audited-blue\.svg\)", readme_text
+    # 4. Tracked offers badge & summary row
+    tracked_badge_match = re.search(
+        r"!\[Offers Tracked\]\(https://img\.shields\.io/badge/Offers%20Tracked-(\d+)-blue\.svg\)", readme_text
     )
-    assert checked_badge_match is not None, "Offers Checked badge missing in README"
-    assert int(checked_badge_match.group(1)) == len(offers), (
-        f"README badge checked count ({checked_badge_match.group(1)}) desynchronized with total offers ({len(offers)})"
+    assert tracked_badge_match is not None, "Offers Tracked badge missing in README"
+    assert int(tracked_badge_match.group(1)) == len(offers), (
+        f"README badge tracked count ({tracked_badge_match.group(1)}) desynchronized with total offers ({len(offers)})"
     )
-    assert f"| **Offers Checked & Audited** | **{len(offers)} Total**" in readme_text
+    assert f"| **Offers Tracked** | **{len(offers)} Total**" in readme_text
+
+    # 5. Screenshot count == offers that are marked verified AND whose image file exists
+    real_shots = sum(
+        1
+        for o in offers
+        if (o.get("visual_proof") or {}).get("status") == "verified"
+        and (o.get("visual_proof") or {}).get("screenshot_path")
+        and (ROOT / o["visual_proof"]["screenshot_path"]).is_file()
+    )
+    assert f"| **Screenshots Captured** | **{real_shots}/{len(offers)} " in readme_text
+    assert f"Screenshots-{real_shots}%2F{len(offers)}%20Captured" in readme_text
 
 
 def test_readme_news_radar_sync(loaded_news, readme_text):
     """Asserts that the intelligence radar table in README.md accurately reflects all news items."""
     news_items = loaded_news.get("news", [])
-    assert "## 📰 Verified Cloud & Engineering Intelligence Radar" in readme_text, (
-        "Missing news radar heading in README"
-    )
-    assert f"| **Verified Tech Dispatches** | **{len(news_items)} Reports** |" in readme_text
+    assert "## 📰 Vendor Engineering News" in readme_text, "Missing news heading in README"
+    assert f"| **News Items** | **{len(news_items)}** |" in readme_text
+    # The collector reads vendor blogs/feeds only; it does not ingest SEC filings.
+    assert "SEC financial filings" not in readme_text
+    assert "SEC revenue filings" not in readme_text
 
     for item in news_items:
         assert item["title"] in readme_text, f"News title '{item['title']}' not rendered in README table"
@@ -266,9 +271,14 @@ def test_web_dashboard_payload_sync(loaded_data, loaded_news, html_text):
 
     # 3. Dynamic check counters in dashboard
     active_count = len([o for o in offers if o.get("status") == "Active"])
-    assert f"{active_count}/{active_count} LIVE &bull; {len(offers)} CHECKED" in html_text, (
-        f"Bento 2 dynamic check counter ({active_count}/{active_count} LIVE • {len(offers)} CHECKED) missing in dashboard"
+    assert f"{active_count} ACTIVE &bull; {len(offers)} TRACKED" in html_text, (
+        f"Bento 2 counter ({active_count} ACTIVE • {len(offers)} TRACKED) missing in dashboard"
     )
+
+    # 4. Every embedded offer says whether a real screenshot exists; none carries a voucher code
+    for eo in embedded_offers:
+        assert isinstance(eo.get("has_proof"), bool), f"Embedded offer {eo.get('id')} missing has_proof flag"
+        assert "voucher_code" not in eo, f"Embedded offer {eo.get('id')} must not carry a voucher_code"
 
 
 # --- 3. Anti-Divergence Regression Checks ---
@@ -528,20 +538,39 @@ def test_educational_institution_authenticity_invariant():
 
 def test_readme_and_dashboard_authenticity_sync(loaded_data, readme_text, html_text):
     """
-    Asserts that the README badge and Web Dashboard prominently display
-    verified vendor authenticity metrics and zero-scam disclosures.
+    Asserts that the README and Web Dashboard state plainly what is checked,
+    and do not carry the overclaiming labels that were removed.
     """
-    # README authenticity indicators
-    assert (
-        "![Authenticity](https://img.shields.io/badge/Authenticity-100%25%20Verified%20Vendor-success.svg)"
-        in readme_text
-    )
-    assert "| **Authenticity Gate** | **100% Primary Vendor Verified** |" in readme_text
+    # What is actually done is stated
+    assert "| **Link Domains** | **Official vendor domains** |" in readme_text
+    assert "| **Policy Notes** | **Maintained by hand** |" in readme_text
+    assert "What Is and Is Not Checked" in readme_text
+    assert "checked twice a day for reachability and closure notices" in html_text
+    assert "Policy notes are maintained by hand" in html_text
 
-    # Web Dashboard authenticity indicators
-    assert "Authenticity Standard" in html_text
-    assert "100% Authentic" in html_text
-    assert "Zero scam domains, zero dumps, strict TLS" in html_text
+    # Overclaims are gone from both outputs
+    banned = [
+        "100%25%20Verified%20Vendor",
+        "100% Primary Vendor Verified",
+        "100% Policy Corroborated",
+        "Zero scam domains",
+        "zero dumps",
+        "100% verified against soft-404s",
+        "100% Authentic",
+        "$0 Confirmed:",
+        "Total Value Saved",
+        "Total Savings",
+        "Zero scam promotions detected",
+        "SEC financial filings",
+        "SEC revenue filings",
+    ]
+    for phrase in banned:
+        assert phrase not in readme_text, f"Removed claim still in README.md: {phrase!r}"
+        assert phrase not in html_text, f"Removed claim still in docs/index.html: {phrase!r}"
+
+    # The dashboard no longer shows a simulated latency/ping readout
+    for fake in ("manualPingOracle", "live-latency", "jitterLatency", "Oracle Network Ping"):
+        assert fake not in html_text, f"Simulated telemetry still in docs/index.html: {fake!r}"
 
 
 def test_multiview_dashboard_invariants(html_text):
@@ -659,6 +688,9 @@ def test_interactive_browser_view_switching():
     3. Keyboard listeners ('v', '1', '2', 't').
     4. URL query parameter synchronization and deep-linking (?view=timeline, ?view=matrix).
     """
+    _offers = json.loads((Path(__file__).resolve().parent.parent / "data" / "offers.json").read_text(encoding="utf-8"))
+    if not any(o.get("status") == "Active" for o in _offers.get("offers", [])):
+        pytest.skip("data/offers.json has no Active offers; no cards are rendered to switch between")
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
@@ -759,8 +791,11 @@ def test_redemption_guide_schema_invariants(loaded_data):
         oid = o.get("id", "UNKNOWN")
 
         # 1. Top-level redemption fields presence and type
+        # No offer may carry a voucher code: real codes are issued by vendors to individuals,
+        # and the ones previously stored here were invented placeholders.
+        assert "voucher_code" not in o, f"Offer {oid} must not carry a voucher_code"
+
         for field in [
-            "voucher_code",
             "redemption_portal",
             "checkout_field",
             "application_flow_type",
@@ -772,9 +807,16 @@ def test_redemption_guide_schema_invariants(loaded_data):
         assert o["application_flow_type"] in valid_flow_types, (
             f"Offer {oid} has non-standard application_flow_type: {o['application_flow_type']}"
         )
-        assert "$0.00" in o["cart_balance_verified"], (
-            f"Offer {oid} cart_balance_verified must confirm zero-dollar checkout: {o['cart_balance_verified']}"
-        )
+        # The expected-cost string must either state a zero balance or disclose a co-pay,
+        # and a partial-discount offer must never be described as $0.00.
+        cbv = o["cart_balance_verified"]
+        is_partial = (o.get("truth_verification") or {}).get("policy_type") == "partial_discount_copay"
+        if is_partial:
+            assert "co-pay" in cbv.lower(), f"Partial-discount offer {oid} must disclose its co-pay: {cbv}"
+            assert "$0.00" not in cbv, f"Partial-discount offer {oid} must not be described as $0.00: {cbv}"
+        else:
+            assert "$0.00" in cbv, f"Offer {oid} cart_balance_verified must state the expected cost: {cbv}"
+        assert "Waiver Confirmed" not in cbv, f"Offer {oid} claims a confirmed waiver; no checkout is ever performed"
 
         # 2. Structured redemption_guide dictionary
         assert "redemption_guide" in o, f"Offer {oid} missing 'redemption_guide' dict"
@@ -792,7 +834,9 @@ def test_redemption_guide_schema_invariants(loaded_data):
             assert subfield in guide, f"Offer {oid} redemption_guide missing subfield: {subfield}"
             assert guide[subfield], f"Offer {oid} redemption_guide has empty subfield: {subfield}"
 
-        assert "$0.00" in guide["verified_cart_balance"]
+        assert guide["verified_cart_balance"] == cbv, (
+            f"Offer {oid}: redemption guide cost {guide['verified_cart_balance']!r} disagrees with {cbv!r}"
+        )
         instructions = guide["instructions"]
         assert isinstance(instructions, list), f"Offer {oid} instructions must be a list"
         assert len(instructions) >= 2, f"Offer {oid} must have at least 2 step-by-step instructions"
@@ -811,19 +855,23 @@ def test_redemption_guide_schema_invariants(loaded_data):
 def test_readme_and_dashboard_redemption_sync(loaded_data, readme_text, html_text):
     """
     Asserts that README.md and docs/index.html are synchronized with the
-    Where Offers Are Applied zero-dollar checkout reference.
+    Where Offers Are Applied checkout reference, and that neither publishes voucher codes
+    or claims a verified cart balance.
     """
     active_offers = [o for o in loaded_data.get("offers", []) if o.get("status") == "Active"]
 
     # 1. README redemption table and sections
-    assert "## 💳 Where & How Vouchers Are Applied (Zero-Dollar Checkout Guide)" in readme_text, (
+    assert "## 💳 Where & How Vouchers Are Applied (Checkout Guide)" in readme_text, (
         "Missing redemption guide section header in README.md"
     )
     assert (
-        "| Official Redemption Portal | Checkout Field / Location | Application Flow | Verified Cart Balance |"
+        "| Official Redemption Portal | Checkout Field / Location | Application Flow | Expected Cost (not test-purchased) |"
         in readme_text
     ), "Missing redemption table headers in README.md"
-    assert "**$0.00**" in readme_text, "Missing bold $0.00 balance indicator in README.md"
+    assert "Verified Cart Balance" not in readme_text, "README must not claim a verified cart balance"
+    assert "Voucher / Promo Code:" not in readme_text, "README must not print voucher codes"
+    for o in loaded_data.get("offers", []):
+        assert "voucher_code" not in o
 
     for o in active_offers:
         assert o["certification_name"] in readme_text, (
@@ -839,8 +887,10 @@ def test_readme_and_dashboard_redemption_sync(loaded_data, readme_text, html_tex
     assert 'id="redemptionGrid"' in html_text, "Missing redemptionGrid container in docs/index.html"
     assert "renderRedemption" in html_text, "Missing renderRedemption function in docs/index.html"
     assert "openRedemptionFor" in html_text, "Missing openRedemptionFor function in docs/index.html"
-    assert "copyVoucherToken" in html_text, "Missing copyVoucherToken function in docs/index.html"
-    assert "Cart Balance: $0.00" in html_text, "Missing Cart Balance: $0.00 badge in docs/index.html"
+    assert "copyVoucherToken" not in html_text, "Voucher-token copy button must be gone from docs/index.html"
+    assert "Voucher Token" not in html_text, "Voucher Token callout must be gone from docs/index.html"
+    assert "Cart Balance: $0.00" not in html_text, "Hard-coded 'Cart Balance: $0.00' must be gone"
+    assert "Expected cost:" in html_text, "Missing 'Expected cost' label in docs/index.html"
     assert "<span>3</span>" in html_text or ">3<" in html_text, "Missing Hotkey 3 hint in docs/index.html"
 
 
@@ -974,8 +1024,7 @@ def test_playwright_headless_dom_rendering_on_local_fixture(tmp_path):
 
 
 def test_dashboard_redemption_and_keyboard_invariants(html_text):
-    """Asserts that the web dashboard implements robust clipboard fallbacks and multi-tab keyboard shortcuts."""
-    assert "document.execCommand('copy')" in html_text, "Missing execCommand copy fallback in copyVoucherToken"
+    """Asserts that the web dashboard implements the redemption search and multi-tab keyboard shortcuts."""
     assert "redemptionSearchInput" in html_text, "Missing redemptionSearchInput in docs/index.html"
     assert "currentMainTab === 'redemption'" in html_text, (
         "Missing contextual tab check for redemption search in docs/index.html"
@@ -1167,25 +1216,36 @@ def test_tier1_credential_tier_taxonomy_segregation(loaded_data):
 
 def test_tier1_valid_screenshot_paths(loaded_data):
     """
-    Tier 1 Invariant: Asserts that screenshot proof paths adhere to docs/screenshots/<id>.png
-    and validates PNG magic byte and file size constraints.
+    Tier 1 Invariant: a screenshot path is either docs/screenshots/<id>.png pointing at a real
+    PNG file with visual_proof.status "verified", or null with status "missing". An offer may
+    never be marked "verified" without an image on disk. Also validates the PNG check engine.
     """
     offers = loaded_data.get("offers", [])
-    active_offers = [o for o in offers if o.get("status") == "Active"]
-    assert len(active_offers) > 0
+    assert len(offers) > 0
 
     slug_pattern = re.compile(r"^[a-z0-9-]+$")
 
-    for o in active_offers:
+    for o in offers:
         oid = o["id"]
         assert slug_pattern.match(oid), f"Offer ID '{oid}' is not a valid lowercase slug"
 
-        # Check screenshot_path attribute if present
-        if "screenshot_path" in o:
-            shot_path = o["screenshot_path"]
+        vp = o.get("visual_proof") or {}
+        shot_path = vp.get("screenshot_path")
+        if vp.get("status") == "verified":
             assert shot_path == f"docs/screenshots/{oid}.png", (
                 f"Invalid screenshot_path format for {oid}: '{shot_path}'. Expected 'docs/screenshots/{oid}.png'"
             )
+            shot_file = ROOT / shot_path
+            assert shot_file.is_file(), f"Offer {oid} is marked verified but {shot_path} does not exist"
+            assert shot_file.read_bytes()[:8] == b"\x89PNG\r\n\x1a\n", f"{shot_path} is not a PNG"
+            assert vp.get("captured_at"), f"Offer {oid} is marked verified but has no captured_at timestamp"
+        else:
+            assert shot_path is None, f"Offer {oid} has proof status {vp.get('status')!r} but a screenshot_path"
+            assert o.get("screenshot_path") is None, f"Offer {oid} top-level screenshot_path must be null"
+
+        # Historical campaigns have no capture of the original page
+        if o.get("is_historical_archive"):
+            assert vp.get("status") != "verified", f"Historical offer {oid} must not claim a verified screenshot"
 
     # Test PNG binary validation engine
     def is_valid_png_proof(data: bytes) -> bool:
@@ -1208,12 +1268,19 @@ def test_tier1_zero_dollar_verification_invariants(loaded_data):
     """
     offers = loaded_data.get("offers", [])
     active_offers = [o for o in offers if o.get("status") == "Active"]
-    assert len(active_offers) > 0
+    if not active_offers:
+        pytest.skip("data/offers.json has no Active offers; nothing to check")
 
     for o in active_offers:
         oid = o["id"]
-        # 1. Top-level cart balance affirmation
         cart_bal = o.get("cart_balance_verified", "")
+        # A partial discount is listed as Active but is not free: it must state what the candidate
+        # pays instead of claiming $0.00.
+        if (o.get("truth_verification") or {}).get("policy_type") == "partial_discount_copay":
+            assert "$0.00" not in cart_bal, f"Partial discount {oid} must not claim $0.00: '{cart_bal}'"
+            assert re.search(r"\$\d", cart_bal), f"Partial discount {oid} must state the amount payable: '{cart_bal}'"
+            continue
+        # 1. Top-level cart balance affirmation
         assert "$0.00" in cart_bal, f"Active offer {oid} cart_balance_verified does not confirm $0.00: '{cart_bal}'"
 
         # 2. Redemption guide cart balance affirmation

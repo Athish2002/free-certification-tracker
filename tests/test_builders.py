@@ -230,10 +230,14 @@ class TestReadmeBuilder:
             }
         ]
         md = generate_readme(offers, news, "2026-10-23T12:00:00Z")
-        assert "CertPulse" in md and "Microsoft AI-900 Free Voucher" in md and "$99" in md
+        assert "CertPulse" in md and "Microsoft AI-900 Free Voucher" in md
 
-        # Empty datasets
-        assert "$0" in generate_readme([], [], "")
+        # No aggregate "value saved" figure and no invented voucher codes are rendered
+        assert "Total Value Saved" not in md and "Total Financial Value" not in md
+        assert "Voucher / Promo Code" not in md and "AUTO_APPLIED" not in md
+
+        # Empty datasets still render the summary table
+        assert "| **Active Offers** | **0** |" in generate_readme([], [], "")
 
         # Pipe escaping
         pipe_offer = [
@@ -326,7 +330,8 @@ class TestHtmlBuilder:
         assert "function toggleOfferChecked(id)" in js
         assert "function clearAllChecked()" in js
         assert "function updateGoalCounters()" in js
-        assert "VERIFIED CLAIM & POLICY SPEC" in js
+        assert "POLICY NOTE & CLAIM STEPS" in js
+        assert "VERIFIED CLAIM" not in js
         assert "proofModalFullResLink" in js
         # Verify no fake fingerprints or cosmetic curl replays
         assert "SHA-256 Fingerprint:" not in js
@@ -386,3 +391,52 @@ class TestPackageAndFacade:
             result = subprocess.run([sys.executable, "-m", mod], capture_output=True, text=True, check=False)
             assert result.returncode == 0
             assert "[OK] Successfully built" in result.stdout
+
+
+def test_readme_shows_quoted_source_and_never_duplicates_an_offer():
+    """Active rows show the quoted vendor sentence, and each active offer is listed in exactly one table."""
+    from src.builders.readme_builder import generate_readme
+
+    def offer(oid, tier, evidence):
+        tv = {
+            "policy_type": "verified_100pct_free",
+            "truth_source_name": "Vendor",
+            "truth_source_url": "https://v.example/",
+        }
+        if evidence:
+            tv.update(
+                reviewed_by="A. Maintainer",
+                reviewed_on="2026-11-16",
+                evidence_url="https://v.example/terms",
+                evidence_quote="The exam is free until 31 December.",
+            )
+        return {
+            "id": oid,
+            "title": f"Title {oid}",
+            "platform": "Vendor",
+            "certification_name": f"Cert {oid}",
+            "status": "Active",
+            "credential_tier": tier,
+            "seasonality": "periodic_challenge_wave" if tier == "proctored_exam" else "evergreen",
+            "url": f"https://v.example/{oid}",
+            "truth_verification": tv,
+        }
+
+    md = generate_readme(
+        {"offers": [offer("exam-a", "proctored_exam", True), offer("badge-b", "skill_badge_lab", False)]},
+        {"news": []},
+    )
+    top = md.split("<details>")[0]
+    assert '"The exam is free until 31 December."' in top
+    assert "Read by A. Maintainer on 2026-11-16" in top
+    assert "No quoted source recorded" in top
+    assert top.count("| Cert exam-a |") == 1
+    assert top.count("| Cert badge-b |") == 1
+
+
+def test_readme_says_so_when_nothing_is_active():
+    from src.builders.readme_builder import generate_readme
+
+    md = generate_readme({"offers": []}, {"news": []})
+    assert md.count("Nothing is listed here right now") == 3
+    assert "Tier 1A" not in md

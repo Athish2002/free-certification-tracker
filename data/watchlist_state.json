@@ -1,0 +1,338 @@
+{
+  "ms-learn-credentials": {
+    "lines": [
+      "keep your certifications-and your skills-up to date at no cost, so you're always right for the job.",
+      "of professionals received or expected a job promotion after earning a certification.",
+      "renewable: renew eligible certifications annually at no cost by completing a short online assessment."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "ms-learn-challenges": {
+    "lines": [
+      "learnchallenges",
+      "oops, we couldn't find that challenge =]",
+      "view your challenge history",
+      "we looked everywhere. but don't worry, you can review a history of your challenge activity in your user profile."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "ms-skills-hub-blog": {
+    "lines": [],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "oracle-certification": {
+    "lines": [
+      "build essential oracle and ai skills with free training and certifications across oracle cloud infrastructure, oracle fusion cloud applications, and ai.",
+      "explore free training and certifications",
+      "new free foundations training"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "lf-lift-scholarships": {
+    "lines": [
+      "2026 shubhra kar lift scholarship recipients",
+      "the shubhra kar linux foundation training (lift) scholarship program",
+      "with support from the lift scholarship, aaditya plans to grow his expertise in kubernetes and cloud native infrastructure and continue helping nepal's tech sector build on open source foundations.",
+      "with support from the lift scholarship, agnes will pursue the linux foundation certified system administrator (lfcs) certification and take another step toward her goal of building africa's open source cloud ecosystem.",
+      "with support from the lift scholarship, arham will pursue his certified kubernetes administrator (cka) certification and continue building open source networking solutions for teams that can't afford the proprietary alternative.",
+      "with support from the lift scholarship, atharva will deepen his technical skills and continue contributing to cncf and linux foundation projects at a level most engineers reach only years into their careers.",
+      "with support from the lift scholarship, brian will pursue his certified kubernetes administrator (cka) certification and continue developing open source data infrastructure in service of kenya's public sector.",
+      "with support from the lift scholarship, chinonso will pursue his certified kubernetes administrator (cka) certification and deepen his expertise securing the infrastructure that teams worldwide depend on.",
+      "with support from the lift scholarship, karim will advance his expertise in kubernetes security and blockchain & decentralized identity technologies, and continue building open source systems that protect patients and the people who care for them.",
+      "with support from the lift scholarship, kinza will grow her formal verification skills and continue her work on the open source silicon that underpins some of the most security-critical hardware in the risc-v ecosystem.",
+      "with support from the lift scholarship, linisha will continue her journey from contributor to core open source developer, building the systems programming skills to match her ambition.",
+      "with support from the lift scholarship, luis will deepen his mastery of linux internals and continue building the open source infrastructure that businesses across brazil rely on every day.",
+      "with support from the lift scholarship, nambi will pursue his certified kubernetes security specialist (cks) certification and take the next step toward rebuilding the open source career he has spent seven years earning.",
+      "with support from the lift scholarship, paul will strengthen his cybersecurity expertise and continue building the open source defenses that help civil society organizations protect the communities they serve.",
+      "with support from the lift scholarship, rishi will take the kubernetes security essentials (lfs460) course, pursue his cks certification, and continue his work as a kubestellar maintainer in the cncf ecosystem.",
+      "with support from the lift scholarship, sarthak will pursue his certified kubernetes security specialist (cks) certification and continue his work at the intersection of ai systems engineering and open source security research.",
+      "with support from the lift scholarship, taha will pursue his certified kubernetes security specialist (cks) certification and continue bridging academic research and production open source security in the cloud-native ecosystem.",
+      "with support from the lift scholarship, yash will pursue his certified kubernetes administrator (cka) certification and continue building at the frontier of cloud-native infrastructure and ai."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "lf-training-scholarships": {
+    "lines": [
+      "free courses",
+      "get exclusive discounts, news, and more with our free newsletter",
+      "learn about our annual scholarship program!",
+      "scholarship opportunities",
+      "scholarships",
+      "sign up to get access to exclusive promotions, the latest trainings and news",
+      "stay up to date with the newest courses, certifications, and promotions from the lf training team.",
+      "the 2027 lift scholarship applications will open in april."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "cncf-scholarships": {
+    "lines": [
+      "scholarships",
+      "the cloud native heroes challenge"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "isc2-1mcc": {
+    "lines": [
+      "1 million+ people enrolled in the program, gaining free access to the cc online self-paced certification course and a free cc exam",
+      "can i still schedule and take my free cc exam?",
+      "isc2 one million certified in cybersecurity has concluded",
+      "isc2's one million certified in cybersecurity program has surpassed its goal of enabling more than 1 million people globally to enroll in a free certified in cybersecurity (cc) online course and exam. with this milestone achieved, isc2 has closed new enrollments in the program.",
+      "under \"exams\", find your free cc exam and click \"schedule\". you'll be redirected to https://my.isc2.org/s/isc2-pearson to create your exam account with pearson vue, global administrator of isc2 exams.",
+      "what about those who were counting on free training opportunities?",
+      "yes. as long as your exam code has not expired, you can schedule and take your exam. no new free exam seats will be issued once the program has concluded."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "github-student-pack": {
+    "lines": [
+      "\"free access to universal analytics and performance reports for one year.",
+      "$50 in mongodb atlas credits, plus access to mongodb compass and mongodb university including free certification valued at $150.",
+      "1 free forever scrapy cloud unit - unlimited team members, projects or requests. unlimited crawl time and 120 day data retention.",
+      "1 free year on our starter plan to verified students. includes unlimited seats, unlimited feature flags, and unlimited usage.",
+      "1 ssl certificate free for 1 year.",
+      "100,000 free requests.",
+      "1000 feature flags, ∞ users for free.",
+      "a free license for bootstrap studio while you are a student.",
+      "a free student account to analyze private github repositories.",
+      "a free subscription for students, to be renewed annually.",
+      "all pro features for free while you are a student.",
+      "build your project on a select free domain with over 25 domain extensions like .live, .studio, .software, .app, and .dev. be sure your name.com account includes a unique address, otherwise the system may assume your request is a duplicate.",
+      "dashlane premium free for 6 months.",
+      "datacamp has partnered with github education to offer three months of free access when you sign up for a datacamp subscription with your github student account.",
+      "dive into 6 months of free access to over 70 practical courses, covering hot topics like web development, python, java, and machine learning. plus, students enjoy an awesome 30% discount on any subscription they pick!",
+      "effective nov. 1: verified students receive 1 month of codédex club, a premium membership for free.",
+      "for students age 13-17. free access to azure app services, azure functions, notification hubs, mysql database from mysql in-app, application insights, azure devops.",
+      "free 3-month subscription for students.",
+      "free 3-month subscription that includes: icons, photos, illustrations, and music.",
+      "free 6-month trial while you are a student.",
+      "free 6-months access to all courses and workshops.",
+      "free access to 20 coding interview questions on algoexpert as well as a 10% discount on all algoexpert products.",
+      "free access to 25+ microsoft azure cloud services plus $100 in azure credit. for students aged 18+.",
+      "free access to 60 premium icons from selected contributors every month for 1 year.",
+      "free access to all termius pro and termius team features, while you're a student.",
+      "free access to all videos and lessons for 12 months.",
+      "free access to appwrite's education plan (2 projects with equivalent resource limits as appwrite pro, worth $40/month) for six months.",
+      "free access to codecov on public and private repositories.",
+      "free account upgrades with increased database storage, real time data, location data services credits, and premium features for 2 years.",
+      "free app license, including minor updates.",
+      "free arduino cloud for 6 months and discounts on selected hardware.",
+      "free automate mobile plan for 1 parallel and 1 user for 1 year.",
+      "free basic plan while you are a student.",
+      "free developer subscription for students.",
+      "free developer tools, cloud services and training from microsoft.",
+      "free doppler team subscription while the user is an active student.",
+      "free essential plan while you're a student.",
+      "free github pro while you are a student.",
+      "free image optimization for all your public and private projects while you are a student.",
+      "free lambdatest live plan for one year.",
+      "free license for tower pro while you are a student.",
+      "free license to localstack's most powerful aws emulator in a ready-to-use cloud environment",
+      "free new relic while you are a student. ($300/month value)",
+      "free premium subscription for popsql while you're a student.",
+      "free pro level access to codespaces to use anywhere in your account.",
+      "free pro plan while you're a student.",
+      "free pro subscription license to access the commercial components and tools.",
+      "free small account for 1 year.",
+      "free year of neve agency wordpress theme exclusively for students.",
+      "get 1password free for 2 years, including 1password developer tools",
+      "get 3 free months free access to visme's starter plan.",
+      "level up your coding skills with interactive courses, projects, and challenges. learn javascript, css, react, python, and more. enjoy 1 month of free access to full access to scrimba's pro courses, projects, and coding challenges, which includes 40+ courses.",
+      "master python, golang, typescript and more in our immersive programming curriculum. learn backend development, devops, and data analysis with 3 months of free access to boot.dev's complete interactive membership.",
+      "master symfony and php with video tutorials and code challenges.",
+      "one standard .tech domain free for 1 year.",
+      "one year of adafruit io+ and discounts on selected hardware.",
+      "open source by github, free for everyone.",
+      "plus plan for free for one year.",
+      "pomodone lite plan free for 2-years.",
+      "private builds for free while you're a student.",
+      "pro account, including 10 servers. free for 2 years.",
+      "requestly professional plan (worth $270) free for one year.",
+      "starter plan free for one year, including 100k page views per month.",
+      "students can now get free or discounted access to our powerful productivity apps with ai built in, 1tb of cloud storage, and and advanced security for your data and devices. sign up today to unlock all your benefits.",
+      "the gitkraken student plan: free for 6 months and then up to 80% off the pro price as long as you're a student.",
+      "visual studio community, visual studio community for mac, access to pluralsight training, 1 free year of azure services with $200 credit for the 1st month and more.",
+      "xojo pro license free while you are a student.",
+      "you'll get free use of polypane's individual plan for 1 year."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "github-universe": {
+    "lines": [
+      "try github free"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "cisco-rev-up": {
+    "lines": [
+      "i completed the free rev up caiop (6 ce) on oct 5th. the last date to complete this is oct 8, 2026. yet, i still do not see this ce added to my c...",
+      "i need 70 ce credits to re-certify - can anyone help with me some free trainings available .",
+      "revup to recert - designing and implementing cisco service provider cloud network infrastructure - 40 free ce credits! revup to recert alert! ..."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "databricks-certification": {
+    "lines": [
+      "ai agents empower teams to work smarter, automate everyday tasks and drive innovation. get up to speed on the fundamentals of ai agents with this short, free on-demand training. earn a badge to showcase your skills on linkedin or your résumé.",
+      "can solve greater challenges",
+      "certifications are proctored exams that cost $200 and measure your qualifications for a job role. badges are free, unproctored assessments that show what you've learned about a specific topic, such as generative ai.",
+      "free edition",
+      "organizations that harness this transformative technology successfully will be differentiated in the market and be leaders in the future. get up to speed on generative ai with this free on-demand training. earn your badge today and share your accomplishment on linkedin or résumé.",
+      "receive career promotions",
+      "the lakehouse architecture is quickly becoming the new industry standard for data, analytics, and ai. get up to speed on lakehouse by taking this free on-demand training - then earn a badge you can share on your linkedin profile or resume."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "juniper-open-learning": {
+    "lines": [
+      "additional free training resources",
+      "attend an exam-prep webinar and use practice exams to prepare. then schedule and complete your exam within the 30-day window before the voucher expires.",
+      "certification exam voucher requirements",
+      "complete all the course modules and pass the voucher assessment test with a score of 70% or higher and you will receive a 75% discount on your live exam, making it just $50 - a small investment to enhance your career.",
+      "earn your discounted exam voucher.",
+      "get started with free hpe networking training",
+      "looking for security service edge / edgeconnect sd-wan training? check out the free training.",
+      "new to juniper? please explore the free training below.",
+      "offering a wealth of free, award-winning* learning options, to help you prepare for hpe networking certification, transition from other platforms and learn new networking technologies",
+      "score that promotion",
+      "start your training for free.",
+      "step 0: log in now. need a juniper account? create one here (select 'guest user access'). once logged in, you can register for free open learning training here on the juniper learning portal."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "salesforce-quests": {
+    "lines": [
+      "* general sweepstakes terms for trailblazer quests"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "aws-certification": {
+    "lines": [
+      "access free, live, and on-demand training on our dedicated twitch channel. join aws experts for live shows, chat with the community, or explore on-demand training.",
+      "are you supporting a team taking aws certification exams? make it easier with exam vouchers. purchase online anytime, and then use a self-service portal to efficiently distribute, track, and manage standard exam vouchers.",
+      "buy exam vouchers",
+      "exam vouchers",
+      "schedule and take exams from your aws certification account. you can also access your aws certified benefits, such as your digital badge and 50% discount voucher for a future exam."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "aws-educate": {
+    "lines": [
+      "aws educate is open to any individual, regardless of where they are in their education, technical experience, or career journey. simplify your journey into cloud computing and ai with aws educate - your free, curated learning path to in-demand tech skills.",
+      "build your cloud skills at your own pace, on your own time, and completely for free",
+      "learners as young as 13 can register for aws educate with just an email address, gaining access to free hands-on labs to learn and practice cloud skills in real-time.",
+      "simple, barrier-free access"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "gcp-certification": {
+    "lines": [
+      "80% of google cloud learners say that having a certification contributes to faster promotion.*",
+      "google cloud certifications can help you land in-demand jobs, get promoted faster, and contribute to your professional success.",
+      "start free",
+      "try it free"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "hashicorp-certifications": {
+    "lines": [],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "fortinet-training": {
+    "lines": [
+      "free cybersecurity training to build",
+      "free demo",
+      "free product demo",
+      "free self-paced cybersecurity training",
+      "from cybersecurity fundamentals to advanced technical training, build practical skills through free self-paced courses designed for every stage of your learning journey.",
+      "valid fortinet training includes the above mentioned nse free training and all other courses, fast tracks, webinars or other educational sessions."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "paloalto-education": {
+    "lines": [
+      "palo alto networks offers a comprehensive library of free learning modules. these bite-size, interactive, multimedia-rich modules allow you to learn at your own pace and reinforce your understanding through knowledge assessments.",
+      "try for free"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "redhat-certifications": {
+    "lines": [
+      "validate your expertise. tackle your biggest technology challenges.",
+      "your skills hold value when you keep your credentials current. renew your certifications to keep your expertise relevant and give employers confidence that you're equipped to handle real-world technology challenges."
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  },
+  "snowflake-certifications": {
+    "lines": [
+      "expedition. free, on-demand.",
+      "start for free"
+    ],
+    "checked_at": "2026-11-17T02:52:44.316382+00:00",
+    "last_result": "read",
+    "baseline_at": "2026-11-17T02:49:37.882748+00:00",
+    "last_changed_at": null
+  }
+}

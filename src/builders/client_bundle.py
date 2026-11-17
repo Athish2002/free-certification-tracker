@@ -120,7 +120,7 @@ JS_TEMPLATE = """
             if (platformEl) platformEl.textContent = offer.platform || '';
 
             // 4-Timezone timestamp representation for global verification
-            const rawDate = (offer.visual_proof && offer.visual_proof.captured_at) || offer.verification_date || '';
+            const rawDate = (offer.has_proof && offer.visual_proof && offer.visual_proof.captured_at) || '';
             let dateDisplay = rawDate;
             let multiTzCaptured = rawDate;
             if (rawDate) {
@@ -134,8 +134,8 @@ JS_TEMPLATE = """
                     multiTzCaptured = `${utcStr} • ${istStr} • ${etStr} • ${cetStr}`;
                 }
             }
-            if (dateEl) dateEl.textContent = dateDisplay ? ('Audited: ' + dateDisplay) : '';
-            if (capturedAtEl) capturedAtEl.textContent = multiTzCaptured || 'Verified';
+            if (dateEl) dateEl.textContent = dateDisplay ? ('Screenshot captured: ' + dateDisplay) : (offer.verification_date ? ('Last checked: ' + offer.verification_date) : '');
+            if (capturedAtEl) capturedAtEl.textContent = multiTzCaptured || 'No screenshot captured';
 
             const tierType = getOfferTier(offer);
             let tierLabel = '🎓 Written Proctored Exam';
@@ -169,11 +169,11 @@ JS_TEMPLATE = """
                     badgeEl.style.backgroundColor = 'var(--success-subtle)';
                     badgeEl.style.borderColor = 'var(--success-fg)';
                     badgeEl.style.color = 'var(--success-fg)';
-                    badgeEl.textContent = '🟢 $0.00 Verified Active Terms';
+                    badgeEl.textContent = '🟢 Active';
                 }
                 if (termsEl) {
-                    termsEl.style.color = 'var(--success-fg)';
-                    termsEl.textContent = offer.cart_balance_verified || '$0.00 Confirmed Zero-Dollar Waiver';
+                    termsEl.style.color = 'var(--fg-muted)';
+                    termsEl.textContent = offer.cart_balance_verified || 'Unverified';
                 }
                 if (portalLink) {
                     portalLink.className = 'px-3.5 py-1.5 rounded-lg text-white font-semibold transition active:scale-[0.98] inline-flex items-center gap-1.5 cursor-pointer shadow-xs';
@@ -234,7 +234,7 @@ JS_TEMPLATE = """
                 if (alertEl) {
                     alertEl.classList.remove('hidden');
                     alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
-                    alertEl.innerHTML = '<span class="text-sm">🟡</span><span><strong>Under Review (Triage Pool):</strong> Affirmative zero-dollar waiver terms could not be confirmed in the rendered DOM. Quarantined in Triage until verified.</span>';
+                    alertEl.innerHTML = '<span class="text-sm">🟡</span><span><strong>Needs review:</strong> This offer is not shown as Active. Either the automated page check was inconclusive or the hand-maintained policy note is past its review date. See the note below.</span>';
                 }
                 if (badgeEl) {
                     badgeEl.className = 'px-2 py-0.5 rounded text-xs font-bold border border-amber-500/30 bg-amber-500/20 text-amber-500';
@@ -245,7 +245,7 @@ JS_TEMPLATE = """
                 }
                 if (termsEl) {
                     termsEl.style.color = '#f59e0b';
-                    termsEl.textContent = offer.inspection_notes || 'Pending Affirmative Zero-Dollar Waiver Terms';
+                    termsEl.textContent = offer.inspection_notes || 'Unverified';
                 }
                 if (portalLink) {
                     portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer';
@@ -320,7 +320,7 @@ JS_TEMPLATE = """
             if (tv) {
                 if (truthCard) truthCard.classList.remove('hidden');
                 if (policyTypeEl) {
-                    policyTypeEl.textContent = (tv.policy_type || 'VERIFIED').replace(/_/g, ' ').replace(/\\b100pct\\b/gi, '100%').toUpperCase();
+                    policyTypeEl.textContent = (tv.policy_type || 'UNCLASSIFIED').replace(/_/g, ' ').replace(/\\b100pct\\b/gi, '100%').toUpperCase();
                     if (tv.policy_type === 'verified_100pct_free') {
                         policyTypeEl.className = 'px-1.5 py-0.5 rounded text-xs font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30';
                     } else if (tv.policy_type === 'partial_discount_copay' || tv.policy_type === 'annual_window_closed') {
@@ -354,11 +354,24 @@ JS_TEMPLATE = """
 
             const fullResLink = document.getElementById('proofModalFullResLink');
             if (fullResLink) {
-                fullResLink.href = shotPath;
+                fullResLink.href = offer.has_proof ? shotPath : '#';
+                fullResLink.classList.toggle('hidden', !offer.has_proof);
             }
 
             if (fallback) fallback.classList.add('hidden');
-            if (img) {
+            if (!offer.has_proof) {
+                // No real screenshot exists for this offer: say so instead of loading an image.
+                if (img) {
+                    img.onerror = null;
+                    img.removeAttribute('src');
+                    img.classList.add('hidden');
+                }
+                if (fallback) {
+                    fallback.classList.remove('hidden');
+                    const fallbackMsg = fallback.querySelector('span');
+                    if (fallbackMsg) fallbackMsg.textContent = 'No screenshot has been captured for this offer.';
+                }
+            } else if (img) {
                 img.classList.remove('hidden');
                 img.src = shotPath;
                 img.onerror = function() {
@@ -963,7 +976,7 @@ JS_TEMPLATE = """
                 `DTSTART:${startStr}`,
                 `DTEND:${endStr}`,
                 `SUMMARY:CertPulse Voucher Deadline: ${title}`,
-                `DESCRIPTION:Claim official verified certification voucher terms for ${title}. Portal: ${url}`,
+                `DESCRIPTION:Check the vendor page for the current terms of ${title}. Link: ${url}`,
                 `URL:${url}`,
                 'STATUS:CONFIRMED',
                 'END:VEVENT',
@@ -977,44 +990,6 @@ JS_TEMPLATE = """
             link.click();
             document.body.removeChild(link);
             triggerToast('📅 Calendar reminder downloaded (.ics file)!');
-        }
-
-        // ================= LATENCY PROBE & MANUAL PING =================
-        function jitterLatency() {
-            if (document.hidden) return;
-            const latencyEl = document.getElementById('live-latency');
-            if (latencyEl) {
-                const ms = Math.floor(Math.random() * 8) + 16;
-                latencyEl.innerText = ms + 'ms';
-                latencyEl.classList.remove('latency-flash');
-                void latencyEl.offsetWidth;
-                latencyEl.classList.add('latency-flash');
-            }
-        }
-
-        function manualPingOracle() {
-            if (window.audioSynth) audioSynth.playClick('tick');
-            const latencyEl = document.getElementById('live-latency');
-            const chip = document.getElementById('latency-chip');
-            if (chip) {
-                chip.classList.add('border-emerald-400', 'scale-105');
-            }
-            let count = 0;
-            const pingInterval = setInterval(() => {
-                if (latencyEl) {
-                    const simulated = Math.floor(Math.random() * 10) + 12;
-                    latencyEl.innerText = simulated + 'ms';
-                }
-                count++;
-                if (count >= 4) {
-                    clearInterval(pingInterval);
-                    jitterLatency();
-                    if (chip) {
-                        chip.classList.remove('border-emerald-400', 'scale-105');
-                    }
-                    triggerToast('⚡ Oracle Network Ping: Active node corroborated at ' + (latencyEl ? latencyEl.innerText : '17ms') + ' (Zero loss)');
-                }
-            }, 55);
         }
 
         // ================= RAYCAST-STYLE COMMAND PALETTE (⌘K / Ctrl+K) =================
@@ -1051,10 +1026,6 @@ JS_TEMPLATE = """
                         <div onclick="cycleLayoutView(); closeCommandPalette();" class="p-2.5 rounded-lg flex items-center justify-between cursor-pointer hover:bg-slate-500/10 text-xs">
                             <span class="font-semibold" style="color: var(--fg-default);">Cycle Catalog Views</span>
                             <kbd class="px-1.5 py-0.5 rounded border text-xs font-mono" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">V</kbd>
-                        </div>
-                        <div onclick="manualPingOracle(); closeCommandPalette();" class="p-2.5 rounded-lg flex items-center justify-between cursor-pointer hover:bg-slate-500/10 text-xs">
-                            <span class="font-semibold" style="color: var(--fg-default);">Ping Oracle Truth Network Node</span>
-                            <span class="text-xs font-mono text-emerald-400">18ms</span>
                         </div>
                         <div onclick="toggleAudioHaptics(); closeCommandPalette();" class="p-2.5 rounded-lg flex items-center justify-between cursor-pointer hover:bg-slate-500/10 text-xs">
                             <span class="font-semibold" style="color: var(--fg-default);">Toggle Procedural Audio Synthesizer</span>
@@ -1098,7 +1069,7 @@ JS_TEMPLATE = """
             if (navLocal) navLocal.textContent = `• ${localStr}`;
 
             const navTimeText = document.getElementById('navTimezoneText');
-            if (navTimeText) navTimeText.textContent = `Live Telemetry: ${utcTime} • ${localStr}`;
+            if (navTimeText) navTimeText.textContent = `Now: ${utcTime} • ${localStr}`;
 
             const heroUtc = document.getElementById('heroCadenceUtc');
             if (heroUtc) heroUtc.textContent = `${utcHours}:${utcMinutes} UTC`;
@@ -1360,7 +1331,7 @@ JS_TEMPLATE = """
                     const text = [
                         o.title, o.platform, o.certification_name, o.category,
                         o.exam_code, o.difficulty_tier, o.eligibility, tierTerm,
-                        o.credential_tier, o.voucher_code
+                        o.credential_tier
                     ].filter(Boolean).join(' ').toLowerCase();
                     if (!text.includes(query)) return false;
                 }
@@ -1387,7 +1358,7 @@ JS_TEMPLATE = """
 
         function renderGridView(filtered) {
             const renderCardHtml = (o) => {
-                const valText = o.value_usd ? '$' + o.value_usd + ' USD' : '100% Free';
+                const valText = o.copay_terms ? o.copay_terms : ((o.category_tier !== 'badge' && o.value_usd) ? 'List price $' + o.value_usd : '');
                 const statusBadge = o.status === 'Active' 
                     ? '<span class="px-2 py-0.5 rounded text-xs font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 Active</span>'
                     : '<span class="px-2 py-0.5 rounded text-xs font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">' + o.status + '</span>';
@@ -1408,18 +1379,18 @@ JS_TEMPLATE = """
                 let truthBadge = '';
                 if (tv) {
                     if (tv.policy_type === 'partial_discount_copay') {
-                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500" title="Official 75% Discount - Pearson VUE Copay Required">⚠️ 75% Off ($50 Fee)</span>';
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500" title="Partial discount: a co-pay is required. Not a free exam.">⚠️ ' + escapeHtml(o.copay_terms || 'Partial discount (co-pay)') + '</span>';
                     } else if (tv.policy_type === 'student_verified_only') {
-                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-medium border border-blue-500/40 bg-blue-500/10 text-blue-400" title="Verified Students Only (GitHub Student Pack)">🎓 Student Pack</span>';
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-medium border border-blue-500/40 bg-blue-500/10 text-blue-400" title="Student verification required">🎓 Student Pack</span>';
                     } else if (tv.policy_type === 'annual_window_closed') {
                         truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-medium border border-amber-500/40 bg-amber-500/10 text-amber-500" title="Annual Window Closed - Reopens April 2027">📅 Annual Window Closed</span>';
                     } else if (tv.policy_type === 'verified_100pct_free') {
-                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 text-emerald-500" title="100% Free Verified Proctored Exam ($0.00)">✓ $0.00 Verified</span>';
+                        truthBadge = '<span class="px-1.5 py-0.5 rounded text-xs font-bold border border-emerald-500/40 bg-emerald-500/10 text-emerald-500" title="The hand-maintained policy note says this is free. Not confirmed by purchase.">Policy note: free</span>';
                     }
                 }
 
                 const zeroConfirmedBadge = o.last_zero_dollar_confirmed_date 
-                    ? '<span class="px-1.5 py-0.5 rounded text-xs font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Last confirmed 100% free with zero dollar terms">✓ $0: ' + o.last_zero_dollar_confirmed_date + '</span>' 
+                    ? '<span class="px-1.5 py-0.5 rounded text-xs font-medium border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Date the automated inspector last loaded this page without finding a closure notice">Page checked: ' + o.last_zero_dollar_confirmed_date + '</span>' 
                     : '';
 
                 return `
@@ -1446,25 +1417,34 @@ JS_TEMPLATE = """
                                 <div class="flex items-center gap-2 mt-2 flex-wrap">
                                     ${tierBadge}
                                     ${zeroConfirmedBadge}
-                                    <span class="text-xs font-bold tabular-nums" style="color: var(--success-fg);">${valText}</span>
+                                    <span class="text-xs font-bold tabular-nums" style="color: var(--fg-muted);">${escapeHtml(valText)}</span>
                                     ${truthBadge}
-                                    <button type="button" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs px-2 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View Verified Zero-Dollar Proof Lightbox">
-                                        <span class="pointer-events-none">🛡️ ${o.authenticity_score || 100}% Proof</span>
+                                    <button type="button" data-details-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs px-2 py-0.5 rounded font-medium border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="View page screenshot">
+                                        <span class="pointer-events-none">Details</span>
                                     </button>
                                 </div>
 
-                                <!-- Animated Shimmer Progress Bar for Challenge/Sprint Window -->
-                                <div class="mt-2.5">
-                                    <div class="flex items-center justify-between text-xs mb-1 font-mono">
-                                        <span class="text-xs" style="color: var(--fg-muted);">Challenge Window</span>
-                                        <span class="font-bold text-xs" style="color: var(--accent-fg);">Active Sprint</span>
-                                    </div>
-                                    <div class="w-full h-1.5 rounded-full overflow-hidden relative" style="background-color: var(--canvas-inset);">
-                                        <div class="h-full rounded-full shimmer-progress relative" style="width: 76%; background-color: var(--accent-fg);">
-                                            <span class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-xs animate-ping"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- Quoted source: the sentence a reader copied from the vendor page -->
+                                ${(() => {
+                                    const ev = o.truth_verification || {};
+                                    const ec = o.evidence_check || {};
+                                    if (!ev.evidence_quote || !ev.evidence_url) {
+                                        return '<div data-evidence="none" class="mt-2.5 rounded-lg border p-2 text-xs" style="border-color: var(--border-default); color: var(--fg-muted);">No quoted source recorded for this entry. Read the vendor page before relying on it.</div>';
+                                    }
+                                    const checkText = ec.result === 'found'
+                                        ? 'Sentence found on the page at the last automated check (' + escapeHtml(String(ec.checked_at || '').slice(0, 10)) + ')'
+                                        : ec.result === 'not_found'
+                                            ? 'Sentence not found at the last automated check (' + escapeHtml(String(ec.checked_at || '').slice(0, 10)) + '). The page may have changed.'
+                                            : 'Not yet re-checked automatically';
+                                    const checkColor = ec.result === 'not_found' ? 'var(--attention-fg, #d29922)' : 'var(--fg-muted)';
+                                    return `
+                                    <div data-evidence="quote" class="mt-2.5 text-xs">
+                                        <div class="font-semibold mb-0.5" style="color: var(--fg-default);">What the vendor page says:</div>
+                                        <blockquote class="border-l-2 pl-2 leading-relaxed text-pretty" style="border-color: var(--accent-fg); color: var(--fg-default);">“${escapeHtml(ev.evidence_quote)}”</blockquote>
+                                        <div class="mt-1 text-xs" style="color: var(--fg-muted);">Read ${escapeHtml(ev.reviewed_on || '')} by ${escapeHtml(ev.reviewed_by || 'unknown')} · <a href="${sanitizeUrl(ev.evidence_url)}" target="_blank" rel="noopener" class="underline" style="color: var(--accent-fg);">open source page</a></div>
+                                        <div class="mt-0.5 text-xs" style="color: ${checkColor};">${checkText}</div>
+                                    </div>`;
+                                })()}
 
                                 <p class="text-xs mt-2.5 leading-relaxed text-pretty" style="color: var(--fg-muted);">${escapeHtml(o.eligibility || 'Open to all developers & engineers globally.')}</p>
                             </div>
@@ -1475,34 +1455,34 @@ JS_TEMPLATE = """
                                         Copy Guide
                                     </button>
                                     <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where & How Offer is Applied ($0.00)">
-                                        $0.00 Apply
+                                        How to apply
                                     </button>
-                                    <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
-                                        <span class="pointer-events-none">📸 Proof</span>
-                                    </button>
+                                    ${o.has_proof ? `<button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View page screenshot">
+                                        <span class="pointer-events-none">📸 Screenshot</span>
+                                    </button>` : '<span class="text-xs" style="color: var(--fg-subtle);">No screenshot</span>'}
                                     <button onclick="downloadCalendarReminder('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);" title="Add Deadline to Calendar (.ics)">
                                         📅
                                     </button>
                                     <button onclick="toggleOfferChecked('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: ${isOfferTracked(o.id) ? 'var(--accent-fg)' : 'var(--fg-muted)'};" title="Track in Personal Study Goals">
                                         <span>${isOfferTracked(o.id) ? '⭐ Tracked' : '☆ Track'}</span>
                                     </button>
-                                    <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--accent-fg);" title="View Verified Policy, Value & Eligibility Criteria">
+                                    <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--accent-fg);" title="View Policy note and eligibility">
                                         <span>📋 Policy</span>
                                     </button>
                                 </div>
-                                <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" onclick="triggerConfettiBurst(60)" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
-                                    <span>Claim Free</span>
+                                <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
+                                    <span>Open vendor page</span>
                                     <span>→</span>
                                 </a>
                             </div>
                         </div>
 
-                        <!-- BACK FACE: Verified Policy & Claim Rules -->
+                        <!-- BACK FACE: Policy note & claim rules -->
                         <div class="flip-card-back flex flex-col justify-between h-full p-4 rounded-xl border" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
                             <div class="space-y-2 text-xs">
                                 <div class="flex items-center justify-between border-b pb-2 mb-1" style="border-color: var(--border-default);">
                                     <div class="flex items-center gap-1.5 font-mono text-xs font-bold" style="color: var(--accent-fg);">
-                                        <span>🛡️ VERIFIED CLAIM & POLICY SPEC</span>
+                                        <span>POLICY NOTE & CLAIM STEPS</span>
                                     </div>
                                     <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-mono px-2 py-0.5 rounded border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
                                         ✕ Back
@@ -1512,12 +1492,12 @@ JS_TEMPLATE = """
                                 <!-- Policy & Value Summary -->
                                 <div class="p-2.5 rounded-lg border text-xs space-y-1" style="background-color: var(--canvas-default); border-color: var(--border-default);">
                                     <div class="flex items-center justify-between gap-1">
-                                        <span style="color: var(--fg-muted);">Waiver Status:</span>
-                                        <span class="font-bold ${o.status === 'Active' ? 'text-emerald-400' : 'text-slate-400'}">${escapeHtml(o.cart_balance_verified || (o.status === 'Active' ? '$0.00 Confirmed Zero-Dollar Waiver' : 'Historical Archive'))}</span>
+                                        <span style="color: var(--fg-muted);">Expected cost:</span>
+                                        <span class="font-bold text-slate-400">${escapeHtml(o.cart_balance_verified || (o.is_historical_archive ? 'Historical Archive' : 'Unverified'))}</span>
                                     </div>
                                     <div class="flex items-center justify-between gap-1">
-                                        <span style="color: var(--fg-muted);">Tuition Saved:</span>
-                                        <span class="font-mono font-bold text-emerald-400">${(o.real_value_usd || o.value_usd) ? '$' + escapeHtml(String(o.real_value_usd || o.value_usd)) + ' USD (100% Free)' : 'Complimentary'}</span>
+                                        <span style="color: var(--fg-muted);">Exam list price:</span>
+                                        <span class="font-mono font-bold text-slate-400">${(o.category_tier !== 'badge' && o.value_usd) ? '$' + escapeHtml(String(o.value_usd)) + ' USD' : '—'}</span>
                                     </div>
                                 </div>
 
@@ -1529,32 +1509,23 @@ JS_TEMPLATE = """
 
                                 <!-- Audit Finding Notes -->
                                 <div>
-                                    <div class="font-semibold mb-0.5" style="color: var(--fg-default);">Truth Oracle Verdict:</div>
-                                    <p class="leading-relaxed text-pretty line-clamp-2" style="color: var(--fg-muted);">${escapeHtml((o.truth_verification && o.truth_verification.verdict_notes) || o.inspection_notes || 'Verified against vendor program documentation and registration terms.')}</p>
+                                    <div class="font-semibold mb-0.5" style="color: var(--fg-default);">Policy note (hand-maintained):</div>
+                                    <p class="leading-relaxed text-pretty line-clamp-2" style="color: var(--fg-muted);">${escapeHtml((o.truth_verification && o.truth_verification.verdict_notes) || o.inspection_notes || 'No policy note recorded.')}</p>
                                 </div>
 
-                                <!-- Direct Verified Target Portal -->
+
+                                <!-- Vendor page link -->
                                 <div>
                                     <span style="color: var(--fg-muted);">Target Portal:</span>
                                     <a href="${sanitizeUrl(o.direct_verified_url || o.url)}" target="_blank" rel="noopener" class="block font-mono truncate underline hover:opacity-80 transition mt-0.5" style="color: var(--accent-fg);">
-                                        ${escapeHtml((o.direct_verified_url || o.url || '').replace(/^https?:[/][/]/, ''))}
+                                        ${escapeHtml((o.direct_verified_url || o.url || '').replace(/^https?:\\/\\//, ''))}
                                     </a>
-                                </div>
-
-                                <!-- CoursePulse Academic Synergy -->
-                                <div class="pt-1">
-                                    <div class="flex items-center justify-between text-xs p-1.5 rounded border" style="background-color: var(--canvas-default); border-color: var(--border-default);">
-                                        <span class="font-semibold text-emerald-400">🎓 Prep Syllabus:</span>
-                                        <span class="font-mono truncate text-right text-xs" style="color: var(--fg-muted);">
-                                            ${(o.platform === 'Oracle Cloud' || o.platform === 'Oracle') ? 'Harvard CS50x + MIT 6.0001' : (o.platform === 'Google Cloud' || o.platform === 'Google') ? 'UC Berkeley CS61A + MIT 6.036' : (o.platform.includes('Microsoft')) ? 'Stanford CS229 (Machine Learning)' : (o.platform === 'AWS') ? 'MIT 6.036 + Stanford CS110' : (o.platform === 'Linux Foundation') ? 'CMU 15-213 + Nand2Tetris' : (o.platform === 'Cisco') ? 'Stanford CS110 Systems' : (o.platform === 'Databricks') ? 'CMU 15-445 Databases' : 'Harvard CS50 / MIT OCW'}
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
 
                             <div class="pt-3 border-t flex items-center justify-between gap-2" style="border-color: var(--border-default);">
                                 <button type="button" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);">
-                                    📸 View Proof
+                                    Details
                                 </button>
                                 <button onclick="flipCard('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
                                     🔄 Return to Voucher
@@ -1568,7 +1539,7 @@ JS_TEMPLATE = """
             const grid = document.getElementById('offersGrid');
             if (!grid) return;
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No certifications match your active search or filters.</div>';
+                grid.innerHTML = '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">' + (offersData.some(o => o.status === 'Active') ? 'No certifications match your active search or filters.' : 'No offer is listed as active right now. An offer is shown as active only after someone records the sentence on the vendor page that states the terms. Offers waiting for that check are under the closed / review status filter.') + '</div>';
                 return;
             }
 
@@ -1628,7 +1599,7 @@ JS_TEMPLATE = """
                         <span class="text-lg">🏷️</span>
                         <div>
                             <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Active Ongoing Discounts & Vouchers</h2>
-                            <p class="text-xs" style="color: var(--fg-muted);">Continuous student vouchers, partial co-pay discounts, and permanent $0 certification waivers (${discountsList.length} Opportunities)</p>
+                            <p class="text-xs" style="color: var(--fg-muted);">Student-only offers and partial discounts. A partial discount is not free: the amount you pay is shown (${discountsList.length} Opportunities)</p>
                         </div>
                     </div>
                     <span class="px-2.5 py-0.5 rounded text-xs font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500">${discountsList.length} Discounts</span>
@@ -1673,7 +1644,7 @@ JS_TEMPLATE = """
             }
 
             const renderTableRow = (o) => {
-                const valText = o.value_usd ? '$' + o.value_usd : 'Free';
+                const valText = o.copay_terms ? o.copay_terms : ((o.category_tier !== 'badge' && o.value_usd) ? 'List $' + o.value_usd : '—');
                 const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
                 const credBadge = isProctored 
                     ? '<span class="text-xs font-bold px-1.5 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">🎓 Exam</span>' 
@@ -1707,7 +1678,7 @@ JS_TEMPLATE = """
                     <div class="sm:col-span-1 sm:text-center text-xs font-bold tabular-nums" style="color: var(--success-fg);">${valText}</div>
                     <div class="sm:col-span-3 flex items-center sm:justify-end gap-1.5 flex-wrap">
                         <button onclick="toggleOfferChecked('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1 rounded border cursor-pointer inline-flex items-center gap-1 select-none" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: ${isOfferTracked(o.id) ? 'var(--accent-fg)' : 'var(--fg-muted)'};" title="Track in Personal Study Goals"><span>${isOfferTracked(o.id) ? '⭐' : '☆'}</span></button>
-                        <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1 rounded border cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox"><span class="pointer-events-none">📸 Proof</span></button>
+                        ${o.has_proof ? `<button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1 rounded border cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View page screenshot"><span class="pointer-events-none">📸 Screenshot</span></button>` : '<span class="text-xs" style="color: var(--fg-subtle);">No screenshot</span>'}
                         <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-xs font-semibold px-2 py-1 rounded border cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where Offer is Applied ($0.00)">$0.00</button>
                         <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-xs font-semibold px-2.5 py-1 rounded text-white" style="background-color: var(--btn-primary-bg);">Claim →</a>
                     </div>
@@ -1753,9 +1724,9 @@ JS_TEMPLATE = """
                         </div>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
-                        <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="px-3 py-1 rounded text-xs border font-medium cursor-pointer relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
-                            <span class="pointer-events-none">📸 Proof</span>
-                        </button>
+                        ${o.has_proof ? `<button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="px-3 py-1 rounded text-xs border font-medium cursor-pointer relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View page screenshot">
+                            <span class="pointer-events-none">📸 Screenshot</span>
+                        </button>` : '<span class="text-xs" style="color: var(--fg-subtle);">No screenshot</span>'}
                         <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="px-3 py-1 rounded text-xs font-semibold text-white" style="background-color: var(--btn-primary-bg);">Open →</a>
                     </div>
                 </div>`).join('')}
@@ -1791,14 +1762,14 @@ JS_TEMPLATE = """
                             <div>
                                 <div class="flex items-center justify-between gap-1 mb-1">
                                     <span class="font-bold truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
-                                    <span class="font-bold tabular-nums" style="color: var(--success-fg);">${o.value_usd ? '$' + o.value_usd : 'Free'}</span>
+                                    <span class="font-bold tabular-nums" style="color: var(--fg-muted);">${escapeHtml(o.copay_terms ? o.copay_terms : ((o.category_tier !== 'badge' && o.value_usd) ? 'List $' + o.value_usd : '—'))}</span>
                                 </div>
                                 <div class="font-medium truncate" style="color: var(--fg-default);">${escapeHtml(o.certification_name || o.title)}</div>
                             </div>
                             <div class="flex items-center justify-between pt-2 border-t" style="border-color: var(--border-muted);">
                                 <span class="text-xs font-mono">${escapeHtml(o.difficulty_tier || 'Foundational')}</span>
                                 <div class="flex items-center gap-2">
-                                    <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5 relative z-10 select-none" title="View Verified Zero-Dollar Proof Lightbox"><span class="pointer-events-none">📸 Proof</span></button>
+                                    ${o.has_proof ? `<button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-medium hover:underline cursor-pointer inline-flex items-center gap-0.5 relative z-10 select-none" title="View page screenshot"><span class="pointer-events-none">📸 Screenshot</span></button>` : '<span class="text-xs" style="color: var(--fg-subtle);">No screenshot</span>'}
                                     <a href="${sanitizeUrl(o.direct_verified_url || o.verified_vendor_url || o.url)}" target="_blank" class="text-blue-500 font-semibold hover:underline">Claim →</a>
                                 </div>
                             </div>
@@ -2022,7 +1993,7 @@ JS_TEMPLATE = """
             });
 
             const countEl = document.getElementById('newsResultsCount');
-            if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + newsData.length + ' verified dispatches';
+            if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + newsData.length + ' news items';
 
             if (filtered.length === 0) {
                 grid.innerHTML = '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No industry dispatches match your active filter or search query.</div>';
@@ -2050,32 +2021,6 @@ JS_TEMPLATE = """
         }
 
         // Where Offers Are Applied & Zero-Dollar Checkout Guide Engine
-        function copyVoucherToken(token) {
-            if (!token) return;
-            const fallbackCopy = () => {
-                try {
-                    const ta = document.createElement('textarea');
-                    ta.value = token;
-                    ta.style.position = 'fixed';
-                    ta.style.opacity = '0';
-                    document.body.appendChild(ta);
-                    ta.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(ta);
-                    toast('Copied token: ' + token);
-                } catch (e) {
-                    toast('Voucher code: ' + token);
-                }
-            };
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(token).then(() => {
-                    toast('Copied token: ' + token);
-                }).catch(fallbackCopy);
-            } else {
-                fallbackCopy();
-            }
-        }
-
         function openRedemptionFor(offerId) {
             switchMainTab('redemption');
             setTimeout(() => {
@@ -2101,7 +2046,7 @@ JS_TEMPLATE = """
                 if (searchVal) {
                     const haystack = [
                         o.title, o.platform, o.certification_name, o.checkout_field,
-                        o.voucher_code, o.application_flow_type,
+                        o.application_flow_type,
                         (o.redemption_guide ? o.redemption_guide.portal_name : '')
                     ].filter(Boolean).join(' ').toLowerCase();
                     if (!haystack.includes(searchVal)) return false;
@@ -2110,7 +2055,7 @@ JS_TEMPLATE = """
             });
 
             const countEl = document.getElementById('redemptionResultsCount');
-            if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + activeOffers.length + ' verified redemption protocols';
+            if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + activeOffers.length + ' redemption guides';
 
             if (filtered.length === 0) {
                 grid.innerHTML = '<div class="col-span-full p-8 text-center rounded-xl border" style="background-color: var(--canvas-subtle); border-color: var(--border-default); color: var(--fg-muted);">No voucher redemption paths match your active search or flow filter.</div>';
@@ -2123,7 +2068,7 @@ JS_TEMPLATE = """
                 const portalUrl = guide.portal_url || o.url;
                 const fieldLoc = guide.field_location || o.checkout_field || 'Billing Step -> Promo Code';
                 const flowType = guide.flow_type || o.application_flow_type || 'Checkout Promo Code';
-                const code = o.voucher_code || 'AUTO_APPLIED';
+                const expectedCost = guide.verified_cart_balance || o.cart_balance_verified || 'Unverified';
                 const instructions = (guide.instructions && guide.instructions.length > 0) 
                     ? guide.instructions 
                     : [o.claim_steps || 'Complete training and apply discount code during checkout.'];
@@ -2148,41 +2093,34 @@ JS_TEMPLATE = """
 
                         <h3 class="font-bold text-sm sm:text-base leading-snug tracking-tight" style="color: var(--fg-default);">${escapeHtml(o.title)}</h3>
                         
-                        <!-- Checkout Field & Voucher Token Callout -->
+                        <!-- Checkout field callout -->
                         <div class="mt-3 p-3 rounded-xl border" style="background-color: var(--canvas-inset); border-color: var(--border-default);">
-                            <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color: var(--fg-muted);">Exact Checkout Field</div>
+                            <div class="text-xs font-semibold uppercase tracking-wider mb-1" style="color: var(--fg-muted);">Where the voucher is entered</div>
                             <div class="text-xs font-mono font-medium flex items-center gap-1.5" style="color: var(--fg-default);">
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="color: var(--accent-fg); flex-shrink: 0;"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
                                 <span class="text-pretty">${escapeHtml(fieldLoc)}</span>
-                            </div>
-                            <div class="mt-2.5 pt-2 border-t flex items-center justify-between gap-2 flex-wrap" style="border-color: var(--border-muted);">
-                                <span class="text-xs" style="color: var(--fg-muted);">Voucher Token:</span>
-                                <div class="flex items-center gap-1.5">
-                                    <code class="px-1.5 py-0.5 rounded text-xs font-mono font-bold" style="background-color: var(--canvas-default); color: var(--accent-fg); border: 1px solid var(--border-default);">${escapeHtml(code)}</code>
-                                    <button onclick="copyVoucherToken('${escapeJs(code)}')" class="text-xs px-2 py-0.5 rounded border font-semibold transition active:scale-[0.95] cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">Copy</button>
-                                </div>
                             </div>
                         </div>
 
                         <!-- Step-by-Step Checkout Flow -->
                         <div class="mt-3.5">
-                            <div class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: var(--fg-muted);">Redemption & Zero-Dollar Verification Steps</div>
+                            <div class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: var(--fg-muted);">Redemption steps (hand-written, not tested end to end)</div>
                             <ul class="space-y-2">
                                 ${stepsHtml}
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Verified Zero Balance Footer -->
+                    <!-- Expected cost footer -->
                     <div class="pt-3 border-t flex items-center justify-between gap-2 mt-2 flex-wrap" style="border-color: var(--border-muted);">
                         <div class="flex items-center gap-2.5">
                             <div class="flex items-center gap-1.5 text-xs font-bold" style="color: var(--success-fg);">
                                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path></svg>
-                                <span class="tabular-nums">Cart Balance: $0.00</span>
+                                <span class="tabular-nums">Expected cost: ${escapeHtml(expectedCost)}</span>
                             </div>
-                            <button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View Verified Zero-Dollar Proof Lightbox">
-                                <span class="pointer-events-none">📸 Proof</span>
-                            </button>
+                            ${o.has_proof ? `<button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View page screenshot">
+                                <span class="pointer-events-none">📸 Screenshot</span>
+                            </button>` : '<span class="text-xs" style="color: var(--fg-subtle);">No screenshot</span>'}
                         </div>
                         <a href="${sanitizeUrl(portalUrl)}" target="_blank" rel="noopener" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-white transition active:scale-[0.98] inline-flex items-center gap-1 cursor-pointer" style="background-color: var(--btn-primary-bg);">
                             <span>Launch Portal</span>
@@ -2220,7 +2158,6 @@ JS_TEMPLATE = """
         window.filterCategory = filterCategory;
         window.setLayoutView = setLayoutView;
         window.switchMainTab = switchMainTab;
-        window.manualPingOracle = manualPingOracle;
         window.downloadCalendarReminder = downloadCalendarReminder;
         window.triggerConfettiBurst = triggerConfettiBurst;
         window.toggleAudioHaptics = toggleAudioHaptics;
@@ -2329,7 +2266,6 @@ JS_TEMPLATE = """
                 bgMouseX = e.clientX;
                 bgMouseY = e.clientY;
             });
-            setInterval(jitterLatency, 2400);
 
             const savedTheme = localStorage.getItem('certpulse_theme_v2') || localStorage.getItem('certpulse_theme') || localStorage.getItem('theme');
             let initialTheme = (savedTheme === 'github-light' || savedTheme === 'github-dark') ? savedTheme : 'github-dark';

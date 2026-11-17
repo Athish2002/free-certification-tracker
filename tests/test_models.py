@@ -78,11 +78,20 @@ def test_visual_proof_metadata():
     offers = [Offer(**o) for o in data["offers"]]
     for o in offers:
         assert o.visual_proof is not None
-        assert o.visual_proof.screenshot_path == f"docs/screenshots/{o.id}.png"
-        assert o.screenshot_path == f"docs/screenshots/{o.id}.png"
-        assert o.get_screenshot_path() == f"docs/screenshots/{o.id}.png"
-        if o.status == "Active":
-            assert o.visual_proof.zero_dollar_confirmed is True
+        if o.visual_proof.status == "missing":
+            # No screenshot captured: the path must stay empty, not be back-filled with a guess
+            assert o.visual_proof.screenshot_path is None
+            assert o.screenshot_path is None
+            assert o.visual_proof.is_verified is False
+        else:
+            assert o.visual_proof.screenshot_path == f"docs/screenshots/{o.id}.png"
+            assert o.screenshot_path == f"docs/screenshots/{o.id}.png"
+            assert o.get_screenshot_path() == f"docs/screenshots/{o.id}.png"
+        # The page-check flag may only be set where an inspection recorded a date for it.
+        # (It used to be asserted True for every Active offer, whether inspected or not.)
+        if o.visual_proof.zero_dollar_confirmed:
+            assert o.last_zero_dollar_confirmed_date, f"{o.id}: zero_dollar_confirmed set without an inspection date"
+            assert o.status == "Active", f"{o.id}: zero_dollar_confirmed set on a non-Active offer"
 
 
 def test_url_repairs_verified():
@@ -113,6 +122,7 @@ def test_url_repairs_verified():
     )
     assert offer_map["gcp-cloud-skills-boost"].direct_verified_url in (
         "https://go.cloudskillsboost.google/arcade",
+        "https://www.skills.google/paths",
         "https://www.cloudskillsboost.google/quests",
     )
 

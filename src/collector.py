@@ -522,14 +522,13 @@ def vet_candidate_lead(
         "application_flow_type": "Checkout Promo Code" if tier == "proctored_exam" else "Direct Assessment Launch",
         "redemption_portal": vendor_url,
         "checkout_field": "Voucher / Promo Code",
-        "cart_balance_verified": "$0.00 (100% Free / Waiver Confirmed)",
-        "voucher_code": "AUTO_APPLIED",
+        "cart_balance_verified": "$0.00 expected (per hand-maintained policy note; not test-purchased)",
         "redemption_guide": {
             "portal_name": f"{platform} Official Portal",
             "portal_url": vendor_url,
             "field_location": "Voucher / Promo Code input at checkout",
             "flow_type": "Checkout Promo Code" if tier == "proctored_exam" else "Direct Assessment Launch",
-            "verified_cart_balance": "$0.00 (100% Free / Waiver Confirmed)",
+            "verified_cart_balance": "$0.00 expected (per hand-maintained policy note; not test-purchased)",
             "instructions": [
                 f"Navigate to official {platform} registration portal at {vendor_url}.",
                 "Complete registration or exam challenge to claim 100% fee waiver.",

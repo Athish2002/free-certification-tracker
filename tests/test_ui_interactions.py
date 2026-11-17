@@ -12,6 +12,21 @@ import os
 import pytest
 from playwright.sync_api import Page, sync_playwright
 
+
+def _require_active_offers() -> None:
+    """
+    These tests click through cards for Active offers in the published dashboard. The data may
+    honestly contain none (an offer is Active only with a quoted, in-date source). In that case
+    there is nothing to click, so the test is skipped and reported as skipped, not passed.
+    """
+    import json
+    from pathlib import Path
+
+    data = json.loads((Path(__file__).resolve().parent.parent / "data" / "offers.json").read_text(encoding="utf-8"))
+    if not any(o.get("status") == "Active" for o in data.get("offers", [])):
+        pytest.skip("data/offers.json has no Active offers; card interactions cannot be exercised")
+
+
 pytestmark = pytest.mark.browser
 
 
@@ -122,6 +137,12 @@ class TestSeparationOfWavesAndDiscounts:
 
     def test_all_view_renders_distinct_section_headers(self, browser_page: Page):
         """In 'all' view, the catalog must display clear section headers separating categories."""
+        _require_active_offers()
+        if (
+            browser_page.evaluate("offersData.filter(o => o.status === 'Active' && getOfferTier(o) === 'wave').length")
+            == 0
+        ):
+            pytest.skip("No Active time-limited exam offer in the data; the Exam Waves section has nothing to render")
         browser_page.query_selector("#tierPillAll").click()
         browser_page.wait_for_timeout(300)
 
@@ -132,6 +153,12 @@ class TestSeparationOfWavesAndDiscounts:
 
     def test_filter_by_exam_waves_shows_only_waves(self, browser_page: Page):
         """Clicking Exam Waves pill filters catalog strictly to seasonal/challenge wave opportunities."""
+        _require_active_offers()
+        if (
+            browser_page.evaluate("offersData.filter(o => o.status === 'Active' && getOfferTier(o) === 'wave').length")
+            == 0
+        ):
+            pytest.skip("No Active time-limited exam offer in the data; the Exam Waves section has nothing to render")
         browser_page.query_selector("#tierPillWave").click()
         browser_page.wait_for_timeout(300)
 
@@ -145,6 +172,7 @@ class TestSeparationOfWavesAndDiscounts:
 
     def test_filter_by_active_discounts_shows_only_discounts(self, browser_page: Page):
         """Clicking Active Discounts pill filters catalog strictly to ongoing discounts & student vouchers."""
+        _require_active_offers()
         browser_page.query_selector("#tierPillDiscount").click()
         browser_page.wait_for_timeout(300)
 
@@ -162,6 +190,7 @@ class TestSeparationOfWavesAndDiscounts:
 
     def test_filter_by_skill_badges_shows_only_badges(self, browser_page: Page):
         """Clicking Skill Badges pill filters catalog to digital badges and labs."""
+        _require_active_offers()
         browser_page.query_selector("#tierPillBadges").click()
         browser_page.wait_for_timeout(300)
 
@@ -174,16 +203,58 @@ class TestSeparationOfWavesAndDiscounts:
 
 
 class TestProofButtonClickabilityAndModalContent:
-    """Verifies that all Proof buttons are 100% clickable and display accurate modal content."""
+    """
+    Verifies the details modal and screenshot buttons.
+    Every card has a Details button (data-details-id). A Screenshot button (data-proof-id)
+    exists only for offers that have a real captured screenshot.
+    """
+
+    def test_screenshot_buttons_exist_only_for_offers_with_real_screenshots(self, browser_page: Page):
+        """No card may offer a screenshot for an offer whose has_proof flag is false."""
+        browser_page.query_selector("#tierPillAll").click()
+        browser_page.wait_for_timeout(300)
+
+        with_proof = set(browser_page.evaluate("offersData.filter(o => o.has_proof).map(o => o.id)"))
+        without_proof = set(browser_page.evaluate("offersData.filter(o => !o.has_proof).map(o => o.id)"))
+        assert without_proof, "Test data must include at least one offer without a screenshot"
+
+        proof_ids = {b.get_attribute("data-proof-id") for b in browser_page.query_selector_all("button[data-proof-id]")}
+        assert proof_ids <= with_proof, f"Screenshot buttons rendered for offers without one: {proof_ids - with_proof}"
+        assert not (proof_ids & without_proof)
+
+    def test_details_modal_for_offer_without_screenshot_says_so(self, browser_page: Page):
+        """Opening the modal for an offer with no screenshot must not load an image and must say none exists."""
+        target_id = browser_page.evaluate("(offersData.find(o => !o.has_proof) || {}).id")
+        assert target_id, "Test data must include at least one offer without a screenshot"
+
+        browser_page.evaluate("id => openProofModal(id)", target_id)
+        browser_page.wait_for_timeout(200)
+        modal = browser_page.query_selector("#proofModal")
+        assert modal is not None and modal.is_visible()
+
+        img = browser_page.query_selector("#proofModalImage")
+        assert not img.is_visible(), "No image may be shown for an offer without a screenshot"
+        fallback_text = browser_page.inner_text("#proofImageFallback")
+        assert "No screenshot has been captured" in fallback_text
+        assert "No screenshot captured" in browser_page.inner_text("#proofModalCapturedAt")
+
+        browser_page.query_selector("#closeProofModalBtn").click()
+        browser_page.wait_for_timeout(200)
+        assert not modal.is_visible()
 
     def test_proof_buttons_in_grid_open_modal_with_correct_data(self, browser_page: Page):
-        """Every proof button in Grid view must open the lightbox with authentic title and screenshot path."""
+        """Every screenshot button in Grid view must open the lightbox with the real title and screenshot path."""
         # Reset to all
         browser_page.query_selector("#tierPillAll").click()
         browser_page.wait_for_timeout(300)
 
         proof_buttons = browser_page.query_selector_all("#offersGrid button[data-proof-id]")
-        assert len(proof_buttons) > 0, "Must find proof buttons with data-proof-id attribute"
+        active_with_proof = browser_page.evaluate("offersData.filter(o => o.status === 'Active' && o.has_proof).length")
+        if active_with_proof == 0:
+            # Nothing currently Active has a real screenshot, so the grid must show no screenshot buttons.
+            assert len(proof_buttons) == 0
+            return
+        assert len(proof_buttons) > 0, "Must find screenshot buttons with data-proof-id attribute"
 
         # Test first 5 cards thoroughly
         for i in range(min(5, len(proof_buttons))):
@@ -220,7 +291,7 @@ class TestProofButtonClickabilityAndModalContent:
 
             # Verify full-res link
             full_res_href = browser_page.get_attribute("#proofModalFullResLink", "href")
-            assert full_res_href and ".png" in full_res_href, f"Full-res link must target screenshot png"
+            assert full_res_href and ".png" in full_res_href, "Full-res link must target screenshot png"
 
             # Close via close button
             close_btn = browser_page.query_selector("#closeProofModalBtn")
@@ -230,8 +301,8 @@ class TestProofButtonClickabilityAndModalContent:
 
             assert not modal.is_visible(), "Modal must be hidden after clicking close button"
 
-    def test_card_back_flip_shows_verified_claim_spec_without_fake_fingerprint(self, browser_page: Page):
-        """Flipping a card must display the genuine claim spec and no fake SHA-256 fingerprints or curl replays."""
+    def test_card_back_flip_shows_policy_note_without_fake_fingerprint(self, browser_page: Page):
+        """Flipping a card must display the policy note and no fake fingerprints, savings or verified-waiver claims."""
         flip_btn = browser_page.query_selector("#offersGrid button[title*='Policy']")
         if flip_btn:
             flip_btn.scroll_into_view_if_needed()
@@ -239,10 +310,12 @@ class TestProofButtonClickabilityAndModalContent:
             browser_page.wait_for_timeout(300)
 
             grid_text = browser_page.inner_text("#offersGrid")
-            assert "VERIFIED CLAIM & POLICY SPEC" in grid_text
+            assert "POLICY NOTE & CLAIM STEPS" in grid_text
             assert "SHA-256 Fingerprint:" not in grid_text
             assert "curl -sI" not in grid_text
-            assert "Tuition Saved:" in grid_text
+            assert "Tuition Saved:" not in grid_text
+            assert "Waiver Status:" not in grid_text
+            assert "Expected cost:" in grid_text
 
             # Flip back so front face buttons remain clickable for subsequent tests
             return_btn = browser_page.query_selector("#offersGrid button:has-text('Return to Voucher')")
@@ -252,7 +325,9 @@ class TestProofButtonClickabilityAndModalContent:
 
     def test_proof_modal_closes_on_escape_key(self, browser_page: Page):
         """Opening modal and pressing Escape key must close it cleanly."""
-        btn = browser_page.query_selector("#offersGrid button[data-proof-id]")
+        _require_active_offers()
+        btn = browser_page.query_selector("#offersGrid button[data-details-id]")
+        assert btn is not None, "Every grid card must have a Details button"
         btn.scroll_into_view_if_needed()
         btn.click()
         browser_page.wait_for_timeout(200)
@@ -266,7 +341,9 @@ class TestProofButtonClickabilityAndModalContent:
 
     def test_proof_modal_closes_on_backdrop_click(self, browser_page: Page):
         """Clicking outside the modal content (on the backdrop) must close it."""
-        btn = browser_page.query_selector("#offersGrid button[data-proof-id]")
+        _require_active_offers()
+        btn = browser_page.query_selector("#offersGrid button[data-details-id]")
+        assert btn is not None, "Every grid card must have a Details button"
         btn.scroll_into_view_if_needed()
         btn.click()
         browser_page.wait_for_timeout(200)
@@ -280,13 +357,19 @@ class TestProofButtonClickabilityAndModalContent:
         assert not modal.is_visible(), "Modal must be closed after clicking backdrop"
 
     def test_table_view_proof_buttons_clickable(self, browser_page: Page):
-        """Proof buttons in Table/List view must be fully clickable and open modal."""
+        """Screenshot buttons in Table/List view, where present, must be clickable and open the modal."""
+        _require_active_offers()
         # Switch to list view
         browser_page.query_selector("#viewBtnList").click()
         browser_page.wait_for_timeout(300)
 
         table_proof_btns = browser_page.query_selector_all("#offersTableBody button[data-proof-id]")
-        assert len(table_proof_btns) > 0, "Must have proof buttons in table view"
+        active_with_proof = browser_page.evaluate("offersData.filter(o => o.status === 'Active' && o.has_proof).length")
+        if active_with_proof == 0:
+            assert len(table_proof_btns) == 0, "No screenshot buttons may render without real screenshots"
+            assert "No screenshot" in browser_page.inner_text("#offersTableBody")
+            return
+        assert len(table_proof_btns) > 0, "Must have screenshot buttons in table view"
 
         first_btn = table_proof_btns[0]
         first_btn.scroll_into_view_if_needed()

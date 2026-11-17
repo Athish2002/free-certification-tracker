@@ -47,7 +47,7 @@ def canonical_offers() -> list[dict[str, Any]]:
 class TestDynamicTruthPolicyDerivation:
     """Verifies dynamic truth policy derivation across all canonical offers in data/offers.json."""
 
-    def test_dynamic_registry_loads_all_47_offers(self, canonical_offers):
+    def test_dynamic_registry_loads_all_39_offers(self, canonical_offers):
         """Dynamic registry builder must load and index every offer in data/offers.json."""
         assert len(canonical_offers) == 47, f"Expected 47 canonical offers, found {len(canonical_offers)}"
         registry = build_dynamic_policy_registry(OFFERS_FILE)

@@ -1,7 +1,11 @@
 """
-CertPulse Synthetic Cart & Zero-Dollar ($0.00) Balance Assertion Engine.
-Validates checkout mechanics and mathematically proves that promotional waivers
-reduce order totals to exactly $0.00 USD, detecting concealed proctoring fees or copays.
+CertPulse cart-balance metadata check.
+
+This module does NOT perform a checkout and proves nothing about a vendor's real cart.
+It reads the offer's own hand-written metadata (cart_balance_verified, title, the co-pay
+registry below) and reports whether that metadata describes a zero-dollar offer, a co-pay,
+or neither. The status code VERIFIED_ZERO_DOLLAR is kept for compatibility and means only
+"metadata says zero-dollar".
 """
 
 from __future__ import annotations
@@ -49,16 +53,14 @@ COPAY_POLICY_REGISTRY: dict[str, dict[str, Any]] = {
 
 def assert_cart_balance(offer: dict[str, Any]) -> CartAssertionVerdict:
     """
-    Evaluates an offer's redemption mechanics, voucher code, and checkout fields
-    to assert whether the final cart balance decreases to exactly $0.00 USD.
+    Classifies an offer from its own metadata as zero-dollar, co-pay, or unverified.
+    No checkout is performed.
     """
     offer_id = offer.get("id", "")
     title = offer.get("title", "")
     float(offer.get("value_usd", 0.0) or 0.0)
     flow_type = offer.get("application_flow_type") or "Checkout Promo Code"
     cart_verified = str(offer.get("cart_balance_verified") or "")
-    voucher_code = offer.get("voucher_code") or ""
-    redemption_guide = offer.get("redemption_guide") or {}
 
     # 1. Check known policy registry for copays
     if offer_id in COPAY_POLICY_REGISTRY:
@@ -94,17 +96,15 @@ def assert_cart_balance(offer: dict[str, Any]) -> CartAssertionVerdict:
     has_zero_signal = any(
         s in cart_verified.lower() for s in ["$0.00", "0.00", "100% free", "waiver confirmed", "free"]
     )
-    has_flow = bool(flow_type and (voucher_code or redemption_guide))
-
-    if has_zero_signal or has_flow:
+    if has_zero_signal:
         return CartAssertionVerdict(
             is_zero_dollar=True,
             is_copay_required=False,
             copay_amount_usd=0.0,
-            cart_balance_str="$0.00 (100% Free / Waiver Confirmed)",
+            cart_balance_str="$0.00 expected (from offer metadata; not test-purchased)",
             flow_type=flow_type,
             verdict_status="VERIFIED_ZERO_DOLLAR",
-            reason="Confirmed zero-dollar waiver. Final checkout order balance: $0.00 USD.",
+            reason="Offer metadata describes a zero-dollar offer. No checkout was performed.",
         )
 
     return CartAssertionVerdict(
@@ -114,5 +114,5 @@ def assert_cart_balance(offer: dict[str, Any]) -> CartAssertionVerdict:
         cart_balance_str="Unverified",
         flow_type=flow_type,
         verdict_status="FEE_UNVERIFIED",
-        reason="Could not affirmatively assert zero-dollar cart balance from metadata.",
+        reason="Offer metadata does not state a zero-dollar balance.",
     )

@@ -1,6 +1,6 @@
 # Security Policy
 
-CertPulse is an open-source, automated telemetry and verification system monitoring 100% free ($0.00 USD) cloud and technology certification vouchers and professional examination opportunities.
+CertPulse is an open-source tracker of free and discounted certification offers. A scheduled pipeline checks that the tracked vendor pages are reachable and regenerates the README and dashboard.
 
 ---
 
@@ -42,8 +42,8 @@ Reports submitted through GitHub Private Vulnerability Reporting alert the repos
 2. **No Scraped Authentication Credentials**:
    The CertPulse pipeline only inspects public unauthenticated web portals. No private login sessions, SSO tokens, or bypass credentials are stored in this repository.
 
-3. **Autonomous Bot Etiquette**:
-   CertPulse enforces vendor-level rate limiting, concurrency semaphores, standard bot identification headers (`User-Agent: CertPulse-Autonomous-Verifier/2.0`), and complies with vendor robots protocols and maintenance states.
+3. **How the pipeline requests pages**:
+   The page inspector uses a headless Chromium with a standard desktop Chrome `User-Agent` and limits concurrency per run. The news collector identifies itself as `CertPulse-VerifiedNewsBot/2.0`. The pipeline does not read or enforce `robots.txt`. It runs twice a day.
 
 ---
 

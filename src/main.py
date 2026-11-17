@@ -285,6 +285,17 @@ def ingest_and_vet_candidates(candidates_file: Path | None = None, offers_file: 
         seen_promoted = set()
         actually_promoted = 0
         for new_offer in promoted_offers:
+            # A lead that passes the automated page check is not yet a confirmed offer: measured against
+            # hand-read pages, the keyword check was right about half the time (scripts/evaluate_checker.py).
+            # It enters as Review Needed until a reader records a quoted source in curated_policies.json.
+            new_offer["status"] = "Review Needed"
+            new_offer["inspection_notes"] = (
+                "New lead: the page passed the automated keyword check. "
+                "Nobody has yet recorded reading the vendor terms."
+            )
+            new_offer.pop("last_zero_dollar_confirmed_date", None)
+            if isinstance(new_offer.get("visual_proof"), dict):
+                new_offer["visual_proof"]["zero_dollar_confirmed"] = False
             cand_u = new_offer.get("verified_vendor_url") or new_offer.get("url", "")
             norm_u = normalize_url(cand_u)
             if new_offer.get("id") in existing_offer_ids or norm_u in seen_promoted:
@@ -416,13 +427,25 @@ def run_pipeline(
                 o_data = json.load(f)
             initial_offers = o_data.get("offers", [])
             corrections_applied = 0
+            # Quote check: is each recorded evidence sentence still on its vendor page?
+            if not skip_inspection:
+                try:
+                    from src.evidence_check import run_quote_checks
+                    from src.truth_oracle import CURATED_POLICY_OVERRIDES
+
+                    quote_counts = run_quote_checks(initial_offers, CURATED_POLICY_OVERRIDES)
+                    logger.info(f"Quote checks: {quote_counts}")
+                    if any(quote_counts.values()):
+                        corrections_applied += 1  # persist the updated evidence_check records
+                except Exception as quote_err:
+                    logger.warning(f"Quote checks failed: {quote_err}")
             offers_payload = copy.deepcopy(initial_offers)
             executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
                 future = executor.submit(audit_and_enrich_offers, offers_payload, strict_enforcement=True)
                 enriched, summary = future.result(timeout=30.0)
                 o_data["offers"] = enriched
-                corrections_applied = summary.get("corrections_applied", 0)
+                corrections_applied += summary.get("corrections_applied", 0)
                 logger.info(f"Truth Oracle corroboration complete: {corrections_applied} corrections applied.")
             except (concurrent.futures.TimeoutError, TimeoutError):
                 logger.error("Truth Oracle corroboration timed out after 30 seconds. Marking oracle_timeout on offers.")
@@ -483,6 +506,16 @@ def run_pipeline(
             compact_audit_log()
         except Exception as cl_err:
             logger.warning(f"Audit log compaction failed: {cl_err}")
+
+    # 3.7 Watchlist: report vendor program pages whose offer wording changed since the last run
+    if not dry_run and not skip_inspection:
+        try:
+            from src.watchlist import run_watchlist
+
+            watch_changes = run_watchlist()
+            logger.info(f"Watchlist: {len(watch_changes)} watched page(s) changed.")
+        except Exception as watch_err:
+            logger.warning(f"Watchlist check failed: {watch_err}")
 
     # 4. Ingest verified engineering and cloud intelligence feeds
     if not dry_run:

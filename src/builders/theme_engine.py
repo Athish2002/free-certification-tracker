@@ -242,6 +242,7 @@ body {
     inset: 0;
     transform: rotateY(180deg);
     pointer-events: none;
+    overflow-y: auto;
 }
 .flip-card.is-flipped .flip-card-back {
     pointer-events: auto;

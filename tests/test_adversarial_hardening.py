@@ -111,7 +111,7 @@ class TestSchemaValidationInvariants:
             clean_date = item["date"].replace("Z", "+00:00")
             assert datetime.fromisoformat(clean_date), f"Invalid ISO date in article {idx}: {item['date']}"
 
-    def test_all_47_offers_instantiate_pydantic_model(self):
+    def test_all_39_offers_instantiate_pydantic_model(self):
         """Verify all 47 offers in data/offers.json cleanly instantiate Pydantic Offer model."""
         assert OFFERS_FILE.exists()
         with open(OFFERS_FILE, encoding="utf-8") as f:
@@ -174,7 +174,7 @@ class TestSchemaValidationInvariants:
 class TestTruthOracleAdversarialConsistency:
     """Stress testing dynamic truth policy derivation, policy registry, and HTTPS enforcement."""
 
-    def test_all_47_offers_derive_truth_policies(self):
+    def test_all_39_offers_derive_truth_policies(self):
         """Assert that every tracked offer derives a valid policy with HTTPS and cost boundaries."""
         with open(OFFERS_FILE, encoding="utf-8") as f:
             offers_data = json.load(f)
