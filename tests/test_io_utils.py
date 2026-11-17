@@ -113,7 +113,7 @@ def test_live_datasets_conformance_to_schemas_invariant():
     offers_data = read_json(OFFERS_FILE)
     offers_schema = read_json(OFFERS_SCHEMA_FILE)
     validate_payload(offers_data, offers_schema)
-    assert len(offers_data["offers"]) == 39
+    assert len(offers_data["offers"]) == 47
 
     news_data = read_json(NEWS_FILE)
     news_schema = read_json(NEWS_SCHEMA_FILE)

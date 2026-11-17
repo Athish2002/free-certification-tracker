@@ -1,0 +1,52 @@
+name: Report a wrong or closed offer
+description: An offer listed here is closed, costs money, has different terms, or is described wrongly
+title: "[WRONG]: "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for checking. The policy notes in this repository are written by hand and can be out of date. Reports like this are how they get fixed. Corrections are recorded in CORRECTIONS.md.
+  - type: input
+    id: offer
+    attributes:
+      label: Which offer
+      description: The provider and certification name as shown in the README, or the offer id from data/offers.json.
+      placeholder: "e.g. Juniper Networks - JNCIA-Junos"
+    validations:
+      required: true
+  - type: dropdown
+    id: problem
+    attributes:
+      label: What is wrong
+      options:
+        - The offer has closed or expired
+        - It is not free (a fee or co-pay applies)
+        - Eligibility is narrower than stated (students only, region, employer)
+        - The link is broken or goes to the wrong page
+        - The description or steps are wrong
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: evidence_url
+    attributes:
+      label: Vendor page that shows this
+      description: A link on the vendor's own site.
+      placeholder: "https://..."
+    validations:
+      required: true
+  - type: textarea
+    id: evidence_quote
+    attributes:
+      label: What the vendor page says
+      description: Copy the exact sentence, or describe what you saw at checkout.
+    validations:
+      required: true
+  - type: input
+    id: seen_on
+    attributes:
+      label: Date you saw it
+      placeholder: "YYYY-MM-DD"
+    validations:
+      required: false

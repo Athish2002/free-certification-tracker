@@ -64,9 +64,10 @@ class VisualProof(BaseModel):
 
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    screenshot_path: str = Field(
-        ...,
-        description="Relative repository path to captured PNG (e.g. 'docs/screenshots/<id>.png')",
+    screenshot_path: str | None = Field(
+        default=None,
+        description="Relative repository path to captured PNG (e.g. 'docs/screenshots/<id>.png'); "
+        "None when no screenshot has been captured (status 'missing')",
     )
     screenshot_url: str | None = Field(
         default=None,
@@ -300,8 +301,7 @@ class Offer(BaseModel):
     application_flow_type: ApplicationFlowType = Field(default="Direct Assessment Launch")
     redemption_portal: str = Field(default="")
     checkout_field: str = Field(default="")
-    cart_balance_verified: str = Field(default="$0.00 (100% Free / Waiver Confirmed)")
-    voucher_code: str = Field(default="AUTO_APPLIED")
+    cart_balance_verified: str = Field(default="$0.00 expected (per hand-maintained policy note; not test-purchased)")
     redemption_guide: dict[str, Any] | None = None
     claim_steps: str = Field(default="")
 
@@ -372,8 +372,11 @@ class Offer(BaseModel):
     @field_validator("cart_balance_verified")
     @classmethod
     def validate_offer_cart_balance(cls, v: str) -> str:
-        if "$0.00" not in v:
-            raise ValueError(f"cart_balance_verified must confirm '$0.00', got: {v}")
+        # Either states a zero balance, discloses a co-pay, or admits it is unverified.
+        # (Forcing every offer to say "$0.00" made partial discounts claim to be free.)
+        low = v.lower()
+        if "$0.00" not in v and "co-pay" not in low and "copay" not in low and "unverified" not in low:
+            raise ValueError(f"cart_balance_verified must state '$0.00', a co-pay, or 'Unverified', got: {v}")
         return v
 
     @model_validator(mode="after")
@@ -394,7 +397,9 @@ class Offer(BaseModel):
         if self.terms_url is None:
             self.terms_url = self.verified_vendor_url or self.url
         if self.terms is None:
-            self.terms = self.cart_balance_verified or "$0.00 (100% Free / Waiver Confirmed)"
+            self.terms = (
+                self.cart_balance_verified or "$0.00 expected (per hand-maintained policy note; not test-purchased)"
+            )
         if self.last_verified is None:
             self.last_verified = self.verification_date or "2026-10-23"
         if self.badge_eligible is None:
@@ -414,7 +419,7 @@ class Offer(BaseModel):
                 status="placeholder",
                 zero_dollar_confirmed=True,
             )
-        elif not self.visual_proof.screenshot_path:
+        elif not self.visual_proof.screenshot_path and self.visual_proof.status != "missing":
             self.visual_proof.screenshot_path = expected_path
 
         # Sync screenshot_path top-level attribute

@@ -544,7 +544,7 @@ async def test_f11_async_inspector_and_ci_matrix_invariants():
     # 3. Telemetry dictionary structure
     mock_inspection_result = {
         "summary": {
-            "total_inspected": 39,
+            "total_inspected": 47,
             "active_confirmed": 28,
             "closed_detected": 11,
             "screenshots_skipped_phash": 35,

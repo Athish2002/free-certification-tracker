@@ -2,7 +2,7 @@
 Tier 5 Adversarial Coverage Hardening Test Suite for CertPulse (Milestone M5).
 
 Comprehensive cross-module adversarial and boundary stress tests validating:
-1. Schema validation invariants across all 39 offers and 75 news articles.
+1. Schema validation invariants across all 47 offers and 75 news articles.
 2. Dynamic truth oracle derivation consistency and HTTPS policy compliance.
 3. Builder theme palette variables, CSS class generation, and zero-FOIT script.
 4. Visual delta-skipping invariant boundaries (Hamming <= 3 bits skips, >= 4 bits forces write, status change forces write).
@@ -112,13 +112,13 @@ class TestSchemaValidationInvariants:
             assert datetime.fromisoformat(clean_date), f"Invalid ISO date in article {idx}: {item['date']}"
 
     def test_all_39_offers_instantiate_pydantic_model(self):
-        """Verify all 39 offers in data/offers.json cleanly instantiate Pydantic Offer model."""
+        """Verify all 47 offers in data/offers.json cleanly instantiate Pydantic Offer model."""
         assert OFFERS_FILE.exists()
         with open(OFFERS_FILE, encoding="utf-8") as f:
             offers_data = json.load(f)
 
         offers = offers_data.get("offers", [])
-        assert len(offers) == 39, f"Expected 39 offers, found {len(offers)}"
+        assert len(offers) == 47, f"Expected 47 offers, found {len(offers)}"
 
         instantiated_models = []
         for idx, raw_offer in enumerate(offers):
@@ -129,7 +129,7 @@ class TestSchemaValidationInvariants:
             assert model.url.startswith("https://") or model.url.startswith("http://")
             instantiated_models.append(model)
 
-        assert len(instantiated_models) == 39
+        assert len(instantiated_models) == 47
 
     def test_schema_preflight_rejection_of_invalid_payloads(self):
         """Ensure validate_payload strictly rejects invalid schemas, bad types, and missing fields."""
@@ -201,7 +201,7 @@ class TestTruthOracleAdversarialConsistency:
     def test_dynamic_policy_registry_builds_and_resolves(self):
         """Assert build_dynamic_policy_registry indexes all offers and get_truth_policy resolves."""
         registry = build_dynamic_policy_registry(OFFERS_FILE)
-        assert len(registry) == 39
+        assert len(registry) == 47
 
         with open(OFFERS_FILE, encoding="utf-8") as f:
             offers = json.load(f)["offers"]

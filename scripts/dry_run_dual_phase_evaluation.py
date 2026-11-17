@@ -69,8 +69,7 @@ def calculate_simulated_pqs(offer: dict[str, Any], cluster_info: dict[str, str],
 
     # 2. DOM & Pricing Invariant (30 pts)
     cost = offer.get("cost", "")
-    voucher = offer.get("voucher_code", "")
-    if "$0.00" in cost or "Free" in cost or "WAIVER" in voucher:
+    if "$0.00" in cost or "Free" in cost:
         s_dom = 100
     elif "75%" in cost or "Partial" in cost:
         s_dom = 70

@@ -1,15 +1,16 @@
 {
-  "active": 19,
-  "review_needed": 1,
-  "expired": 16,
-  "total": 39,
-  "last_updated": "2026-11-16T21:46:39.946615+00:00",
-  "last_successful_run": "2026-11-16T21:46:46.129115+00:00",
+  "active": 10,
+  "review_needed": 13,
+  "expired": 18,
+  "total": 47,
+  "last_updated": "2026-11-14T11:56:12.587713+00:00",
+  "last_successful_run": "2026-11-17T03:06:58.052894+00:00",
   "signals_breakdown": {
     "dom_inspected": 26,
-    "oracle_corroborated": 39,
-    "authentic_vendors": 39,
-    "zero_dollar_confirmed": 39,
+    "oracle_corroborated": 47,
+    "authentic_vendors": 47,
+    "zero_dollar_confirmed": 9,
+    "screenshots_captured": 25,
     "historical_archives": 13
   }
 }

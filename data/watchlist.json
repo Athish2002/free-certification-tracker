@@ -1,0 +1,137 @@
+{
+  "description": "Vendor pages where free or discounted exam offers have been or could be announced. Each URL was loaded on 2026-11-17 and returned readable text. Being on this list says nothing about whether an offer is open; the pipeline only reports when the offer-related wording on a page changes.",
+  "pages": [
+    {
+      "id": "ms-learn-credentials",
+      "vendor": "Microsoft",
+      "name": "Microsoft Learn credentials hub",
+      "url": "https://learn.microsoft.com/en-us/credentials/"
+    },
+    {
+      "id": "ms-learn-challenges",
+      "vendor": "Microsoft",
+      "name": "Microsoft Learn challenges",
+      "url": "https://learn.microsoft.com/en-us/training/challenges"
+    },
+    {
+      "id": "ms-skills-hub-blog",
+      "vendor": "Microsoft",
+      "name": "Microsoft Skills Hub blog",
+      "url": "https://techcommunity.microsoft.com/category/skills-hub/blog/skills-hub-blog"
+    },
+    {
+      "id": "oracle-certification",
+      "vendor": "Oracle",
+      "name": "Oracle certification page",
+      "url": "https://www.oracle.com/education/certification/"
+    },
+    {
+      "id": "lf-lift-scholarships",
+      "vendor": "Linux Foundation",
+      "name": "LiFT scholarships",
+      "url": "https://www.linuxfoundation.org/about/lift-scholarships"
+    },
+    {
+      "id": "lf-training-scholarships",
+      "vendor": "Linux Foundation",
+      "name": "Linux Foundation training scholarships",
+      "url": "https://training.linuxfoundation.org/about/scholarships/"
+    },
+    {
+      "id": "cncf-scholarships",
+      "vendor": "CNCF",
+      "name": "CNCF scholarships",
+      "url": "https://www.cncf.io/scholarships/"
+    },
+    {
+      "id": "isc2-1mcc",
+      "vendor": "ISC2",
+      "name": "One Million Certified in Cybersecurity",
+      "url": "https://www.isc2.org/landing/1mcc"
+    },
+    {
+      "id": "github-student-pack",
+      "vendor": "GitHub",
+      "name": "GitHub Student Developer Pack",
+      "url": "https://education.github.com/pack"
+    },
+    {
+      "id": "github-universe",
+      "vendor": "GitHub",
+      "name": "GitHub Universe event page",
+      "url": "https://githubuniverse.com/"
+    },
+    {
+      "id": "cisco-rev-up",
+      "vendor": "Cisco",
+      "name": "Rev Up to Recert community",
+      "url": "https://learningnetwork.cisco.com/s/topic/0TO6e000002e4QmGAI/rev-up-to-recert-community"
+    },
+    {
+      "id": "databricks-certification",
+      "vendor": "Databricks",
+      "name": "Databricks certification and badges",
+      "url": "https://www.databricks.com/learn/training/certification"
+    },
+    {
+      "id": "juniper-open-learning",
+      "vendor": "Juniper / HPE Networking",
+      "name": "Open Learning voucher page",
+      "url": "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478"
+    },
+    {
+      "id": "salesforce-quests",
+      "vendor": "Salesforce",
+      "name": "Trailblazer Quests",
+      "url": "https://trailhead.salesforce.com/quests"
+    },
+    {
+      "id": "aws-certification",
+      "vendor": "AWS",
+      "name": "AWS Certification home",
+      "url": "https://aws.amazon.com/certification/"
+    },
+    {
+      "id": "aws-educate",
+      "vendor": "AWS",
+      "name": "AWS Educate",
+      "url": "https://aws.amazon.com/education/awseducate/"
+    },
+    {
+      "id": "gcp-certification",
+      "vendor": "Google Cloud",
+      "name": "Google Cloud certifications",
+      "url": "https://cloud.google.com/learn/certification"
+    },
+    {
+      "id": "hashicorp-certifications",
+      "vendor": "HashiCorp",
+      "name": "HashiCorp certifications",
+      "url": "https://developer.hashicorp.com/certifications"
+    },
+    {
+      "id": "fortinet-training",
+      "vendor": "Fortinet",
+      "name": "Fortinet training for professionals",
+      "url": "https://www.fortinet.com/training/cybersecurity-professionals"
+    },
+    {
+      "id": "paloalto-education",
+      "vendor": "Palo Alto Networks",
+      "name": "Palo Alto Networks education services",
+      "url": "https://www.paloaltonetworks.com/services/education"
+    },
+    {
+      "id": "redhat-certifications",
+      "vendor": "Red Hat",
+      "name": "Red Hat certifications",
+      "url": "https://www.redhat.com/en/services/certifications"
+    },
+    {
+      "id": "snowflake-certifications",
+      "vendor": "Snowflake",
+      "name": "Snowflake certifications",
+      "url": "https://www.snowflake.com/en/resources/learn/certifications/"
+    }
+  ]
+}

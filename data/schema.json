@@ -224,10 +224,8 @@
           "type": "string"
         },
         "cart_balance_verified": {
-          "type": "string"
-        },
-        "voucher_code": {
-          "type": "string"
+          "type": "string",
+          "description": "Hand-written expected cost at checkout. Not the result of a test purchase."
         },
         "redemption_guide": {
           "type": [
@@ -263,7 +261,8 @@
           "type": [
             "object",
             "null"
-          ]
+          ],
+          "description": "Screenshot metadata. status is 'verified' only when a real capture of the vendor page exists; otherwise 'missing' with screenshot_path null."
         },
         "screenshot_path": {
           "type": [

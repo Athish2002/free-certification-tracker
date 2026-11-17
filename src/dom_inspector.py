@@ -88,6 +88,8 @@ COUPON_EXPIRED_PATTERNS = [
 # Heuristic phrases indicating registration is closed or campaign concluded
 REGISTRATION_CLOSED_PATTERNS = [
     "has concluded",
+    "has been retired",
+    "retired or obsolete",
     "closed new enrollments",
     "has closed new enrollments",
     "registration is closed",
@@ -543,7 +545,7 @@ def evaluate_dual_gate(
 
     return (
         "Active",
-        f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof",
+        f"Page check passed: HTTP {http_status}, no closure notice found, screenshot captured",
     )
 
 
@@ -725,7 +727,9 @@ class HeadlessDOMInspector:
                     page.wait_for_timeout(250)
                 except Exception:
                     pass
-                logger.info(f"Anchored viewport to evidence for {offer_id} (score {res.get('score')}): {res.get('textSnippet')!r}")
+                logger.info(
+                    f"Anchored viewport to evidence for {offer_id} (score {res.get('score')}): {res.get('textSnippet')!r}"
+                )
                 return True
         except Exception as e:
             logger.debug(f"Evidence scroll attempt notice for {offer_id}: {e}")
@@ -1141,7 +1145,7 @@ class HeadlessDOMInspector:
                         f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
                     )
                 else:
-                    reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
+                    reason = f"Page check passed: HTTP {http_status}, no closure notice found, screenshot captured"
 
             # Enforce ground-truth invariant: non-active offers never confirm zero-dollar terms
             if status != "Active":

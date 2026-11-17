@@ -943,7 +943,7 @@ async def run_inspection_async(
                                     new_status = "Review Needed"
                                     reason = f"VLM Semantic Gate: Low visual confidence ({vlm_verdict.visual_confidence_score:.2f} < 0.60)"
                                 else:
-                                    reason = f"Playwright DOM Verified: HTTP {http_status} OK, active campaign validated with visual screenshot proof"
+                                    reason = f"Page check passed: HTTP {http_status}, no closure notice found, screenshot captured"
 
                             if new_status != "Active":
                                 zero_dollar_confirmed = False
@@ -1016,7 +1016,9 @@ async def run_inspection_async(
                         "screenshot_path": f"docs/screenshots/{offer_id}.png",
                         "screenshot_url": f"docs/screenshots/{offer_id}.png",
                         "captured_at": datetime.now(UTC).isoformat(),
-                        "status": "verified" if has_sc else ("failed" if new_status in ["Broken Link", "Server Error"] else "missing"),
+                        "status": "verified"
+                        if has_sc
+                        else ("failed" if new_status in ["Broken Link", "Server Error"] else "missing"),
                         "zero_dollar_confirmed": new_status == "Active",
                         "maintenance_detected": "maintenance" in reason.lower(),
                         "paid_catalog_detected": "catalog" in reason.lower(),

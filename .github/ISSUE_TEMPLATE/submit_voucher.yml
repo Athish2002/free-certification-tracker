@@ -1,12 +1,12 @@
-name: 🎯 Submit a Free Certification Voucher / Offer
-description: Submit a newly discovered 100% free certification exam voucher or accredited offer
+name: Submit an offer
+description: Suggest a free or discounted certification offer found on a vendor page
 title: "[VOUCHER]: "
 labels: ["voucher-submission", "triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for submitting a free certification offer! Please provide the details below so our automated pipeline can verify and index it.
+        Please give the vendor page and the sentence on it that states the terms. Automation only checks that the link loads on an official vendor domain; a person reads the terms before the offer is listed.
   - type: dropdown
     id: platform
     attributes:
@@ -43,18 +43,26 @@ body:
         - Student Discount / Scholarship
     validations:
       required: true
-  - type: input
-    id: value_usd
+  - type: textarea
+    id: evidence_quote
     attributes:
-      label: Estimated Value in USD
-      placeholder: "165"
+      label: Sentence on the vendor page that states the terms
+      description: Copy it exactly, including any fee, eligibility limit or end date.
     validations:
-      required: false
+      required: true
+  - type: input
+    id: cost
+    attributes:
+      label: What the candidate pays
+      description: "0 if the exam is fully free; otherwise the amount still payable."
+      placeholder: "0"
+    validations:
+      required: true
   - type: input
     id: url
     attributes:
       label: Official Claim Link
-      description: Must be an official vendor or verified announcement link.
+      description: Must be on the vendor's own domain. Do not submit voucher codes.
       placeholder: "https://..."
     validations:
       required: true

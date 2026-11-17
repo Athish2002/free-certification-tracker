@@ -26,6 +26,8 @@ from urllib.parse import urlparse
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from src.evidence_check import quote_missing as _quote_missing, quote_missing_note as _quote_missing_note
+
 logger = logging.getLogger("certpulse.truth_oracle")
 
 # Canonical Truth Policy Types
@@ -62,6 +64,11 @@ class CuratedPolicyModel(BaseModel):
     review_due_utc: str | None = None
     canonical_direct_url: str | None = None
     is_historical_archive: bool = False
+    # Provenance of the last manual check. An Active curated policy without all four is not shown as Active.
+    reviewed_by: str | None = Field(None, description="Who read the vendor page (a person's name or handle)")
+    reviewed_on: str | None = Field(None, description="ISO date the vendor page was read")
+    evidence_url: str | None = Field(None, description="Vendor page that states the terms")
+    evidence_quote: str | None = Field(None, description="Exact sentence copied from evidence_url")
 
 
 _EMBEDDED_POLICY_FALLBACK: dict[str, dict[str, Any]] = {
@@ -134,6 +141,62 @@ for _policy_key, _policy_entry in CURATED_POLICY_OVERRIDES.items():
     else:
         _policy_entry.setdefault("valid_through_utc", "2026-12-31T23:59:59Z")
         _policy_entry.setdefault("review_due_utc", "2026-11-01T00:00:00Z")
+
+
+def review_overdue_since(policy_entry: dict[str, Any] | None, now: datetime | None = None) -> str | None:
+    """
+    Returns the review_due_utc string when a hand-maintained policy is past its review date,
+    otherwise None. Unparseable or missing dates are treated as not overdue.
+    """
+    if not policy_entry:
+        return None
+    review_due_str = policy_entry.get("review_due_utc")
+    if not review_due_str or not isinstance(review_due_str, str):
+        return None
+    try:
+        due_dt = datetime.fromisoformat(review_due_str.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if due_dt.tzinfo is None:
+        due_dt = due_dt.replace(tzinfo=UTC)
+    current = now or datetime.now(UTC)
+    return review_due_str if current > due_dt else None
+
+
+EVIDENCE_FIELDS: tuple[str, ...] = ("reviewed_by", "reviewed_on", "evidence_url", "evidence_quote")
+
+
+def missing_evidence_fields(policy_entry: dict[str, Any] | None) -> list[str]:
+    """
+    Returns the provenance fields a curated policy lacks. A policy that keeps an offer Active must
+    record who read the vendor page, when, where, and the exact sentence that states the terms.
+    """
+    if not policy_entry:
+        return list(EVIDENCE_FIELDS)
+    missing = []
+    for field in EVIDENCE_FIELDS:
+        value = policy_entry.get(field)
+        if not isinstance(value, str) or not value.strip():
+            missing.append(field)
+    if "evidence_url" not in missing and not str(policy_entry["evidence_url"]).lower().startswith("https://"):
+        missing.append("evidence_url")
+    return missing
+
+
+def missing_evidence_note(missing: list[str]) -> str:
+    """Inspection note attached to an offer whose curated policy has no recorded manual check."""
+    return (
+        "No Recorded Check: nobody has recorded reading the vendor terms for this offer "
+        f"(missing: {', '.join(missing)}). Not shown as Active until a quoted source is added."
+    )
+
+
+def review_overdue_note(review_due_str: str) -> str:
+    """Inspection note attached to an offer whose curated policy is overdue for review."""
+    return (
+        "Policy Review Overdue: the hand-maintained policy for this offer has been overdue for review "
+        f"since {review_due_str[:10]}. Not shown as Active until a maintainer re-checks it."
+    )
 
 
 def derive_truth_policy(offer: dict[str, Any]) -> dict[str, Any]:
@@ -313,6 +376,7 @@ def derive_truth_policy(offer: dict[str, Any]) -> dict[str, Any]:
         "is_historical_archive",
         "valid_through_utc",
         "review_due_utc",
+        *EVIDENCE_FIELDS,
     ]:
         if override.get(k) is not None:
             policy[k] = override[k]
@@ -476,7 +540,9 @@ def corroborate_offer(offer: dict[str, Any]) -> dict[str, Any]:
         "misleading_reasons": misleading_reasons,
         "valid_through_utc": valid_through_str,
         "review_due_utc": review_due_str,
+        "review_overdue": review_overdue_since(policy_entry) is not None,
         "confidence_downgraded": is_stale_policy,
+        **{field: policy_entry.get(field) for field in EVIDENCE_FIELDS},
     }
 
 
@@ -509,14 +575,53 @@ def audit_and_enrich_offers(
         if strict_enforcement and reg_entry:
             # Enforce status corrections
             enforced_status = reg_entry.get("enforce_status")
-            if enforced_status and offer.get("status") != enforced_status:
+            overdue_since = review_overdue_since(reg_entry)
+            if overdue_since and enforced_status == "Active":
+                # A hand-maintained policy past its review date cannot keep an offer Active.
+                overdue_note = review_overdue_note(overdue_since)
+                if offer.get("status") != "Review Needed" or offer.get("inspection_notes") != overdue_note:
+                    logger.warning(
+                        f"[TRUTH ENFORCEMENT] Policy for '{offer.get('title')}' overdue for review since "
+                        f"{overdue_since}; status '{offer.get('status')}' -> 'Review Needed'"
+                    )
+                    offer["status"] = "Review Needed"
+                    offer["inspection_notes"] = overdue_note
+                    corrections_applied += 1
+            elif enforced_status == "Active" and oid in CURATED_POLICY_OVERRIDES and missing_evidence_fields(reg_entry):
+                # A curated policy with no recorded manual check cannot keep an offer Active.
+                evidence_note = missing_evidence_note(missing_evidence_fields(reg_entry))
+                if offer.get("status") != "Review Needed" or offer.get("inspection_notes") != evidence_note:
+                    logger.warning(
+                        f"[TRUTH ENFORCEMENT] No recorded check for '{offer.get('title')}'; "
+                        f"status '{offer.get('status')}' -> 'Review Needed'"
+                    )
+                    offer["status"] = "Review Needed"
+                    offer["inspection_notes"] = evidence_note
+                    corrections_applied += 1
+            elif enforced_status == "Active" and _quote_missing(offer.get("evidence_check")):
+                # The automated quote check no longer finds the recorded sentence on the vendor page.
+                gone_note = _quote_missing_note(str(reg_entry.get("evidence_url") or "the vendor page"))
+                if offer.get("status") != "Review Needed" or offer.get("inspection_notes") != gone_note:
+                    offer["status"] = "Review Needed"
+                    offer["inspection_notes"] = gone_note
+                    corrections_applied += 1
+            elif enforced_status and offer.get("status") != enforced_status:
                 logger.warning(
                     f"[TRUTH ENFORCEMENT] Correcting '{offer.get('title')}' status: "
                     f"'{offer.get('status')}' -> '{enforced_status}' ({truth['verdict_notes']})"
                 )
                 offer["status"] = enforced_status
-                offer["inspection_notes"] = f"Truth Gate Invariant: {truth['verdict_notes']}"
+                offer["inspection_notes"] = f"Policy note: {truth['verdict_notes']}"
                 corrections_applied += 1
+
+            # An offer kept Active by a quoted source carries the date the vendor page was read.
+            if (
+                offer.get("status") == "Active"
+                and enforced_status == "Active"
+                and reg_entry.get("reviewed_on")
+                and not missing_evidence_fields(reg_entry)
+            ):
+                offer["last_zero_dollar_confirmed_date"] = reg_entry["reviewed_on"]
 
             # Enforce historical archive flag if applicable
             if reg_entry.get("is_historical_archive") and not offer.get("is_historical_archive"):
@@ -525,11 +630,16 @@ def audit_and_enrich_offers(
 
             # Enforce zero_dollar_confirmed alignment
             if "zero_dollar_confirmed" in reg_entry:
-                req_zd = reg_entry["zero_dollar_confirmed"]
+                req_zd = (
+                    bool(reg_entry["zero_dollar_confirmed"])
+                    and not (overdue_since and reg_entry.get("enforce_status") == "Active")
+                    and not (oid in CURATED_POLICY_OVERRIDES and missing_evidence_fields(reg_entry))
+                    and not _quote_missing(offer.get("evidence_check"))
+                )
                 vp = offer.get("visual_proof")
                 if isinstance(vp, dict):
                     vp["zero_dollar_confirmed"] = req_zd
-                    sc_p = Path(vp.get("screenshot_path", f"docs/screenshots/{oid}.png"))
+                    sc_p = Path(vp.get("screenshot_path") or f"docs/screenshots/{oid}.png")
                     if sc_p.exists() and sc_p.stat().st_size >= 4096:
                         vp["status"] = "verified"
                     elif offer.get("status") in ["Broken Link", "Server Error"]:

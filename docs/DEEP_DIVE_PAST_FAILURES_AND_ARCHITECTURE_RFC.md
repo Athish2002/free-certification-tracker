@@ -1,5 +1,7 @@
 # RFC-004: Post-Mortem Deep Dive on Past Certification Voucher Project Failures & CertPulse Architectural Invariants
 
+> **Note (2026-11-16):** This document was written before a review that removed unsupported claims from the project. Its statistics and comparisons with other trackers are unsourced opinion, and it describes checkout "verification" that the pipeline does not perform. For what the code actually does, see [PROJECT.md](../PROJECT.md).
+
 | Metadata Attribute | RFC Specification Details |
 | :--- | :--- |
 | **Document RFC ID** | `RFC-CP-004-POSTMORTEM-ANALYSIS` |
@@ -45,7 +47,7 @@ flowchart TD
         B5 -->|Coupon Expired| B7[Expired]
         B5 -->|Redundant Link / Soft 404| B8[Broken Link]
         B5 -->|Active $0 Signals| B9[Active + Verified Checkout Guide]
-        B9 --> B10[Deterministic $0.00 Cart Balance]
+        B9 --> B10[Expected cost, hand-written]
     end
 ```
 
@@ -98,7 +100,7 @@ flowchart TD
 | **Capacity Awareness** | None (Static) | None | Weak / Ad-hoc | **Client DOM Pattern Invariants (`CAPACITY_PATTERNS`)** |
 | **Coupon Validity** | Unverified | Untested | Surface regex | **Dynamic Coupon & Redemption Expiry Auditing** |
 | **Checkout Guidance** | URL link only | Raw post text | Generic link | **Interactive 4-Step Zero-Dollar Checkout Protocols** |
-| **Cart $0 Verification**| Unverified | Unverified | Ambiguous | **Guaranteed & Verified $0.00 Cart Balance Invariant** |
+| **Cart $0 Verification**| Unverified | Unverified | Ambiguous | **Hand-written expected cost; no checkout is performed** |
 | **Hosting Cost** | $0.00 (GitHub) | $10 - $20 / mo | $30 - $100 / mo | **$0.00 / mo (GitHub Actions + GitHub Pages Native)** |
 | **Phishing / Scam Defense**| Manual review | Zero / High scam rate | Domain regex | **Multi-Layer TLS, Hostname, & Redirect Security Gate** |
 | **Developer UX & Speed** | Monolithic text wall | Fleeting chat stream | Heavy login / ads | **Bento Grid, Sub-Second Search, 10 Themes, Keyboard Nav** |
@@ -142,7 +144,7 @@ stateDiagram-v2
 Rather than abandoning users with a raw hyperlink, CertPulse enriches 100% of tracked offers with structured checkout guides (`redemption_guide`):
 - **Exact Field Path**: Informs candidates precisely which screen and field accepts the discount (e.g. `Payment and Billing Step -> 'Add Voucher or Promo Code' modal`).
 - **Application Flow Type**: Clarifies whether the offer is a `Checkout Promo Code`, `Automated Account Link Waiver`, `Challenge Completion Waiver`, or `Continuing Education Claim`.
-- **Verified Zero Balance**: Asserts that applying the credential drops the checkout total to **`Cart Balance: $0.00`**.
+- **Expected cost**: States what the candidate should expect to pay, written by hand from the vendor terms. No checkout is performed, so this is not a verified balance.
 - **Interactive UI Drawer**: Available via SubNav tab `#tabBtnRedemption` (Hotkey `3`) and quick-action `$0.00 Apply` triggers.
 
 ### Invariant 3: Zero-Cost Serverless Resilience
