@@ -28,7 +28,7 @@
 | **News Items** | **100** | Posts pulled from official vendor blogs and feeds |
 | **Link Domains** | **Official vendor domains** | Tracked links are restricted to an allow-list of vendor domains and must use HTTPS |
 | **Policy Notes** | **Maintained by hand** | Co-pays, eligibility and windows are written by the maintainer in `data/curated_policies.json`, each with a review date and a quoted source. Without a quoted source, or past the review date, an offer is shown as Review Needed, not Active |
-| **Last Automated Inspection** | `2026-11-17 05:21 UTC` (10:51 IST • 00:21 EST • 06:21 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
+| **Last Automated Inspection** | `2026-11-17 07:50 UTC` (13:20 IST • 02:50 EST • 08:50 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
 | **Hosting** | **GitHub Actions & GitHub Pages** | No paid infrastructure |
 | **Maintainer** | **[Athish R S](https://github.com/Athish2002)** | One person; best-effort response |
 
@@ -455,7 +455,7 @@
 | **Fortinet** | [Fortinet training for professionals](https://www.fortinet.com/training/cybersecurity-professionals) | no change seen yet | 2026-11-17 |
 | **Palo Alto Networks** | [Palo Alto Networks education services](https://www.paloaltonetworks.com/services/education) | no change seen yet | 2026-11-17 |
 | **Red Hat** | [Red Hat certifications](https://www.redhat.com/en/services/certifications) | no change seen yet | 2026-11-17 |
-| **Snowflake** | [Snowflake certifications](https://www.snowflake.com/en/resources/learn/certifications/) | no change seen yet | 2026-11-17 |
+| **Snowflake** | [Snowflake certifications](https://www.snowflake.com/en/resources/learn/certifications/) | 2026-11-17 | 2026-11-17 |
 
 ---
 
@@ -535,4 +535,4 @@ Contributions are welcome. If you find a new free offer on an official vendor pa
 
 ---
 
-*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-17 05:21 UTC`.*
+*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-17 07:50 UTC`.*
