@@ -1,20 +1,32 @@
 {
-  "last_run": "2026-11-17T07:50:28.144898+00:00",
+  "last_run": "2026-11-17T15:57:24.501948+00:00",
   "latest": [
     {
       "id": "snowflake-certifications",
       "vendor": "Snowflake",
       "name": "Snowflake certifications",
       "url": "https://www.snowflake.com/en/resources/learn/certifications/",
-      "detected_at": "2026-11-17T07:50:28.144898+00:00",
-      "added": [],
-      "removed": [
+      "detected_at": "2026-11-17T15:57:24.501948+00:00",
+      "added": [
         "expedition. free, on-demand.",
         "start for free"
-      ]
+      ],
+      "removed": []
     }
   ],
   "changes": [
+    {
+      "id": "snowflake-certifications",
+      "vendor": "Snowflake",
+      "name": "Snowflake certifications",
+      "url": "https://www.snowflake.com/en/resources/learn/certifications/",
+      "detected_at": "2026-11-17T15:57:24.501948+00:00",
+      "added": [
+        "expedition. free, on-demand.",
+        "start for free"
+      ],
+      "removed": []
+    },
     {
       "id": "snowflake-certifications",
       "vendor": "Snowflake",
