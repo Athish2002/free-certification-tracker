@@ -632,7 +632,8 @@ async def run_inspection_async(
                 offer["authenticity_score"] = auth_result["authenticity_score"]
                 offer["authenticity_details"] = auth_result
                 offer["inspection_method"] = "Historical Archive Invariant"
-                if "screenshot_path" not in offer or not offer["screenshot_path"]:
+                # Only point at a screenshot that exists; a record without one keeps a null path.
+                if not offer.get("screenshot_path") and Path(f"docs/screenshots/{offer_id}.png").is_file():
                     offer["screenshot_path"] = f"docs/screenshots/{offer_id}.png"
                 if "visual_proof" not in offer or not offer["visual_proof"]:
                     sc_f = Path(f"docs/screenshots/{offer_id}.png")
@@ -1007,7 +1008,8 @@ async def run_inspection_async(
                     authentic_count += 1
 
                 # Ensure visual_proof and screenshot_path are present
-                if "screenshot_path" not in offer or not offer["screenshot_path"]:
+                # Only point at a screenshot that exists; a record without one keeps a null path.
+                if not offer.get("screenshot_path") and Path(f"docs/screenshots/{offer_id}.png").is_file():
                     offer["screenshot_path"] = f"docs/screenshots/{offer_id}.png"
                 if "visual_proof" not in offer or not offer["visual_proof"]:
                     sc_f = Path(f"docs/screenshots/{offer_id}.png")

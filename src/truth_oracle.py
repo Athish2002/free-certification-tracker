@@ -642,6 +642,11 @@ def audit_and_enrich_offers(
                     sc_p = Path(vp.get("screenshot_path") or f"docs/screenshots/{oid}.png")
                     if sc_p.exists() and sc_p.stat().st_size >= 4096:
                         vp["status"] = "verified"
+                        # A record whose path was cleared must get it back when a capture exists,
+                        # or it is marked as having a screenshot while pointing at none.
+                        vp["screenshot_path"] = vp["screenshot_url"] = sc_p.as_posix()
+                        if not vp.get("captured_at"):
+                            vp["captured_at"] = datetime.fromtimestamp(sc_p.stat().st_mtime, UTC).isoformat()
                     elif offer.get("status") in ["Broken Link", "Server Error"]:
                         vp["status"] = "failed"
                     else:

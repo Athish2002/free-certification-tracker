@@ -915,9 +915,9 @@
       "verified_vendor_url": "https://learn.mongodb.com/pages/certification",
       "direct_verified_url": "https://learn.mongodb.com/pages/certification",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/mongodb-developer-cert.png",
+        "screenshot_url": "docs/screenshots/mongodb-developer-cert.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
@@ -2002,7 +2002,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-msft-build-2024.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 165.0,
@@ -2098,7 +2098,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-msft-ignite-2023.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 165.0,
@@ -2194,7 +2194,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-oracle-race-cert-2024.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 245.0,
@@ -2290,7 +2290,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-cisco-rev-up-devnae.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 300.0,
@@ -2386,7 +2386,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-aws-ai-practitioner-early.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 100.0,
@@ -2483,7 +2483,7 @@
         "paid_catalog_detected": false,
         "proof_url": "https://www.cloudskillsboost.google/"
       },
-      "screenshot_path": "docs/screenshots/hist-gcp-ace-challenge.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 125.0,
@@ -2580,7 +2580,7 @@
         "paid_catalog_detected": false,
         "proof_url": "https://www.databricks.com/learn/training/certification"
       },
-      "screenshot_path": "docs/screenshots/hist-databricks-genai-2024.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 75.0,
@@ -2676,7 +2676,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-github-universe-2024.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 99.0,
@@ -2888,7 +2888,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hashicorp-terraform-associate-community.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 70.5,
@@ -4088,7 +4088,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-redhat-summit-2024.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 400.0,
@@ -4184,7 +4184,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-terraform-challenge-2023.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 70.0,
@@ -4280,7 +4280,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-paloalto-ignite-2023.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 175.0,
@@ -4376,7 +4376,7 @@
         "maintenance_detected": false,
         "paid_catalog_detected": false
       },
-      "screenshot_path": "docs/screenshots/hist-splunk-conf-2024.png",
+      "screenshot_path": null,
       "truth_verification": {
         "policy_type": "historical_event_wave",
         "real_exam_cost_usd": 130.0,
@@ -4464,9 +4464,9 @@
       "direct_verified_url": "https://www.cloudskillsboost.google/paths",
       "exam_code": "GCP-CDL-GENAI",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/gcp-cloud-digital-leader-genai.png",
+        "screenshot_url": "docs/screenshots/gcp-cloud-digital-leader-genai.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
@@ -4573,9 +4573,9 @@
       "direct_verified_url": "https://learn.microsoft.com/en-us/credentials/applied-skills/develop-generative-ai-solutions-with-azure-openai-service/",
       "exam_code": "MS-ASK-OPENAI",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/ms-applied-skills-azure-openai.png",
+        "screenshot_url": "docs/screenshots/ms-applied-skills-azure-openai.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
@@ -4681,9 +4681,9 @@
       "direct_verified_url": "https://explore.skillbuilder.aws/learn/course/external/view/elearning/11458/aws-cloud-quest-cloud-practitioner",
       "exam_code": "AWS-QUEST-CP",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/aws-cloud-quest-practitioner.png",
+        "screenshot_url": "docs/screenshots/aws-cloud-quest-practitioner.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
@@ -4784,9 +4784,9 @@
       "direct_verified_url": "https://aws.amazon.com/education/awseducate/",
       "exam_code": "AWS-EDU-ML",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/aws-educate-machine-learning.png",
+        "screenshot_url": "docs/screenshots/aws-educate-machine-learning.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
@@ -4887,9 +4887,9 @@
       "direct_verified_url": "https://training.linuxfoundation.org/training/introduction-to-linux/",
       "exam_code": "LF-LFS101X",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/linux-foundation-intro-linux.png",
+        "screenshot_url": "docs/screenshots/linux-foundation-intro-linux.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -4995,9 +4995,9 @@
       "direct_verified_url": "https://www.netacad.com/courses/network-defense",
       "exam_code": "CISCO-NET-DEF",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/cisco-netacad-network-defense.png",
+        "screenshot_url": "docs/screenshots/cisco-netacad-network-defense.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": true,
         "maintenance_detected": false,
@@ -5104,9 +5104,9 @@
       "direct_verified_url": "https://www.databricks.com/learn/training/generative-ai-engineer",
       "exam_code": "DATABRICKS-GAIE",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/databricks-genai-engineer-path.png",
+        "screenshot_url": "docs/screenshots/databricks-genai-engineer-path.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,
@@ -5206,9 +5206,9 @@
       "direct_verified_url": "https://mylearn.oracle.com/ou/learning-path/become-an-oci-security-professional/133703",
       "exam_code": "1Z0-1104",
       "visual_proof": {
-        "screenshot_path": null,
-        "screenshot_url": null,
-        "captured_at": null,
+        "screenshot_path": "docs/screenshots/oracle-oci-security-cert-prep.png",
+        "screenshot_url": "docs/screenshots/oracle-oci-security-cert-prep.png",
+        "captured_at": "2026-11-17T05:20:01.842473+00:00",
         "status": "verified",
         "zero_dollar_confirmed": false,
         "maintenance_detected": false,

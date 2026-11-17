@@ -48,3 +48,11 @@ The nine free entries are free courses and unproctored badges. None is an exam v
 - The historical archive (13 entries, with dates and exam codes) has not been checked against any source. Treat it as unverified.
 - The claim steps and checkout guides were written without testing the flows.
 - The news section is pulled from feeds without review.
+
+## 2026-11-17: Screenshot records were inconsistent after the first pipeline run on the new code
+
+**What was wrong.** After the pipeline run of 2026-11-17 05:21 UTC, `data/offers.json` on `main` had nine offers marked as having a screenshot with no path or capture time recorded, and thirteen historical entries carrying a screenshot path although no image exists for them. The tests caught this on the next scheduled run (06:59 UTC), which failed, so no further data updates or deploys happened until this fix.
+
+**Cause.** `src/truth_oracle.py` set the screenshot status when a capture existed without restoring the path, and `src/inspector.py` wrote a path onto historical entries whether or not an image existed.
+
+**What changed.** Both rules were fixed. The nine records now point at their captures, with the capture time taken from that run's inspection time; the thirteen paths were cleared. Two of the nine captures show nothing useful: the MongoDB page is a 404 and the Oracle security page is nearly blank. They are real captures and are left as they are.
