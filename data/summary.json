@@ -4,7 +4,7 @@
   "expired": 18,
   "total": 47,
   "last_updated": "2026-11-14T11:56:12.587713+00:00",
-  "last_successful_run": "2026-11-17T02:58:23.000256+00:00",
+  "last_successful_run": "2026-11-17T03:06:58.052894+00:00",
   "signals_breakdown": {
     "dom_inspected": 26,
     "oracle_corroborated": 47,
