@@ -2,11 +2,11 @@
 
 > A list of free and discounted certification exam offers, free skill badges, and continuing education credits from vendors such as AWS, Microsoft, Google Cloud, Cisco, ISC2, Oracle, Linux Foundation / CNCF, Snowflake, Databricks, Red Hat, GitLab, Splunk, IBM and GitHub. Links point to official vendor domains and are checked automatically twice a day for reachability and closure notices. The policy notes (what is free, for whom, and any co-pay) are maintained by hand and can be out of date: always confirm the terms on the vendor's own page before relying on them.
 
-![Active Offers](https://img.shields.io/badge/Active%20Offers-10-success.svg) 
+![Active Offers](https://img.shields.io/badge/Active%20Offers-9-success.svg) 
 ![Offers Tracked](https://img.shields.io/badge/Offers%20Tracked-47-blue.svg) 
 ![Proctored Exams](https://img.shields.io/badge/Proctored%20Exams-1%20Active-success.svg) 
-![Skill Badges](https://img.shields.io/badge/Skill%20Badges-9%20Active-blue.svg) 
-![Screenshots](https://img.shields.io/badge/Screenshots-25%2F47%20Captured-blue.svg) 
+![Skill Badges](https://img.shields.io/badge/Skill%20Badges-8%20Active-blue.svg) 
+![Screenshots](https://img.shields.io/badge/Screenshots-34%2F47%20Captured-blue.svg) 
 ![Link Checks](https://img.shields.io/badge/Link%20Checks-Twice%20Daily-blue.svg) 
 ![Automated By](https://img.shields.io/badge/Automated%20By-GitHub%20Actions-purple.svg) 
 ![Maintainer](https://img.shields.io/badge/Maintained%20By-Solo%20Developer%20(Athish%20R%20S)-blueviolet.svg) 
@@ -18,17 +18,17 @@
 
 | Metric | Value | What it means |
 | :--- | :--- | :--- |
-| **Active Offers** | **10** | Listed as open only when someone has recorded reading the vendor's terms (sentence quoted, with name and date), that check is within its review date, and no closure notice has been found |
+| **Active Offers** | **9** | Listed as open only when someone has recorded reading the vendor's terms (sentence quoted, with name and date), that check is within its review date, and no closure notice has been found |
 | **Proctored Exam Offers** | **1 Active** (22 Tracked) | Offers for proctored exams (Pearson VUE, Kryterion, Webassessor and similar) |
-| **Free Skill Badges & Labs** | **9 Active** (25 Tracked) | Unproctored courses, labs and digital badges |
-| **Offers Tracked** | **47 Total** (10 Active, 24 Triage, 13 Archived) | Each tracked link is loaded by the inspector and screened for error pages and closure wording |
-| **Needs Review** | **13** | Not shown as Active: an automated check was inconclusive, the hand-maintained policy note is past its review date, or nobody has recorded reading the vendor's terms |
-| **Screenshots Captured** | **25/47 (53%)** | Offers with a real screenshot of the vendor page in docs/screenshots/. A screenshot shows the page loaded; it is not proof of the offer terms |
+| **Free Skill Badges & Labs** | **8 Active** (25 Tracked) | Unproctored courses, labs and digital badges |
+| **Offers Tracked** | **47 Total** (9 Active, 25 Triage, 13 Archived) | Each tracked link is loaded by the inspector and screened for error pages and closure wording |
+| **Needs Review** | **14** | Not shown as Active: an automated check was inconclusive, the hand-maintained policy note is past its review date, or nobody has recorded reading the vendor's terms |
+| **Screenshots Captured** | **34/47 (72%)** | Offers with a real screenshot of the vendor page in docs/screenshots/. A screenshot shows the page loaded; it is not proof of the offer terms |
 | **Historical Archive** | **13 Campaigns** | Past campaigns written up by hand; no screenshots of the original pages exist |
 | **News Items** | **100** | Posts pulled from official vendor blogs and feeds |
 | **Link Domains** | **Official vendor domains** | Tracked links are restricted to an allow-list of vendor domains and must use HTTPS |
 | **Policy Notes** | **Maintained by hand** | Co-pays, eligibility and windows are written by the maintainer in `data/curated_policies.json`, each with a review date and a quoted source. Without a quoted source, or past the review date, an offer is shown as Review Needed, not Active |
-| **Last Automated Inspection** | `2026-11-14 11:56 UTC` (17:26 IST • 06:56 EST • 12:56 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
+| **Last Automated Inspection** | `2026-11-17 05:21 UTC` (10:51 IST • 00:21 EST • 06:21 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
 | **Hosting** | **GitHub Actions & GitHub Pages** | No paid infrastructure |
 | **Maintainer** | **[Athish R S](https://github.com/Athish2002)** | One person; best-effort response |
 
@@ -49,24 +49,23 @@
 
 | Provider | Discount / Voucher Program | Category | Terms & Prereqs | Cost to You | Status | Screenshot | Source of Terms | Link |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | Global (Participants of Open Learning webinars) | 75% off; you pay about $50 | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/juniper-open-learning.png) | [Vendor terms](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478): "Complete all the course modules and pass the Voucher Assessment Test with a score of 70% or higher and you will receive a 75% discount on your live exam, making it just $50 - a small investment to enhance your career."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
+| **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | Networking | Global (Participants of Open Learning webinars) | 75% off; you pay about $50 | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/juniper-open-learning.png) | [Vendor terms](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478): "Complete all the course modules and pass the Voucher Assessment Test with a score of 70% or higher and you will receive a 75% discount on your live exam, making it just $50 - a small investment to enhance your career."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) |
 
 ---
 
-## Always-Free Courses and Badges (9 Active / 25 Tracked)
+## Always-Free Courses and Badges (8 Active / 25 Tracked)
 > Unproctored courses, labs and digital badges that vendors offer free as a matter of course. They are not exam vouchers and no price or saving is shown.
 
 | Provider | Credential & Assessment | Category | Tier | Status | Screenshot | Source of Terms | Link |
 | :--- | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/gcp-cloud-skills-boost.png) | [Vendor terms](https://www.skills.google/paths): "Join through our no-cost subscription to unlock 35 monthly credits for hands-on learning in Google Skills."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://www.skills.google/paths) |
-| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/snowflake-hands-on-essentials.png) | [Vendor terms](https://learn.snowflake.com/en/pages/hands-on-essentials-track/): "The courses in this track are free, and many of the badges are also free!"<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://learn.snowflake.com/en/pages/hands-on-essentials-track/) |
-| **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/qualys-certified-specialist.png) | [Vendor terms](https://www.qualys.com/training): "Take free self-paced or instructor-led certified training on core Qualys topics, and get certified."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://www.qualys.com/training/) |
-| **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/databricks-genai-fundamentals.png) | [Vendor terms](https://www.databricks.com/learn/training/certification): "Badges are free, unproctored assessments that show what you've learned about a specific topic, such as generative AI."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://www.databricks.com/learn/training/certification) |
-| **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | Cloud Computing | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/aws-educate-badges.png) | [Vendor terms](https://aws.amazon.com/education/awseducate/): "AWS Educate offers an extensive library of free, self-paced online training that covers a range of topics."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence NOT found at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://aws.amazon.com/education/awseducate/) |
-| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Vendor terms](https://www.databricks.com/learn/training/certification): "Get up to speed on Lakehouse by taking this free on-demand training — then earn a badge you can share on your LinkedIn profile or resume."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://www.databricks.com/learn/training/certification) |
-| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/cisco-netacad-cyberops.png) | [Vendor terms](https://www.netacad.com/courses/introduction-to-cybersecurity): "FREE"<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://www.netacad.com/courses/introduction-to-cybersecurity) |
-| **Linux Foundation** | Introduction to Linux (LFS101x) Free Audit & Completion Certificate | DevOps & Cloud Native | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | — | [Vendor terms](https://training.linuxfoundation.org/training/introduction-to-linux/): "Develop a good working knowledge of Linux using both the graphical interface and command line across the major Linux distribution families with this free training course."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://training.linuxfoundation.org/training/introduction-to-linux/) |
-| **Cisco** | Network Defense Verified Digital Credential | Cybersecurity & Defense | `Associate` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | — | [Vendor terms](https://www.netacad.com/courses/network-defense): "FREE"<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-16</sub> | [**Vendor Page**](https://www.netacad.com/courses/network-defense) |
+| **Google Cloud** | Google Cloud Skill Badges & Arcade Milestones | Cloud & AI | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/gcp-cloud-skills-boost.png) | [Vendor terms](https://www.skills.google/paths): "Join through our no-cost subscription to unlock 35 monthly credits for hands-on learning in Google Skills."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://www.skills.google/paths) |
+| **Snowflake** | Snowflake Data Warehousing & Data Applications Badges | AI & Data | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/snowflake-hands-on-essentials.png) | [Vendor terms](https://learn.snowflake.com/en/pages/hands-on-essentials-track/): "The courses in this track are free, and many of the badges are also free!"<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://learn.snowflake.com/en/pages/hands-on-essentials-track/) |
+| **Qualys** | Vulnerability Management & CSAM Specialist | Security | `Associate` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/qualys-certified-specialist.png) | [Vendor terms](https://www.qualys.com/training): "Take free self-paced or instructor-led certified training on core Qualys topics, and get certified."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://www.qualys.com/training/) |
+| **Databricks** | Generative AI Fundamentals | AI & Data | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/databricks-genai-fundamentals.png) | [Vendor terms](https://www.databricks.com/learn/training/certification): "Badges are free, unproctored assessments that show what you've learned about a specific topic, such as generative AI."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://www.databricks.com/learn/training/certification) |
+| **Databricks** | Databricks Lakehouse Fundamentals Accreditation | AI & Data | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/databricks-lakehouse-fundamentals.png) | [Vendor terms](https://www.databricks.com/learn/training/certification): "Get up to speed on Lakehouse by taking this free on-demand training — then earn a badge you can share on your LinkedIn profile or resume."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://www.databricks.com/learn/training/certification) |
+| **Cisco** | Cisco Junior Cybersecurity Analyst Certification | Security | `Associate` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/cisco-netacad-cyberops.png) | [Vendor terms](https://www.netacad.com/courses/introduction-to-cybersecurity): "FREE"<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://www.netacad.com/courses/introduction-to-cybersecurity) |
+| **Linux Foundation** | Introduction to Linux (LFS101x) Free Audit & Completion Certificate | DevOps & Cloud Native | `Foundational` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/linux-foundation-intro-linux.png) | [Vendor terms](https://training.linuxfoundation.org/training/introduction-to-linux/): "Develop a good working knowledge of Linux using both the graphical interface and command line across the major Linux distribution families with this free training course."<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://training.linuxfoundation.org/training/introduction-to-linux/) |
+| **Cisco** | Network Defense Verified Digital Credential | Cybersecurity & Defense | `Associate` | 🟢 Active<br><sub>Page checked: 2026-11-16</sub> | [📸 Screenshot](docs/screenshots/cisco-netacad-network-defense.png) | [Vendor terms](https://www.netacad.com/courses/network-defense): "FREE"<br><sub>Read by agent:Claude Fable 5.2 (page read by an AI agent, not re-read by a person) on 2026-11-16; sentence still on the page at the automated check of 2026-11-17</sub> | [**Vendor Page**](https://www.netacad.com/courses/network-defense) |
 
 ---
 
@@ -96,7 +95,7 @@
 ---
 
 <details>
-<summary><b>Needs Re-Check, Closed or Expired (24)</b> — <i>Click to expand</i></summary>
+<summary><b>Needs Re-Check, Closed or Expired (25)</b> — <i>Click to expand</i></summary>
 
 > Offers that are closed, expired, or could not be confirmed: the inspector found a closure notice or an inconclusive page, the hand-maintained policy note is past its review date, or nobody has recorded reading the vendor's terms. Pages are re-loaded twice a day; the terms are only re-read when a person does it.
 
@@ -104,28 +103,29 @@
 | :--- | :--- | :---: | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/oracle-oci-free-cert.png) | Policy note: The tracked Oracle MyLearn learning path (AI Foundations Associate 2023) redirected to the MyLearn home page on 2026-11-16. No page stating that an exam attempt is free was found. |
-| **Cisco** | Cisco Continuing Education (Recertification) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/cisco-rev-up-recert.png) | Policy note: The tracked link is a community forum. Posts dated November 2026 announce Rev Up to Recert campaigns with Continuing Education credits, but the forum is not a terms page and no campaign end date was read. Check the current campaign page on the Cisco Learning Network before relying on it. |
+| **Cisco** | Cisco Continuing Education (Recertification) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/cisco-rev-up-recert.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/ms-applied-skills.png) | Policy note: The Microsoft Applied Skills overview page loaded on 2026-11-16 but does not state a cost. Not confirmed as free from that page. |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | — | Policy note: The tracked page https://learn.mongodb.com/pages/certification redirected to a 'page not found' page on 2026-11-16. The student voucher claim could not be checked. |
+| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Screenshot](docs/screenshots/mongodb-developer-cert.png) | Policy note: The tracked page https://learn.mongodb.com/pages/certification redirected to a 'page not found' page on 2026-11-16. The student voucher claim could not be checked. |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/salesforce-trailhead-quests.png) | Policy note: The Trailblazer Quests page ('Learn new skills. Win fun prizes.') links to general sweepstakes terms. Prizes are drawn, not guaranteed. Whether a certification voucher is a current prize was not read on 2026-11-16. |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/postman-api-expert.png) | Policy note: The Postman Academy page for this path showed very little text on 2026-11-16 and included a paid promotion ('just $25 with code ...'). It did not state that the credential is free. |
-| **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | Policy note: The Fortinet Training Institute home page loaded on 2026-11-16 but does not mention cost or the FCF certification. The tracked link is a home page, not the offer's own page. |
+| **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **GitHub** | GitHub Foundations | 🔴 Expired | [📸 Screenshot](docs/screenshots/github-student-foundations.png) | Policy note: Dedicated student portal tile for GitHub Foundations free exam vouchers has concluded/depleted from active pack benefits. |
-| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/redhat-skills-assessment-rhel.png) | Policy note: The Red Hat page offers a free skills assessment ('Take a free skills assessment to see where you should start training'). It does not mention an accreditation or badge, so the offer as described here is not supported. |
+| **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/aws-educate-badges.png) | Quoted Source Gone: the sentence recorded as evidence was not found on https://aws.amazon.com/education/awseducate/ in 2 consecutive checks. Not shown as Active until the vendor page is read again. |
+| **Red Hat** | Red Hat Enterprise Linux & OpenShift Technical Accreditations | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/redhat-skills-assessment-rhel.png) | Marketing Funnel Invariant: Page is a corporate marketing/sales lead portal ('contact sales') without actionable course enrollment or exam scheduling CTAs |
 | **Palo Alto Networks** | Palo Alto Networks Certified Cybersecurity Entry-Level Technician (PCCET) | 🔴 Expired | [📸 Screenshot](docs/screenshots/paloalto-pccet-cybersecurity.png) | Policy note: PCCET certification has been officially retired and replaced with Network Security Fundamentals. Beacon training is free, Pearson VUE proctored exam retired. |
-| **GitLab** | GitLab Certified Associate | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/gitlab-certified-associate.png) | Policy note: The GitLab University certifications page says each exam has free self-paced learning content. It does not state the price of the certification exams, so 'free certification' is not confirmed. |
+| **GitLab** | GitLab Certified Associate | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/gitlab-certified-associate.png) | Marketing funnel detected: found 1 sales-pitch/lead triggers (talk to sales) without actionable course CTAs. |
 | **Splunk** | Splunk Core Observability & Defense Fundamentals | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/splunk-certified-defense-analyst.png) | Policy note: The Splunk Lantern home page loaded on 2026-11-16 and does not mention a free accreditation, badge or the Defense Analyst credential. |
 | **IBM** | IBM Enterprise Cybersecurity Practitioner | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/ibm-skillsbuild-cybersecurity.png) | Policy note: The cybersecurity link redirected to the general IBM SkillsBuild learning catalog, whose title describes the courses as free. The specific 'Enterprise Cybersecurity Practitioner' credential named here was not found on the page. |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / KCNA | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/cncf-dan-kohn-scholarship.png) | Policy note: CNCF Dan Kohn Scholarships are administered per conference event (KubeCon + CloudNativeCon). Applications open and close with event registration deadlines. Active landing page at cncf.io/scholarships. |
 | **Oracle Cloud** | Oracle Cloud Infrastructure 2024 Generative AI Professional | 🔴 Expired | [📸 Screenshot](docs/screenshots/oracle-oci-generative-ai-cert.png) | Policy note: The tracked Oracle MyLearn learning path is no longer available. |
 | **GitHub** | GitHub Foundations Certification | 🔴 Expired | [📸 Screenshot](docs/screenshots/github-foundations-cert-wave.png) | Policy note: The free $99 exam voucher pool via DataCamp / GitHub Student Pack has concluded/depleted. Direct exam voucher allocation is no longer active. |
-| **Google Cloud** | Google Cloud Digital Leader & Skill Badges | 🟡 Review Needed | — | No Recorded Check: nobody has recorded reading the vendor terms for this offer (missing: reviewed_by, reviewed_on, evidence_url, evidence_quote). Not shown as Active until a quoted source is added. |
-| **Microsoft Learn** | Applied Skills Credential (Azure OpenAI Service) | 🔴 Expired | — | Policy note: Retired by the vendor. The credential page shows a retirement notice. |
-| **AWS** | AWS Cloud Quest: Cloud Practitioner Badge | ⚠️ Broken Link | — | Policy note: The tracked AWS Skill Builder course link redirected to a search page with a 'not found' banner on 2026-11-16. Whether Cloud Quest: Cloud Practitioner is still free was not established. |
-| **AWS** | AWS Educate Machine Learning Foundations | 🟡 Review Needed | — | No Recorded Check: nobody has recorded reading the vendor terms for this offer (missing: reviewed_by, reviewed_on, evidence_url, evidence_quote). Not shown as Active until a quoted source is added. |
-| **Databricks** | Databricks Generative AI Engineer Accreditation | ⚠️ Broken Link | — | Policy note: The tracked page https://www.databricks.com/learn/training/generative-ai-engineer returned HTTP 404 on 2026-11-16. |
-| **Oracle Cloud** | OCI Security Professional (1Z0-1104) Free Prep & Assessment | 🟡 Review Needed | — | No Recorded Check: nobody has recorded reading the vendor terms for this offer (missing: reviewed_by, reviewed_on, evidence_url, evidence_quote). Not shown as Active until a quoted source is added. |
+| **Google Cloud** | Google Cloud Digital Leader & Skill Badges | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/gcp-cloud-digital-leader-genai.png) | Policy note: The tracked link redirects to the general Google Skills learning paths page. That page does not name this track or say it is free; see the Google Skills entry for what the page does state. |
+| **Microsoft Learn** | Applied Skills Credential (Azure OpenAI Service) | 🔴 Expired | [📸 Screenshot](docs/screenshots/ms-applied-skills-azure-openai.png) | Policy note: Retired by the vendor. The credential page shows a retirement notice. |
+| **AWS** | AWS Cloud Quest: Cloud Practitioner Badge | ⚠️ Broken Link | [📸 Screenshot](docs/screenshots/aws-cloud-quest-practitioner.png) | Policy note: The tracked AWS Skill Builder course link redirected to a search page with a 'not found' banner on 2026-11-16. Whether Cloud Quest: Cloud Practitioner is still free was not established. |
+| **AWS** | AWS Educate Machine Learning Foundations | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/aws-educate-machine-learning.png) | Marketing funnel detected: found 1 sales-pitch/lead triggers (gartner magic quadrant) without actionable course CTAs. |
+| **Databricks** | Databricks Generative AI Engineer Accreditation | ⚠️ Broken Link | [📸 Screenshot](docs/screenshots/databricks-genai-engineer-path.png) | HTTP 404 Page Not Found |
+| **Oracle Cloud** | OCI Security Professional (1Z0-1104) Free Prep & Assessment | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/oracle-oci-security-cert-prep.png) | DOM Render Invariant: Empty rendered DOM or failed client-side hydration |
 
 </details>
 
@@ -245,7 +245,7 @@
 ---
 
 <details>
-<summary><b>📋 How to Claim (All 10 Active Offers)</b> — <i>Click to expand</i></summary>
+<summary><b>📋 How to Claim (All 9 Active Offers)</b> — <i>Click to expand</i></summary>
 
 > These steps are written by hand from the vendor pages and are not tested end to end. Vendors change their flows; follow what the vendor page says if it differs.
 
@@ -279,12 +279,6 @@
 - **Eligibility:** Global (Free for all)
 - **Steps to Claim:** Watch the free 4-module video course on Databricks Academy and pass the 20-question knowledge exam to receive your official Databricks badge.
 - **Official Link:** [https://www.databricks.com/learn/training/certification](https://www.databricks.com/learn/training/certification)
-
-#### AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers
-- **Provider:** Amazon Web Services
-- **Eligibility:** Global (No credit card required)
-- **Steps to Claim:** Sign up for AWS Educate without an AWS account or credit card. Complete hands-on cloud labs to earn industry-recognized digital credentials.
-- **Official Link:** [https://aws.amazon.com/education/awseducate/](https://aws.amazon.com/education/awseducate/)
 
 #### Databricks Academy: Lakehouse Fundamentals & Generative AI Accreditation
 - **Provider:** Databricks
@@ -324,14 +318,13 @@
 | **Juniper Networks** | JNCIA-Junos / JNCIA-SEC Associate | [Pearson VUE (Juniper Networks)](https://home.pearsonvue.com/junipernetworks) | `Checkout Screen -> 'Add Voucher or Promo Code' modal` | `Checkout Promo Code` | **About $50 Co-Pay at Pearson VUE (75% discount voucher; not free)** |
 | **Qualys** | Vulnerability Management & CSAM Specialist | [Qualys Training Academy Portal](https://www.qualys.com/training/) | `Qualys Training Portal -> 'Launch Certification Exam' button` | `Direct Assessment Launch` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
 | **Databricks** | Generative AI Fundamentals | [Databricks Academy Certification Portal](https://www.databricks.com/learn/certification/generative-ai-fundamentals) | `Course Checkout -> 'Promo Code' input or Instant Free Launch` | `Training Milestone Token` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
-| **Amazon Web Services** | AWS Educate Graduate & Practitioner Badges | [AWS Educate and Emerging Talent Portal](https://aws.amazon.com/education/awseducate/) | `Student Pathway -> 'Earn Badge' final assessment` | `Direct Assessment Launch` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
 | **Databricks** | Databricks Lakehouse Fundamentals Accreditation | [Databricks Academy Portal](https://www.databricks.com/learn/certification/lakehouse-fundamentals) | `Databricks Academy Catalog -> 'Enroll' -> Free Knowledge Accreditation` | `Direct Assessment Launch` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
 | **Cisco** | Cisco Junior Cybersecurity Analyst Certification | [Cisco Skills for All / NetAcad](https://www.skillsforall.com/) | `NetAcad Course Completion -> 'Request Exam Discount' voucher form` | `Training Milestone Token` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
 | **Linux Foundation** | Introduction to Linux (LFS101x) Free Audit & Completion Certificate | [Linux Foundation Training & Certification](https://training.linuxfoundation.org/training/introduction-to-linux/) | `Linux Foundation -> Courses -> Introduction to Linux -> Enroll Free` | `Automated Account Link Waiver` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
 | **Cisco** | Network Defense Verified Digital Credential | [Cisco Skills for All](https://www.skillsforall.com/course/network-defense) | `Cisco Skills for All -> Network Defense -> Get Started Free` | `Automated Account Link Waiver` | **$0.00 expected (per hand-maintained policy note; not test-purchased)** |
 
 <details>
-<summary><b>🔍 Step-by-Step Checkout Guides (All 10 Active Offers)</b> — <i>Click to expand</i></summary>
+<summary><b>🔍 Step-by-Step Checkout Guides (All 9 Active Offers)</b> — <i>Click to expand</i></summary>
 
 #### Google Cloud Skills Boost & Innovators Free Badges
 - **Official Redemption Portal:** [Google Cloud Skills Boost Portal](https://www.cloudskillsboost.google/quests)
@@ -387,17 +380,6 @@
   1. Enroll in the Generative AI Fundamentals curriculum.
   1. Pass the knowledge accreditation assessment.
   1. Verifiable digital credential badge automatically unlocked on Credly at $0.00.
-
-#### AWS Educate & Emerging Talent - Free Credentials & Practice Vouchers
-- **Official Redemption Portal:** [AWS Educate and Emerging Talent Portal](https://aws.amazon.com/education/awseducate/)
-- **Checkout Field Location:** `Student Pathway -> 'Earn Badge' final assessment`
-- **Application Flow Type:** `Direct Assessment Launch`
-- **Expected Cost (not test-purchased):** **$0.00 expected (per hand-maintained policy note; not test-purchased)**
-- **Checkout Steps:**
-  1. Sign up for AWS Educate with any valid personal email (no university address required).
-  1. Choose any pathway: Cloud Computing 101, Machine Learning Foundations, Serverless, or Security.
-  1. Complete the hands-on lab sandboxes provided directly inside the AWS browser console.
-  1. Achieve 70%+ on final assessment to earn verified Credly badges at $0.00 cost.
 
 #### Databricks Academy: Lakehouse Fundamentals & Generative AI Accreditation
 - **Official Redemption Portal:** [Databricks Academy Portal](https://www.databricks.com/learn/certification/lakehouse-fundamentals)
@@ -553,4 +535,4 @@ Contributions are welcome. If you find a new free offer on an official vendor pa
 
 ---
 
-*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-14 11:56 UTC`.*
+*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-17 05:21 UTC`.*
