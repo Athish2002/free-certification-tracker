@@ -12,3 +12,6 @@ htmlcov/
 linkedin_screenshots/
 scratch/
 data/*.gz
+
+# Screenshots written by test runs
+docs/screenshots/test-*.png

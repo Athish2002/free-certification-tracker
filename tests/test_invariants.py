@@ -1019,8 +1019,10 @@ def test_playwright_headless_dom_rendering_on_local_fixture(tmp_path):
         status, reason, final_url, auth_result = inspector.inspect_url(
             test_url, offer={"id": "test-spa-offer", "platform": "Microsoft Azure", "url": test_url}
         )
-        assert status == "Registrations Closed", f"Expected Registrations Closed, got {status} ({reason})"
-        assert "capacity has been reached" in reason.lower() or "seats are full" in reason.lower()
+    # The inspection saves a screenshot under the test offer's id; it must not be left in the published folder.
+    (ROOT / "docs" / "screenshots" / "test-spa-offer.png").unlink(missing_ok=True)
+    assert status == "Registrations Closed", f"Expected Registrations Closed, got {status} ({reason})"
+    assert "capacity has been reached" in reason.lower() or "seats are full" in reason.lower()
 
 
 def test_dashboard_redemption_and_keyboard_invariants(html_text):

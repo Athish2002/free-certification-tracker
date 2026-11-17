@@ -206,18 +206,14 @@ body {
     animation: latencyFlash 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Marquee Ticker Tape Ribbon */
-@keyframes marqueeTicker {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-50%); }
-}
-.marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marqueeTicker 40s linear infinite;
-}
-.marquee-track:hover {
-    animation-play-state: paused;
+/* Visitors who ask their system for reduced motion get no animation or transitions. */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 /* 3D Flip Card Mechanism */

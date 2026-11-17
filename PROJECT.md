@@ -12,7 +12,7 @@ This document describes what is in the repository today. An earlier version desc
 4. **Watch program pages** (`src/watchlist.py`, `data/watchlist.json`): loads a fixed list of vendor pages where exam offers get announced, keeps the lines that mention offer wording, and compares them with the previous run (`data/watchlist_state.json`). Changes are logged to `data/watchlist_changes.json`, and the `watch-alerts` workflow job opens an issue per changed page (`scripts/open_watch_issues.py`). A change means the wording moved, not that an offer exists.
 5. **Build** (`src/builders/`): generates `README.md`, `docs/index.html` and `data/summary.json` from `data/offers.json` and `data/news.json`.
 
-The workflow in `.github/workflows/tracker.yml` runs this twice a day (cron `0 0,12 * * *`) and commits the changed data and generated files.
+The workflow in `.github/workflows/tracker.yml` is scheduled twice a day (cron `17 0,12 * * *`; GitHub can start scheduled runs hours late) and commits the changed data and generated files.
 
 ## What it does not do
 

@@ -110,7 +110,10 @@ class TestSeparationOfWavesAndDiscounts:
     """Verifies that Exam Waves, Active Discounts, and Skill Badges are cleanly segmented."""
 
     def test_tier_filter_pills_exist_with_correct_labels(self, browser_page: Page):
-        """Tier filter bar must provide All, Exam Waves, Active Discounts, and Skill Badges."""
+        """Tier filter bar must provide All, time-limited exams, discounts, and courses & badges.
+
+        The pill counts include every status, so the labels must not say "Active" (changed 2026-11-17).
+        """
         all_pill = browser_page.query_selector("#tierPillAll")
         wave_pill = browser_page.query_selector("#tierPillWave")
         discount_pill = browser_page.query_selector("#tierPillDiscount")
@@ -121,9 +124,10 @@ class TestSeparationOfWavesAndDiscounts:
         assert discount_pill is not None, "🏷️ Active Discounts pill must exist"
         assert badges_pill is not None, "🎓 Skill Badges pill must exist"
 
-        assert "Exam Waves" in wave_pill.inner_text()
-        assert "Active Discounts" in discount_pill.inner_text()
-        assert "Skill Badges" in badges_pill.inner_text()
+        assert "Time-limited exams" in wave_pill.inner_text()
+        assert "Discounts" in discount_pill.inner_text()
+        assert "Active" not in discount_pill.inner_text()
+        assert "Courses & badges" in badges_pill.inner_text()
 
     def test_bento_grid_counters_reflect_segmented_counts(self, browser_page: Page):
         """Hero Bento boxes must display distinct metrics for Waves, Discounts, and Badges."""
@@ -131,9 +135,9 @@ class TestSeparationOfWavesAndDiscounts:
         assert len(cards) >= 4, "Must have at least 4 hero bento cards"
 
         page_text = browser_page.inner_text("#vouchersSection")
-        assert "Exam Waves" in page_text
-        assert "Active Discounts" in page_text
-        assert "Skill Badges" in page_text
+        assert "time-limited" in page_text
+        assert "discounted" in page_text
+        assert "courses and badges" in page_text
 
     def test_all_view_renders_distinct_section_headers(self, browser_page: Page):
         """In 'all' view, the catalog must display clear section headers separating categories."""
@@ -147,9 +151,9 @@ class TestSeparationOfWavesAndDiscounts:
         browser_page.wait_for_timeout(300)
 
         grid_text = browser_page.inner_text("#offersGrid")
-        assert "Limited-Time Exam Waves & Seasonal Challenge Cohorts" in grid_text
-        assert "Active Ongoing Discounts & Vouchers" in grid_text
-        assert "Free Digital Skill Badges & Hands-On Cloud Labs" in grid_text
+        assert "Time-Limited Free Exam Offers" in grid_text
+        assert "Discounts and Student-Only Offers" in grid_text
+        assert "Always-Free Courses and Badges" in grid_text
 
     def test_filter_by_exam_waves_shows_only_waves(self, browser_page: Page):
         """Clicking Exam Waves pill filters catalog strictly to seasonal/challenge wave opportunities."""

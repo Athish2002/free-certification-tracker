@@ -56,3 +56,13 @@ The nine free entries are free courses and unproctored badges. None is an exam v
 **Cause.** `src/truth_oracle.py` set the screenshot status when a capture existed without restoring the path, and `src/inspector.py` wrote a path onto historical entries whether or not an image existed.
 
 **What changed.** Both rules were fixed. The nine records now point at their captures, with the capture time taken from that run's inspection time; the thirteen paths were cleared. Two of the nine captures show nothing useful: the MongoDB page is a 404 and the Oracle security page is nearly blank. They are real captures and are left as they are.
+
+## 2026-11-17: Dashboard showed a wrong check time, unsourced prices and leftover claims
+
+Found in a review of the dashboard in a browser.
+
+- **"Last sync" showed the current time.** The card labelled "Time of the last automated link check" had its UTC value overwritten every second by the page clock, so it disagreed with the IST value beside it (for example "15:25 UTC • 13:20 IST"). It now shows the time of the last check in all four time zones.
+- **Offers were ordered by unsourced prices.** The default sort was "Highest Value ($$$)", using `value_usd`, and the table, timeline and matrix views showed "List price $…" from the same field. No source is recorded for those prices. The sort now defaults to provider name, the value sorts are removed, and only quoted co-pay terms are shown.
+- **Leftover wording.** Labels still said "vouchers" (the site holds none), "Active Discounts 18" (a count of all statuses; 1 discount was active), "verifiable Credly/Skill badges" (some entries are courses), and status messages in the screenshot dialog said "the screenshot below captures the campaign portal as audited" for past campaigns whose screenshots had been deleted, and "Official 75% Discount Voucher". These are reworded to what the data supports.
+- **A test image was published again.** `docs/screenshots/test-spa-offer.png`, deleted on 2026-11-16, was re-created by a test and committed by the scheduled run. The test now removes it and `docs/screenshots/test-*.png` is ignored by git.
+- **Sounds were on by default.** The page played synthesised click sounds on interactions unless turned off. They are now off unless the visitor turns them on.

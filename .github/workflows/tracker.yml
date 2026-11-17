@@ -6,7 +6,7 @@ on:
       - main
   schedule:
     # Run twice daily at 00:00 and 12:00 UTC (optimized 12-hour cadence)
-    - cron: '0 0,12 * * *'
+    - cron: '17 0,12 * * *'
   workflow_dispatch: # Allows manual one-click trigger from GitHub Actions UI
 
 permissions:

@@ -32,6 +32,42 @@ from src.vlm_engine import evaluate_vlm_semantic_gate
 
 logger = logging.getLogger("certpulse.dom_inspector")
 
+SCREENSHOT_MAX_AGE_DAYS = 7
+_CAPTURE_DATE_KEY = "captured_on"
+
+
+def _capture_age_days(path: Path) -> float:
+    """Days since the PNG at `path` was captured, read from its own text field; infinite if unknown."""
+    try:
+        from PIL import Image
+
+        with Image.open(path) as img:
+            stamp = img.info.get(_CAPTURE_DATE_KEY)
+        captured = datetime.fromisoformat(stamp)
+    except Exception:
+        return float("inf")
+    if captured.tzinfo is None:
+        captured = captured.replace(tzinfo=UTC)
+    return (datetime.now(UTC) - captured).total_seconds() / 86400
+
+
+def _store_with_capture_date(temp_path: Path, target_path: Path) -> None:
+    """Moves a new capture into place, recording the capture time inside the PNG."""
+    try:
+        from PIL import Image
+        from PIL.PngImagePlugin import PngInfo
+
+        info = PngInfo()
+        info.add_text(_CAPTURE_DATE_KEY, datetime.now(UTC).isoformat())
+        with Image.open(temp_path) as img:
+            img.save(target_path, format="PNG", pnginfo=info)
+        temp_path.unlink(missing_ok=True)
+    except Exception as err:
+        # Without the date the capture is still valid; it will just be retaken next run.
+        logger.debug("Could not record capture date for %s: %s", target_path, err)
+        temp_path.replace(target_path)
+
+
 # Specific heuristic phrases indicating capacity limits or full cohorts
 CAPACITY_PATTERNS = [
     "capacity has been reached",
@@ -757,6 +793,13 @@ class HeadlessDOMInspector:
         target_path = screenshots_dir / f"{offer_id}.png"
         rel_path = f"docs/screenshots/{offer_id}.png"
 
+        # Keep a recent capture instead of taking a new one. Vendor pages change slightly on every
+        # load (banners, cookie notices), so image comparison alone rewrote most PNGs on every run and
+        # each copy stayed in git history. A screenshot only shows that the page loaded, so one a week
+        # is enough; a status change still forces a new capture.
+        if old_status == new_status and _capture_age_days(target_path) < SCREENSHOT_MAX_AGE_DAYS:
+            return True, rel_path
+
         temp_path = target_path.with_suffix(".tmp.png")
         try:
             # Check for SPA hydration: wait for content rendering if body text is sparse
@@ -835,7 +878,7 @@ class HeadlessDOMInspector:
                             logger.debug("Temp path unlink notice: %s", unlink_err)
                         return True, rel_path
 
-                    temp_path.replace(target_path)
+                    _store_with_capture_date(temp_path, target_path)
                     return True, rel_path
             if temp_path.exists():
                 try:

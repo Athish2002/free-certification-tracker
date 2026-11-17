@@ -180,37 +180,37 @@ JS_TEMPLATE = """
                     portalLink.style.backgroundColor = 'var(--btn-primary-bg)';
                     portalLink.style.borderColor = '';
                     portalLink.style.color = '#ffffff';
-                    portalLink.innerHTML = '<span>Launch Official Portal</span><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L8.53 10.03a.75.75 0 0 1-1.06-1.06l5.47-5.47H11.25a.75.75 0 0 1-.75-.75Z"></path></svg>';
+                    portalLink.innerHTML = '<span>Open vendor page</span><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.75a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L8.53 10.03a.75.75 0 0 1-1.06-1.06l5.47-5.47H11.25a.75.75 0 0 1-.75-.75Z"></path></svg>';
                 }
             } else if (status === 'Broken Link') {
                 if (alertEl) {
                     alertEl.classList.remove('hidden');
                     alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-red-500/10 border-red-500/20 text-red-500 font-medium';
-                    alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Broken Link / Inaccessible Portal:</strong> The tracked URL returned an HTTP 404 or dead-end during our automated audit. The screenshot proof below records this exact failure state. This offer is quarantined in Triage and is NOT active.</span>';
+                    alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Link not working:</strong> The page returned an error (such as HTTP 404) at the last automated check. This offer is not shown as active.</span>';
                 }
                 if (badgeEl) {
                     badgeEl.className = 'px-2 py-0.5 rounded text-xs font-bold border border-red-500/30 bg-red-500/20 text-red-500';
                     badgeEl.style.backgroundColor = '';
                     badgeEl.style.borderColor = '';
                     badgeEl.style.color = '';
-                    badgeEl.textContent = '⚠️ Broken Link (HTTP 404)';
+                    badgeEl.textContent = '⚠️ Link not working';
                 }
                 if (termsEl) {
                     termsEl.style.color = '#ef4444';
-                    termsEl.textContent = 'Verification Failed — HTTP 404 / Dead-End';
+                    termsEl.textContent = 'Link returned an error';
                 }
                 if (portalLink) {
                     portalLink.className = 'px-3.5 py-1.5 rounded-lg border font-semibold transition inline-flex items-center gap-1.5 cursor-pointer opacity-75';
                     portalLink.style.backgroundColor = 'var(--btn-default-bg)';
                     portalLink.style.borderColor = 'var(--border-default)';
                     portalLink.style.color = 'var(--fg-default)';
-                    portalLink.innerHTML = '<span>Inspect Failing Portal</span>';
+                    portalLink.innerHTML = '<span>Open vendor page</span>';
                 }
             } else if (status === 'Registrations Closed') {
                 if (alertEl) {
                     alertEl.classList.remove('hidden');
                     alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
-                    alertEl.innerHTML = '<span class="text-sm">🟡</span><span><strong>Registrations Closed:</strong> The vendor has closed registrations or cohort capacity has been reached. The screenshot below captures the official closure notice. Quarantined in Triage until vendor reopens.</span>';
+                    alertEl.innerHTML = '<span class="text-sm">🟡</span><span><strong>Registrations closed:</strong> The page showed closure wording at the last automated check. This offer is not shown as active.</span>';
                 }
                 if (badgeEl) {
                     badgeEl.className = 'px-2 py-0.5 rounded text-xs font-bold border border-amber-500/30 bg-amber-500/20 text-amber-500';
@@ -228,7 +228,7 @@ JS_TEMPLATE = """
                     portalLink.style.backgroundColor = 'var(--btn-default-bg)';
                     portalLink.style.borderColor = 'var(--border-default)';
                     portalLink.style.color = 'var(--fg-default)';
-                    portalLink.innerHTML = '<span>Inspect Vendor Portal</span>';
+                    portalLink.innerHTML = '<span>Open vendor page</span>';
                 }
             } else if (status === 'Review Needed') {
                 if (alertEl) {
@@ -252,13 +252,13 @@ JS_TEMPLATE = """
                     portalLink.style.backgroundColor = 'var(--btn-default-bg)';
                     portalLink.style.borderColor = 'var(--border-default)';
                     portalLink.style.color = 'var(--fg-default)';
-                    portalLink.innerHTML = '<span>Inspect Vendor Portal</span>';
+                    portalLink.innerHTML = '<span>Open vendor page</span>';
                 }
             } else if (status === 'Server Error') {
                 if (alertEl) {
                     alertEl.classList.remove('hidden');
                     alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-red-500/10 border-red-500/20 text-red-500 font-medium';
-                    alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Server Error (HTTP 500):</strong> The vendor server failed to respond or is down for maintenance. Quarantined in Triage.</span>';
+                    alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Vendor site error:</strong> The vendor server returned an error at the last automated check. This offer is not shown as active.</span>';
                 }
                 if (badgeEl) {
                     badgeEl.className = 'px-2 py-0.5 rounded text-xs font-bold border border-red-500/30 bg-red-500/20 text-red-500';
@@ -276,13 +276,13 @@ JS_TEMPLATE = """
                     portalLink.style.backgroundColor = 'var(--btn-default-bg)';
                     portalLink.style.borderColor = 'var(--border-default)';
                     portalLink.style.color = 'var(--fg-default)';
-                    portalLink.innerHTML = '<span>Inspect Server Status</span>';
+                    portalLink.innerHTML = '<span>Open vendor page</span>';
                 }
             } else {
                 if (alertEl) {
                     alertEl.classList.remove('hidden');
                     alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-slate-500/10 border-slate-500/20 text-slate-400 font-medium';
-                    alertEl.innerHTML = '<span class="text-sm">📜</span><span><strong>Historical Campaign Archive:</strong> This certification campaign has concluded (e.g. promotional exam voucher quota exhausted or annual testing window closed). The screenshot below captures the campaign portal as audited. Preserved to monitor for future wave re-openings.</span>';
+                    alertEl.innerHTML = '<span class="text-sm">📜</span><span><strong>Past campaign:</strong> This entry records an offer that has ended. It was written by hand and has not been checked against a source.</span>';
                 }
                 if (badgeEl) {
                     badgeEl.className = 'px-2 py-0.5 rounded text-xs font-bold border border-slate-500/30 bg-slate-500/20 text-slate-400';
@@ -300,7 +300,7 @@ JS_TEMPLATE = """
                     portalLink.style.backgroundColor = 'var(--btn-default-bg)';
                     portalLink.style.borderColor = 'var(--border-default)';
                     portalLink.style.color = 'var(--fg-default)';
-                    portalLink.innerHTML = '<span>Inspect Archive Portal</span>';
+                    portalLink.innerHTML = '<span>Open vendor page</span>';
                 }
             }
 
@@ -337,7 +337,7 @@ JS_TEMPLATE = """
                     if (alertEl) {
                         alertEl.classList.remove('hidden');
                         alertEl.className = 'px-4 sm:px-6 py-2.5 text-xs border-b flex items-start gap-2 bg-amber-500/10 border-amber-500/20 text-amber-500 font-medium';
-                        alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>Official ' + escapeHtml(String(tv.verified_discount_pct)) + '% Discount Voucher:</strong> This voucher covers ' + escapeHtml(String(tv.verified_discount_pct)) + '% of the examination fee. The candidate must pay the remaining co-pay fee of ~$' + escapeHtml(String(tv.real_exam_cost_usd.toFixed(2))) + ' USD at Pearson VUE checkout. It is NOT a $0.00 waiver.</span>';
+                        alertEl.innerHTML = '<span class="text-sm">⚠️</span><span><strong>' + escapeHtml(String(tv.verified_discount_pct)) + '% discount:</strong> This covers ' + escapeHtml(String(tv.verified_discount_pct)) + '% of the examination fee. The candidate must pay the remaining co-pay fee of ~$' + escapeHtml(String(tv.real_exam_cost_usd.toFixed(2))) + ' USD at Pearson VUE checkout. It is NOT a $0.00 waiver.</span>';
                     }
                 }
             } else if (truthCard) {
@@ -605,7 +605,8 @@ JS_TEMPLATE = """
         class UIAudioSynthesizer {
             constructor() {
                 this.ctx = null;
-                this.enabled = true;
+                // Off by default: a page should not make sounds the visitor did not ask for.
+                this.enabled = false;
             }
             init() {
                 if (!this.ctx) {
@@ -739,7 +740,7 @@ JS_TEMPLATE = """
         }
 
         // ================= RUNNING AMBIENT BACKGROUND CANVAS ENGINE =================
-        let bgFxMode = 'constellation';
+        let bgFxMode = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'constellation';
         const bgCanvas = document.getElementById('ambient-canvas');
         const bgCtx = bgCanvas ? bgCanvas.getContext('2d') : null;
         let bgWidth = 0, bgHeight = 0, bgAnimFrameId = null;
@@ -1012,7 +1013,7 @@ JS_TEMPLATE = """
                             <kbd class="px-1.5 py-0.5 rounded border text-xs font-mono" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">T</kbd>
                         </div>
                         <div onclick="switchMainTab('vouchers'); closeCommandPalette();" class="p-2.5 rounded-lg flex items-center justify-between cursor-pointer hover:bg-slate-500/10 text-xs">
-                            <span class="font-semibold" style="color: var(--fg-default);">Switch to Certification Vouchers</span>
+                            <span class="font-semibold" style="color: var(--fg-default);">Switch to Certification Offers</span>
                             <kbd class="px-1.5 py-0.5 rounded border text-xs font-mono" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">1</kbd>
                         </div>
                         <div onclick="switchMainTab('news'); closeCommandPalette();" class="p-2.5 rounded-lg flex items-center justify-between cursor-pointer hover:bg-slate-500/10 text-xs">
@@ -1071,8 +1072,6 @@ JS_TEMPLATE = """
             const navTimeText = document.getElementById('navTimezoneText');
             if (navTimeText) navTimeText.textContent = `Now: ${utcTime} • ${localStr}`;
 
-            const heroUtc = document.getElementById('heroCadenceUtc');
-            if (heroUtc) heroUtc.textContent = `${utcHours}:${utcMinutes} UTC`;
         }
         setInterval(updateWorldClock, 1000);
 
@@ -1293,7 +1292,7 @@ JS_TEMPLATE = """
             const statusEl = document.getElementById('statusFilter');
             const statusVal = statusEl ? statusEl.value : 'active';
             const sortEl = document.getElementById('sortSelect');
-            const sortVal = sortEl ? sortEl.value : 'val-desc';
+            const sortVal = sortEl ? sortEl.value : 'name-asc';
             
             return offersData.filter(o => {
                 // Credential Tier Segmentation Filter
@@ -1338,8 +1337,6 @@ JS_TEMPLATE = """
 
                 return true;
             }).sort((a, b) => {
-                if (sortVal === 'val-desc') return (b.value_usd || 0) - (a.value_usd || 0);
-                if (sortVal === 'val-asc') return (a.value_usd || 0) - (b.value_usd || 0);
                 if (sortVal === 'name-asc') return (a.platform || '').localeCompare(b.platform || '');
                 return 0;
             });
@@ -1348,7 +1345,7 @@ JS_TEMPLATE = """
         function renderCards() {
             const filtered = getFilteredOffers();
             const countEl = document.getElementById('resultsCount');
-            if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + offersData.length + ' vouchers';
+            if (countEl) countEl.textContent = 'Showing ' + filtered.length + ' of ' + offersData.length + ' offers';
 
             if (currentLayout === 'grid') renderGridView(filtered);
             else if (currentLayout === 'list') renderTableView(filtered);
@@ -1358,7 +1355,7 @@ JS_TEMPLATE = """
 
         function renderGridView(filtered) {
             const renderCardHtml = (o) => {
-                const valText = o.copay_terms ? o.copay_terms : ((o.category_tier !== 'badge' && o.value_usd) ? 'List price $' + o.value_usd : '');
+                const valText = o.copay_terms ? o.copay_terms : '';
                 const statusBadge = o.status === 'Active' 
                     ? '<span class="px-2 py-0.5 rounded text-xs font-bold" style="background-color: var(--success-subtle); color: var(--success-fg);">🟢 Active</span>'
                     : '<span class="px-2 py-0.5 rounded text-xs font-bold" style="background-color: var(--attention-subtle); color: var(--attention-fg);">' + o.status + '</span>';
@@ -1451,11 +1448,8 @@ JS_TEMPLATE = """
 
                             <div class="pt-3 border-t flex items-center justify-between gap-2 flex-wrap mt-2" style="border-color: var(--border-muted);">
                                 <div class="flex items-center gap-1.5 flex-wrap">
-                                    <button onclick="copySteps('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
-                                        Copy Guide
-                                    </button>
                                     <button onclick="openRedemptionFor('${escapeJs(o.id)}')" class="text-xs font-semibold px-2.5 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);" title="Where & How Offer is Applied ($0.00)">
-                                        How to apply
+                                        Where to apply
                                     </button>
                                     ${o.has_proof ? `<button type="button" data-proof-id="${escapeJs(o.id)}" onclick="openProofModal('${escapeJs(o.id)}')" class="text-xs font-semibold px-3 py-1.5 rounded-lg border hover:opacity-80 transition cursor-pointer inline-flex items-center gap-1 relative z-10 active:scale-[0.96] select-none" style="background-color: var(--canvas-default); border-color: var(--border-default); color: var(--fg-default);" title="View page screenshot">
                                         <span class="pointer-events-none">📸 Screenshot</span>
@@ -1497,7 +1491,7 @@ JS_TEMPLATE = """
                                     </div>
                                     <div class="flex items-center justify-between gap-1">
                                         <span style="color: var(--fg-muted);">Exam list price:</span>
-                                        <span class="font-mono font-bold text-slate-400">${(o.category_tier !== 'badge' && o.value_usd) ? '$' + escapeHtml(String(o.value_usd)) + ' USD' : '—'}</span>
+                                        <span class="font-mono font-bold text-slate-400">${o.copay_terms ? escapeHtml(o.copay_terms) : '—'}</span>
                                     </div>
                                 </div>
 
@@ -1582,27 +1576,27 @@ JS_TEMPLATE = """
                     <div class="flex items-center gap-2.5">
                         <span class="text-lg">🌊</span>
                         <div>
-                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Limited-Time Exam Waves & Seasonal Challenge Cohorts</h2>
-                            <p class="text-xs" style="color: var(--fg-muted);">Vendor race-to-certify challenges, Cloud Skills Waves, and annual testing windows (${wavesList.length} Active Waves)</p>
+                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Time-Limited Free Exam Offers</h2>
+                            <p class="text-xs" style="color: var(--fg-muted);">Exam offers with a deadline, each with the vendor's sentence quoted.</p>
                         </div>
                     </div>
-                    <span class="px-2.5 py-0.5 rounded text-xs font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">${wavesList.length} Waves</span>
+                    <span class="px-2.5 py-0.5 rounded text-xs font-bold border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">${wavesList.length}</span>
                 </div>`;
                 html += wavesList.map(o => renderCardHtml(o)).join('');
             }
 
-            // 2. Active Ongoing Discounts & Vouchers
+            // 2. Discounts and student-only offers
             if (discountsList.length > 0) {
                 html += `
                 <div class="col-span-full mt-4 flex items-center justify-between p-3.5 rounded-xl border shadow-xs" style="background-color: var(--canvas-subtle); border-color: var(--border-default);">
                     <div class="flex items-center gap-2.5">
                         <span class="text-lg">🏷️</span>
                         <div>
-                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Active Ongoing Discounts & Vouchers</h2>
-                            <p class="text-xs" style="color: var(--fg-muted);">Student-only offers and partial discounts. A partial discount is not free: the amount you pay is shown (${discountsList.length} Opportunities)</p>
+                            <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Discounts and Student-Only Offers</h2>
+                            <p class="text-xs" style="color: var(--fg-muted);">Student-only offers and partial discounts. A partial discount is not free: the amount you pay is shown.</p>
                         </div>
                     </div>
-                    <span class="px-2.5 py-0.5 rounded text-xs font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500">${discountsList.length} Discounts</span>
+                    <span class="px-2.5 py-0.5 rounded text-xs font-bold border border-amber-500/40 bg-amber-500/10 text-amber-500">${discountsList.length}</span>
                 </div>`;
                 html += discountsList.map(o => renderCardHtml(o)).join('');
             }
@@ -1616,10 +1610,10 @@ JS_TEMPLATE = """
                             <span class="text-lg">🎓</span>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Free Digital Skill Badges & Hands-On Cloud Labs</h2>
-                                    <span class="px-2 py-0.5 rounded text-xs font-semibold border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">${badgesList.length} Badges</span>
+                                    <h2 class="font-bold text-xs sm:text-sm tracking-tight" style="color: var(--fg-default);">Always-Free Courses and Badges</h2>
+                                    <span class="px-2 py-0.5 rounded text-xs font-semibold border" style="background-color: var(--canvas-inset); border-color: var(--border-default); color: var(--fg-muted);">${badgesList.length}</span>
                                 </div>
-                                <p class="text-xs mt-0.5" style="color: var(--fg-muted);">Unproctored practical learning paths, sandbox labs, and verifiable Credly/Skill badges (Click to toggle)</p>
+                                <p class="text-xs mt-0.5" style="color: var(--fg-muted);">Free courses and unproctored badges. None of these is a proctored exam.</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg border transition group-open:rotate-180" style="background-color: var(--btn-default-bg); border-color: var(--border-default); color: var(--fg-default);">
@@ -1644,7 +1638,7 @@ JS_TEMPLATE = """
             }
 
             const renderTableRow = (o) => {
-                const valText = o.copay_terms ? o.copay_terms : ((o.category_tier !== 'badge' && o.value_usd) ? 'List $' + o.value_usd : '—');
+                const valText = o.copay_terms ? o.copay_terms : '—';
                 const isProctored = o.credential_tier === 'proctored_exam' || o.credential_tier === 'primary';
                 const credBadge = isProctored 
                     ? '<span class="text-xs font-bold px-1.5 py-0.5 rounded border" style="background-color: var(--accent-subtle); border-color: var(--accent-fg); color: var(--accent-fg);">🎓 Exam</span>' 
@@ -1762,7 +1756,7 @@ JS_TEMPLATE = """
                             <div>
                                 <div class="flex items-center justify-between gap-1 mb-1">
                                     <span class="font-bold truncate" style="color: var(--fg-default);">${escapeHtml(o.platform)}</span>
-                                    <span class="font-bold tabular-nums" style="color: var(--fg-muted);">${escapeHtml(o.copay_terms ? o.copay_terms : ((o.category_tier !== 'badge' && o.value_usd) ? 'List $' + o.value_usd : '—'))}</span>
+                                    <span class="font-bold tabular-nums" style="color: var(--fg-muted);">${escapeHtml(o.copay_terms ? o.copay_terms : '—')}</span>
                                 </div>
                                 <div class="font-medium truncate" style="color: var(--fg-default);">${escapeHtml(o.certification_name || o.title)}</div>
                             </div>
