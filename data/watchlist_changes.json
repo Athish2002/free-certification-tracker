@@ -1,20 +1,6 @@
 {
-  "last_run": "2026-11-18T06:02:22.849883+00:00",
-  "latest": [
-    {
-      "id": "github-student-pack",
-      "vendor": "GitHub",
-      "name": "GitHub Student Developer Pack",
-      "url": "https://education.github.com/pack",
-      "detected_at": "2026-11-18T06:02:22.849883+00:00",
-      "added": [
-        "6 months of tower pro free, then 70% off while enrolled, for up to 4 years."
-      ],
-      "removed": [
-        "free license for tower pro while you are a student."
-      ]
-    }
-  ],
+  "last_run": "2026-11-18T07:38:04.941903+00:00",
+  "latest": [],
   "changes": [
     {
       "id": "github-student-pack",

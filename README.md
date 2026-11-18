@@ -28,7 +28,7 @@
 | **News Items** | **100** | Posts pulled from official vendor blogs and feeds |
 | **Link Domains** | **Official vendor domains** | Tracked links are restricted to an allow-list of vendor domains and must use HTTPS |
 | **Policy Notes** | **Maintained by hand** | Co-pays, eligibility and windows are written by the maintainer in `data/curated_policies.json`, each with a review date and a quoted source. Without a quoted source, or past the review date, an offer is shown as Review Needed, not Active |
-| **Last Automated Inspection** | `2026-11-18 06:02 UTC` (11:32 IST • 01:02 EST • 07:02 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
+| **Last Automated Inspection** | `2026-11-18 07:38 UTC` (13:08 IST • 02:38 EST • 08:38 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
 | **Hosting** | **GitHub Actions & GitHub Pages** | No paid infrastructure |
 | **Maintainer** | **[Athish R S](https://github.com/Athish2002)** | One person; best-effort response |
 
@@ -103,10 +103,10 @@
 | :--- | :--- | :---: | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/oracle-oci-free-cert.png) | Policy note: The tracked Oracle MyLearn learning path (AI Foundations Associate 2023) redirected to the MyLearn home page on 2026-11-16. No page stating that an exam attempt is free was found. |
-| **Cisco** | Cisco Continuing Education (Recertification) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/cisco-rev-up-recert.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
+| **Cisco** | Cisco Continuing Education (Recertification) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/cisco-rev-up-recert.png) | Policy note: The tracked link is a community forum. Posts dated November 2026 announce Rev Up to Recert campaigns with Continuing Education credits, but the forum is not a terms page and no campaign end date was read. Check the current campaign page on the Cisco Learning Network before relying on it. |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/ms-applied-skills.png) | Policy note: The Microsoft Applied Skills overview page loaded on 2026-11-16 but does not state a cost. Not confirmed as free from that page. |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
-| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Screenshot](docs/screenshots/mongodb-developer-cert.png) | Policy note: The tracked page https://learn.mongodb.com/pages/certification redirected to a 'page not found' page on 2026-11-16. The student voucher claim could not be checked. |
+| **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Screenshot](docs/screenshots/mongodb-developer-cert.png) | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
 | **Salesforce** | Salesforce Certified Administrator / App Builder | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/salesforce-trailhead-quests.png) | Policy note: The Trailblazer Quests page ('Learn new skills. Win fun prizes.') links to general sweepstakes terms. Prizes are drawn, not guaranteed. Whether a certification voucher is a current prize was not read on 2026-11-16. |
 | **Postman** | Postman API Fundamentals Student / Pro Expert | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/postman-api-expert.png) | Policy note: The Postman Academy page for this path showed very little text on 2026-11-16 and included a paid promotion ('just $25 with code ...'). It did not state that the credential is free. |
 | **Fortinet** | Fortinet Certified Fundamentals (FCF) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/fortinet-cybersecurity-fundamentals.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
@@ -535,4 +535,4 @@ Contributions are welcome. If you find a new free offer on an official vendor pa
 
 ---
 
-*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-18 06:02 UTC`.*
+*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-18 07:38 UTC`.*
