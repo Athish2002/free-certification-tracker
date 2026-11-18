@@ -959,12 +959,9 @@ async def run_inspection_async(
                                 zero_dollar_confirmed = False
 
                             # If status changed, ensure screenshot write is refreshed only with a non-blank screenshot
-                            if offer_id and new_status != old_status and not screenshot_bytes:
-                                # The capture was skipped because a recent one exists; a status change needs a new one.
-                                try:
-                                    screenshot_bytes = await page.screenshot(full_page=False)
-                                except Exception as sc_err:
-                                    logger.debug("Status-change capture notice for %s: %s", offer_id, sc_err)
+                            # No new capture is forced here when a recent one was kept: `new_status` is the
+                            # inspector's raw verdict, which the policy step often corrects back afterwards
+                            # (16 offers on 2026-11-18), so it is not a reliable sign that anything changed.
                             if offer_id and new_status != old_status and screenshot_bytes:
                                 from src.visual_hasher import is_blank_or_invalid_screenshot
 
