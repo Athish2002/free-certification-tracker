@@ -1,8 +1,36 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-18T06:04:36.957720+00:00",
-  "last_sync": "2026-11-18T06:04:36.957720+00:00",
+  "last_updated": "2026-11-18T10:05:43.946182+00:00",
+  "last_sync": "2026-11-18T10:05:43.946182+00:00",
   "news": [
+    {
+      "id": "cisco-cisco-u-spotlight-2026-learn",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Cisco U. Spotlight 2026: Learn, Connect, and Innovate Together",
+      "summary": "Build with AI. Run enterprise networks. Join us at Cisco U. Spotlight, a free virtual event on December 9, 2026, to learn how it's done from the engineers doing the work.",
+      "published_date": "2026-11-17",
+      "date": "2026-11-17",
+      "url": "https://blogs.cisco.com/learning/cisco-u-spotlight-2026",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "bae9ff4024822e7ddaf1d6c3ce2738251a1634f122abe352f46167521d8bd683"
+    },
+    {
+      "id": "cisco-from-flashlight-to-floodlight",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "From Flashlight to Floodlight: What Six Months of Frontier AI Has Changed at Cisco",
+      "summary": "Cisco uses frontier AI to scan 6.7B lines of code, resulting in 4,000 security fixes. It's a fundamental shift in how we find, fix, and build.",
+      "published_date": "2026-11-18",
+      "date": "2026-11-18",
+      "url": "https://blogs.cisco.com/news/from-flashlight-to-floodlight-what-six-months-of-frontier-ai-has-changed-at-cisco",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "a2cb58d62de6faa6ec367f64fcc4f0245a2a755d6b23743799e5962832e83555"
+    },
     {
       "id": "hashicorp-hcp-introduces-ibmid-support-a",
       "company": "HashiCorp",
@@ -1374,34 +1402,6 @@
       "url": "https://cloud.google.com/blog/products/data-analytics/querying-databricks-iceberg-tables-with-google-clouds-lakehouse/",
       "impact_badge": "Cloud Platform",
       "content_fingerprint": "3945160e15535e2955d9f4bf05cac1652243d0dc331352e70f434dc9e8dc5372"
-    },
-    {
-      "id": "google-cloud-near-zero-downtime-upgrades-a",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Near-zero downtime upgrades: Announcing Cloud SQL for MySQL blue-green deployments",
-      "summary": "Keeping production databases on supported versions shouldn't require giving up your weekend. To stay secure, compliant, and with the best performance and newest AI capabilities, organizations need to run on the latest database engine versio...",
-      "published_date": "2026-10-28",
-      "date": "2026-10-28",
-      "url": "https://cloud.google.com/blog/products/databases/cloud-sql-blue-green-deployments/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "1d7465f895efb06cf18e054bdb08e9c096dc2b27db2b7a2f77f6fb859b5ae6b9"
-    },
-    {
-      "id": "cisco-cisco-it-s-endpoint-observabil",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Cisco IT's Endpoint Observability Strategy: Right-Sized Telemetry for Splunk Observability Cloud",
-      "summary": "Learn how Cisco IT reduced endpoint telemetry volume by 75% using Splunk Observability Cloud. Discover a right-sized strategy to improve digital resilience and troubleshooting efficiency while keeping data footprints sustainable at scale.",
-      "published_date": "2026-10-28",
-      "date": "2026-10-28",
-      "url": "https://blogs.cisco.com/cisco-on-cisco/cisco-its-endpoint-observability-strategy-right-sized-telemetry-for-splunk-observability-cloud",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "b3ab51f80bb8e8336230b6361ef27c02ec46091b4051f9b76b456c05fc7dc90d"
     }
   ],
   "total_items": 100

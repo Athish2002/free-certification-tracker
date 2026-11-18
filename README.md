@@ -28,7 +28,7 @@
 | **News Items** | **100** | Posts pulled from official vendor blogs and feeds |
 | **Link Domains** | **Official vendor domains** | Tracked links are restricted to an allow-list of vendor domains and must use HTTPS |
 | **Policy Notes** | **Maintained by hand** | Co-pays, eligibility and windows are written by the maintainer in `data/curated_policies.json`, each with a review date and a quoted source. Without a quoted source, or past the review date, an offer is shown as Review Needed, not Active |
-| **Last Automated Inspection** | `2026-11-18 07:38 UTC` (13:08 IST • 02:38 EST • 08:38 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
+| **Last Automated Inspection** | `2026-11-18 10:03 UTC` (15:33 IST • 05:03 EST • 11:03 CET) | Reachability and closure-notice check (UTC, IST, ET, CET) |
 | **Hosting** | **GitHub Actions & GitHub Pages** | No paid infrastructure |
 | **Maintainer** | **[Athish R S](https://github.com/Athish2002)** | One person; best-effort response |
 
@@ -103,7 +103,7 @@
 | :--- | :--- | :---: | :---: | :--- |
 | **ISC2** | Certified in Cybersecurity (CC) | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/isc2-one-million-cc.png) | Closure Invariant: Campaign concluded or registrations closed ('has concluded') |
 | **Oracle Cloud** | OCI Foundations & Associate Certifications | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/oracle-oci-free-cert.png) | Policy note: The tracked Oracle MyLearn learning path (AI Foundations Associate 2023) redirected to the MyLearn home page on 2026-11-16. No page stating that an exam attempt is free was found. |
-| **Cisco** | Cisco Continuing Education (Recertification) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/cisco-rev-up-recert.png) | Policy note: The tracked link is a community forum. Posts dated November 2026 announce Rev Up to Recert campaigns with Continuing Education credits, but the forum is not a terms page and no campaign end date was read. Check the current campaign page on the Cisco Learning Network before relying on it. |
+| **Cisco** | Cisco Continuing Education (Recertification) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/cisco-rev-up-recert.png) | DOM Catalog Check: No active free voucher or waiver signal found in rendered DOM |
 | **Microsoft Azure** | Microsoft Applied Skills (Azure, AI, Power Platform) | 🟡 Review Needed | [📸 Screenshot](docs/screenshots/ms-applied-skills.png) | Policy note: The Microsoft Applied Skills overview page loaded on 2026-11-16 but does not state a cost. Not confirmed as free from that page. |
 | **Linux Foundation / CNCF** | Certified Kubernetes Administrator (CKA) / LFCS | 🟡 Closed / Waitlist | [📸 Screenshot](docs/screenshots/linux-foundation-lift.png) | VLM Semantic Gate: Truth Policy: Promotion concluded or annual cycle closed (annual_window_closed). |
 | **MongoDB** | MongoDB Associate Developer / DBA | ⚠️ Broken Link | [📸 Screenshot](docs/screenshots/mongodb-developer-cert.png) | DOM Dead-End: Detected soft-404 or access barrier in rendered DOM ('page not found') |
@@ -139,6 +139,8 @@
 
 | Published | Vendor | Category | Tag | Headline & Feed Summary | Source |
 | :--- | :--- | :--- | :---: | :--- | :--- |
+| `2026-11-17` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco U. Spotlight 2026: Learn, Connect, and Innovate Together](https://blogs.cisco.com/learning/cisco-u-spotlight-2026)**<br>Build with AI. Run enterprise networks. Join us at Cisco U. Spotlight, a free virtual event on December 9, 2026, to learn how it's done from the engineers doing the work. | [Cisco Blogs](https://blogs.cisco.com/learning/cisco-u-spotlight-2026)<br>`blogs.cisco.com` |
+| `2026-11-18` | **Cisco** | Tech Development | `Enterprise Networking` | **[From Flashlight to Floodlight: What Six Months of Frontier AI Has Changed at Cisco](https://blogs.cisco.com/news/from-flashlight-to-floodlight-what-six-months-of-frontier-ai-has-changed-at-cisco)**<br>Cisco uses frontier AI to scan 6.7B lines of code, resulting in 4,000 security fixes. It's a fundamental shift in how we find, fix, and build. | [Cisco Blogs](https://blogs.cisco.com/news/from-flashlight-to-floodlight-what-six-months-of-frontier-ai-has-changed-at-cisco)<br>`blogs.cisco.com` |
 | `2026-11-16` | **HashiCorp** | Infrastructure & DevOps | `Infrastructure as Code` | **[HCP introduces IBMid support and new enterprise governance capabilities](https://www.hashicorp.com/blog/hcp-introduces-ibmid-support-and-new-enterprise-governance-capabilities)**<br>HCP Platform continues to enhance identity management, governance, and administrative workflows, helping organizations securely adopt and operate HashiCorp products at scale. | [HashiCorp Blog](https://www.hashicorp.com/blog/hcp-introduces-ibmid-support-and-new-enterprise-governance-capabilities)<br>`hashicorp.com` |
 | `2026-11-17` | **GitHub** | Tech Development | `Developer Tooling` | **[Building the Agent Host Protocol for sessions that continue across devices](https://github.blog/engineering/engineering-principles/building-the-agent-host-protocol-for-sessions-that-continue-across-devices/)**<br>Discover how we built the open Agent Host Protocol to keep your agent sessions accessible across editors, apps, phones, and the cloud. The post Building the Agent Host Protocol for sessions that continue across devices appeared first on The... | [GitHub Engineering Blog](https://github.blog/engineering/engineering-principles/building-the-agent-host-protocol-for-sessions-that-continue-across-devices/)<br>`github.blog` |
 | `2026-11-17` | **GitHub** | Tech Development | `Developer Tooling` | **[Maintainers don't need more AI bug reports. They need fixes.](https://github.blog/open-source/maintainers/maintainers-dont-need-more-ai-bug-reports-they-need-fixes/)**<br>In the Codename MDASH pilot, GitHub and Microsoft turned thousands of raw AI findings into 99 checked, private reports with suggested fixes for six widely used open source projects. Maintainers have already fixed more than half. The post Ma... | [GitHub Engineering Blog](https://github.blog/open-source/maintainers/maintainers-dont-need-more-ai-bug-reports-they-need-fixes/)<br>`github.blog` |
@@ -237,8 +239,6 @@
 | `2026-10-29` | **Cisco** | Tech Development | `Enterprise Networking` | **[From Small Village to Global Career: My Journey at Cisco](https://blogs.cisco.com/wearecisco/from-small-village-to-global-career-my-journey-at-cisco)**<br>See how one opportunity became a journey across three continents, multiple roles, and a growing sense of purpose for Customer Delivery Engineering Technical Leader Kiran K. | [Cisco Blogs](https://blogs.cisco.com/wearecisco/from-small-village-to-global-career-my-journey-at-cisco)<br>`blogs.cisco.com` |
 | `2026-10-29` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Cloud CISO Perspectives: Introducing new $250,000 tier for Google Cloud VRP (Q&A)](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-introducing-new-tier-for-google-cloud-vrp/)**<br>Welcome to the second Cloud CISO Perspectives for October 2026. Today, Chris Betz talks with Michael Cote, our vulnerability rewards program lead, about the new tier of our Cloud VRP program and the current state of vulnerability rewards. A... | [Google Cloud Blog](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-introducing-new-tier-for-google-cloud-vrp/)<br>`cloud.google.com` |
 | `2026-10-29` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Querying Databricks Apache Iceberg Tables with the borderless Lakehouse](https://cloud.google.com/blog/products/data-analytics/querying-databricks-iceberg-tables-with-google-clouds-lakehouse/)**<br>Enterprise organizations often leverage multiple data platforms, including Databricks, to execute heavy Apache Spark jobs alongside BigQuery to power highly concurrent analytics workloads. Historically, bridging these systems often meant bu... | [Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/querying-databricks-iceberg-tables-with-google-clouds-lakehouse/)<br>`cloud.google.com` |
-| `2026-10-28` | **Google Cloud** | Infrastructure & Silicon | `Cloud Platform` | **[Near-zero downtime upgrades: Announcing Cloud SQL for MySQL blue-green deployments](https://cloud.google.com/blog/products/databases/cloud-sql-blue-green-deployments/)**<br>Keeping production databases on supported versions shouldn't require giving up your weekend. To stay secure, compliant, and with the best performance and newest AI capabilities, organizations need to run on the latest database engine versio... | [Google Cloud Blog](https://cloud.google.com/blog/products/databases/cloud-sql-blue-green-deployments/)<br>`cloud.google.com` |
-| `2026-10-28` | **Cisco** | Tech Development | `Enterprise Networking` | **[Cisco IT's Endpoint Observability Strategy: Right-Sized Telemetry for Splunk Observability Cloud](https://blogs.cisco.com/cisco-on-cisco/cisco-its-endpoint-observability-strategy-right-sized-telemetry-for-splunk-observability-cloud)**<br>Learn how Cisco IT reduced endpoint telemetry volume by 75% using Splunk Observability Cloud. Discover a right-sized strategy to improve digital resilience and troubleshooting efficiency while keeping data footprints sustainable at scale. | [Cisco Blogs](https://blogs.cisco.com/cisco-on-cisco/cisco-its-endpoint-observability-strategy-right-sized-telemetry-for-splunk-observability-cloud)<br>`blogs.cisco.com` |
 
 </details>
 
@@ -448,14 +448,14 @@
 | **Databricks** | [Databricks certification and badges](https://www.databricks.com/learn/training/certification) | no change seen yet | 2026-11-18 |
 | **Juniper / HPE Networking** | [Open Learning voucher page](https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478) | no change seen yet | 2026-11-18 |
 | **Salesforce** | [Trailblazer Quests](https://trailhead.salesforce.com/quests) | no change seen yet | 2026-11-18 |
-| **AWS** | [AWS Certification home](https://aws.amazon.com/certification/) | no change seen yet | 2026-11-18 |
+| **AWS** | [AWS Certification home](https://aws.amazon.com/certification/) | 2026-11-18 | 2026-11-18 |
 | **AWS** | [AWS Educate](https://aws.amazon.com/education/awseducate/) | no change seen yet | 2026-11-18 |
 | **Google Cloud** | [Google Cloud certifications](https://cloud.google.com/learn/certification) | no change seen yet | 2026-11-18 |
 | **HashiCorp** | [HashiCorp certifications](https://developer.hashicorp.com/certifications) | no change seen yet | 2026-11-18 |
 | **Fortinet** | [Fortinet training for professionals](https://www.fortinet.com/training/cybersecurity-professionals) | no change seen yet | 2026-11-18 |
 | **Palo Alto Networks** | [Palo Alto Networks education services](https://www.paloaltonetworks.com/services/education) | no change seen yet | 2026-11-18 |
 | **Red Hat** | [Red Hat certifications](https://www.redhat.com/en/services/certifications) | no change seen yet | 2026-11-18 |
-| **Snowflake** | [Snowflake certifications](https://www.snowflake.com/en/resources/learn/certifications/) | 2026-11-17 | 2026-11-18 |
+| **Snowflake** | [Snowflake certifications](https://www.snowflake.com/en/resources/learn/certifications/) | 2026-11-18 | 2026-11-18 |
 
 ---
 
@@ -535,4 +535,4 @@ Contributions are welcome. If you find a new free offer on an official vendor pa
 
 ---
 
-*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-18 07:38 UTC`.*
+*Maintained by [Athish R S](https://github.com/Athish2002). Links are checked automatically every 12 hours; last run `2026-11-18 10:03 UTC`.*
