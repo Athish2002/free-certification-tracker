@@ -36,9 +36,12 @@ from src.dom_inspector import (
     PAID_CATALOG_PATTERNS,
     PLAYWRIGHT_LAUNCH_ARGS,
     REGISTRATION_CLOSED_PATTERNS,
+    SCREENSHOT_MAX_AGE_DAYS,
     ZERO_DOLLAR_SIGNALS as ZERO_DOLLAR_SIGNALS,
     DOMInspector as DOMInspector,
     HeadlessDOMInspector,
+    _capture_age_days,
+    _store_with_capture_date,
     assert_cart_balance,
     evaluate_dual_gate,
     evaluate_vlm_semantic_gate,
@@ -777,56 +780,62 @@ async def run_inspection_async(
 
                             if offer_id:
                                 try:
-                                    try:
-                                        await scroll_to_evidence_async(page, offer_id, offer=offer)
-                                    except Exception as scroll_err:
-                                        logger.debug("Evidence scroll notice for %s: %s", offer_id, scroll_err)
-                                    screenshot_bytes = await page.screenshot(full_page=False)
-                                    if (
-                                        screenshot_bytes
-                                        and len(screenshot_bytes) >= 4096
-                                        and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n"
-                                    ):
-                                        from src.visual_hasher import (
-                                            is_blank_or_invalid_screenshot,
-                                            should_skip_screenshot_write,
-                                        )
-
+                                    # Same rule as DOMInspector.capture_screenshot: keep a capture taken in the
+                                    # last week instead of rewriting the image on every run.
+                                    if _capture_age_days(target_path) < SCREENSHOT_MAX_AGE_DAYS:
+                                        screenshot_ok = True
+                                        skipped_write = True
+                                    else:
+                                        try:
+                                            await scroll_to_evidence_async(page, offer_id, offer=offer)
+                                        except Exception as scroll_err:
+                                            logger.debug("Evidence scroll notice for %s: %s", offer_id, scroll_err)
+                                        screenshot_bytes = await page.screenshot(full_page=False)
                                         if (
-                                            target_path.exists()
-                                            and not is_blank_or_invalid_screenshot(target_path)
-                                            and (
-                                                is_blank_or_invalid_screenshot(screenshot_bytes)
-                                                or (
-                                                    target_path.stat().st_size >= 30000
-                                                    and len(screenshot_bytes) < 18000
-                                                )
-                                            )
+                                            screenshot_bytes
+                                            and len(screenshot_bytes) >= 4096
+                                            and screenshot_bytes[:8] == b"\x89PNG\r\n\x1a\n"
                                         ):
-                                            logger.info(
-                                                "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
-                                                offer_id,
+                                            from src.visual_hasher import (
+                                                is_blank_or_invalid_screenshot,
+                                                should_skip_screenshot_write,
                                             )
-                                            skipped_write = True
-                                            screenshot_ok = True
-                                        if not skipped_write:
-                                            should_skip, delta, dist = should_skip_screenshot_write(
-                                                screenshot_bytes, target_path, old_status, old_status
-                                            )
-                                            if should_skip:
+
+                                            if (
+                                                target_path.exists()
+                                                and not is_blank_or_invalid_screenshot(target_path)
+                                                and (
+                                                    is_blank_or_invalid_screenshot(screenshot_bytes)
+                                                    or (
+                                                        target_path.stat().st_size >= 30000
+                                                        and len(screenshot_bytes) < 18000
+                                                    )
+                                                )
+                                            ):
                                                 logger.info(
-                                                    f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
-                                                    f"Skipped write for {target_path}."
+                                                    "Preserving existing substantive screenshot for %s (new capture is blank/spinner)",
+                                                    offer_id,
                                                 )
                                                 skipped_write = True
                                                 screenshot_ok = True
-                                            else:
-                                                temp_path = target_path.with_suffix(".tmp.png")
-                                                temp_path.write_bytes(screenshot_bytes)
-                                                temp_path.replace(target_path)
-                                                screenshot_ok = True
-                                    elif target_path.exists() and target_path.stat().st_size >= 4096:
-                                        screenshot_ok = True
+                                            if not skipped_write:
+                                                should_skip, delta, dist = should_skip_screenshot_write(
+                                                    screenshot_bytes, target_path, old_status, old_status
+                                                )
+                                                if should_skip:
+                                                    logger.info(
+                                                        f"[SKIP] Visual diff < 5% (delta={delta:.4f}, hamming={dist}) and status unchanged. "
+                                                        f"Skipped write for {target_path}."
+                                                    )
+                                                    skipped_write = True
+                                                    screenshot_ok = True
+                                                else:
+                                                    temp_path = target_path.with_suffix(".tmp.png")
+                                                    temp_path.write_bytes(screenshot_bytes)
+                                                    _store_with_capture_date(temp_path, target_path)
+                                                    screenshot_ok = True
+                                        elif target_path.exists() and target_path.stat().st_size >= 4096:
+                                            screenshot_ok = True
                                 except Exception as sc_err:
                                     logger.warning("Screenshot capture failed for %s: %s", offer_id, sc_err)
                                     if target_path.exists() and target_path.stat().st_size >= 4096:
@@ -950,13 +959,19 @@ async def run_inspection_async(
                                 zero_dollar_confirmed = False
 
                             # If status changed, ensure screenshot write is refreshed only with a non-blank screenshot
+                            if offer_id and new_status != old_status and not screenshot_bytes:
+                                # The capture was skipped because a recent one exists; a status change needs a new one.
+                                try:
+                                    screenshot_bytes = await page.screenshot(full_page=False)
+                                except Exception as sc_err:
+                                    logger.debug("Status-change capture notice for %s: %s", offer_id, sc_err)
                             if offer_id and new_status != old_status and screenshot_bytes:
                                 from src.visual_hasher import is_blank_or_invalid_screenshot
 
                                 if not is_blank_or_invalid_screenshot(screenshot_bytes):
                                     temp_path = target_path.with_suffix(".tmp.png")
                                     temp_path.write_bytes(screenshot_bytes)
-                                    temp_path.replace(target_path)
+                                    _store_with_capture_date(temp_path, target_path)
                                     skipped_write = False
                                 else:
                                     logger.warning(
