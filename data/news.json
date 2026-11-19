@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-18T20:42:26.676772+00:00",
-  "last_sync": "2026-11-18T20:42:26.676772+00:00",
+  "last_updated": "2026-11-19T07:36:59.799052+00:00",
+  "last_sync": "2026-11-19T07:36:59.799052+00:00",
   "news": [
+    {
+      "id": "amazon-web-services-aderant-modernizes-analytics-d",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Aderant modernizes analytics data pipeline with Apache Iceberg and AWS Lambda",
+      "summary": "Learn how Aderant modernized the data pipeline behind its Stridyn legal analytics platform with Apache Iceberg, AWS Lambda, and AWS Glue, moving from 15-minute batch cycles to an event-driven medallion architecture that processes change dat...",
+      "published_date": "2026-11-19",
+      "date": "2026-11-19",
+      "url": "https://aws.amazon.com/blogs/architecture/aderant-modernizes-analytics-data-pipeline-with-apache-iceberg-and-aws-lambda/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "89559a6d5b8cacd1cdb7a765403a53c841b70223fcd13c2c764f88e8d7d47da5"
+    },
     {
       "id": "cisco-the-power-of-agenticops-how-a",
       "company": "Cisco",
@@ -1388,20 +1402,6 @@
       "url": "https://cloud.google.com/blog/topics/ai-infrastructure/whats-new-in-ai-infrastructure-this-month/",
       "impact_badge": "Cloud Platform",
       "content_fingerprint": "c934a5a908be737f34f11129fb8a2233cd3059853a60f4679f53bc3a8458e590"
-    },
-    {
-      "id": "google-cloud-what-s-new-with-google-data-cl",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "What's new with Google Data Cloud",
-      "summary": "October 19 - October 23 BigQuery introduces column aliases in GoogleSQL and cross-region table copy GAGoogleSQL in BigQuery now supports column aliases in SELECT and WHERE clauses (GA opt-in), avoiding nested subqueries and simplifying migr...",
-      "published_date": "2026-10-29",
-      "date": "2026-10-29",
-      "url": "https://cloud.google.com/blog/products/data-analytics/whats-new-with-google-data-cloud/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "2b235cf3ed95b2eef4b0a1e702033d23749074f68ae48fbe75503048ae206b13"
     }
   ],
   "total_items": 100
