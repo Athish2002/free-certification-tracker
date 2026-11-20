@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-20T07:27:47.732893+00:00",
-  "last_sync": "2026-11-20T07:27:47.732893+00:00",
+  "last_updated": "2026-11-20T20:32:55.336963+00:00",
+  "last_sync": "2026-11-20T20:32:55.336963+00:00",
   "news": [
+    {
+      "id": "google-cloud-drowning-in-clicks-scaling-bl",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Drowning in clicks: Scaling Black Friday pipelines with Managed Airflow agents",
+      "summary": "When an Airflow pipeline fails in production, the hard part is rarely the fix. It's finding out what to fix. A task dies without a traceback. Is it the code, the data, or the environment? Hard to say, as clues are scattered across task logs...",
+      "published_date": "2026-11-20",
+      "date": "2026-11-20",
+      "url": "https://cloud.google.com/blog/products/data-analytics/scaling-airflow-pipelines-with-ai-agents-on-managed-airflow/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "ef691b5498103f97020e23d6016f2d2b5b7ff294bed9fa88b5fe19dfe0faa1bd"
+    },
+    {
+      "id": "google-cloud-ultimate-guide-for-fixing-your",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "Ultimate guide for fixing your team's API keys",
+      "summary": "Most Gemini prototypes start the same way. You grab an API key from Google AI Studio, then paste it into your coding agent to start building a prototype. That speed is the point, and shouldn't be slowed down. The trouble starts later, when ...",
+      "published_date": "2026-11-20",
+      "date": "2026-11-20",
+      "url": "https://cloud.google.com/blog/topics/developers-practitioners/how-to-fix-your-teams-api-keys/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "d4a7f0b06c9eff3a164dc0ae713d563076eccfeedda8582cf45ea2711455e629"
+    },
+    {
+      "id": "amazon-web-services-how-bee-implemented-zero-opera",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How Bee implemented Zero Operator Access for personal AI on AWS",
+      "summary": "Bee, an Amazon company, built a personal AI wearable with no mechanism for operators (Bee engineers, other Amazon employees, or AWS infrastructure operators) to access customer data. Learn how Bee uses Amazon EC2 instance attestation and th...",
+      "published_date": "2026-11-20",
+      "date": "2026-11-20",
+      "url": "https://aws.amazon.com/blogs/architecture/how-bee-implemented-zero-operator-access-for-personal-ai-on-aws/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "81e21eb14f48aa671bb821f6389e577b03931b62be5f48288c29486171cdf87f"
+    },
     {
       "id": "google-cloud-the-blueprint-how-kult-built",
       "company": "Google Cloud",
@@ -1360,48 +1402,6 @@
       "url": "https://cloud.google.com/blog/topics/consulting/lessons-for-adopting-ai-agents/",
       "impact_badge": "Cloud Platform",
       "content_fingerprint": "1ca54ac190b6062336e29cf50054b297fb1c228e6dd0ed2cf804bf35555bf4e9"
-    },
-    {
-      "id": "google-cloud-how-nammu21-automates-syndicat",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "How Nammu21 automates syndicated loans on Google Cloud Universal Ledger",
-      "summary": "The syndicated loan and private credit markets, both critical components of corporate finance, have long been constrained by manual processes, leading to multi-week settlements, valuation opacity, and trade friction. To solve these long-sta...",
-      "published_date": "2026-11-03",
-      "date": "2026-11-03",
-      "url": "https://cloud.google.com/blog/topics/financial-services/how-nammu21-automates-syndicated-loans-on-google-cloud-universal-ledger/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "01b164e71d9698c690bde03ba13f206f46d565981c6172f7299f6a85f8643c24"
-    },
-    {
-      "id": "cisco-php2shell-how-cisco-helps-cus",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "PHP2Shell: How Cisco Helps Customers Respond to AI-Accelerated Threats",
-      "summary": "The following resources address the coverage available for PHP2Shell today, as well as ways Cisco customers can begin to increase resilience for whatever AI-driven threat comes next.",
-      "published_date": "2026-11-02",
-      "date": "2026-11-02",
-      "url": "https://blogs.cisco.com/security/php2shell-how-cisco-helps-customers-respond-to-ai-accelerated-threats",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "151956c3975f8fc994b6ebe30e86f3a5d1b8bfb7511c01cbd49633dea6affeca"
-    },
-    {
-      "id": "cisco-foundry-in-the-real-world-tur",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Foundry in the real world: Turning LLM hunches into verified findings - Security Loop Series, Part 2",
-      "summary": "An LLM's \"look here\" is not \"this is real\". Foundry adds an evidence gate that turns hunches into verified findings, tested on Langflow, MLflow, and PyGoat.",
-      "published_date": "2026-11-02",
-      "date": "2026-11-02",
-      "url": "https://blogs.cisco.com/cisco-devnet/foundry-verified-security-findings-part-2",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "cd656ebdecb839380a096329f870f9b1dbe1d6e005ac3489490418b44777ef1d"
     }
   ],
   "total_items": 100
