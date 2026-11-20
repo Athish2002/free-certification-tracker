@@ -1,8 +1,50 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-19T20:47:45.522825+00:00",
-  "last_sync": "2026-11-19T20:47:45.522825+00:00",
+  "last_updated": "2026-11-20T07:27:47.732893+00:00",
+  "last_sync": "2026-11-20T07:27:47.732893+00:00",
   "news": [
+    {
+      "id": "google-cloud-the-blueprint-how-kult-built",
+      "company": "Google Cloud",
+      "source": "Google Cloud Blog",
+      "source_domain": "cloud.google.com",
+      "category": "Infrastructure & Silicon",
+      "title": "The Blueprint: How Kult built a gaming companion that actually knows your game",
+      "summary": "Welcome to The Blueprint, our ongoing series where we highlight how Google Cloud customers are tackling unique and common challenges across industries using the latest AI and cloud technologies. We hope to inspire others looking to innovate...",
+      "published_date": "2026-11-19",
+      "date": "2026-11-19",
+      "url": "https://cloud.google.com/blog/products/gaming/kult-built-a-gaming-companion-with-gemini-that-actually-knows-your-game/",
+      "impact_badge": "Cloud Platform",
+      "content_fingerprint": "41e12dbacd7899ec920cdeb956aaf9588d4fb29b76145063c75eb35199f07ee9"
+    },
+    {
+      "id": "amazon-web-services-how-country-road-group-built-a",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "How Country Road Group built a pattern-driven integration solution on AWS",
+      "summary": "Country Road Group replaced Microsoft BizTalk with a pattern-driven, serverless integration platform on AWS. Learn how its Strategic Integration Platform works across four processing lanes, and get the open-source Enterprise Integration Pat...",
+      "published_date": "2026-11-19",
+      "date": "2026-11-19",
+      "url": "https://aws.amazon.com/blogs/architecture/how-country-road-group-built-a-pattern-driven-integration-solution-on-aws/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "40b82f5f48ac1bf6d0a4a3ed05e7441f225dec3933e4dfbb6ca5422898c147b2"
+    },
+    {
+      "id": "amazon-web-services-ai-coding-agents-on-amazon-ec2",
+      "company": "Amazon Web Services",
+      "source": "AWS Architecture Blog",
+      "source_domain": "aws.amazon.com",
+      "category": "Infrastructure & Silicon",
+      "title": "AI coding agents on Amazon EC2 Mac: How Cognition scales Devin for macOS",
+      "summary": "Cognition gave its AI software engineer, Devin, a cloud Mac. Each Devin session gets a fresh macOS VM on Amazon EC2 Mac bare metal hosts, so Devin can build, run, and test iOS and macOS apps. Learn how Cognition built it with disk snapshots...",
+      "published_date": "2026-11-20",
+      "date": "2026-11-20",
+      "url": "https://aws.amazon.com/blogs/architecture/ai-coding-agents-on-amazon-ec2-mac-how-cognition-scales-devin-for-macos/",
+      "impact_badge": "Architecture RFC",
+      "content_fingerprint": "17e39905c7c5dfe317fe801f0a826c7a5919c1d0e49c869cb3fd7347eea47be3"
+    },
     {
       "id": "cisco-from-being-welcomed-to-welcomi",
       "company": "Cisco",
@@ -1360,48 +1402,6 @@
       "url": "https://blogs.cisco.com/cisco-devnet/foundry-verified-security-findings-part-2",
       "impact_badge": "Enterprise Networking",
       "content_fingerprint": "cd656ebdecb839380a096329f870f9b1dbe1d6e005ac3489490418b44777ef1d"
-    },
-    {
-      "id": "cisco-design-to-code-reimagine-hand",
-      "company": "Cisco",
-      "source": "Cisco Blogs",
-      "source_domain": "blogs.cisco.com",
-      "category": "Tech Development",
-      "title": "Design-to-Code: Reimagine Handoff Workflow with AI - Rebuilding PubHub Part 3",
-      "summary": "How the PubHub team replaced the Figma handoff with an AI-built, designer-refined HTML prototype, and what worked and didn't along the way, so other teams can adapt it.",
-      "published_date": "2026-11-02",
-      "date": "2026-11-02",
-      "url": "https://blogs.cisco.com/cisco-devnet/design-to-code-ai-handoff-workflow",
-      "impact_badge": "Enterprise Networking",
-      "content_fingerprint": "09bac96d0d02e2106f6d41c0f9d6e2c0a7b449e8ef9c8910b0a61a5fe736407f"
-    },
-    {
-      "id": "google-cloud-beyond-migration-using-databa",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Beyond Migration: Using Database Migration Service for disk shrinking",
-      "summary": "When database engineers hear \"database migration\", they typically think of a one-time onboarding pathway-moving databases from on-premises environments to the cloud, or between different cloud providers. However, Google Cloud's Database Mig...",
-      "published_date": "2026-11-02",
-      "date": "2026-11-02",
-      "url": "https://cloud.google.com/blog/products/databases/use-dms-to-shrink-cloud-sql-for-sql-server-disk/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "9eed11637ad81b42cbb9dbe376ce4677542b0ddf93891d51dd10df2b2aa5f84a"
-    },
-    {
-      "id": "google-cloud-google-cloud-developer-plugin",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Google Cloud Developer plugin now available in Antigravity Marketplace",
-      "summary": "Building cloud solutions with autonomous AI agents should feel fast, safe, and reliable. Without cloud-specific context, coding agents often struggle. They might invent deprecated SDK syntax, guess invalid command flags, or attempt operatio...",
-      "published_date": "2026-11-02",
-      "date": "2026-11-02",
-      "url": "https://cloud.google.com/blog/topics/developers-practitioners/google-cloud-developer-plugin-now-available-in-antigravity-marketplace/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "40389fa54fe8e2d09c72375416270c2d9012a022c826d2f3fd069e3c54c969a6"
     }
   ],
   "total_items": 100
