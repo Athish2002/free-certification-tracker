@@ -1,8 +1,22 @@
 {
   "$schema": "./news_schema.json",
-  "last_updated": "2026-11-20T20:32:55.336963+00:00",
-  "last_sync": "2026-11-20T20:32:55.336963+00:00",
+  "last_updated": "2026-11-21T07:20:17.500781+00:00",
+  "last_sync": "2026-11-21T07:20:17.500781+00:00",
   "news": [
+    {
+      "id": "cisco-your-year-end-guide-to-cisco-u",
+      "company": "Cisco",
+      "source": "Cisco Blogs",
+      "source_domain": "blogs.cisco.com",
+      "category": "Tech Development",
+      "title": "Your Year-End Guide to Cisco U. Learning Deals",
+      "summary": "Cisco U. Learning Deals offer significant year-end savings on various Cisco learning products from November 23 to December 1, 2026. Cyber Monday features exclusive doorbuster deals, including up to 50% off select courses.",
+      "published_date": "2026-11-21",
+      "date": "2026-11-21",
+      "url": "https://blogs.cisco.com/learning/learning-deals-2026",
+      "impact_badge": "Enterprise Networking",
+      "content_fingerprint": "47c8bd8a16157337840fa23cf72909376a021eb59950406e4dc07249238b0607"
+    },
     {
       "id": "google-cloud-drowning-in-clicks-scaling-bl",
       "company": "Google Cloud",
@@ -1388,20 +1402,6 @@
       "url": "https://github.blog/open-source/maintainers/arnis-turns-any-place-on-earth-into-a-minecraft-world/",
       "impact_badge": "Developer Tooling",
       "content_fingerprint": "d5dbf94e214985af4bb7ea1e842ece9fe87fffd44c1eff36206b215af276d16e"
-    },
-    {
-      "id": "google-cloud-leading-in-the-agentic-era-ho",
-      "company": "Google Cloud",
-      "source": "Google Cloud Blog",
-      "source_domain": "cloud.google.com",
-      "category": "Infrastructure & Silicon",
-      "title": "Leading in the agentic era: How to put people first as you adopt AI agents",
-      "summary": "Over the past few years, our Google Cloud Consulting team has partnered with many companies to introduce AI into their daily operations. In that time, we've seen the focus shift from generative AI that answers questions to agentic systems t...",
-      "published_date": "2026-11-03",
-      "date": "2026-11-03",
-      "url": "https://cloud.google.com/blog/topics/consulting/lessons-for-adopting-ai-agents/",
-      "impact_badge": "Cloud Platform",
-      "content_fingerprint": "1ca54ac190b6062336e29cf50054b297fb1c228e6dd0ed2cf804bf35555bf4e9"
     }
   ],
   "total_items": 100
